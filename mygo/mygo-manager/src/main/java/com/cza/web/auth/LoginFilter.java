@@ -75,7 +75,7 @@ public class LoginFilter implements  Filter{
 				log.info("请求uri:{},需要后台管理权限！",uri);
 				UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.ADMIN_SESSION_KEY);
 				if(user==null||!ShoppingContants.USER_TYPE_ADMIN.equals(user.getType())){
-					resp.sendRedirect("/shopping_manager/manager/home/toLogin.do");
+					resp.sendRedirect("/mygo-manager/manager/home/toLogin.do");
 					return;
 				}
 			}
