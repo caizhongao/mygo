@@ -1,0 +1,1 @@
+ALTER TABLE t_order ADD COLUMN pay_status SMALLINT(1) NOT NULL COMMENT '支付状态,0:未付款，1:已付款' DEFAULT 0;

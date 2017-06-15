@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.mygo</groupId>
+    <artifactId>mygo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>mygo-manager</artifactId>
+  <packaging>war</packaging>
+  
+  
+    <dependencies>
+   <dependency>
+	  <groupId>com.mygo</groupId>
+	  <artifactId>mygo-service</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	</dependency>
+  </dependencies>
+  
+  
+    
+  
+  	<build>
+	  	<plugins>
+			<plugin>  
+	            <groupId>org.apache.maven.plugins</groupId>  
+	            <artifactId>maven-compiler-plugin</artifactId>  
+	            <configuration>  
+	                <source>1.7</source>  
+	                <target>1.7</target>  
+	                <encoding>UTF-8</encoding>
+	            </configuration>  
+	        </plugin>  
+        </plugins>
+  		<finalName>mygo-manager</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+  
+  <profiles>
+  
+		<!-- 开发环境打包：mvn -Denv=dev package -->
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<build>
+				<filters>                     
+					<filter>src/main/assembly/dev.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		<!-- 开发环境打包：mvn -Denv=dev2 package -->
+		<profile>
+			<id>dev2</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev2</value>
+				</property>
+			</activation>
+			<build>
+				<filters>
+					<filter>src/main/assembly/dev2.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		<!-- 测试环境打包：mvn -Denv=test package -->
+		<profile>
+			<id>test</id>
+			<activation>
+			<!-- <activeByDefault>true</activeByDefault> -->
+				<property>
+					<name>env</name>
+					<value>test</value>
+				</property>
+			</activation>
+			<build>
+				<filters>
+					<filter>src/main/assembly/test.properties</filter>
+				</filters>
+			</build>
+		</profile>
+	</profiles>
+</project>

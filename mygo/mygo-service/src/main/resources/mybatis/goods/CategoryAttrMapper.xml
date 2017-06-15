@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cza.mapper.goods.CategoryAttrMapper">
+	<resultMap id="attr" type="com.cza.dto.goods.TCategoryAttr">
+		<result property="caid" column="caid"/>
+		<result property="attrName" column="attr_name"/>
+		<result property="cid" column="cid"/>
+		<result property="status" column="status"/>
+	</resultMap>
+	
+	<sql id="allColumns">
+			caid,attr_name,cid,status
+	</sql>
+	
+		<insert id="saveCategoryAttr" parameterType="com.cza.dto.goods.TCategoryAttr" useGeneratedKeys="true" keyProperty="caid" >
+			insert into t_category_attr (
+				attr_name,cid,status
+			)
+			values (
+				#{attrName}, #{cid},#{status}
+			)
+	</insert>
+	
+	<select id="queryAttr" parameterType="java.lang.Long" resultMap="attr">
+		select 
+			<include refid="allColumns"></include>
+		from t_category_attr 
+			where caid = #{caid} 
+	</select>
+	<select id="listAttrs" parameterType="com.cza.dto.goods.TCategoryAttr" resultMap="attr">
+		select 
+			<include refid="allColumns"></include>
+		from t_category_attr 
+			<where>
+				<if test="caid!=null">
+					and caid = #{caid}
+				</if>
+				<if test="cid!=null">
+					and cid = #{cid}
+				</if>
+				<if test="attrName!=null and attrName!=''">
+					and attr_name = #{attrName}
+				</if>
+				<if test="status!=null">
+					and status = #{status}
+				</if>
+			</where>
+	</select>
+	<update id="updateCategoryAttr" parameterType="com.cza.dto.goods.TCategoryAttr">
+		update t_category_attr
+		<set>
+			<if test="attrName!=null and attrName!=''">
+				attr_name = #{attrName},
+			</if>
+			<if test="status!=null">
+				status = #{status},
+			</if>
+		</set> 
+		where caid = #{caid} 
+	</update>
+	
+	<update id="updateAttrStatus" parameterType="com.cza.dto.goods.TCategoryAttr">
+		update t_category_attr
+		<set>
+			<if test="status!=null and status!=''">
+				status = #{status},
+			</if>
+		</set> 
+		where cid = #{cid} 
+	</update>
+	
+	
+	
+</mapper>

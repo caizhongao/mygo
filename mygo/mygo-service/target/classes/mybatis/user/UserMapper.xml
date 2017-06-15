@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cza.mapper.user.UserMapper">
+	<resultMap id="user" type="com.cza.dto.user.TUser">
+		<result property="userName" column="user_name"/>
+		<result property="password" column="password"/>
+		<result property="sex" column="sex"/>
+		<result property="realName" column="real_name"/>
+		<result property="age" column="age"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="uid" column="uid"/>
+		<result property="type" column="type"/>
+	</resultMap>
+	
+	<sql id="allUserColumns">
+		user_name, password, sex, real_name, age, create_time,update_time,uid,type
+	</sql>
+	
+	<insert id="saveUser" parameterType="com.cza.dto.user.TUser"  useGeneratedKeys="true" keyProperty="uid">
+			insert into t_user (
+				user_name, password, sex,real_name,age,create_time,update_time
+			)
+			values (
+				#{userName}, #{password},#{sex},#{realName},#{age},#{createTime},#{updateTime}
+			)
+	</insert>	
+	
+	
+	<select id="queryUser" parameterType="java.lang.Long" resultMap="user">
+		select 
+			<include refid="allUserColumns"></include>
+		from t_user 
+			where uid = #{uid} 
+	</select>
+	
+	<select id="updateUser" parameterType="com.cza.dto.user.TUser">
+		update t_user
+		set user_name = #{userName},
+			password = #{password},
+			sex = #{sex},
+			real_name = #{realName},
+			age = #{age},
+			update_time = #{updateTime}
+		where uid = #{uid} 
+	</select>
+	
+	<select id="listUser" parameterType="com.cza.dto.user.TUser" resultMap="user">
+		select 
+			<include refid="allUserColumns"></include>
+		from t_user 
+			<where>
+				<if test="uid!=null">
+					uid = #{uid}
+				</if>
+				<if test="userName!=null and userName!=''">
+					user_name = #{userName}
+				</if>
+				<if test="age!=null">
+					age=#{age}
+				</if>
+				<if test="sex!=null and sex!=''">
+					sex=#{sex}
+				</if>
+			</where>
+	</select>
+		
+</mapper>

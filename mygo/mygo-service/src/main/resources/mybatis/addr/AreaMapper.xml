@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cza.mapper.addr.AreaMapper">
+	<resultMap id="area" type="com.cza.dto.addr.TArea">
+		<result property="aid" column="aid"/>
+		<result property="paid" column="paid"/>
+		<result property="aname" column="aname"/>
+	</resultMap>
+	
+	<sql id="allColumns">
+			aid,paid,aname
+	</sql>
+	
+	
+	<select id="listAreas" parameterType="com.cza.dto.addr.TArea" resultMap="area">
+		select 
+			<include refid="allColumns"></include>
+		from t_area 
+			<where>
+				<if test="paid!=null">
+					paid = #{paid}
+				</if>
+				<if test="aname!=null">
+					aname = #{aname}
+				</if>
+			</where>
+	</select>
+		
+</mapper>
