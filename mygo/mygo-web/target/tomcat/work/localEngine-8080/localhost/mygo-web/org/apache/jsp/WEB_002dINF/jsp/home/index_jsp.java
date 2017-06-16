@@ -201,13 +201,21 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\t}\r\n");
       out.write("</script>\r\n");
       out.write("</head>\r\n");
-      out.write("<body style=\"margin-top: 1px;margin-left: 0px;margin-right: 0px;\">\r\n");
+      out.write("<body class=\"_body\">\r\n");
       out.write("<div  class=\"page_body\">\r\n");
       out.write("\t");
       out.write("\r\n");
-      out.write("<div style=\"width:100%;height: 40px;background-color: #F7F7F7;color: #666666;\">\r\n");
+      out.write("<style>\r\n");
+      out.write("\t.title_a{\r\n");
+      out.write("\t\tcolor: white;\r\n");
+      out.write("\t\tfont-weight: bold;\r\n");
+      out.write("\t\tfont-size: 13px;\r\n");
+      out.write("\t}\r\n");
+      out.write("</style>\r\n");
+      out.write("\r\n");
+      out.write("<div style=\"width:100%;height: 40px;background-color: #1D222D;color: #666666;\">\r\n");
       out.write("\t<div style=\"width:80%;margin: 0px auto;\">\r\n");
-      out.write("\t\t<table style=\"width: 100%\">\r\n");
+      out.write("\t\t<table style=\"width: 100%;color: white\">\r\n");
       out.write("\t\t\t<tr>\r\n");
       out.write("\t\t\t\t<td style=\"line-height:35px;font-size: 14px;\">\r\n");
       out.write("\t\t\t\t\t");
@@ -218,20 +226,20 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\t\t\t\t<td>\r\n");
       out.write("\t\t\t\t\t&nbsp;\r\n");
       out.write("\t\t\t\t</td>\r\n");
-      out.write("\t\t\t\t<td  style=\"line-height:35px;font-size: 14px;width: 80px;\" align=\"left\">\r\n");
+      out.write("\t\t\t\t<td  style=\"line-height:35px;width: 80px;\" align=\"left\">\r\n");
       out.write("\t\t\t\t\t<a href=\"");
       out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${ctx}", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
-      out.write("/\">首页</a> &nbsp;\r\n");
+      out.write("/\" class=\"title_a\">首页</a> &nbsp;\r\n");
+      out.write("\t\t\t\t</td>\r\n");
+      out.write("\t\t\t\t<td  style=\"line-height:35px;width: 100px;\" align=\"left\">\r\n");
+      out.write("\t\t\t\t\t<a href=\"");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${ctx}", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
+      out.write("/\" class=\"title_a\">我的订单</a>&nbsp;\r\n");
       out.write("\t\t\t\t</td>\r\n");
       out.write("\t\t\t\t<td  style=\"line-height:35px;font-size: 14px;width: 100px;\" align=\"left\">\r\n");
       out.write("\t\t\t\t\t<a href=\"");
       out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${ctx}", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
-      out.write("/\">我的订单</a>&nbsp;\r\n");
-      out.write("\t\t\t\t</td>\r\n");
-      out.write("\t\t\t\t<td  style=\"line-height:35px;font-size: 14px;width: 100px;\" align=\"left\">\r\n");
-      out.write("\t\t\t\t\t<a href=\"");
-      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${ctx}", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
-      out.write("/login/addr/editAddr.do\">我的地址</a>&nbsp;\r\n");
+      out.write("/login/addr/editAddr.do\" class=\"title_a\">我的地址</a>&nbsp;\r\n");
       out.write("\t\t\t\t</td>\r\n");
       out.write("\t\t\t</tr>\r\n");
       out.write("\t\t</table>\r\n");
@@ -241,7 +249,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("\t<div class=\"page_middle\" style=\"margin-top: 50px;\">\r\n");
       out.write("\t\t<table width=\"80%\"  cellpadding=\"0\" cellspacing=\"0\" align=\"center\">\r\n");
-      out.write("\t\t\t<tr style=\"background-color: #3385FF;height: 30px;color: white;\">\r\n");
+      out.write("\t\t\t<tr style=\"background-color: #02AAF1;height: 30px;color: white;\">\r\n");
       out.write("\t\t\t\t<td width=\"40px\" style=\"border-left: 1px solid white\">&nbsp;</td>\r\n");
       out.write("\t\t\t\t<td width=\"70px\" class=\"category active\">首页</td>\r\n");
       out.write("\t\t\t\t");
@@ -348,7 +356,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
     org.apache.taglibs.standard.tag.rt.core.WhenTag _jspx_th_c_005fwhen_005f0 = (org.apache.taglibs.standard.tag.rt.core.WhenTag) _005fjspx_005ftagPool_005fc_005fwhen_0026_005ftest.get(org.apache.taglibs.standard.tag.rt.core.WhenTag.class);
     _jspx_th_c_005fwhen_005f0.setPageContext(_jspx_page_context);
     _jspx_th_c_005fwhen_005f0.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_c_005fchoose_005f0);
-    // /common/top.jsp(8,6) name = test type = boolean reqTime = true required = true fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
+    // /common/top.jsp(16,6) name = test type = boolean reqTime = true required = true fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
     _jspx_th_c_005fwhen_005f0.setTest(((java.lang.Boolean) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${sessionScope.user_session==null}", java.lang.Boolean.class, (PageContext)_jspx_page_context, null, false)).booleanValue());
     int _jspx_eval_c_005fwhen_005f0 = _jspx_th_c_005fwhen_005f0.doStartTag();
     if (_jspx_eval_c_005fwhen_005f0 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
@@ -356,7 +364,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
         out.write("\r\n");
         out.write("\t\t\t\t\t\t\t您还没有登录,请&nbsp;<a href=\"");
         out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${ctx}", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
-        out.write("/unlogin/user/toLogin.do\" >登录</a>\r\n");
+        out.write("/unlogin/user/toLogin.do\"  class=\"title_a\">登录</a>\r\n");
         out.write("\t\t\t\t\t\t");
         int evalDoAfterBody = _jspx_th_c_005fwhen_005f0.doAfterBody();
         if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)
@@ -387,7 +395,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
         out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${sessionScope.user_session.userName}", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
         out.write("&nbsp;<a href=\"");
         out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${ctx}", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
-        out.write("/unlogin/user/logout.do\" >退出</a>\r\n");
+        out.write("/unlogin/user/logout.do\"  class=\"title_a\">退出</a>\r\n");
         out.write("\t\t\t\t\t\t");
         int evalDoAfterBody = _jspx_th_c_005fotherwise_005f0.doAfterBody();
         if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)

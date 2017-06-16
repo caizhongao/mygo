@@ -203,4 +203,37 @@ public class OrderServiceImpl implements OrderService{
 		}
 		return resp;
 	}
+
+
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @param oid
+	    * @return
+	    * @see com.cza.service.order.OrderService#queryOrder(java.lang.Long)
+	    */
+	    
+	@Override
+	public ServiceResponse<OrderVo> queryOrder(Long oid) {
+		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
+		try {
+			TOrder updateParam=new TOrder();
+			TOrder order=orderMapper.queryOrder(oid);
+			if(order!=null){
+				OrderVo vo=new OrderVo();
+				BeanUtils.copyProperties(order, vo);
+				resp.setData(vo);
+			}
+			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+		} catch (Exception e) {
+			resp.setData(null);
+			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
+			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			log.error("保存商品异常!",e);
+		}
+		return resp;
+	}
 }

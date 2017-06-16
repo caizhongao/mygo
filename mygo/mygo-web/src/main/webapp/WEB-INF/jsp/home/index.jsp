@@ -102,12 +102,12 @@
 	}
 </script>
 </head>
-<body style="margin-top: 1px;margin-left: 0px;margin-right: 0px;">
+<body class="_body">
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle" style="margin-top: 50px;">
 		<table width="80%"  cellpadding="0" cellspacing="0" align="center">
-			<tr style="background-color: #3385FF;height: 30px;color: white;">
+			<tr style="background-color: #02AAF1;height: 30px;color: white;">
 				<td width="40px" style="border-left: 1px solid white">&nbsp;</td>
 				<td width="70px" class="category active">首页</td>
 				<c:forEach items="${categoryList}" var="category">

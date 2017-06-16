@@ -94,6 +94,7 @@ public class UserAction extends CommonAction{
 	
 	@RequestMapping("login")
 	public String login(@ModelAttribute UserVo user,HttpServletRequest request,HttpServletResponse response){
+		log.info("login param is:{}",user);
 		//校验登录请求参数
 		List<String> erroList=UserInfoValidate.checkLoginParam(user,request);
 		if(erroList.isEmpty()){

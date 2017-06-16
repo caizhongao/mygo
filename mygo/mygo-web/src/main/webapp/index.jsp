@@ -8,7 +8,7 @@
 </head>
 <body>
 	<% 
-	response.sendRedirect("/shopping/unlogin/home/index.do");
+	response.sendRedirect(request.getContextPath()+"/unlogin/home/index.do");
 %>
 </body>
 </html>

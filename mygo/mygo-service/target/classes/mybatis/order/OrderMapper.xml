@@ -21,7 +21,7 @@
 	</resultMap>
 	
 	<sql id="allColumns">
-			oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,number,pay_status,status
+			oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,number,pay_status,status,delete_desc
 	</sql>
 	<select id="listOrder" parameterType="com.cza.dto.order.TOrder" resultMap="order">
 		select 

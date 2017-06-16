@@ -73,7 +73,12 @@ public class LoginFilter implements  Filter{
 			UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.USER_SESSION_KEY);
 			if(user==null){
 				String referer=req.getHeader("Referer");
-				resp.sendRedirect("/shopping/unlogin/user/toLogin.do?ref="+referer);
+				if(referer==null||referer.indexOf("/login/")>=0){
+					resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+req.getRequestURL());
+				}else{
+					resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+referer);
+				}
+				
 				return;
 			}
 		}else{

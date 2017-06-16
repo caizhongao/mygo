@@ -27,7 +27,7 @@ public interface OrderMapper {
 	
 	public List<TOrder> listOrder(TOrder param);
 	
-	public TOrder queryOrder(Long gid);
+	public TOrder queryOrder(Long oid);
 	
 	public void saveOrder(TOrder order);
 

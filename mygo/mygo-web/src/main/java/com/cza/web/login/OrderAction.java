@@ -12,7 +12,6 @@ package com.cza.web.login;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -33,6 +33,7 @@ import com.cza.dto.goods.TSkuStock;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.SkuVo;
 import com.cza.service.order.OrderService;
+import com.cza.service.order.vo.OrderVo;
 import com.cza.service.order.vo.PreOrderVo;
 import com.cza.service.user.AddrService;
 import com.cza.service.user.vo.UserVo;
@@ -106,22 +107,32 @@ public class OrderAction extends CommonAction{
 		log.info("OrderAction.saveOrder 请求参数,order:{}",order);
 		if(order.getSkuId()==null||order.getAddrId()==null||order.getNumber()==null){
 			log.info("OrderAction.saveOrder 参数错误！");
-			request.setAttribute("orderSuccess", 1);
 		}else{
 			UserVo userVo=getUser(request);
 			order.setUid(userVo.getUid());
 			ServiceResponse<PreOrderVo> resp=orderService.saveOrder(order);
 			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-				request.setAttribute("order", order);
-				request.setAttribute("orderSuccess", 0);
 				log.info("OrderAction.saveOrder success,orderNo:{}",order.getOrderId());
+				return "redirect:/login/order/toOrderPayPage.do?oid="+resp.getData().getOrderId();
 			}else{
-				request.setAttribute("orderSuccess", 1);
 				log.info("OrderAction.saveOrder faild!");
 			}
 		}
-		return webPage("/home/orderPage");
+		return webPage("erro");
 	}
-	
-
+	@RequestMapping("toOrderPayPage")
+	public String toOrderPayPage(HttpServletRequest request,HttpServletResponse response ){
+		String str=request.getParameter("oid");
+		if(StringUtils.isEmpty(str)){
+			return webPage("erro");
+		}
+		ServiceResponse<OrderVo> resp=orderService.queryOrder(Long.valueOf(str));
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			request.setAttribute("order", resp.getData());
+			return webPage("/home/orderPage");
+		}else{
+			log.info("OrderAction.toOrderPayPage faild!");
+			return webPage("erro");
+		}
+	}
 }

@@ -222,7 +222,7 @@
 	
 </script>
 </head>
-<body style="margin-top: 1px;margin-left: 0px;margin-right: 0px;">
+<body class="_body">
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle" style="margin-top: 50px;width: 80%;height: 400px;margin: 0px auto;">

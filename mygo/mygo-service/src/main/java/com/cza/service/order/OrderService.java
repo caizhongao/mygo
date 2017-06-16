@@ -58,4 +58,20 @@ public interface OrderService {
 			    */
 			    
 			public ServiceResponse<OrderVo> updateOrder(OrderVo order);
+
+
+
+
+
+				
+				    /**
+				     * @return 
+				    * @Title: queryOrder
+				    * @Description: TODO(这里用一句话描述这个方法的作用)
+				    * @param @param valueOf    参数
+				    * @return void    返回类型
+				    * @throws
+				    */
+				    
+				public ServiceResponse<OrderVo> queryOrder(Long oid);
 }

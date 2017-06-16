@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 
 </head>
-<body>
+<body class="_body">
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle">
