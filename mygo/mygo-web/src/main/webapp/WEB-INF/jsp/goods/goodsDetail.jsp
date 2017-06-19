@@ -53,7 +53,7 @@
 		border: 1px dashed #EEEEEE!important;
 	}
 	.page_middle table tr{
-		height: 65px;
+		min-height: 50px;
 	}
 	
 	.optNumber{
@@ -251,66 +251,82 @@
 <body class="_body">
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
-	<div class="page_middle" style="margin-top: 50px;width: 80%;height: 400px;margin: 0px auto;">
-		<c:forEach items="${goods.skus}" var="sku">
-			<div class="skuInfo">
-				<input type="hidden" name="skuId" value="${sku.sid}">
-				<input type="hidden" id="skuStock${sku.sid}" name="skuStock" value="${sku.stock}">
-				<c:forEach items="${sku.attrs}" var="attr">
-					<input type="hidden" name="attrValue_${attr.attrId}" value="${attr.attrValue}">
+	<div class="page_middle">
+		<table width="80%"  cellpadding="0" cellspacing="0" align="center">
+			<tr style="background-color: #02AAF1;height: 30px;color: white;">
+				<td width="40px" style="border-left: 1px solid white">&nbsp;</td>
+				<td width="70px" class="category active">首页</td>
+				<c:forEach items="${categoryList}" var="category">
+					<td width="20px">&nbsp;</td>
+					<td width="70px" class="category" onclick="gotoPage(${category.cid})">
+						${category.cname}
+					</td>
 				</c:forEach>
-			</div>
-		</c:forEach>
-		<table width="900px" height="401px" cellpadding="0" cellspacing="0"  style="font-size: 14px;">
-			<tr>
-				<td rowspan="${fn:length(goods.skus)+4}">
-					<img src="${goods.goodsPic}" width="400px" alt="商品详情图">
-				</td>
-				<td style="font-weight: bold;font-size: 14px;color: #666666;">
-					${goods.goodsName}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					价格：${goods.price}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					销量：${goods.sales}
-				</td>
-			</tr>
-			<c:forEach items="${attrs}" var="attr">
-				<tr class="attrTr">
-					<td>
-					${attr.key}&nbsp;
-					<c:forEach items="${attr.value}" var="attrVal">
-						<div class="attrObj" attrId="${attrVal.value}" attrValue="${attrVal.key}" onclick="selectAttr(this)">
-							${attrVal.key}
-						</div>
+				<td>&nbsp;</td>
+			</tr>		
+		</table>
+		<div style="width: 80%;height: 400px;margin: 0px auto">
+			<c:forEach items="${goods.skus}" var="sku">
+				<div class="skuInfo">
+					<input type="hidden" name="skuId" value="${sku.sid}">
+					<input type="hidden" id="skuStock${sku.sid}" name="skuStock" value="${sku.stock}">
+					<c:forEach items="${sku.attrs}" var="attr">
+						<input type="hidden" name="attrValue_${attr.attrId}" value="${attr.attrValue}">
 					</c:forEach>
+				</div>
+			</c:forEach>
+			<table width="900px" cellpadding="0" cellspacing="0"  style="font-size: 14px;margin-top: 20px;height: 401px">
+				<tr>
+					<td rowspan="${fn:length(goods.skus[0].attrs)+5}">
+						<img src="${goods.goodsPic}" width="400px" alt="商品详情图">
+					</td>
+					<td style="font-weight: bold;font-size: 14px;color: #666666;">
+						${goods.goodsName}
 					</td>
 				</tr>
-			</c:forEach>
-			<tr>
-				<td>
-					数量  
-					<span style="width: 103px;height: 26px;border: 1px solid #CCCCCC;display: inline-block;">
-						<span onclick="opNumber('cut');" title="减1" class="optNumber" style="display: inline-block;width: 23px;">-</span>
-			            <input type="text" id="number" onblur="checkNumber()" name="number" value="1" maxlength="8" title="请输入购买量" style="width: 50px;height: 26px;border-top: none;border-bottom: none;text-align: center">
-			            <span onclick="opNumber('add');" title="加1" class="optNumber">+</span>
-			        </span>件&nbsp;(库存&nbsp;<span id="realStock" style="display: inline-block;color: #666666">${goods.stock}</span>&nbsp;件)
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<a href="javascript:void(0)"  onclick="butNow()" class="manager_button" style="font-size: 13px;text-decoration: none">立即购买</a>
-				</td>
-			</tr>
-		</table>
-		<div style="border: 1px solid #cccccc;width: 900px;height: 400px;margin-top: 20px;">
-			商品详情描述信息。。。。
+				<tr>
+					<td>
+						价格：${goods.price}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						销量：${goods.sales}
+					</td>
+				</tr>
+				<c:forEach items="${attrs}" var="attr">
+					<tr class="attrTr">
+						<td>
+						${attr.key}&nbsp;
+						<c:forEach items="${attr.value}" var="attrVal">
+							<div class="attrObj" attrId="${attrVal.value}" attrValue="${attrVal.key}" onclick="selectAttr(this)">
+								${attrVal.key}
+							</div>
+						</c:forEach>
+						</td>
+					</tr>
+				</c:forEach>
+				<tr>
+					<td>
+						数量  
+						<span style="width: 103px;height: 26px;border: 1px solid #CCCCCC;display: inline-block;">
+							<span onclick="opNumber('cut');" title="减1" class="optNumber" style="display: inline-block;width: 23px;">-</span>
+				            <input type="text" id="number" onblur="checkNumber()" name="number" value="1" maxlength="8" title="请输入购买量" style="width: 50px;height: 26px;border-top: none;border-bottom: none;text-align: center">
+				            <span onclick="opNumber('add');" title="加1" class="optNumber">+</span>
+				        </span>件&nbsp;(库存&nbsp;<span id="realStock" style="display: inline-block;color: #666666">${goods.stock}</span>&nbsp;件)
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<a href="javascript:void(0)"  onclick="butNow()" class="manager_button" style="font-size: 13px;text-decoration: none">立即购买</a>
+					</td>
+				</tr>
+			</table>
+			<div style="border: 1px solid #cccccc;width: 900px;height: 400px;margin-top: 20px;">
+				商品详情描述信息。。。。
+			</div>
 		</div>
+		
 	</div>
 </div>
 </body> 
