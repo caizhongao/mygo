@@ -13,7 +13,7 @@
 	function listAttrs(){
 		var cid=$('#cid option:selected').val();
 		$.ajax({
-			url:'/shopping/manager/category/listAttrs.do',
+			url:'/mygo-manager/manager/category/listAttrs.do',
 			type:'post',
 			dataType:'json',
 			data:{'cid':cid},

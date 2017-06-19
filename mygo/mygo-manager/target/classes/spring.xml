@@ -23,28 +23,28 @@
 		<property name="url" value="${shopping.jdbc.url}" />
 		<property name="username" value="${shopping.jdbc.username}" />
 		<property name="password" value="${shopping.jdbc.password}" />
-		<!-- 初始化连接大�?-->
+		<!-- 初始化连接大小 -->
 		<property name="initialSize" value="${shopping.jdbc.initialSize}"></property>
-		<!-- 连接池最大数�?-->
+		<!-- 连接池最大数量 -->
 		<property name="maxActive" value="${shopping.jdbc.maxActive}"></property>
-		<!-- 连接池最大空�?-->
+		<!-- 连接池最大空闲 -->
 		<property name="maxIdle" value="${shopping.jdbc.maxIdle}"></property>
-		<!-- 连接池最小空�?-->
+		<!-- 连接池最小空闲 -->
 		<property name="minIdle" value="${shopping.jdbc.minIdle}"></property>
-		<!-- 获取连接�?��等待时间 -->
+		<!-- 获取连接最大等待时间 -->
 		<property name="maxWait" value="${shopping.jdbc.maxWait}"></property>
 		<!-- 
 		<property name="maxIdleTime" value="${maxIdleTime}"></property> -->
 	</bean>
 
-	<!-- spring和MyBatis完美整合，不�?��mybatis的配置映射文�?-->
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描mapping.xml文件 -->
 		<property name="mapperLocations" value="classpath:mybatis/**/*Mapper.xml"></property>
 	</bean>
 
-	<!-- DAO接口�?��包名，Spring会自动查找其下的�?-->
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.cza.mapper" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>

@@ -20,19 +20,19 @@
 			</list>
 		</property>
 	</bean>
-	<!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映�?-->
+	<!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
 			<list>
-				<ref bean="mappingJacksonHttpMessageConverter" />	<!-- JSON转换�?-->
+				<ref bean="mappingJacksonHttpMessageConverter" />	<!-- JSON转换器 -->
 			</list>
 		</property>
 	</bean>
 	
-	<!-- 定义跳转的文件的前后�?，视图模式配�?->
+	<!-- 定义跳转的文件的前后缀 ，视图模式配置-->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后�?��变成�?�� 可用的url地址 -->
+		<!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
 		<property name="prefix" value="" />
 		<property name="suffix" value=".jsp" />
 	</bean>
@@ -42,9 +42,9 @@
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
         <!-- 默认编码 -->
         <property name="defaultEncoding" value="utf-8" />  
-        <!-- 文件大小�?���?-->
+        <!-- 文件大小最大值 -->
         <property name="maxUploadSize" value="10485760000" />  
-        <!-- 内存中的�?���?-->
+        <!-- 内存中的最大值 -->
         <property name="maxInMemorySize" value="40960" />  
     </bean> 
 

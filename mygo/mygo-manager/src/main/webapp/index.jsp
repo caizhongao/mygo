@@ -7,8 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<% 
-	response.sendRedirect("/shopping/unlogin/home/index.do");
+<% 
+	response.sendRedirect("/mygo-manager/manager/home/index.do");
 %>
 </body>
 </html>
