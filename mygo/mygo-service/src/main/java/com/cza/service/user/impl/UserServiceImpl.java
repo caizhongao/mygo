@@ -55,13 +55,13 @@ public class UserServiceImpl implements UserService {
 			param.setUid(user.getUid());
 			resp.setData(param);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			log.info("saveUser success,TUser:{}",user);
 		} catch (Exception e) {
 			log.error("保存用戶失敗",e);
 			resp.setData(null);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
 		}
 		return resp;
 	}
@@ -102,13 +102,13 @@ public class UserServiceImpl implements UserService {
 			}
 			resp.setData(voList);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			log.info("listUser success,param:{},result:{}",param,voList);
 		} catch (Exception e) {
 			log.error("查询user失敗",e);
 			resp.setData(null);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
 		}
 		return resp;
 	}

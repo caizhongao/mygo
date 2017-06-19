@@ -99,12 +99,12 @@ public class GoodsServiceImpl implements GoodsService {
 				}
 			}
 			resp.setData(voList);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("查询商品出错!",e);
 		}
 		return resp;
@@ -170,12 +170,12 @@ public class GoodsServiceImpl implements GoodsService {
 				}
 			}
 			resp.setData(goods);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("保存商品异常!",e);
 		}
 		return resp;
@@ -198,8 +198,8 @@ public class GoodsServiceImpl implements GoodsService {
 			GoodsVo goodsVo=new GoodsVo();
 			TGoods goods=goodsMapper.queryGoods(param.getGid());
 			if(goods==null){
-				resp.setCode(ShoppingContants.RESP_CODE_ERRO);
-				resp.setMsg("该商品系统中不存在!");
+				resp.setCode(ShoppingContants.RESP_CODE_GOODS_NOT_EXIST);
+				resp.setMsg(ShoppingContants.RESP_MSG_GOODS_NOT_EXIST);
 				return resp;
 			}
 			goodsVo.setCid(goods.getCid());
@@ -215,6 +215,7 @@ public class GoodsServiceImpl implements GoodsService {
 			skuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
 			List<TSku> skus=skuMapper.listSkus(skuParam);
 			List<SkuVo> skuVoList=new ArrayList<SkuVo>();
+			Long goodsStock=0l;
 			if(skus!=null&&skus.size()>0){
 				for(TSku sku:skus){
 					SkuVo skuVo=new SkuVo();
@@ -228,6 +229,7 @@ public class GoodsServiceImpl implements GoodsService {
 					if(stock!=null){
 						skuVo.setNumber(stock.getNumber());
 						skuVo.setStock(stock.getStock());
+						goodsStock+=stock.getStock();
 					}else{
 						skuVo.setNumber(0L);
 						skuVo.setStock(0L);
@@ -250,14 +252,15 @@ public class GoodsServiceImpl implements GoodsService {
 					skuVoList.add(skuVo);
 				}
 			}
+			goodsVo.setStock(goodsStock);
 			goodsVo.setSkus(skuVoList);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setData(goodsVo);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("查询商品异常!",e);
 		}
 		return resp;
@@ -281,12 +284,12 @@ public class GoodsServiceImpl implements GoodsService {
 			param.setStatus(goods.getStatus());
 			goodsMapper.updateGoods(param);	
 			resp.setData(goods);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("更新商品异常!",e);
 		}
 		return resp;
@@ -385,12 +388,12 @@ public class GoodsServiceImpl implements GoodsService {
 				}
 			}
 			resp.setData(goods);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("更新商品异常!",e);
 		}
 		return resp;
@@ -426,12 +429,12 @@ public class GoodsServiceImpl implements GoodsService {
 				}
 			}
 			resp.setData(voList);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("查询商品异常!",e);
 		}
 		return resp;
@@ -467,12 +470,12 @@ public class GoodsServiceImpl implements GoodsService {
 				}
 			}
 			resp.setData(voList);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("查询商品异常!",e);
 		}
 		return resp;
@@ -490,9 +493,13 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public ServiceResponse<SkuVo> querySku(Long sid) {
 		ServiceResponse<SkuVo> resp=new ServiceResponse<SkuVo>();
-		List<GoodsVo>voList=null;
 		try {
 			TSku sku=skuMapper.querySku(sid);
+			if(sku==null){
+				resp.setData(null);
+				resp.setMsg(ShoppingContants.RESP_MSG_SKU_NOT_EXIST);
+				resp.setCode(ShoppingContants.RESP_CODE_SKU_NOT_EXIST);
+			}
 			SkuVo skuVo=new SkuVo();
 			skuVo.setPrice(sku.getPrice());
 			skuVo.setBarcode(sku.getBarcode());
@@ -514,12 +521,12 @@ public class GoodsServiceImpl implements GoodsService {
 			}
 			skuVo.setAttrs(attrVoList);
 			resp.setData(skuVo);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("查询sku异常!",e);
 		}
 		return resp;
@@ -543,12 +550,12 @@ public class GoodsServiceImpl implements GoodsService {
 			queryParam.setSid(sid);
 			TSkuStock result=stockMapper.querySkuStock(queryParam);
 			resp.setData(result);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("查询sku异常!",e);
 		}
 		return resp;

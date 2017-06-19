@@ -55,13 +55,13 @@ public class AddrServiceImpl implements AddrService {
 			List<TArea> areas=areaMapper.listAreas(area);
 			resp.setData(areas);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			log.info("listAreas success,param:{},result:{}",area,areas);
 		} catch (Exception e) {
 			log.error("查询TArea失敗",e);
 			resp.setData(null);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
 		}
 		return resp;
 	}
@@ -82,13 +82,13 @@ public class AddrServiceImpl implements AddrService {
 			List<TUserAddr> addrs=addrMapper.listAddrs(addr);
 			resp.setData(addrs);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			log.info("listAddrs success,param:{},result:{}",addr,addrs);
 		} catch (Exception e) {
 			log.error("查询TUserAddr失敗",e);
 			resp.setData(null);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
 		}
 		return resp;
 	}
@@ -116,13 +116,13 @@ public class AddrServiceImpl implements AddrService {
 			addrMapper.updateAddr(param1);
 			resp.setData(addr);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			log.info("setDefault success,param:{}",addr);
 		} catch (Exception e) {
 			log.error("TUserAddr设置为默认失败",e);
 			resp.setData(null);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
 		}
 		return resp;
 	}
@@ -153,13 +153,13 @@ public class AddrServiceImpl implements AddrService {
 			}
 			resp.setData(addr);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			log.info("saveAddr success,param:{}",addr);
 		} catch (Exception e) {
 			log.error("保存TUserAddr失败",e);
 			resp.setData(null);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
 		}
 		return resp;
 	}

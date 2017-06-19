@@ -18,10 +18,11 @@
 		<result property="payStatus" column="pay_status"/>
 		<result property="status" column="status"/>
 		<result property="deleteDesc" column="delete_desc"/>
+		<result property="payNo" column="pay_no"/>
 	</resultMap>
 	
 	<sql id="allColumns">
-			oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,number,pay_status,status,delete_desc
+			oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,number,pay_status,status,delete_desc,pay_no
 	</sql>
 	<select id="listOrder" parameterType="com.cza.dto.order.TOrder" resultMap="order">
 		select 
@@ -76,6 +77,9 @@
 				</if>
 				<if test="deleteDesc!=null and deleteDesc!=''">
 					delete_desc=#{deleteDesc},
+				</if>
+				<if test="payNo!=null and payNo!=''">
+					pay_no=#{payNo},
 				</if>
 				
 		</set>

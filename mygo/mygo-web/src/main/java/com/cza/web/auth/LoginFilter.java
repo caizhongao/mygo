@@ -69,17 +69,21 @@ public class LoginFilter implements  Filter{
 		HttpServletResponse resp=(HttpServletResponse) arg1;
 		String uri=req.getRequestURI();
 		if(uri.indexOf("/login/")>=0){
-			log.info("请求uri:{},需要登录权限！",uri);
-			UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.USER_SESSION_KEY);
-			if(user==null){
-				String referer=req.getHeader("Referer");
-				if(referer==null||referer.indexOf("/login/")>=0){
-					resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+req.getRequestURL());
-				}else{
-					resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+referer);
+			//支付宝异步通知，不需要登录
+			if(uri.indexOf("/notifyPayResult.do")>=0){
+				log.info("请求uri:{},无需登录权限！",uri);
+			}else{
+				log.info("请求uri:{},需要登录权限！",uri);
+				UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.USER_SESSION_KEY);
+				if(user==null){
+					String referer=req.getHeader("Referer");
+					if(referer==null||referer.indexOf("/login/")>=0){
+						resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+req.getRequestURL());
+					}else{
+						resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+referer);
+					}
+					return;
 				}
-				
-				return;
 			}
 		}else{
 			log.info("请求uri:{},无需登录权限！",uri);

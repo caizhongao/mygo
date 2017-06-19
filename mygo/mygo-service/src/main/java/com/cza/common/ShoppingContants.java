@@ -55,13 +55,26 @@ public interface ShoppingContants {
 	public static final Integer CATEGORY_ATTR_STATUS_DELETE=1;
 	
 	//service常量
-	public static final String RESP_MSG_SUC="success";
-	
-	public static final String RESP_MSG_FAIL="failed";
-	
+	//成功
 	public static final Integer RESP_CODE_SUCESS=0;
+	public static final String RESP_MSG_SUCESS="success";
+	//系统异常
+	public static final Integer RESP_CODE_SYSTEM_ERRO=999;
+	public static final String RESP_MSG_SYSTEM_ERRO="system erro!";
+	//入参不对
+	public static final Integer RESP_CODE_PARAM_ERRO=888;
+	public static final String RESP_MSG_PARAM_ERRO="param erro!";
+	//商品不存在
+	public static final Integer RESP_CODE_GOODS_NOT_EXIST=1000;
+	public static final String RESP_MSG_GOODS_NOT_EXIST="goods not exist!";
+	//sku不存在
+	public static final Integer RESP_CODE_SKU_NOT_EXIST=1001;
+	public static final String RESP_MSG_SKU_NOT_EXIST="sku not exist!";
 	
-	public static final Integer RESP_CODE_ERRO=1;
+	//order不存在
+	public static final Integer RESP_CODE_ORDER_NOT_EXIST=2000;
+	public static final String RESP_MSG_ORDER_NOT_EXIST="order not exist!";
+	
 	
 	public static final String FILE_UPLOAD_PREFIX="upload.file.path.prefix";
 	
@@ -73,10 +86,36 @@ public interface ShoppingContants {
 	
 	
 	//订单常量
-	public static final Integer ORDER_NOT_PAY=0;
-	public static final Integer ORDER_HAS_PAY=1;
+	public static final Integer ORDER_PAY_STATUS_NOT=0;
+	public static final Integer ORDER_PAY_STATUS_HAS=1;
 	
 	public static final Integer ORDER_STATUS_NORMAL=0;
 	public static final Integer ORDER_STATUS_DELETE=1;
+	
+	//alipay 常量
+	// 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
+	public static String ALIPAY_APP_ID = "alipay.appid";
+	
+	// 商户私钥，您的PKCS8格式RSA2私钥
+    public static String ALIPAY_PRIVATE_KEY = "alipay.private.key";
+	
+	// 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
+    public static String ALIPAY_PUBLIC_KEY = "alipay.public.key";
+
+	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+	public static String ALIPAY_NOTIFY_URL = "alipay.notify.url";
+
+	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+	public static String ALIPAY_RETURN_URL = "alipay.return.url";
+
+	// 签名方式
+	public static String ALIPAY_SIGN_TYPE = "alipay.sign.type";
+	
+	// 字符编码格式
+	public static String ALIPAY_CHARSET = "alipay.charset";
+	
+	// 支付宝网关
+	public static String ALIPAY_GATEWAY_URL = "alipay.gateway.url";
+	
 	
 }

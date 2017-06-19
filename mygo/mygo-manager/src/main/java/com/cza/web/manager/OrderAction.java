@@ -60,7 +60,7 @@ public class OrderAction extends CommonAction{
 	@RequestMapping("listNotPayOrder")
 	public String listNotPayOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
 		log.info("OrderAction.listNotPayOrder 请求参数,order:{}",order);
-		order.setPayStatus(ShoppingContants.ORDER_NOT_PAY);
+		order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_NOT);
 		ServiceResponse<List<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			request.setAttribute("orderList", resp.getData());
@@ -75,7 +75,7 @@ public class OrderAction extends CommonAction{
 	@RequestMapping("listPayOrder")
 	public String listPayOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
 		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
-		order.setPayStatus(ShoppingContants.ORDER_HAS_PAY);
+		order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_HAS);
 		ServiceResponse<List<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			request.setAttribute("orders", resp.getData());

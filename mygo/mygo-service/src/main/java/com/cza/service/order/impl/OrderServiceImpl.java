@@ -80,8 +80,8 @@ public class OrderServiceImpl implements OrderService{
 			if(row==0){//扣减库存失败
 				log.warn("扣减库存失败!");
 				resp.setData(null);
-				resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-				resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+				resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+				resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 				return resp;
 			}
 			TOrder saveOrder=new TOrder();
@@ -89,8 +89,8 @@ public class OrderServiceImpl implements OrderService{
 			if(addr==null){
 				log.warn("查询地址失败!");
 				resp.setData(null);
-				resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-				resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+				resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+				resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 				return resp;
 			}
 			saveOrder.setAddr(addr.getAddr());
@@ -115,12 +115,12 @@ public class OrderServiceImpl implements OrderService{
 			goods.setSales(goods.getSales()+orderVo.getNumber());
 			goodsMapper.updateGoods(goods);
 			resp.setData(orderVo);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("保存商品异常!",e);
 		}
 		return resp;
@@ -163,12 +163,12 @@ public class OrderServiceImpl implements OrderService{
 				}
 			}
 			resp.setData(voList);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("保存商品异常!",e);
 		}
 		return resp;
@@ -193,12 +193,12 @@ public class OrderServiceImpl implements OrderService{
 			BeanUtils.copyProperties(order, updateParam);
 			orderMapper.updateOrder(updateParam);
 			resp.setData(order);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("保存商品异常!",e);
 		}
 		return resp;
@@ -219,19 +219,21 @@ public class OrderServiceImpl implements OrderService{
 	public ServiceResponse<OrderVo> queryOrder(Long oid) {
 		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
 		try {
-			TOrder updateParam=new TOrder();
 			TOrder order=orderMapper.queryOrder(oid);
 			if(order!=null){
 				OrderVo vo=new OrderVo();
 				BeanUtils.copyProperties(order, vo);
 				resp.setData(vo);
+				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+			}else{
+				resp.setMsg(ShoppingContants.RESP_MSG_ORDER_NOT_EXIST);
+				resp.setCode(ShoppingContants.RESP_CODE_ORDER_NOT_EXIST);
 			}
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
-			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 			log.error("保存商品异常!",e);
 		}
 		return resp;

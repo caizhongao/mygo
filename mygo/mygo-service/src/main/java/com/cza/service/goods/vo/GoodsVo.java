@@ -32,6 +32,7 @@ public class GoodsVo {
 	private Long	createTime;
 	private Long	updateTime;
 	private Long sales;
+	private Long stock;
 	private String status;//上下架状态
 	private  List<SkuVo> skus;
 	
@@ -40,6 +41,32 @@ public class GoodsVo {
 	
 	
 	
+	
+	/**
+	* @return stock
+	*/
+	
+	public Long getStock() {
+		return stock;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param stock the stock to set
+	 */
+	
+	public void setStock(Long stock) {
+		this.stock = stock;
+	}
+
+
+
+
+
 	public Long getSales() {
 		return sales;
 	}

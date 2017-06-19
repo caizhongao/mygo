@@ -79,7 +79,7 @@ public class GoodsAction extends CommonAction{
 			request.setAttribute("attrs", initAttr(goodsVo));
 			return webPage("goods/goodsDetail");
 		}else{
-			return erro(request, resp.getMsg());
+			return erroPage(request, resp.getCode());
 		}
 	}
 	//key是attrName,value是attrValue的集合

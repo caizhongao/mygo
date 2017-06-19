@@ -63,12 +63,12 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 		attrParam.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
 		List<TCategoryAttr> attrs=attrMapper.listAttrs(attrParam);
 		resp.setData(attrs);
-		resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+		resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 		resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 	} catch (Exception e) {
 		resp.setData(null);
-		resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-		resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+		resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+		resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 		log.error("查询attr失败",e);
 	}
 	return resp;
@@ -104,13 +104,13 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 				}
 				resp.setData(voList);
 			}
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			log.error("CategoryServiceImpl listCategory erro:",e);
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 		}
 		return resp;
 	}
@@ -158,13 +158,13 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 				}
 			}
 			resp.setData(categoryVo);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			log.error("CategoryServiceImpl updateCategory erro:",e);
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 		}
 		return resp;
 	}
@@ -198,13 +198,13 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 				}
 			}
 			resp.setData(categoryVo);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			log.error("CategoryServiceImpl saveCategory erro:",e);
 			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 		}
 		return resp;
 	}
@@ -246,12 +246,12 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 				vo.setAttrList(attrVoList);
 				resp.setData(vo);
 			}
-			resp.setMsg(ShoppingContants.RESP_MSG_SUC);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
 			log.error("CategoryServiceImpl listCategory erro:",e);
-			resp.setMsg(ShoppingContants.RESP_MSG_FAIL);
-			resp.setCode(ShoppingContants.RESP_CODE_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 		}
 		return resp;
 	}

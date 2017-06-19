@@ -40,9 +40,36 @@ public class OrderVo {
 	
 	private String userName;
 	
+	private String payNo;
 	
 	
 	
+	
+	
+	
+	/**
+	* @return payNo
+	*/
+	
+	public String getPayNo() {
+		return payNo;
+	}
+
+
+
+
+	
+	/**
+	 * @param payNo the payNo to set
+	 */
+	
+	public void setPayNo(String payNo) {
+		this.payNo = payNo;
+	}
+
+
+
+
 	/**
 	* @return deleteDesc
 	*/

@@ -31,6 +31,13 @@ public class ServiceResponse<T> implements Serializable{
 	private Integer code;
 	private String msg;
 	
+	
+	public boolean isSuccess(){
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(code)){
+			return true;
+		}else return false;
+	}
+	
 	/**
 	* @return data
 	*/

@@ -109,40 +109,45 @@
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle" style="margin-top: 50px;">
 		<div style="width: 400px;margin-left:20%;height: 40px;">
-				<form name=alipayment action="${ctx}/alipay.trade.page.pay.jsp" method=post
-			target="_blank">
+			<c:if test="${payResult=='success'}">
 			<div id="body1" class="show" name="divcontent">
 				<dl class="content">
 					<dt>商户订单号 ：</dt>
 					<dd>
-						<input id="WIDout_trade_no" name="WIDout_trade_no" value="${order.oid}" />
-					</dd>
-					<hr class="one_line">
-					<dt>订单名称 ：</dt>
-					<dd>
-						<input id="WIDsubject" name="WIDsubject" value="mygo_test"/>
+						<input id="WIDout_trade_no" name="WIDout_trade_no" value="${oid}" readonly="readonly"/>
 					</dd>
 					<hr class="one_line">
 					<dt>付款金额 ：</dt>
 					<dd>
-						<input id="WIDtotal_amount" name="WIDtotal_amount" value="${order.amount}"/>
+						<input id="WIDtotal_amount" name="WIDtotal_amount" value="${amount}" readonly="readonly"/>
 					</dd>
 					<hr class="one_line">
-					<dt>商品描述：</dt>
+					<dt>支付流水 ：</dt>
 					<dd>
-						<input id="WIDbody" name="WIDbody" value="${order.goodsName}" />
+						<input id="WIDtotal_amount" name="WIDtotal_amount" value="${payNo}" readonly="readonly"/>
+					</dd>
+					<hr class="one_line">
+					<dt>付款结果：</dt>
+					<dd>
+						<input id="WIDbody" name="WIDbody" value="付款成功"  readonly="readonly"/>
 					</dd>
 					<hr class="one_line">
 					<dt></dt>
 					<dd id="btn-dd" style="margin-left: 80px;">
 						<span class="new-btn-login-sp">
-							<button class="new-btn-login" type="submit"
-								style="text-align: center;">付 款</button>
-						</span> <span class="note-help">如果您点击“付款”按钮，即表示您同意该次的执行操作。</span>
+							<button class="new-btn-login"
+								style="text-align: center;" onclick="location.href=/">返回首页</button>
+						</span> <span class="note-help"></span>
 					</dd>
 				</dl>
 			</div>
-		</form>
+			</c:if>
+			<c:if test="${payResult=='failed'}">
+				<div id="body1" class="show" name="divcontent" style="padding-top:20px;padding-left:50px;color: #666666;font-size: 16px;font-weight: bold;border: 1px solid #F6C8B5;height: 70px;width: 1000px;">
+					<div style="border-radius:20px;width: 40px;height: 40px;background-color: red;color: white;font-size: 30px;font-weight: bold;text-align: center;line-height: 40px;display: inline-block;">×</div>
+					付款失败，可登陆支付宝查看交易记录。
+				</div>
+			</c:if>
 		</div>
 	</div>
 </div>

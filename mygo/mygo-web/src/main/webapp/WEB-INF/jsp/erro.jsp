@@ -12,7 +12,7 @@
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle">
-		你好，系统发生错误，稍后再试!<div style="display: none">${erroMessage}</div>
+		你好，系统发生错误，稍后再试!<div style="display: none">错误码：${erroCode}</div>
 	</div>
 </div>
 	

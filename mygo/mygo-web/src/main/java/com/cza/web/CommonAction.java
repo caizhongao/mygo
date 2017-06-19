@@ -27,9 +27,9 @@ import com.cza.service.user.vo.UserVo;
     */
 
 public class CommonAction {
-	public String erro(HttpServletRequest request,String erroMessage){
-		request.setAttribute("erroMessage", erroMessage);
-		return "erro";
+	public String erroPage(HttpServletRequest request,int erroCode){
+		request.setAttribute("erroCode", erroCode);
+		return webPage("erro");
 	}
 	
 	public String getGoodsUploadPath(String fileName){
@@ -50,6 +50,7 @@ public class CommonAction {
 	public String webPage(String url){
 		return "/WEB-INF/jsp/"+url;
 	}
+	
 	
 	public String managerPage(String url){
 		return "/manager/page/"+url;

@@ -92,6 +92,11 @@
 			alert("购买数量必须大于0！");
 			return false;
 		}
+		var realStock=$('#realStock').html();
+		if(parseInt(number)>parseInt(realStock)){
+			alert("库存不足！");
+			return false;
+		}
 		location.href="${ctx}/login/order/toMakeOrderPage.do?number="+number+"&sid="+sid;
 	}
 	//根据已选的规格，更新其他规格的状态
@@ -171,7 +176,28 @@
 		}
 		//重新排列更新attr有效状态
 		Combination(0,[]);
+		updateRealStock();
 	}
+	
+	function updateRealStock(){
+		var sid=0;
+		if($('.attrTr').size()<=0){
+			sid=$('input[name="skuId"]').eq(0).val();
+		}else{
+			if(attrs.length<$('.attrTr').size()){
+				$('#realStock').html('${goods.stock}');
+				return;
+			}
+			sid=getSku(attrs);
+		}
+		if(sid==''){
+			$('#realStock').html('${goods.stock}');
+			return;
+		}
+		$('#realStock').html($('#skuStock'+sid).val());
+	}
+	
+	
 	
 	//根据选中的规格找到对应的sku
 	function getSku(attrs){
@@ -229,12 +255,13 @@
 		<c:forEach items="${goods.skus}" var="sku">
 			<div class="skuInfo">
 				<input type="hidden" name="skuId" value="${sku.sid}">
+				<input type="hidden" id="skuStock${sku.sid}" name="skuStock" value="${sku.stock}">
 				<c:forEach items="${sku.attrs}" var="attr">
 					<input type="hidden" name="attrValue_${attr.attrId}" value="${attr.attrValue}">
 				</c:forEach>
 			</div>
 		</c:forEach>
-		<table width="900px" height="401px" cellpadding="0" cellspacing="0">
+		<table width="900px" height="401px" cellpadding="0" cellspacing="0"  style="font-size: 14px;">
 			<tr>
 				<td rowspan="${fn:length(goods.skus)+4}">
 					<img src="${goods.goodsPic}" width="400px" alt="商品详情图">
@@ -272,7 +299,7 @@
 						<span onclick="opNumber('cut');" title="减1" class="optNumber" style="display: inline-block;width: 23px;">-</span>
 			            <input type="text" id="number" onblur="checkNumber()" name="number" value="1" maxlength="8" title="请输入购买量" style="width: 50px;height: 26px;border-top: none;border-bottom: none;text-align: center">
 			            <span onclick="opNumber('add');" title="加1" class="optNumber">+</span>
-			        </span>件
+			        </span>件&nbsp;(库存&nbsp;<span id="realStock" style="display: inline-block;color: #666666">${goods.stock}</span>&nbsp;件)
 				</td>
 			</tr>
 			<tr>
