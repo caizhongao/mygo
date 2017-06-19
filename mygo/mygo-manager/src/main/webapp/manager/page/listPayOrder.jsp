@@ -180,6 +180,9 @@ function tabWidth(tabarr) {
 			<th>
 				发货地址
 			</th>
+			<th>
+				支付流水号
+			</th>
 		</tr>
 		<c:forEach items="${orderList}" var="order">
 			<tr>
@@ -201,6 +204,9 @@ function tabWidth(tabarr) {
 				<td>
 					${order.province} ${order.city} ${order.area}<br>
 					${order.addr}
+				</td>
+				<td>
+					${order.payNo }
 				</td>
 			</tr>
 		</c:forEach>

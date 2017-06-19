@@ -78,8 +78,8 @@ public class OrderAction extends CommonAction{
 		order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_HAS);
 		ServiceResponse<List<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			request.setAttribute("orders", resp.getData());
-			log.info("OrderAction.listPayOrder success,orderNo:{}",order.getOid());
+			request.setAttribute("orderList", resp.getData());
+			log.info("OrderAction.listPayOrder success,orders:{}",resp.getData());
 			return managerPage("listPayOrder");
 		}else{
 			log.info("OrderAction.listNotPayOrder faild!");
