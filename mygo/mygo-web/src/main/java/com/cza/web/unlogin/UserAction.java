@@ -13,6 +13,7 @@ package com.cza.web.unlogin;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class UserAction extends CommonAction{
 	@RequestMapping("register")
 	public String register(@ModelAttribute UserVo user,HttpServletRequest request,HttpServletResponse response){
 		log.info("UserAction.register 参数:{}",user);
-		List<String> erroList=UserInfoValidate.checkRegisterParam(user);
+		Map<String,String> erroList=UserInfoValidate.checkRegisterParam(user);
 		if(erroList.isEmpty()){
 			ServiceResponse<UserVo> resp=userService.saveUser(user);
 			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){//成功，返回到主頁
@@ -96,7 +97,7 @@ public class UserAction extends CommonAction{
 	public String login(@ModelAttribute UserVo user,HttpServletRequest request,HttpServletResponse response){
 		log.info("login param is:{}",user);
 		//校验登录请求参数
-		List<String> erroList=UserInfoValidate.checkLoginParam(user,request);
+		Map<String,String> erroList=UserInfoValidate.checkLoginParam(user,request);
 		if(erroList.isEmpty()){
 			UserVo listUserParam=new UserVo();
 			listUserParam.setUserName(user.getUserName());
@@ -128,10 +129,10 @@ public class UserAction extends CommonAction{
 						}
 						return webAction("/unlogin/home/index.do");
 					}else{
-						erroList.add("登录密码错误");
+						erroList.put("password","登录密码错误");
 					}
 				}else{
-					erroList.add("登录名不存在");
+					erroList.put("userName","登录名不存在");
 				}
 			}
 		}

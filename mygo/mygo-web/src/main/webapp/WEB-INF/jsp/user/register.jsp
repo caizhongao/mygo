@@ -17,9 +17,9 @@
 		isOk=checkRealName()&&isOk;
 		isOk=checkAge()&&isOk;
 		isOk=checkSex()&&isOk;
-		if(isOk){ 
+		if(isOk){
 			$('#registerForm').submit();
- 		} 
+ 		}
 	}
 	
 	function checkSex(){
@@ -31,11 +31,10 @@
 			erroMsg+=".请选择性别";
 			isOk=false;
 		}
-		sexObj.parent().next().next().html(erroMsg);
 		if(isOk){
-			sexObj.parent().next().css("display",'table-cell');
+			showErroInfo(sexObj,erroMsg,0);
 		}else{
-			sexObj.parent().next().css("display",'none');
+			showErroInfo(sexObj,erroMsg,1);
 		}
 		return isOk;
 	}
@@ -53,11 +52,10 @@
 				isOk=false;
 			}
 		}
-		passwordObj.parent().next().next().html(erroMsg);
 		if(isOk){
-			passwordObj.parent().next().css("display",'table-cell');
+			showErroInfo(passwordObj,erroMsg,0);
 		}else{
-			passwordObj.parent().next().css("display",'none');
+			showErroInfo(passwordObj,erroMsg,1);
 		}
 		return isOk;
 	}
@@ -84,11 +82,10 @@
 				isOk=false;
 			}
 		}
-		ageObj.parent().next().next().html(erroMsg);
 		if(isOk){
-			ageObj.parent().next().css("display",'table-cell');
+			showErroInfo(ageObj,erroMsg,0);
 		}else{
-			ageObj.parent().next().css("display",'none');
+			showErroInfo(ageObj,erroMsg,1);
 		}
 		return isOk;
 	}
@@ -105,11 +102,10 @@
 				isOk=false;
 			}
 		}
-		realNameObj.parent().next().next().html(erroMsg);
 		if(isOk){
-			realNameObj.parent().next().css("display",'table-cell');
+			showErroInfo(realNameObj,erroMsg,0);
 		}else{
-			realNameObj.parent().next().css("display",'none');
+			showErroInfo(realNameObj,erroMsg,1);
 		}
 		return isOk;
 	}
@@ -134,11 +130,10 @@
 				isOk=false;
 			}
 		}
-		userNameObj.parent().next().next().html(erroMsg);
 		if(isOk){
-			userNameObj.parent().next().css("display",'table-cell');
+			showErroInfo(userNameObj,erroMsg,0);
 		}else{
-			userNameObj.parent().next().css("display",'none');
+			showErroInfo(userNameObj,erroMsg,1);
 		}
 		return isOk;
 	}
@@ -150,8 +145,7 @@
 				data:{'userName':$("input[name='userName']").val()},
 				success:function(data){
 					if(data==1){
-						$("input[name='userName']").parent().next().css("display",'none');
-						$("input[name='userName']").parent().next().next().html("登录名已存在!");
+						showErroInfo($("input[name='userName']"), "登录名已存在!",1)
 						isExist=true;
 					}else{
 						isExist=false;
@@ -160,10 +154,37 @@
 			});
 		}
 	}
+	function showErroInfo(obj,msg,flag){
+		if(flag==0){
+			obj.parent().next().html("&nbsp;✔");
+			obj.css("border","1px solid #b2b2b2");
+			obj.parent().next().removeClass("erroClass");
+			obj.parent().next().addClass("rightClass");
+		}else{
+			obj.parent().next().html(msg);
+			obj.css("border","1px solid #f20266");
+			obj.parent().next().removeClass("rightClass");
+			obj.parent().next().addClass("erroClass");
+		}
+		
+	}
 </script>
 <style type="text/css">
 	#mytable{
 		font-size: 14px;
+		color: #666;
+	}
+	#mytable input{
+		border: 1px solid #b2b2b2;
+		width: 250px;
+		height: 30px;
+	}
+	.rightClass{
+		color: #92D412;font-size: 22px;
+		font-weight: bold;
+	}
+	.erroClass{
+		color: red;font-size: 13px;
 	}
 </style>
 </head>
@@ -172,62 +193,95 @@
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle">
 		<form action="${ctx}/unlogin/user/register.do" method="post" id="registerForm" enctype="application/x-www-form-urlencoded">
-			<table width="700" align="center" id="mytable">
+			<table width="1000" align="center" id="mytable">
 				<tr>
-					<td colspan="2" align="right" style="font-weight: bold;font-size: 20px">注册中心</td>
-					<td colspan="2"></td>
-				</tr>
-				<tr>
-					<td>
-						&nbsp;
-					</td>
-					<td align="center">
-						<div id="erroMsg" style="text-align: left;width: 140px;margin: 0px auto;color: red;font-size: 13px;">
-							<c:forEach items="${erroList}" var="erroStr">
-								<br>.${erroStr}
-							</c:forEach>
-						</div>
-					</td>
-					<td colspan="2">
-						&nbsp;
-					</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td align="center" style="font-weight: bold;font-size: 20px">注册中心</td>
+					<td style="width: 300px"></td>
 				</tr>
 				<tr height="50px;" valign="middle">
+					<td rowspan="6">
+						<img alt="" src="${ctx}/img/login/login-bj-ad.png">
+					</td>
 					<td width="70px" align="left">登录名:</td>
 					<td style="width:180px"><input name="userName" type="text" value="${user.userName}" onblur="checkExist()"></td>
-					<td style="color: #666666">登录名由20个以内的英文字符和数字组成</td>
-					<td style="color: red">&nbsp;</td>
+					<c:if test="${erroList.userName==null}">
+						<td title="登录名由20个以内的英文字符和数字组成">
+							登录名由20个以内的英文字符和数字组成
+						</td>
+					</c:if>
+					<c:if test="${erroList.userName!=null}">
+						<td title="登录名由20个以内的英文字符和数字组成" class="erroClass">
+							${erroList.userName}
+						</td>
+					</c:if>
 				</tr>
 				<tr height="50px;" valign="middle">
 					<td>密码:</td>
-					<td><input name="password" type="text" value="${user.password}" ></td>
-					<td style="color: #666666">请输入6~20位之间的密码</td>
-					<td style="color: red"></td>
+					<td><input name="password" type="text" value="${user.password}" onblur="checkPassword()"></td>
+					<c:if test="${erroList.password==null}">
+						<td title="请输入6~20位之间的密码">
+							请输入6~20位之间的密码
+						</td>
+					</c:if>
+					<c:if test="${erroList.password!=null}">
+						<td title="请输入6~20位之间的密码" class="erroClass">
+							${erroList.password}
+						</td>
+					</c:if>
 				</tr>
 				<tr height="50px;" valign="middle">
 					<td width="70px">真实姓名:</td>
-					<td><input name="realName" type="text" value="${user.realName}"></td>
-					<td style="color: #666666">真实姓名由20个以内的字符组成</td>
-					<td style="color: red"></td>
+					<td><input name="realName" type="text" value="${user.realName}" onblur="checkRealName()"></td>
+					<c:if test="${erroList.realName==null}">
+						<td title="真实姓名由20个以内的字符组成">
+							真实姓名由20个以内的字符组成
+						</td>
+					</c:if>
+					<c:if test="${erroList.realName!=null}">
+						<td title="真实姓名由20个以内的字符组成" class="erroClass">
+							${erroList.realName}
+						</td>
+					</c:if>
 				</tr>
 				<tr height="50px;" valign="middle">
 					<td>年龄:</td>
-					<td><input name="age" type="text" value="${user.age }" ></td>
-					<td style="color: #666666">请填写0-200之间的年龄</td>
-					<td style="color: red"></td>
+					<td><input name="age" type="text" value="${user.age }" onblur="checkAge()"></td>
+					<c:if test="${erroList.age==null}">
+						<td title="请填写0-200之间的年龄">
+							请填写0-200之间的年龄
+						</td>
+					</c:if>
+					<c:if test="${erroList.age!=null}">
+						<td title="请填写0-200之间的年龄" class="erroClass">
+							${erroList.age}
+						</td>
+					</c:if>
 				</tr>
 				<tr height="50px;" valign="middle">
 					<td>性别:</td>
-					<td>
-						男：<input type="radio" name="sex" value="M" <c:if test='user.sex=="M"'>checked="checked"</c:if>>
-	 				            女：<input type="radio" name="sex" value="F" <c:if test='user.sex=="F"'>checked="checked"</c:if>>
+					<td valign="middle">
+						男：<input type="radio" style="width: 15px;height: 15px;" onClick="checkSex()" name="sex" value="M" <c:if test='user.sex=="M"'>checked="checked"</c:if>>
+	 				            女：<input type="radio" style="width: 15px;height: 15px;" onClick="checkSex()" name="sex" value="F" <c:if test='user.sex=="F"'>checked="checked"</c:if>>
 					</td>
-					<td></td>
-					<td style="color: red"></td>
+					<c:if test="${erroList.sex==null}">
+						<td title="请选择性别">
+							请选择性别
+						</td>
+					</c:if>
+					<c:if test="${erroList.sex!=null}">
+						<td title="请选择性别" class="erroClass">
+							${erroList.sex}
+						</td>
+					</c:if>
 				</tr>
 				<tr height="30px;" valign="middle">
-					<td colspan="2" align="right"><input type="button" value="提交" onclick="submitForm()" class="submitBtn"></td>
-					<td colspan="2" align="right"></td>
+					<td></td>
+					<td>
+						<input type="button" value="立即注册" onclick="submitForm()" style="width: 250;height: auto" class="register_button">
+					</td>
+					<td></td>
 				</tr>		
 			</table>
 		</form>

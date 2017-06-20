@@ -251,7 +251,7 @@
 <body class="_body">
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
-	<div class="page_middle">
+	<div class="page_middle" style="margin-top: 30px">
 		<table width="80%"  cellpadding="0" cellspacing="0" align="center">
 			<tr style="background-color: #02AAF1;height: 30px;color: white;">
 				<td width="40px" style="border-left: 1px solid white">&nbsp;</td>
