@@ -13,19 +13,6 @@
 	#mytable{
 		font-size: 14px;
 	}
-	.category{
-		text-align: center;
-		font-weight: bold;
-	}
-	.category:hover{
-		background-color: #E92250;
-		cursor: pointer;
-	}
-	.active{
-		background-color: #E92250;
-		cursor: pointer;
-	}
-	
 	.title_flag{
 		display:inline-block;height: 20px;width: 40px;background-color: #EE2457;color: white;text-align:center;line-height: 20px;font-weight: bold;font-size: 13px;
 	}
@@ -54,19 +41,7 @@
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle" style="margin-top: 50px;">
-		<table width="80%"  cellpadding="0" cellspacing="0" align="center">
-			<tr style="background-color: #3385FF;height: 30px;color: white;">
-				<td width="40px" style="border-left: 1px solid white">&nbsp;</td>
-				<td width="70px" class="category" onclick="toIndex()">首页</td>
-				<c:forEach items="${categoryList}" var="category">
-					<td width="20px">&nbsp;</td>
-					<td width="70px" class="category <c:if test="${cid==category.cid}">active</c:if>" onclick="gotoPage(${category.cid})">
-						${category.cname}
-					</td>
-				</c:forEach>
-				<td>&nbsp;</td>
-			</tr>		
-		</table>
+		<%@ include file="/common/category.jsp" %>
 		<table id="newGoods"  width="80%"  cellpadding="0" cellspacing="0" align="center" style="margin-top: 10px">
 			<tr>
 				<td colspan="4" height="30px">
@@ -109,6 +84,7 @@
 		</table>
 		<br>
 	</div>
+	<%@ include file="/common/bottom.jsp" %>
 </div>
 </body> 
 </html>

@@ -150,6 +150,7 @@
 			</c:if>
 		</div>
 	</div>
+	<%@ include file="/common/bottom.jsp" %>
 </div>
 </body> 
 </html>

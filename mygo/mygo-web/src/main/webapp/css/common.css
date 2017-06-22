@@ -2,16 +2,21 @@
 	margin-top: 0px;
 	margin-left: 0px;
 	margin-right: 0px;
+	margin-bottom: 0px;
 }
 
 .page_body{
 	width: 100%;
 	margin:0 auto;
+	min-height:100%;
+	padding:0;
+	position:relative;
 }
 
 .page_middle{
 	width:100%;
 	margin-top: 50px;
+	padding-bottom:80px
 }
 
 .register_button{
@@ -25,7 +30,9 @@
 	color: white;
 	border: 1px solid #21B1E3
 }
-
+.register_button,.login_button:HOVER {
+	cursor: pointer;
+}
 .login_button{
 	padding:10 60 10 60;
 	font-size:16px;

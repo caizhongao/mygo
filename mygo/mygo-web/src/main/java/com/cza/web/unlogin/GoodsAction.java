@@ -91,6 +91,7 @@ public class GoodsAction extends CommonAction{
 			GoodsVo goodsVo=goodsResp.getData();
 			request.setAttribute("goods", goodsVo);
 			request.setAttribute("attrs", initAttr(goodsVo));
+			request.setAttribute("cid", goodsVo.getCid());
 			return webPage("goods/goodsDetail");
 		}else{
 			return erroPage(request, goodsResp.getCode());

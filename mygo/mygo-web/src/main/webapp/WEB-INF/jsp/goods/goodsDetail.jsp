@@ -13,14 +13,6 @@
 	#mytable{
 		font-size: 14px;
 	}
-	.category{
-		text-align: center;
-		font-weight: bold;
-	}
-	.category:hover{
-		background-color: #E92250;
-		cursor: pointer;
-	}
 	.title_flag{
 		display:inline-block;height: 20px;width: 40px;background-color: #EE2457;color: white;text-align:center;line-height: 20px;font-weight: bold;font-size: 13px;
 	}
@@ -252,20 +244,8 @@
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle" style="margin-top: 30px">
-		<table width="80%"  cellpadding="0" cellspacing="0" align="center">
-			<tr style="background-color: #02AAF1;height: 30px;color: white;">
-				<td width="40px" style="border-left: 1px solid white">&nbsp;</td>
-				<td width="70px" class="category active">首页</td>
-				<c:forEach items="${categoryList}" var="category">
-					<td width="20px">&nbsp;</td>
-					<td width="70px" class="category" onclick="gotoPage(${category.cid})">
-						${category.cname}
-					</td>
-				</c:forEach>
-				<td>&nbsp;</td>
-			</tr>		
-		</table>
-		<div style="width: 80%;height: 400px;margin: 0px auto">
+		<%@ include file="/common/category.jsp" %>
+		<div style="width: 70%;margin: 0px auto">
 			<c:forEach items="${goods.skus}" var="sku">
 				<div class="skuInfo">
 					<input type="hidden" name="skuId" value="${sku.sid}">
@@ -275,9 +255,9 @@
 					</c:forEach>
 				</div>
 			</c:forEach>
-			<table width="900px" cellpadding="0" cellspacing="0"  style="font-size: 14px;margin-top: 20px;height: 401px">
+			<table width="1100px" cellpadding="0" cellspacing="0"  style="font-size: 14px;margin-top: 20px;height: 401px">
 				<tr>
-					<td rowspan="${fn:length(goods.skus[0].attrs)+5}">
+					<td rowspan="${fn:length(goods.skus[0].attrs)+5}" width="500px">
 						<img src="${goods.goodsPic}" width="400px" alt="商品详情图">
 					</td>
 					<td style="font-weight: bold;font-size: 14px;color: #666666;">
@@ -318,16 +298,16 @@
 				</tr>
 				<tr>
 					<td>
-						<a href="javascript:void(0)"  onclick="butNow()" class="manager_button" style="font-size: 13px;text-decoration: none">立即购买</a>
+						<input type="button" onclick="butNow()" class="login_button" value="立即购买">
 					</td>
 				</tr>
 			</table>
-			<div style="border: 1px solid #cccccc;width: 900px;height: 400px;margin-top: 20px;">
-				商品详情描述信息。。。。
+			<div style="border: 1px solid #cccccc;width: 1000px;height:auto;margin-top: 20px;" class="mall_item_info">
+				<%@ include file="/common/goods-desc.jsp" %>
 			</div>
 		</div>
-		
 	</div>
+	<%@ include file="/common/bottom.jsp" %>
 </div>
 </body> 
 </html>

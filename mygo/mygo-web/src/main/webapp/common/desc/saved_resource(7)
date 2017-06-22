@@ -1,0 +1,860 @@
+(function($){
+    $.fn.slowShow = function(ele,time){
+        time = time == undefined?100:time;
+        var timer=null;
+        clearInterval(timer);
+        this.hover(function(){
+                clearTimeout(timer);
+                timer=setTimeout(function(){
+                    ele.show();
+                },time);
+            },
+            function(){
+                clearTimeout(timer);
+                timer=setTimeout(function(){
+                    ele.hide();
+                },time);
+            }
+        )
+    }
+
+
+
+})(jQuery);
+
+$(document).ready(function () {
+
+	//右侧导航定位
+	var nav_show = function () {
+		var _height = $(window).height();
+		var ul_height = 0;
+		$("#J_sidebar .side-oper").each(function (i) {
+			ul_height += $(this).height();
+
+		})
+		var con_height = _height - 120;
+		if (ul_height > con_height) {
+			var _top = -(ul_height - con_height) + 120;
+			if (_top < 0) {
+				$("#J_sidebar .side-oper").eq(0).css("top", "0px");
+			} else {
+				$("#J_sidebar .side-oper").eq(0).css("top", _top + 'px');
+			}
+		}
+	}
+	nav_show();
+});
+(function ($) {
+	$("img.lazy").lazyload({
+		threshold: 200,
+		failure_limit: 30
+	});
+	/**
+	 * 服饰折扣推荐显示
+	 */
+	if ($('html.w1200').size() > 0) {
+		$('.brand-show .brand-logo').show();
+	} else {
+		if ($('.baby-brand-show').size() > 0) {
+			strlength = $('.baby-brand-show .brand-window li').length;
+			for (i = strlength - 1; i <= strlength; i++) {
+				$('.baby-brand-show .brand-window li')[i].remove();
+			}
+		}
+		$('.brand-show .brand-logo').hide();
+	}
+
+	/**
+	 * 搜索
+	 * @author xueli@juanpi.com
+	 * @date   2014-12-05
+	 * @return {[type]}   [description]
+	 */
+	searchFun = function () {
+		var $search_txt = $("#keywords");
+		$search_txt.on('focusin', function () {
+			if ($(this).val() == "请输入想找的宝贝") {
+				$(this).val("");
+			} else {
+				$(this).css({
+					color: '#646464'
+				});
+			}
+		}).on('focusout', function () {
+			if ($(this).val() == "") {
+				$(this).val("请输入想找的宝贝");
+				$(this).css({
+					color: '#C6C6C6'
+				});
+			}
+		}).on('focus', function () {
+			if ($(this).val() == "请输入想找的宝贝") {
+				$(this).val("");
+				$(this).css({
+					color: '#666'
+				});
+			} else {
+				$(this).css({
+					color: '#646464'
+				});
+			}
+		});
+
+		$(".search .smt").on('click', function () {
+			if ($search_txt.val() == "请输入想找的宝贝" || $search_txt.val() == "") {
+				return false;
+			}
+			var s_url = $("#search_action").val() + '?keywords=' + $search_txt.val();
+			window.location.href = s_url;
+		});
+		$search_txt.on('keydown', function (event) {
+			if (event.keyCode == 13) {
+				var s_url = $("#search_action").val() + '?keywords=' + $search_txt.val();
+				window.location.href = s_url;
+			}
+		});
+	}
+	searchFun();
+	var signNum,remainderDay,signed=false;
+	/**
+	 * 用户数据初始化
+	 * @author xueli@juanpi.com
+	 * @date   2014-12-05
+	 * @return {[type]}   [description]
+	 */
+	statusInit = function () {
+		$(".state-show .normal-side-box").remove();
+		//导航签到
+		if (XDPROFILE.uid == '') {
+			//未登录
+			$(".state-show").append('<div class="normal-side-box"><div class="box-tips"><p class="text"><a target="_blank" href="' + __NEW_URL_JUANPI__ + '/jifen/task">赚积分攻略</a></p><p class="other"> <a target="_blank" href="'+__HTTPS_MEMBER__+'/beans">我的积分</a>&#12288;｜&#12288;<a target="_blank" href="'+__NEW_URL_JUANPI__+'/jifen">积分商城</a><br><a target="_blank" href="'+__NEW_URL_JUANPI__+'/jifen/sns">新手任务，轻松起步！</a><br>QQ特享群：<b>390623218</b> </p></div></div>');
+		} else {
+			var signData = XDTOOL.getCookie('sign_' + __XD_USER__.uid);
+			if (signData != undefined && signData && $.trim(signData) != '') {
+				var json = decodeURIComponent(signData);
+				json = $.parseJSON(json);
+				if (json.code == 1001) {
+					signed=true;
+					$(".state-show .normal-a:last .text").html('已签到').css("color", "#ff464e");
+					$(".state-show .normal-a:last .icon-normal").removeClass().addClass('icon-normal icon-sign');
+					$(".state-show").append('<div class="normal-side-box"><div class="box-tips"><p class="text">您已连续签到' + json.data.day + '天：<b>+' + json.data.dou + '</b> 积分<br><a href="'+__NEW_URL_JUANPI__+'/jifen/task" target="_blank">赚积分攻略</a></p><p class="other"> <a href="'+__HTTPS_MEMBER__+'/beans" target="_blank">我的积分</a>&#12288;｜&#12288;<a href="'+__NEW_URL_JUANPI__+'/jifen" target="_blank">积分商城</a><br><a href="'+__NEW_URL_JUANPI__+'/jifen/sns" target="_blank">新手任务，轻松起步！</a><br>QQ特享群：<b>390623218</b> </p></div></div>');
+				} else {
+					$(".state-show").append('<div class="normal-side-box"><div class="box-tips"><p class="text"><a target="_blank" href="' + __NEW_URL_JUANPI__ + '/jifen/task">赚积分攻略</a></p><p class="other"> <a target="_blank" href="'+__HTTPS_MEMBER__+'/beans">我的积分</a>&#12288;｜&#12288;<a target="_blank" href="'+__NEW_URL_JUANPI__+'/jifen">积分商城</a><br><a target="_blank" href="'+__NEW_URL_JUANPI__+'/jifen/sns">新手任务，轻松起步！</a><br>QQ特享群：<b>390623218</b> </p></div></div>');
+				}
+			} else {
+				$.getJSON(__HTTPS_MEMBER__ + "/public/pointLoadJson?uid=" + __XD_USER__.uid + "&callback=?", function (json) {
+					if (json.code == 1001) {
+						signed=true;
+						$(".state-show .normal-a:last .text").html('已签到').css("color", "#ff464e");
+						$(".state-show .normal-a:last .icon-normal").removeClass().addClass('icon-normal icon-sign');
+						$(".state-show").append('<div class="normal-side-box"><div class="box-tips"><p class="text">您已连续签到' + json.data.day + '天：<b>+' + json.data.dou + '</b> 积分<br><a href="'+__NEW_URL_JUANPI__+'/jifen/task" target="_blank">赚积分攻略</a></p><p class="other"> <a href="'+__HTTPS_MEMBER__+'/beans" target="_blank">我的积分</a>&#12288;｜&#12288;<a href="'+__NEW_URL_JUANPI__+'/jifen" target="_blank">积分商城</a><br><a href="'+__NEW_URL_JUANPI__+'/jifen/sns" target="_blank">新手任务，轻松起步！</a><br>QQ特享群：<b>390623218</b> </p></div></div>');
+					} else {
+						$(".state-show").append('<div class="normal-side-box"><div class="box-tips"><p class="text"><a target="_blank" href="' + __NEW_URL_JUANPI__ + '/jifen/task">赚积分攻略</a></p><p class="other"> <a target="_blank" href="'+__HTTPS_MEMBER__+'/beans">我的积分</a>&#12288;｜&#12288;<a target="_blank" href="'+__NEW_URL_JUANPI__+'/jifen">积分商城</a><br><a target="_blank" href="'+__NEW_URL_JUANPI__+'/jifen/sns">新手任务，轻松起步！</a><br>QQ特享群：<b>390623218</b> </p></div></div>');
+					}
+				});
+			}
+		}
+		$(".state-show .dosign,.state-show .normal-side-box").slowShow($(".state-show .normal-side-box"));
+	}
+	statusInit();
+	
+	
+	var tpl = '<div class="app-show fl">' + '<a class="pic" href="' + __NEW_URL_JUANPI__ + '/apps" ></a><p><a  href="' + __NEW_URL_JUANPI__ + '/apps" >下载或登录手机端<br>再得一次签到机会</p></a>' + '</div>' + '<div class="sign-show fl">' + '<div class="top_tips">' + '<p class="result">签到成功，获得 <em class="red_1">{DOU}</em> 积分</p>' + '<p class="sum">您已连续签到{NUM}天，再继续签到 {remainderDay} 天，可额外获得 <em class="red_1">{tDou}</em> 积分</p>' + '</div>' + '<div class="btn"><a class="sub" href="' + __NEW_URL_JUANPI__ + '/jifen/gift">花积分</a></div>' + '</div>';
+	var checkedTpl = '<div class="app-show fl">' + '<a class="pic" href="' + __NEW_URL_JUANPI__ + '/apps" ></a><p><a  href="' + __NEW_URL_JUANPI__ + '/apps" >下载或登录手机端<br>再得一次签到机会</p></a>' + '</div>' + '<div class="sign-show fl">' + '<div class="top_tips">' + '<p class="result">您今天已经签到过了</p>' + '<p class="sum">再继续签到 {remainderDay} 天，可额外获得 <em class="red_1">{tDou}</em> 积分</p>' + '</div>' + '<div class="btn"><a class="sub" href="' + __NEW_URL_JUANPI__ + '/jifen/gift">花积分</a></div>' + '</div>';
+	var failTpl = '<div class="app-show fl">' + '<a class="pic" href="' + __NEW_URL_JUANPI__ + '/apps" ></a><p><a  href="' + __NEW_URL_JUANPI__ + '/apps" >下载或登录手机端<br>再得一次签到机会</p></a>' + '</div>' + '<div class="sign-show fl">' + '<div class="top_tips">' + '<p class="result">签到失败！</p>' + '</div>' + '<div class="btn"><a class="sub" href="' + __NEW_URL_JUANPI__ + '/jifen/gift">花积分</a></div>' + '</div>';
+	var closeTpl = '<div class="app-show fl">' + '<a class="pic" href="' + __NEW_URL_JUANPI__ + '/apps" ></a><p><a  href="' + __NEW_URL_JUANPI__ + '/apps" >下载或登录手机端<br>再得一次签到机会</p></a>' + '</div>' + '<div class="sign-show fl">' + '<div class="top_tips">' + '<p class="result">系统繁忙，请稍后再试！</p>' + '</div>' + '</div>';
+	var failCookie = '<div class="app-show fl">' + '<a class="pic" href="' + __NEW_URL_JUANPI__ + '/apps" ></a><p><a  href="' + __NEW_URL_JUANPI__ + '/apps" >下载或登录手机端<br>再得一次签到机会</p></a>' + '</div>' + '<div class="sign-show fl">' + '<div class="top_tips">' + '<p class="result">您今天已经签到啦，每台电脑每天仅限使用一个账号进行签到喔。</p>' + '</div>' + '<div class="btn"><a class="sub" href="' + __NEW_URL_JUANPI__ + '/jifen/gift">花积分</a></div>' + '</div>';
+
+	function closeAlert() {
+			$(".alert_bg").remove();
+			$(".alert_fullbg").remove();
+		}
+		//获取焦点就去除错误提示
+	$("[name='mjcode']").live('focus', function () {
+		$("#mj_warn_1,#mj_warn_2").css("display", "none");
+	});
+
+	//取消按钮事件,关闭验证码弹窗
+	$("#mjclear,.alert_close,#majia-cancel").live("click", function () {
+		var that = this;
+		$(".phone-verify").attr("disabled", false);
+		$(".phone-verify").val("获取验证码");
+		if ($(that).attr("class") != "alert_close") {
+			$(".alert_close").click();
+		}
+	});
+
+	//确认提交验证码
+	$("#mjconfirm").live('click', function () {
+		var btn = $(this);
+		//验证是否登录
+		if (XDPROFILE.uid == "") return XD.user_handsome_login_init(),
+			XD.user_handsome_login(),
+			false;
+		
+		var code = $("[name='mjcode']");
+		if (code.val() == "") {
+			btn.data('lock', 0);
+			$("#mj_warn_2").css("display", "none");
+			$("#mj_warn_1").css("display", "block");
+			return false;
+		} else {
+			var opt = $('#opt').val();
+			$.getJSON(__HTTPS_MEMBER__ + "/public/doSign?uid=" + XDPROFILE.uid + "&code=" + code.val() + "&opt=" + opt + "&callback=?", function (d) {
+				//关闭弹出框
+				closeAlert();
+				$(".alert_close").live('click', function () {
+					$('#alert_sign').hide();
+				});
+
+				//马甲验证
+				if (d.code == 1100) {
+					closeAlert();
+					alert_robot();
+					btn.data('lock', 0);
+					return;
+				} else if ((d.code == 1008 || d.code == 5052) && opt == '128') {
+					majiaVerifyAlert();
+				} else if ((d.code == 1005) && ((d.msg == "error"))) {
+					closeAlert();
+					return XD.user_handsome_login_init(),
+						XD.user_handsome_login(),
+						false;
+				} else if ((d.code == 1001) && ((d.msg == "succuss"))) {
+					signNum=d.lastNum;
+					if(signNum<7){
+						remainderDay=7-signNum;
+					}else if(signNum==7 || signNum%7==0){
+						remainderDay=7;
+					}else if(signNum%7!=0 && signNum!=undefined){
+						remainderDay=7-signNum%7;
+					}
+					var box_tpl = tpl.replace(/{DOU}/, d.Dou).replace(/{tDou}/, 10).replace(/{NUM}/, d.lastNum).replace(/{remainderDay}/, remainderDay)
+				} else if ((d.code == 1004) && (d.msg == "succuss")) {
+					var box_tpl = checkedTpl.replace(/{tDou}/g, 10);
+				} else if ((d.code == 1102) && (d.msg == "error")) {
+					var box_tpl = failCookie;
+				} else if ((d.code == 1103) && (d.msg == "error")) {
+					closeAlert();
+					btn.data('lock', 0);
+					showMjVerfiyAlert();
+					return;
+				} else if ((d.code == 1105) && (d.msg == "error")) {
+					btn.data('lock', 0);
+					$(".codeimg").click(); //强制刷新验证码
+					$("#mj_warn_2").find(".tips_txt").html('验证码错误');
+					$("#mj_verfiy").click();
+					$("#mj_warn_1").css("display", "none");
+					$("#mj_warn_2").css("display", "block");
+					return;
+				} else if ((d.code == 2000) && (d.msg == "close")) {
+					var box_tpl = closeTpl;
+				} else {
+					var box_tpl = failTpl;
+				}
+				var box = new XDLightBox({
+					title: '每日签到送积分',
+					lightBoxId: 'alert_sign',
+					contentHtml: box_tpl,
+					scroll: true
+				});
+				if(signed){
+					return
+				}else{
+					box.init();
+				}
+				btn.data('lock', 0);
+				statusInit();
+			});
+		}
+	});
+	/**
+	 * 弹出验证码框
+	 *
+	 */
+	var showMjVerfiyAlert = function () {
+		var htmlMsg = '<div class="sign-show clear">' + '<ul><li class="clear">' + '<input type="text" name="mjcode" class="check-code mr10 fl" />' + '<a href="javascript:;" id="mj_verfiy" class="fl"><img src="'+__HTTPS_MEMBER__+'/public/zcverify" class="codeimg" onclick="this.src=\''+__HTTPS_MEMBER__+'/public/zcverify?\'+(new Date()).getTime()"/></a><input type="hidden" name="opt" id="opt" value=""/>' + '<p class="link-tips link-tips05 mt10" id="mj_warn_1" style="display:none;">' + '<span class="title_cur"></span>' + '<span class="tips_ico"><i></i></span>' + '<span class="tips_txt">请输入图片验证码</span>' + '</p>' + '<p class="link-tips link-tips05 mt10 " id="mj_warn_2" style="display:none;">' + '<span class="title_cur"></span>' + '<span class="tips_ico"><i></i></span>' + '<span class="tips_txt">验证码错误</span>' + '</p>' + '</li>' + ' <li>' + '<div class="btn mt20 clear"><a class="sub mr15 fl" id="mjconfirm" href="javascript:;">确认</a> <a id="mjclear" class="sub sub01 fl" href="javascript:;">取消</a></div>' + '</li></ul></div>'
+
+		var c = new XDLightBox({
+			title: "请输入图片验证码",
+			lightBoxId: "alert_check_code",
+			contentHtml: htmlMsg,
+			scroll: false,
+			isBgClickClose: false
+		});
+		c.init();
+	}
+	/**
+	 * 马甲验证 
+	 **/
+	var majiaVerifyAlert = function(){
+	    var htmlMsg = '<div class="sign-show clear">'
+	            +'<ul><li class="clear">'
+	            +'<p class="alert_tips_info">服务器繁忙，请稍候重试</p>'
+	            +'</li>'
+	            +' <li>'
+	            +'<div class="btn mt20 clear"><a class="sub mr15 fl" id="majia-cancel" href="javascript:;">知道了</a> <a id="mjclear" class="sub sub01 fl" href="javascript:;">取消</a></div>'
+	            +'</li></ul></div>';
+	    var c = new XDLightBox({
+	        title: "提示",
+	        lightBoxId: "majia_code_tips",
+	        contentHtml: htmlMsg,
+	        scroll: false,
+	        isBgClickClose: false
+	    });
+	    c.init();
+	}
+	var majiaGoAlert = function(){
+	    var htmlMsg = '<div class="sign-show clear">'
+	            +'<ul><li class="clear">'
+	            +'<p class="alert_tips_info">您的账号异常，已被锁定</p>'
+	            +'</li>'
+	            +' <li>'
+	            +'<div class="btn mt20 clear"><a class="sub mr15" id="majia-go" href="#" style="dispay: block;margin: 0 auto;">去解锁</a></div>'
+	            +'</li></ul></div>';
+	    var c = new XDLightBox({
+	        title: "提示",
+	        lightBoxId: "majia_code_tips",
+	        contentHtml: htmlMsg,
+	        scroll: false,
+	        isBgClickClose: false
+	    });
+	    c.init();
+	}
+
+	//签到领积分
+	$(".state-show .normal-a:last,#sign-point").live('click', function () {
+		var btn = $(this);
+		//验证是否登录
+		if (XDPROFILE.uid == "") return XD.user_handsome_login_init(),
+			XD.user_handsome_login(),
+			false;
+		if (btn.data('lock')) return false;
+		btn.data('lock', 1);
+		$.getJSON(__HTTPS_MEMBER__ + "/public/doSign?uid=" + XDPROFILE.uid + "&callback=?", function (d) {
+			//马甲验证
+			if (d.code == 1100) {
+				alert_robot();
+				btn.data('lock', '');
+				return;
+			} else if ((d.code == 1005) && ((d.msg == "error"))) {
+				return XD.user_handsome_login_init(),
+					XD.user_handsome_login(),
+					false;
+			} else if (d.code == 5050) {  // 轻度马甲
+				signed = true;
+				showMjVerfiyAlert();
+				$('#opt').val(d.opt);
+			} else if (d.code == 5051) {  // 重度马甲
+				signed = true;
+				majiaGoAlert();
+				$('#majia-go').attr('href', d.url);
+			} else if ((d.code == 1001) && ((d.msg == "succuss"))) {
+				signNum=d.lastNum;
+				if(signNum<7){
+					remainderDay=7-signNum;
+				}else if(signNum==7 || signNum%7==0){
+					remainderDay=7;
+				}else if(signNum%7!=0 && signNum!=undefined){
+					remainderDay=7-signNum%7;
+				}
+				var box_tpl = tpl.replace(/{DOU}/, d.Dou).replace(/{tDou}/, 10).replace(/{NUM}/, d.lastNum).replace(/{remainderDay}/, remainderDay)
+			} else if ((d.code == 1004) && (d.msg == "succuss")) {
+				var box_tpl = checkedTpl.replace(/{tDou}/g, 10);
+			} else if ((d.code == 1102) && (d.msg == "error")) {
+				var box_tpl = failCookie;
+			} else if ((d.code == 1103) && (d.msg == "error")) {
+				btn.data('lock', 0);
+				showMjVerfiyAlert();
+				return;
+			} else if ((d.code == 2000) && (d.msg == "close")) {
+				var box_tpl = closeTpl;
+			} else {
+				var box_tpl = failTpl;
+			}
+			var box = new XDLightBox({
+				title: '每日签到送积分',
+				lightBoxId: 'alert_sign',
+				contentHtml: box_tpl,
+				scroll: true
+			});
+			if(signed){
+				return
+			}else{
+				box.init();
+			}
+			btn.data('lock', 0);
+			statusInit();
+			//关闭弹出框
+			$(".alert_close").live('click', function () {
+				$('#alert_sign').hide();
+			});
+		});
+
+		//签到行为数据埋点
+		_paq.push(['trackEvent', 'jifen', 'click_dosign', 'uid', XDPROFILE.uid, ]);
+
+	});
+
+
+
+
+	/**
+	 * 顶部导航隐藏显示功能
+	 * @author xueli@juanpi.com
+	 * @date   2014-12-05
+	 * @return {[type]}   [description]
+	 */
+	allMenu_show = function () {
+		if ((document.domain == "www.jiukuaiyou.com" || document.domain == "ju.jiukuaiyou.com") && $(".top_bar").size() > 0) {
+			return;
+		}
+		$(".nav ul li:first").removeClass("open");
+		var timer = null;
+		$(".nav ul li:first").hover(
+			function () {
+				var mu = $(this);
+				timer = setTimeout(function () {
+					mu.addClass("open");
+				}, 100);
+			},
+			function () {
+				clearTimeout(timer);
+				$(this).removeClass("open");
+			}
+		);
+	}
+	allMenu_show();
+
+	/**
+	 * 页面向下滑动时，给左边侧标题栏增添'九块邮'图像
+	 * @author xueli@juanpi.com
+	 * @date   2014-12-05
+	 * @return {[type]}   [description]
+	 */
+	var $navFun_1 = function () {
+		var st = $(document).scrollTop(),
+			headh = $("div.header").height(),
+			$nav_classify = $("div.jiu-side-nav");
+		if (st > headh) {
+			$nav_classify.addClass("fixed");
+		} else {
+			$nav_classify.removeClass("fixed");
+		}
+
+	};
+
+	/**
+	 * 右侧返回顶部
+	 * @author xueli@juanpi.com
+	 * @date   2014-10-14
+	 * @return {[type]}   [description]
+	 */
+	var $navFun_2 = function () {
+		var st = $(document).scrollTop(),
+			headh = $("#toolbar").height(),
+			header = $(".header").height(),
+			$nav_classify = $("div.side_right");
+
+		if (st > headh + header) {
+			$nav_classify.show()
+			$nav_classify.addClass('fix')
+		} else {
+
+			$nav_classify.hide()
+			$nav_classify.removeClass('fix')
+		}
+	};
+
+	var $navFun = function () {
+		$navFun_1();
+		$navFun_2();
+	}
+
+	$('a.go-top').click(function () {
+		$('body,html').animate({
+			scrollTop: 0
+		}, 500);
+	});
+	$('#J_sidebar .side-box a#J_backtop').click(function () {
+		$('body,html').animate({
+			scrollTop: 0
+		}, 500);
+	});
+	//显示回到顶部按钮
+	var backtop_show = function () {
+		$(window).scroll(function () {
+			var st = $(window).scrollTop();
+			if (st > 0) {
+				$("a#J_backtop").css("display", "block");
+			} else {
+				$("a#J_backtop").css("display", "none");
+				$("a#J_backtop").parents().find(".tab-tips").css({
+					"opacity": "0",
+					"display": "none",
+					"right": "62px"
+				});
+			}
+		})
+	}
+	backtop_show();
+	/**
+	 * 首页幻灯片
+	 * @param {}
+	 * @time 2015-01-13
+	 */
+
+	var carousel_index = function () {
+		if ($(".banner li").size() == 1) {
+			$(".banner li").eq(0).css("opacity", "1");
+		}
+		if ($(".banner li").size() <= 1) {
+			return;
+		}
+		var i = 0,
+			max = $(".banner li").size() - 1,
+			playTimer;
+		$(".banner li").each(function () {
+			$(".adType").append('<a></a>');
+		});
+		//初始化
+
+		$(".adType a").eq(0).addClass("current");
+		$(".banner li").eq(0).css({
+			"z-index": "2",
+			"opacity": "1"
+		});
+		var playshow = function () {
+			$(".adType a").removeClass("current").eq(i).addClass("current");
+			$(".top_bar .banner li").eq(i).css("z-index", "2").fadeTo(500, 1, function () {
+				$(".top_bar .banner li").eq(i).siblings("li").css({
+					"z-index": 0,
+					opacity: 0
+				}).end().css("z-index", 1);
+			});
+		}
+		var next = function () {
+			i = i >= max ? 0 : i + 1;
+			playshow()
+		}
+		var prev = function () {
+			i = i <= 0 ? max : i - 1;
+			playshow()
+		}
+		var play = setInterval(next, 3000);
+		$(".banner li a,.banner_arrow").hover(function () {
+			clearInterval(play);
+			$(".banner_arrow").css("display", "block");
+		}, function () {
+			clearInterval(play);
+			play = setInterval(next, 3000);
+			$(".banner_arrow").css("display", "none");
+		});
+		$(".banner_arrow .arrow_prev").on('click', _.throttle(function (event) {
+			prev();
+		}, 600));
+		$(".banner_arrow .arrow_next").on('click', _.throttle(function (event) {
+			next();
+		}, 600));
+		$(".adType a").mouseover(function () {
+			if ($(this).hasClass("current")) 
+				return;
+			var index = $(this).index() - 1;
+			var playTimer = setTimeout(function () {
+				clearInterval(play);
+				i = index;
+				next();
+			}, 500)
+		}).mouseout(function () {
+			clearTimeout(playTimer);
+		});
+	}
+	if ($("#banner_list li").length > 0 || $('.banner li').length > 0) {
+		carousel_index();
+	}
+
+
+	/**
+	 * 将文字信息上下滚动
+	 * Author: zhuwenfang
+	 * Date: 14-01-10
+	 * Time: PM 16:55
+	 * Function: scrolling the dom 'li' up&down
+	 **/
+	var liAutoScroll = function () {
+		var liScrollTimer;
+		var $obj = $('.links_list_box');
+		$obj.hover(function () {
+			clearInterval(liScrollTimer);
+		}, function () {
+			liScrollTimer = setInterval(function () {
+				$obj.find(".links_list").animate({
+					marginTop: -20 + 'px'
+				}, 500, function () {
+					$(this).css({
+						marginTop: "0px"
+					}).find("li:first").appendTo(this);
+				});
+
+			}, 3000);
+		}).trigger("mouseleave");
+
+	}
+	liAutoScroll();
+
+
+	/**
+	 * 右侧购物袋交互
+	 * Author:phpdance
+	 * 2015-03-26新增
+	 * */
+	var $obj = null;
+	var timer = null;
+	var normal_show_fun = function () {
+		clearInterval(timer);
+		$('#J_sidebar .side-oper li').hover(function () {
+				$('#J_sidebar .side-oper li').find(".tab-tips").css({
+					"opacity": "0",
+					// "display": "none",
+					"right": "62px"
+				})
+				$('#J_sidebar .side-oper li').removeClass("curr");
+				$("#J_sidebar .side-oper li.side-cart").removeClass("selected");
+				$obj = $(this);
+				clearTimeout(timer);
+				timer = setTimeout(function () {
+					if($('#J-right-bag').hasClass('bag-show')){
+						if($obj.hasClass('side-user')){
+							if($obj.attr('data-hover')==1){
+								$('#J-right-bag').removeClass('bag-show');
+								$obj.addClass("curr");
+								$obj.attr('data-hover','0');
+
+							}else{
+								$obj.attr('data-hover','1');
+								return;
+							}
+							
+						}
+						$obj.addClass("curr");
+					}else{
+						$obj.addClass("curr");
+					}
+					if ($obj.hasClass("side-cart")) {
+						if ($obj.find(".carttime").html() == "" || $obj.find("em.cartnum").html() == "0") {
+							$('.carttime').hide();
+							return;
+						}
+					}
+					if (($obj.hasClass("side-backtop") && $obj.find("a.links").css("display") == "none") || ($obj.hasClass("side-cart") && $obj.find("#side-empty").css("display") == "block")) {
+						return;
+					} else {
+						$obj.find(".tab-tips").css("opacity", "1");
+						$obj.find(".tab-tips").animate({
+							right: 36
+						}, 300);
+					}
+				}, 100);
+				if ($obj.hasClass("side-user")) {
+					$obj.find(".close").on('click', function () {
+						$obj.find(".tab-tips").css({
+							"opacity": "0",
+							// "display": "none",
+							"right": "62px"
+						});
+					})
+				}
+			},
+			function () {
+				clearTimeout(timer);
+				timer = setTimeout(function () {
+					$obj.removeClass("curr");
+					$obj.find(".tab-tips").css({
+						"opacity": "0",
+						// "display": "none",
+						"right": "62px"
+					});
+					if ($obj.hasClass("side-cart")) {
+						$obj.removeClass("selected");
+					}
+				}, 100);
+			}
+		)
+
+		//会员中心特殊处理
+		$('#J_sidebar .side-oper li.side-user').hover(function () {
+			if (XDPROFILE.uid == '') {
+				//未登录
+				$(this).find('#side-login .user-box p.txt').html('快来<a target="_blank" href="' + __HTTPS_MEMBER__ + '/login">登录</a>吧，么么哒！');
+			} else {
+				$(this).find('#side-login .user-box p.txt').html('<a target="_blank" href="' + __HTTPS_MEMBER__ + '">' + XDPROFILE.username + '</a>');
+				var _partten = /.*?\/default(\-60)?.jpg$/;
+				if (!_partten.test(XDPROFILE.face)) {
+					$(this).find('#side-login .user-box .pic img').attr('src', getResizeImageUrl(XDPROFILE.face, 60, 60)); //XDPROFILE.face+'_60x60.jpg'
+				}
+			}
+		})
+
+	}
+	normal_show_fun(); //鼠标移入在左侧显示信息的效果
+
+	//点击购物袋按钮，请求mini购物袋列表
+	var get_mini_cart = function () {
+		$("#J_sidebar .side-oper li.side-cart").on('click', function () {
+			//购物袋清空，提示关闭
+			JP.JPCartNoticWarp.checkShow();
+			var login_htmll = '<div style="opacity:1;right:36px;" id="side-login" class="tab-login"><div class="user-box"><a target="_blank" class="head" href="' + __HTTPS_MEMBER__ + '/login"><div class="pic"><img src="' + __HOST_STATIC__ + '/common/images/global/default-60.jpg"></div></a><p class="txt">快来<a target="_blank" href="' + __HTTPS_MEMBER__ + '/login">登录</a>吧，么么哒！</p></div><i class="close">×</i><div class="arr-icon">◆</div> </div>';
+			$("#J_sidebar .side-oper li.side-cart").addClass("selected");
+			if (XDPROFILE.uid == '' && XDPROFILE.guestswitch != 1) {
+				//未登录
+				$('.carttime').hide();
+				$('.cartnum').text('0').css("background", "#ccc");
+				if ($(this).find("#side-login").size() == 0) {
+					$(this).append(login_htmll);
+					$(this).find("#side-login .close").on('click', function (e) {
+						if (e && e.stopPropagation) {
+							e.stopPropagation();
+						} else { //IE浏览器
+							window.event.cancelBubble = true;
+						}
+						$(this).parents("li.side-cart").removeClass("selected");
+					})
+
+				} else {
+					return;
+				}
+			} else {
+				var $bag_tool = $("#J-right-bag");
+				var loadingDom = '<div class="sidebar-hd"><i class="close" id="J_cart_close">×</i><span class="t">购物袋</span><span class="time carttime"></span></div><div id="loadingimg" style="display:none;"></div>';
+				$(this).find('.tab-tag').hide();
+				if ($bag_tool.hasClass("bag-show")) {
+					$bag_tool.removeClass("bag-show");
+					$("#side-empty").css("opacity", "1");
+				} else {
+					if ($("#side-empty").css("display") == "block") {
+						$("#side-empty").css("opacity", "0");
+					}
+					$bag_tool.addClass("bag-show");
+					$bag_tool.html(loadingDom);
+					$bag_tool.find('#loadingimg').show();
+					$.ajax({
+						type: 'get',
+						url: __URL_CART_NEW__ + '/MiniCart/miniCartList',
+						dataType: 'jsonp',
+						success: function (data) {
+							$bag_tool.find('#loadingimg').hide();
+							if (data.status == 1) {
+								//购物袋列表
+								var carthtml = loadingDom;
+								carthtml += '<ul class="clear">';
+								$.each(data.data, function (index, val) {
+									carthtml += '<li><a target="_blank" class="pic fl" href="' + __URL_SHOP_NEW__ + '/deal/' + val['productId'] + '"><img class="lazy" d-src="' + getResizeImageUrl(val['pic'], 60, 60) + '" src="' + __HOST_STATIC__ + '/common/images/blank_90x90.png"></a>'; //'+__HOST_IMAGE__+val['pic']+'_60x60.jpg
+									carthtml += '<div class="detail">';
+									carthtml += '<p class="title"><a target="_blank" href="' + __URL_SHOP_NEW__ + '/deal/' + val['productId'] + '">' + val['title'] + '</a></p>';
+									carthtml += '<p class="normal"><span class="price"><em class="u-yen">¥</em>' + val['cprice'] + '</span>x ' + val['num'] + '</p>';
+									carthtml += '</div></li>';
+								});
+								carthtml += "</ul>";
+								carthtml += '<div class="amount"><span class="fl">共<em class="cartnum">' + data.goodsNum + '</em>件商品</span><span class="all fr"><em class="u-yen">¥</em>' + data.totalPrice + '</span></div> <div class="go-buy clear"><a href="' + __URL_CART_NEW__ + '" target="_blank">去购物袋结算</a></div>'
+								$bag_tool.html(carthtml);
+								$bag_tool.find("ul img.lazy").lazyload({
+									threshold: 20,
+									failure_limit: 30
+								});
+								$('.cartnum').text(data.goodsNum);
+
+								if (data.goodsNum == 0) {
+									$('.cartnum').css("background", "#ccc");
+								} else {
+									$('.cartnum').css("background", "#ff464e");
+								}
+
+								$bag_tool.find(".sidebar-hd").append('<span>后清空</span>');
+								$bag_tool.find('ul li:last').addClass('last');
+								$('.carttime').show();
+								var shareCartData = {
+									'shareCartNum': data.goodsNum,
+									'residualTime': data.residualTime
+								};
+								setCartNum('shareCartData', shareCartData);
+
+								//更新定时器
+								window.clearInterval(document.cartClockTimer);
+								document.servtime = data.servertime, document.expiretime = data.expireTime;
+								if (typeof document.cartTimer !== "undefined") {
+									window.clearInterval(document.cartTimer);
+								}
+								document.cartTimerFuc();
+								document.cartTimer = window.setInterval("document.cartTimerFuc()", 1000);
+
+							} else if (data.status == 2) {
+								//未登录
+								$('.carttime').hide();
+								$('.cartnum').text('0').css("background", "#ccc");
+								if (typeof document.cartTimer !== "undefined") {
+									window.clearInterval(document.cartTimer);
+								}
+								$bag_tool.html(loadingDom + '<p><span class="icon-normal icon-bag-empty"></span>好像还没有<a href="' + __HTTPS_MEMBER__ + '/login">登录</a>哦~</p>');
+							} else {
+								var shareCartData = {
+									'shareCartNum': 0,
+									'residualTime': 3600
+								};
+								setCartNum('shareCartData', shareCartData);
+								//购物袋为空
+								$('.carttime').hide();
+								$('.cartnum').text('0').css("background", "#ccc");
+								if (typeof document.cartTimer !== "undefined") {
+									window.clearInterval(document.cartTimer);
+								}
+								$bag_tool.html(loadingDom + '<div class="bag-empty"><p class="img"></p><p class="txt">购物袋还是空荡荡哒~<br>快去抢购宝贝吧！</p></div>');
+							}
+						},
+						error: function () {
+							$bag_tool.html(loadingDom + '<div class="bag-empty"><p><span class="icon-normal icon-bag-empty"></span>操作失败，请稍后再试~</p></div>');
+						}
+					});
+				}
+
+			}
+
+		})
+		$("#J-right-bag #J_cart_close").live('click', function () {
+			$("#J-right-bag").removeClass("bag-show");
+			$("#side-empty").css("opacity", "1");
+		});
+		$('#J_user').live('click',function(){
+			var dom_p = $(this).parent();
+			if(dom_p.hasClass('curr')){
+				dom_p.removeClass('curr');
+				$('#side-login').animate({
+					right: 72
+				}, 300);
+				$('#side-login').css("opacity", "0");
+				
+			}else{
+				dom_p.addClass('curr');
+				
+				$('#side-login').animate({
+					right: 36
+				}, 300);
+				$('#side-login').css("opacity", "1");
+
+			}
+		});
+
+		//点击非侧边导航购物袋区域收起侧边导航购物袋区
+		$(document).click(function(e){
+			var click_dom = $(e.target);
+			if(click_dom.closest('.side-cart').length){
+				return;
+			}
+			if(!click_dom.closest('#J-right-bag').length){
+				$('#J-right-bag').removeClass('bag-show');
+			}	
+		});
+
+	}
+	get_mini_cart();
+	window.carousel_index = carousel_index;
+})(jQuery);

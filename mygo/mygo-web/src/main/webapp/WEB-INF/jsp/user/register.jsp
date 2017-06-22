@@ -286,6 +286,7 @@
 			</table>
 		</form>
 	</div>
+		<%@ include file="/common/bottom.jsp" %>
 </div>
 	
 </body> 
