@@ -64,8 +64,13 @@ function deleteOrder(){
 		url:"${ctx}/login/order/deleteOrder.do",
 		type:'post',
 		data:{"oid":$('#oid').val(),"deleteDesc":$('#deleteDesc').val()},
-		success:function(){
-			location.reload();
+		dataType:'text',
+		success:function(data){
+			if(data=='success'){
+				location.reload();
+			}else{
+				alert("关闭订单失败，请联系管理员!");
+			}
 		}
 	});
 }
