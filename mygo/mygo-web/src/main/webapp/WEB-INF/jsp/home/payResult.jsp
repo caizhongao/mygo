@@ -136,7 +136,7 @@
 					<dd id="btn-dd" style="margin-left: 80px;">
 						<span class="new-btn-login-sp">
 							<button class="new-btn-login"
-								style="text-align: center;" onclick="location.href=/">返回首页</button>
+								style="text-align: center;" onclick="location.href='${ctx}'">返回首页</button>
 						</span> <span class="note-help"></span>
 					</dd>
 				</dl>

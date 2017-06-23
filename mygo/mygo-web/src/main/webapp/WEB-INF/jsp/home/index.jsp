@@ -136,7 +136,7 @@
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle">
 		<%@ include file="/common/category.jsp" %>
-		<table id="newGoods"  width="70%"  cellpadding="0" cellspacing="0" align="center" style="margin-top: 10px">
+		<table id="newGoods"  width="80%"  cellpadding="0" cellspacing="0" align="center" style="margin-top: 10px">
 			<tr>
 				<td colspan="4" height="30px">
 					<span class="title_flag">NEW</span>
