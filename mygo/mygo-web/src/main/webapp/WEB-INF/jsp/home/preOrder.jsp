@@ -99,6 +99,10 @@
 <script type="text/javascript">
 
 	function makeOrder(){
+		if($('input[name="addrId"]').eq(0).val()==''){
+			alert('请选择收获地址！');
+			return;
+		}
 		$('#addrForm').submit();
 	}
 </script>
@@ -111,6 +115,11 @@
 			<form action="${ctx}/login/order/saveOrder.do" id="addrForm" method="post" enctype="application/x-www-form-urlencoded">
 				<span style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px">选择收货地址</span>
 				<table class="editTable order-address">
+					<c:if test="${order.addr==null }">
+						<tr><td>无收获地址&nbsp;
+						<a href="${ctx}/login/addr/editAddr.do" target="_blank" style="font-size: 13px">新增地址</a></td></tr>
+					</c:if>
+					<c:if test="${order.addr!=null }">
 					<tr>
 						<td>
 							<em class="icons icons-user fl"></em>${order.addr.receiver}&nbsp;收
@@ -120,7 +129,7 @@
 						<td>
 							<em class="icons icons-address fl"></em>
 							${order.addr.province}&nbsp;${order.addr.city}&nbsp;${order.addr.area}&nbsp;
-							${order.addr.addr}第三方是淡粉色的水电费是淡粉色的
+							${order.addr.addr}
 						</td>
 					</tr>
 					<tr>
@@ -129,6 +138,7 @@
 							&nbsp;<a href="${ctx}/login/addr/editAddr.do" target="_blank" style="font-size: 13px">修改</a>
 						</td>
 					</tr>
+					</c:if>
 				</table>
 				<br>
 				<span style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px">选择支付方式</span>
