@@ -35,6 +35,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.cza.common.Pager;
 import com.cza.common.PropertyUtil;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
@@ -301,5 +302,39 @@ public class OrderAction extends CommonAction{
 			log.info("OrderAction.updatePayStatus valid faild sWord:{}",sWord);
 		}
 		
+	}
+	
+	
+	
+	@RequestMapping("listOrder")
+	public String listOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
+		UserVo userVo=getUser(request);
+		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
+		order.setUid(userVo.getUid());
+		request.setAttribute("order", order);
+		Pager<List<OrderVo>> pager=new Pager<List<OrderVo>>();
+		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			request.setAttribute("pager", resp.getData());
+			log.info("OrderAction.listPayOrder success,orders:{}",resp.getData());
+			return webPage("user/listOrder");
+		}else{
+			log.info("OrderAction.listNotPayOrder faild!");
+			return erroPage(request, resp.getCode());
+		}
+	}
+
+	@RequestMapping("deleteOrder")
+	public String deleteOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
+		log.info("OrderAction.deleteOrder 请求参数,order:{}",order);
+		order.setStatus(ShoppingContants.ORDER_STATUS_USER_DELETE);
+		ServiceResponse<OrderVo> resp=orderService.updateOrder(order);
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			log.info("OrderAction.deleteOrder success,orderNo:{}",order.getOid());
+			return managerPage("listNotPayOrder");
+		}else{
+			log.info("OrderAction.deleteOrder faild!");
+			return erroPage(request, resp.getCode());
+		}
 	}
 }

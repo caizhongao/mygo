@@ -35,6 +35,73 @@
 	function toIndex(){
 		location.href="${ctx}/";
 	}
+	$(function(){
+		initGoodsList();
+	});
+	
+	
+	function initGoodsList(){
+		$.ajax({
+			url:"${ctx}/unlogin/goods/listCategoryGoods.do?cid=${cid}",
+			type:'post',
+			dataType:'json',
+			success:function(goodsList){
+				var goodsHtml="";
+				if(goodsList==null||goodsList.length<1){
+					goodsHtml+='<tr>'+
+							'<td width="40px;">'+
+								
+							'</td>'+
+							'<td colspan="6" height="30px" style="font-weight: bolder;">'+
+								'<br>'+
+								'暂无商品'+
+							'</td>'+
+						'</tr>';
+				}else{
+					var lastTdGoodsNum=0;
+					//一列4个商品
+					$.each(goodsList,function(index,goods){
+						if(index%4==0){
+							goodsHtml+="<tr>";
+							lastTdGoodsNum=0;
+						}
+						lastTdGoodsNum++;
+						if(index%4==3){
+							goodsHtml+='<td width="310px">'+
+											'<div class="goods_img_div">'+
+											'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+'<img alt="" src="'+goods.goodsPic+'" style="width:300px;height:300px;">'+'</a>'+
+											'</div>'+
+											'<div class="goods_name_price">'+
+												'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+goods.goodsName+'</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>'+goods.price+'</span>'+
+											'</div>'+
+										'</td></tr>';
+							
+						}else{
+							goodsHtml+='<td width="310px">'+
+											'<div class="goods_img_div">'+
+											'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+'<img alt="" src="'+goods.goodsPic+'" style="width:300px;height:300px;">'+'</a>'+
+											'</div>'+
+											'<div class="goods_name_price">'+
+												'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+goods.goodsName+'</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>'+goods.price+'</span>'+
+											'</div>'+
+										'</td><td>&nbsp</td>';
+						}
+					});
+					//lastTdGoodsNum 最后一行的商品数，不足4个的补足4个
+					for(lastTdGoodsNum=lastTdGoodsNum+1;lastTdGoodsNum<=4;lastTdGoodsNum++){
+						if(lastTdGoodsNum==4){
+							goodsHtml+='<td width="310px">&nbsp</td></tr>';
+						}else{
+							goodsHtml+='<td width="310px">&nbsp</td><td>&nbsp</td>';
+						}
+					}
+				}
+				$('#newGoods').append(goodsHtml);
+			}
+		});
+		
+	}
+	
 </script>
 </head>
 <body  class="_body">
@@ -44,7 +111,7 @@
 		<%@ include file="/common/category.jsp" %>
 		<table id="newGoods"  width="80%"  cellpadding="0" cellspacing="0" align="center" style="margin-top: 10px">
 			<tr>
-				<td colspan="4" height="30px">
+				<td colspan="7" height="30px">
 					<span class="title_flag">NEW</span>&nbsp;&nbsp;
 					<span class="title_words">
 						<c:forEach items="${categoryList}" var="category">
@@ -53,34 +120,6 @@
 					</span>
 				</td>
 			</tr>
-			<c:if test="${goodsList==null || empty goodsList}">
-			
-				<tr>
-					<td width="40px;">	
-						
-					</td>
-					<td colspan="3" height="30px" style="font-weight: bolder;">
-						<br>
-						暂无商品
-					</td>
-				</tr>
-			</c:if>
-			<c:forEach items="${goodsList}" var="goods" varStatus="status">
-					<c:if test="${status.index%3==0}">
-						<tr>
-					</c:if>
-					<td>
-						<div style="width: 300px;;height:300px;">
-							<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${goods.gid}" target="_blank"  class="goods_name"><img alt="" src="${goods.goodsPic}" style="width:300px;height:300px;"></a>
-						</div>
-						<div style="width: 300px;text-align: center;margin-top: 10px;">
-							<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${goods.gid}" target="_blank"  class="goods_name">${goods.goodsName }</a>&nbsp;&nbsp;&nbsp;<span style="color: #FF464E">￥${goods.price }</span>
-						</div>
-					</td>
-					<c:if test="${status.index%3==2}">
-						</tr>
-					</c:if>
-			</c:forEach>
 		</table>
 		<br>
 	</div>

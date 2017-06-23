@@ -1,9 +1,3 @@
 com\cza\web\login\AddrAction.class
 com\cza\web\CommonAction.class
-com\cza\web\UserInfoValidate.class
-com\cza\web\login\OrderAction.class
-com\cza\web\ImageServlet.class
-com\cza\web\unlogin\HomeAction.class
-com\cza\web\unlogin\GoodsAction.class
-com\cza\web\unlogin\UserAction.class
 com\cza\web\auth\LoginFilter.class

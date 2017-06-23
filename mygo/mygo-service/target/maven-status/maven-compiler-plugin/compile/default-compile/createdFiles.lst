@@ -2,6 +2,7 @@ com\cza\service\goods\impl\GoodsServiceImpl.class
 com\cza\mapper\goods\SkuStockMapper.class
 com\cza\dto\user\TUser.class
 com\cza\service\user\UserService.class
+com\cza\common\Pager.class
 com\cza\service\user\impl\AddrServiceImpl.class
 com\cza\service\goods\vo\CategoryVo.class
 com\cza\dto\addr\TArea.class

@@ -52,7 +52,6 @@
 	        <url-pattern>/servlet/ImageServlet</url-pattern>
 	</servlet-mapping>
 	
-	
 	<!-- Spring MVC servlet -->
 	<servlet>
 		<servlet-name>SpringMVC</servlet-name>
@@ -72,4 +71,8 @@
 	<welcome-file-list>
 		<welcome-file>/index.jsp</welcome-file>
 	</welcome-file-list>
+	 <error-page>
+	  <error-code>500</error-code>
+	  <location>/common/error.jsp</location>
+	 </error-page>
 </web-app>

@@ -20,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.addr.TUserAddr;
@@ -144,11 +145,11 @@ public class OrderServiceImpl implements OrderService{
 	    */
 	    
 	@Override
-	public ServiceResponse<List<OrderVo>> listOrder(OrderVo listOrderVo) {
-		ServiceResponse<List<OrderVo>> resp=new ServiceResponse<List<OrderVo>>();
+	public ServiceResponse<Pager<OrderVo>> listOrder(OrderVo listParam) {
+		ServiceResponse<Pager<OrderVo>> resp=new ServiceResponse<Pager<OrderVo>>();
 		try {
-			TOrder listParam=new TOrder();
-			BeanUtils.copyProperties(listOrderVo, listParam);
+			Long count=orderMapper.countOrder(listParam);
+			listParam.setStart((listParam.getPageNum()-1)*listParam.getPageSize());
 			List<TOrder> orderList=orderMapper.listOrder(listParam);
 			List<OrderVo>voList=new ArrayList<>();
 			if(orderList!=null&&orderList.size()>0){
@@ -162,7 +163,7 @@ public class OrderServiceImpl implements OrderService{
 					voList.add(vo);
 				}
 			}
-			resp.setData(voList);
+			resp.setData(new Pager<OrderVo>(listParam.getPageSize(),listParam.getPageNum(),count,voList));
 			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {

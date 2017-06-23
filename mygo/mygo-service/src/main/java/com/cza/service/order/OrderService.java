@@ -12,6 +12,7 @@ package com.cza.service.order;
 
 import java.util.List;
 
+import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.dto.order.TOrder;
 import com.cza.service.order.vo.PreOrderVo;
@@ -41,7 +42,7 @@ public interface OrderService {
 		    * @throws
 		    */
 		    
-		public ServiceResponse<List<OrderVo>> listOrder(OrderVo order);
+	public ServiceResponse<Pager<OrderVo>> listOrder(OrderVo listOrderVo);
 
 
 

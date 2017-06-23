@@ -90,7 +90,8 @@ public interface ShoppingContants {
 	public static final Integer ORDER_PAY_STATUS_HAS=1;
 	
 	public static final Integer ORDER_STATUS_NORMAL=0;
-	public static final Integer ORDER_STATUS_DELETE=1;
+	public static final Integer ORDER_STATUS_SYS_DELETE=1;
+	public static final Integer ORDER_STATUS_USER_DELETE=2;
 	
 	//alipay 常量
 	// 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号

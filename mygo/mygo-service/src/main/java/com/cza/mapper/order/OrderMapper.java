@@ -12,7 +12,11 @@ package com.cza.mapper.order;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.cza.common.Pager;
 import com.cza.dto.order.TOrder;
+import com.cza.service.order.vo.OrderVo;
 
 
 /**
@@ -25,7 +29,7 @@ import com.cza.dto.order.TOrder;
 
 public interface OrderMapper {
 	
-	public List<TOrder> listOrder(TOrder param);
+	public List<TOrder> listOrder(OrderVo listParam);
 	
 	public TOrder queryOrder(Long oid);
 	
@@ -42,5 +46,17 @@ public interface OrderMapper {
 	    */
 	    
 	public void updateOrder(TOrder updateParam);
+
+		
+		    /**
+		     * @return 
+		    * @Title: countOrder
+		    * @Description: TODO(这里用一句话描述这个方法的作用)
+		    * @param @param listParam    参数
+		    * @return void    返回类型
+		    * @throws
+		    */
+		    
+		public Long countOrder(OrderVo listParam);
 	
 }

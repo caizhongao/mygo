@@ -70,18 +70,7 @@ public class HomeAction extends CommonAction{
 			List<CategoryVo> categoryList=resp.getData();
 			request.setAttribute("categoryList", categoryList);
 		}
-		//查询出用户选择的类目下商品
-		Long cid=Long.valueOf(request.getParameter("cid"));
-		request.setAttribute("cid", cid);
-		GoodsVo goods=new GoodsVo();
-		goods.setCid(cid);
-		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
-		ServiceResponse<List<GoodsVo>> resp1=goodsService.listGoods(goods);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp1.getCode())){
-			List<GoodsVo> goodsList=resp1.getData();
-			request.setAttribute("goodsList", goodsList);
-			
-		}
+		request.setAttribute("cid", request.getParameter("cid"));
 		return webPage("home/categoryGoods");
 	}
 	

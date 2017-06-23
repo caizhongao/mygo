@@ -43,10 +43,98 @@ public class OrderVo {
 	private String payNo;
 	
 	
+	private Integer pageNum=1;
+	private Integer pageSize=15;
+	private Integer start=0;
 	
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	* @return start
+	*/
+	
+	public Integer getStart() {
+		return start;
+	}
+
+
+
+
+
+
+	
+	/**
+	 * @param start the start to set
+	 */
+	
+	public void setStart(Integer start) {
+		this.start = start;
+	}
+
+
+
+
+
+
+	/**
+	* @return pageNum
+	*/
+	
+	public Integer getPageNum() {
+		return pageNum;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param pageNum the pageNum to set
+	 */
+	
+	public void setPageNum(Integer pageNum) {
+		this.pageNum = pageNum;
+	}
+
+
+
+
+
+	
+	/**
+	* @return pageSize
+	*/
+	
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param pageSize the pageSize to set
+	 */
+	
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+
+
+
+
 	/**
 	* @return payNo
 	*/

@@ -30,7 +30,14 @@
 		color: #666666;
 	}
 	
-}
+	.queryParam{
+	width: 80%;height: 30px;
+	margin-top:25px;
+	font-size: 14px;color: #666666;
+	}
+	.queryParam input,select{
+		width: 150px;
+	}
 </style>
 <script type="text/javascript">
 
@@ -77,7 +84,7 @@
 			×
 		</div>
 		<div style="width: 400px;height: 20px;margin: 0px auto;line-height: 20px;color: #666666;font-size: 13px;font-weight: bold;">
-			<font style="color: red" id="oidTitle"></font>删除原由：
+			<font style="color: red" id="oidTitle"></font>关闭原由：
 		</div>
 		<div style="width: 400px;height: 90px;margin: 0px auto">
 			<textarea rows="5" id="deleteDesc" cols="54" style="border-radius:3px;"></textarea>
@@ -87,6 +94,20 @@
 			<a href="javascript:deleteOrder()" class="manager_button">提交</a>
 		</div>
 	</div>
+		<form action="${ctx}/manager/order/listNotPayOrder.do" method="post">
+		<div class="queryParam">
+			<span style="display: inline-block;width: 250px">
+				订单号：<input type="text" name="oid" value="${order.oid}">
+			</span>
+			
+			<span style="display: inline-block;width: 250px">
+				商品名称：<input type="text" name="goodsName" value="${order.goodsName}">
+			</span>
+			<span style="display: inline-block;width: 150px;text-align: center">
+				<input type="button" class="manager_button" onclick="$('form').eq(0).submit()" style="width: 100px" value="查询">
+			</span>
+		</div>
+		</form>
 	<table style="width: 95%" cellpadding="0" cellspacing="0">
 		<tr style="font-size: 14px;">
 			<th>
@@ -115,7 +136,7 @@
 				操作
 			</th>	
 		</tr>
-		<c:forEach items="${orderList}" var="order">
+		<c:forEach items="${pager.result}" var="order">
 			<tr>
 				<td>
 					${order.oid}
@@ -149,13 +170,15 @@
 						无
 					</c:if>
 					<c:if test="${order.status==0}">
-						<a onclick="showDesc(${order.oid})" class="manager_button">删除</a>
+						<a onclick="showDesc(${order.oid})" class="manager_button">关闭</a>
 					</c:if>
 				</td>
 			</tr>
 		</c:forEach>
 		
 	</table>
+	<br>
+		<%@ include file="/common/page.jsp" %>
 	</div>
 </body> 
 </html>

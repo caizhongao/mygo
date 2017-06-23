@@ -76,11 +76,11 @@ public class LoginFilter implements  Filter{
 				log.info("请求uri:{},需要登录权限！",uri);
 				UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.USER_SESSION_KEY);
 				if(user==null){
-					String referer=req.getHeader("Referer");
-					if(referer==null||referer.indexOf("/login/")>=0){
-						resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+req.getRequestURL());
-					}else{
+					if(uri.indexOf("/toMakeOrderPage")>00){
+						String referer=req.getHeader("Referer");
 						resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+referer);
+					}else{
+						resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+req.getRequestURL());
 					}
 					return;
 				}

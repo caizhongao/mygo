@@ -72,6 +72,17 @@ public class GoodsAction extends CommonAction{
 		}
 	}
 	
+	@RequestMapping("listCategoryGoods")
+	public void listCategoryGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		//查询出用户选择的类目下商品
+		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
+		ServiceResponse<List<GoodsVo>> resp=goodsService.listGoods(goods);
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().println(JSON.toJSONString(resp.getData()));
+		}
+	}
+	
 	@RequestMapping("goodsDetail")
 	public String goodsDetail(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		CategoryVo category=new CategoryVo();

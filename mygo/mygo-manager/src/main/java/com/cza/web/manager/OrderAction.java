@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.addr.TUserAddr;
@@ -60,10 +61,11 @@ public class OrderAction extends CommonAction{
 	@RequestMapping("listNotPayOrder")
 	public String listNotPayOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
 		log.info("OrderAction.listNotPayOrder 请求参数,order:{}",order);
+		request.setAttribute("order", order);
 		order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_NOT);
-		ServiceResponse<List<OrderVo>> resp=orderService.listOrder(order);
+		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			request.setAttribute("orderList", resp.getData());
+			request.setAttribute("pager", resp.getData());
 			log.info("OrderAction.listNotPayOrder success,orderNo:{}",order.getOid());
 			return managerPage("listNotPayOrder");
 		}else{
@@ -74,11 +76,12 @@ public class OrderAction extends CommonAction{
 	
 	@RequestMapping("listPayOrder")
 	public String listPayOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
+		request.setAttribute("order", order);
 		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
 		order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_HAS);
-		ServiceResponse<List<OrderVo>> resp=orderService.listOrder(order);
+		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			request.setAttribute("orderList", resp.getData());
+			request.setAttribute("pager", resp.getData());
 			log.info("OrderAction.listPayOrder success,orders:{}",resp.getData());
 			return managerPage("listPayOrder");
 		}else{
@@ -90,7 +93,7 @@ public class OrderAction extends CommonAction{
 	@RequestMapping("deleteOrder")
 	public String deleteOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
 		log.info("OrderAction.deleteOrder 请求参数,order:{}",order);
-		order.setStatus(ShoppingContants.ORDER_STATUS_DELETE);
+		order.setStatus(ShoppingContants.ORDER_STATUS_SYS_DELETE);
 		ServiceResponse<OrderVo> resp=orderService.updateOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			log.info("OrderAction.deleteOrder success,orderNo:{}",order.getOid());
