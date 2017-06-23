@@ -72,6 +72,12 @@
    			<if test="addr!=null and addr!=''">
    				addr=#{addr},
    			</if>
+   			<if test="receiver!=null and receiver!=''">
+   				receiver=#{receiver},
+   			</if>
+   			<if test="mobilphone!=null and mobilphone!=''">
+   				mobilphone=#{mobilphone},
+   			</if>
    			<if test="provinceId!=null">
    				province_id=#{provinceId},
    			</if>
