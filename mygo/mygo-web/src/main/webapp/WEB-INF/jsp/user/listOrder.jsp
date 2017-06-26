@@ -82,6 +82,7 @@ function toRefund(oid){
 		success:function(data){
 			if('success'==data){
 				alert('退款成功!');
+				location.reload();
 			}else{
 				alert("退款失败!");
 			}
