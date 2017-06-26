@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>商品详情页</title>
+<title>商品详情</title>
 <script type="text/javascript">
 	
 </script>

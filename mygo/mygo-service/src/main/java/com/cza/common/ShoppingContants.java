@@ -88,6 +88,7 @@ public interface ShoppingContants {
 	//订单常量
 	public static final Integer ORDER_PAY_STATUS_NOT=0;
 	public static final Integer ORDER_PAY_STATUS_HAS=1;
+	public static final Integer ORDER_PAY_STATUS_REFUND=2;
 	
 	public static final Integer ORDER_STATUS_NORMAL=0;
 	public static final Integer ORDER_STATUS_SYS_DELETE=1;

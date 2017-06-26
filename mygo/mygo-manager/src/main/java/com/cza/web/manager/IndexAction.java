@@ -53,7 +53,11 @@ public class IndexAction extends CommonAction{
 	public String toLogin(HttpServletRequest request,HttpServletResponse response){
 		return managerPage("login");
 	}
-	
+	@RequestMapping("logout")
+	public String logout(HttpServletRequest request,HttpServletResponse response){
+		request.getSession().invalidate();
+		return managerPage("login");
+	}
 	@RequestMapping("login")
 	public String login(@ModelAttribute UserVo user,HttpServletRequest request,HttpServletResponse response){
 		//校验登录请求参数

@@ -35,6 +35,8 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.cza.common.Pager;
 import com.cza.common.PropertyUtil;
 import com.cza.common.ServiceResponse;
@@ -149,6 +151,55 @@ public class OrderAction extends CommonAction{
 			return erroPage(request, resp.getCode());
 		}
 	}
+	@RequestMapping("toRefund")
+	public void toRefund(HttpServletRequest request,HttpServletResponse response ) throws IOException{
+		
+		String str=request.getParameter("oid");
+		if(StringUtils.isEmpty(str)){
+			response.getWriter().print("failed");
+		}
+		ServiceResponse<OrderVo> resp=orderService.queryOrder(Long.valueOf(str));
+		
+		//获得初始化的AlipayClient
+		AlipayClient alipayClient = new DefaultAlipayClient((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_GATEWAY_URL), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_APP_ID), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PRIVATE_KEY), "json",(String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE));
+		
+		//设置请求参数
+		AlipayTradeRefundRequest alipayRequest = new AlipayTradeRefundRequest();
+		
+		//商户订单号，商户网站订单系统中唯一订单号
+		String out_trade_no = new String(resp.getData().getOid().toString());
+		//支付宝交易号
+		String trade_no = new String(resp.getData().getPayNo());
+		//请二选一设置
+		//需要退款的金额，该金额不能大于订单金额，必填
+		String refund_amount = new String(resp.getData().getAmount().toString());
+		//退款的原因说明
+		String refund_reason = new String("mygo-test");
+		//标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传
+		String out_request_no = new String(resp.getData().getOid().toString());
+		
+		alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
+				+ "\"trade_no\":\""+ trade_no +"\"," 
+				+ "\"refund_amount\":\""+ refund_amount +"\"," 
+				+ "\"refund_reason\":\""+ refund_reason +"\"," 
+				+ "\"out_request_no\":\""+ out_request_no +"\"}");
+		//请求
+		try {
+			AlipayTradeRefundResponse alipayResp= alipayClient.execute(alipayRequest);
+			if(alipayResp.isSuccess()&&alipayResp.getFundChange().equals("Y")){
+				//更新db状态
+				OrderVo order=new OrderVo();
+				order.setOid(new Long(out_trade_no));
+				order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_REFUND);
+				orderService.updateOrder(order);
+				response.getWriter().print("success");
+			}else{
+				response.getWriter().print("failed");
+			}
+		} catch (Exception e) {
+			log.info("OrderAction.toPay erro",e);
+		}
+	}
 	
 	@RequestMapping("toPay")
 	public String toPay(HttpServletRequest request,HttpServletResponse response ) throws UnsupportedEncodingException, AlipayApiException{
@@ -193,6 +244,10 @@ public class OrderAction extends CommonAction{
 		}
 		
 	}
+	
+	
+	
+	
 	
 	@RequestMapping("toPayResultPage")
 	public String toPayResultPage(HttpServletRequest request,HttpServletResponse response ) throws UnsupportedEncodingException, AlipayApiException{

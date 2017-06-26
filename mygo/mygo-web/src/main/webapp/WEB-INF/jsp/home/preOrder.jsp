@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Insert title here</title>
+<title>生成订单</title>
 <style type="text/css">
 	table{
 		font-size: 14px;

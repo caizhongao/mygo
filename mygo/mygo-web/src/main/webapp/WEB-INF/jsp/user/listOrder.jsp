@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>用户注册</title>
+<title>我的订单</title>
 <style type="text/css">
 	#mytable{
 		font-size: 14px;
@@ -73,6 +73,20 @@ function deleteOrder(){
 			}
 		}
 	});
+}
+function toRefund(oid){
+	$.ajax({
+		url:'${ctx}/login/order/toRefund.do',
+		data:{'oid':oid},
+		type:'post',
+		success:function(data){
+			if('success'==data){
+				alert('退款成功!');
+			}else{
+				alert("退款失败!");
+			}
+		}
+	})
 }
 </script>
 </head>
@@ -206,8 +220,8 @@ function deleteOrder(){
 						</c:if>
 					</c:if>
 					<c:if test="${order.payStatus==1}">
-						<a href="javascript:void(0)" class="manager_button" target="_blank">申请退款</a>
-						<a class="manager_button" style="visibility:hidden">&nbsp;</a>
+						<a href="javascript:toRefund(${order.oid})" class="manager_button">申请退款</a>
+						<a class="manager_button" style="visibility:hidden">关闭订单</a>
 					</c:if>
 				</td>
 				

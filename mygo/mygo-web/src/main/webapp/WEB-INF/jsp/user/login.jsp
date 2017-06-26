@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Insert title here</title>
+<title>用户登录</title>
 <script type="text/javascript">
 $(function(){
 	$(".login_input").click(function(){
@@ -118,7 +118,7 @@ $(function(){
 				</tr>
 				<tr height="60px;" valign="middle">
 					<td>
-						<div class="input_div" style="width: 175px;vertical-align: middle;display: inline-block;" >
+						<div class="input_div" style="width: 170px;vertical-align: middle;display: inline-block;" >
 							<div style="background: url(${ctx}/img/login/code2.jpg?150907) no-repeat #f1f1f1;width: 39px;height: 38px;float: left;"></div>
 							<input name="picCode" type="text" value="${user.picCode}" class="login_input" placeholder="验证码" onblur="checkCode()" style="width: 120px" autocomplete="off">
 						</div>
