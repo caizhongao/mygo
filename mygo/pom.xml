@@ -8,5 +8,6 @@
   	<module>mygo-web</module>
   	<module>mygo-manager</module>
   	<module>mygo-service</module>
+  	<module>mygo-alipay</module>
   </modules>
 </project>
