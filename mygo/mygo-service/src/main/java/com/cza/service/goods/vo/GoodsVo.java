@@ -35,6 +35,14 @@ public class GoodsVo {
 	private Long stock;
 	private String status;//上下架状态
 	private  List<SkuVo> skus;
+	private Integer goodsIndex;
+	
+	
+	private String searchKey;
+	
+	private Integer pageNum=1;
+	private Integer pageSize=15;
+	private Integer start=0;
 	
 	
 	
@@ -42,6 +50,154 @@ public class GoodsVo {
 	
 	
 	
+	
+	/**
+	* @return searchKey
+	*/
+	
+	public String getSearchKey() {
+		return searchKey;
+	}
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param searchKey the searchKey to set
+	 */
+	
+	public void setSearchKey(String searchKey) {
+		this.searchKey = searchKey;
+	}
+
+
+
+
+
+
+
+
+	/**
+	* @return pageNum
+	*/
+	
+	public Integer getPageNum() {
+		return pageNum;
+	}
+
+
+
+
+
+
+
+	
+	/**
+	 * @param pageNum the pageNum to set
+	 */
+	
+	public void setPageNum(Integer pageNum) {
+		this.pageNum = pageNum;
+	}
+
+
+
+
+
+
+
+	
+	/**
+	* @return pageSize
+	*/
+	
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+
+
+
+
+
+
+	
+	/**
+	 * @param pageSize the pageSize to set
+	 */
+	
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+
+
+
+
+
+
+	
+	/**
+	* @return start
+	*/
+	
+	public Integer getStart() {
+		return start;
+	}
+
+
+
+
+
+
+
+	
+	/**
+	 * @param start the start to set
+	 */
+	
+	public void setStart(Integer start) {
+		this.start = start;
+	}
+
+
+
+
+
+
+
+	/**
+	* @return goodsIndex
+	*/
+	
+	public Integer getGoodsIndex() {
+		return goodsIndex;
+	}
+
+
+
+
+
+
+	
+	/**
+	 * @param goodsIndex the goodsIndex to set
+	 */
+	
+	public void setGoodsIndex(Integer goodsIndex) {
+		this.goodsIndex = goodsIndex;
+	}
+
+
+
+
+
+
 	/**
 	* @return stock
 	*/

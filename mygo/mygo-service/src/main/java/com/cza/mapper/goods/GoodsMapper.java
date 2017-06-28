@@ -13,6 +13,7 @@ package com.cza.mapper.goods;
 import java.util.List;
 
 import com.cza.dto.goods.TGoods;
+import com.cza.service.goods.vo.GoodsVo;
 
 /**
     * @ClassName: UserMapper
@@ -24,7 +25,7 @@ import com.cza.dto.goods.TGoods;
 
 public interface GoodsMapper {
 	
-	public List<TGoods> listGoods(TGoods param);
+	public List<TGoods> listGoods(GoodsVo param);
 	
 	public TGoods queryGoods(Long gid);
 	
@@ -34,6 +35,7 @@ public interface GoodsMapper {
 
 	
 	    /**
+	     * @param goods 
 	    * @Title: listNewGoods
 	    * @Description: TODO(这里用一句话描述这个方法的作用)
 	    * @param @return    参数
@@ -41,10 +43,11 @@ public interface GoodsMapper {
 	    * @throws
 	    */
 	    
-	public List<TGoods> listNewGoods();
+	public List<TGoods> listNewGoods(GoodsVo goods);
 
 		
 		    /**
+		     * @param goods 
 		    * @Title: listHotGoods
 		    * @Description: TODO(这里用一句话描述这个方法的作用)
 		    * @param @return    参数
@@ -52,5 +55,28 @@ public interface GoodsMapper {
 		    * @throws
 		    */
 		    
-		public List<TGoods> listHotGoods();
+		public List<TGoods> listHotGoods(GoodsVo goods);
+
+			
+			    /**
+			    * @Title: batchUpdateGoodsIndex
+			    * @Description: TODO(这里用一句话描述这个方法的作用)
+			    * @param @param gids    参数
+			    * @return void    返回类型
+			    * @throws
+			    */
+			    
+			public void batchUpdateGoodsIndex(List<Long> gids);
+
+				
+				    /**
+				    * @Title: countGoods
+				    * @Description: TODO(这里用一句话描述这个方法的作用)
+				    * @param @param listParam
+				    * @param @return    参数
+				    * @return Long    返回类型
+				    * @throws
+				    */
+				    
+				public Long countGoods(GoodsVo listParam);
 }

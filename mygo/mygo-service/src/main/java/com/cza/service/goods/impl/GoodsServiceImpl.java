@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.goods.TCategory;
@@ -26,6 +27,7 @@ import com.cza.dto.goods.TGoods;
 import com.cza.dto.goods.TSku;
 import com.cza.dto.goods.TSkuAttr;
 import com.cza.dto.goods.TSkuStock;
+import com.cza.dto.order.TOrder;
 import com.cza.mapper.goods.CategoryAttrMapper;
 import com.cza.mapper.goods.CategoryMapper;
 import com.cza.mapper.goods.GoodsMapper;
@@ -69,17 +71,13 @@ public class GoodsServiceImpl implements GoodsService {
 	    */
 	    
 	@Override
-	public ServiceResponse<List<GoodsVo>> listGoods(GoodsVo goods) {
-		ServiceResponse<List<GoodsVo>> resp=new ServiceResponse<>();
+	public ServiceResponse<Pager<GoodsVo>> listGoods(GoodsVo listParam) {
+		ServiceResponse<Pager<GoodsVo>> resp=new ServiceResponse<>();
 		List<GoodsVo>voList=null;
 		try {
-			TGoods param=new TGoods();
-			param.setCid(goods.getCid());
-			param.setGoodsCode(goods.getGoodsCode());
-			param.setGoodsName(goods.getGoodsName());
-			param.setStatus(goods.getStatus());
-			param.setPrice(goods.getPrice());
-			List<TGoods> goodsList=goodsMapper.listGoods(param);
+			Long count=goodsMapper.countGoods(listParam);
+			listParam.setStart((listParam.getPageNum()-1)*listParam.getPageSize());
+			List<TGoods> goodsList=goodsMapper.listGoods(listParam);
 			if(goodsList!=null&&goodsList.size()>0){
 				voList=new ArrayList<GoodsVo>();
 				for(TGoods result:goodsList){
@@ -95,10 +93,11 @@ public class GoodsServiceImpl implements GoodsService {
 					vo.setPrice(result.getPrice());
 					vo.setUpdateTime(result.getUpdateTime());
 					vo.setStatus(result.getStatus());
+					vo.setSales(result.getSales());
 					voList.add(vo);
 				}
 			}
-			resp.setData(voList);
+			resp.setData(new Pager<>(listParam.getPageSize(), listParam.getPageNum(), count, voList));
 			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
@@ -180,7 +179,6 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 		return resp;
 	}
-
 
 	
 	    /* (非 Javadoc)
@@ -414,7 +412,7 @@ public class GoodsServiceImpl implements GoodsService {
 		ServiceResponse<List<GoodsVo>> resp=new ServiceResponse<List<GoodsVo>>();
 		List<GoodsVo>voList=null;
 		try {
-			List<TGoods>goodsList=goodsMapper.listNewGoods();
+			List<TGoods>goodsList=goodsMapper.listNewGoods(goods);
 			if(goodsList!=null&&goodsList.size()>0){
 				voList=new ArrayList<GoodsVo>();
 				for(TGoods tgoods:goodsList){
@@ -455,7 +453,7 @@ public class GoodsServiceImpl implements GoodsService {
 		ServiceResponse<List<GoodsVo>> resp=new ServiceResponse<List<GoodsVo>>();
 		List<GoodsVo>voList=null;
 		try {
-			List<TGoods>goodsList=goodsMapper.listHotGoods();
+			List<TGoods>goodsList=goodsMapper.listHotGoods(goods);
 			if(goodsList!=null&&goodsList.size()>0){
 				voList=new ArrayList<GoodsVo>();
 				for(TGoods tgoods:goodsList){
@@ -559,6 +557,20 @@ public class GoodsServiceImpl implements GoodsService {
 			log.error("查询sku异常!",e);
 		}
 		return resp;
+	}
+
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @param gids
+	    * @see com.cza.service.goods.GoodsService#batchUpdateGoodsIndex(java.util.List)
+	    */
+	    
+	@Override
+	public void batchUpdateGoodsIndex(List<Long> gids) {
+		goodsMapper.batchUpdateGoodsIndex(gids);
 	}
 	
 

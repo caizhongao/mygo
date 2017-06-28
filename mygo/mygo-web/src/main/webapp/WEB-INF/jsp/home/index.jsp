@@ -135,6 +135,7 @@
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle">
+ 		<%@ include file="/common/search/search.jsp" %>
 		<%@ include file="/common/category.jsp" %>
 		<table id="newGoods"  width="80%"  cellpadding="0" cellspacing="0" align="center" style="margin-top: 10px">
 			<tr>

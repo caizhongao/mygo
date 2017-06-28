@@ -1,122 +1,39 @@
 
     /**  
-    * @Title: TGoods.java
-    * @Package com.cza.dto.goods
+    * @Title: GoodsIndexVo.java
+    * @Package com.cza.service.goods.vo
     * @Description: TODO(用一句话描述该文件做什么)
     * @author mufeng
-    * @date 2017年2月22日下午5:44:27
+    * @date 2017年6月27日下午5:38:08
     * @version V1.0  
     */
     
-package com.cza.dto.goods;
+package com.cza.service.goods.vo;
 
 import java.math.BigDecimal;
 
 /**
-    * @ClassName: TGoods
+    * @ClassName: GoodsIndexVo
     * @Description: TODO(这里用一句话描述这个类的作用)
     * @author mufeng
-    * @date 2017年2月22日下午5:44:27
+    * @date 2017年6月27日下午5:38:08
     *
     */
 
-public class TGoods {
+public class GoodsIndexVo {
 	private Long	gid;
 	private String	goodsName;
 	private String	goodsCode;//商品编码
 	private String goodsPic;
 	private Long	cid;//分类id
+	private String categoryName;
 	private BigDecimal	price;
 	private Long	createTime;
 	private Long	updateTime;
-	private String status;//上下架状态
 	private Long sales;
-	private Integer goodsIndex;//索引状态
+	private Long stock;
+	private String status;//上下架状态
 	
-	
-	
-	
-	
-	/**
-	* @return goodsIndex
-	*/
-	
-	public Integer getGoodsIndex() {
-		return goodsIndex;
-	}
-
-
-
-
-	
-	/**
-	 * @param goodsIndex the goodsIndex to set
-	 */
-	
-	public void setGoodsIndex(Integer goodsIndex) {
-		this.goodsIndex = goodsIndex;
-	}
-
-
-
-
-	/**
-	* @return sales
-	*/
-	
-	public Long getSales() {
-		return sales;
-	}
-
-
-
-	
-	/**
-	 * @param sales the sales to set
-	 */
-	
-	public void setSales(Long sales) {
-		this.sales = sales;
-	}
-
-
-
-	/**
-	* @return status
-	*/
-	
-	public String getStatus() {
-		return status;
-	}
-
-
-	
-	/**
-	 * @param status the status to set
-	 */
-	
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-
-	/**
-	* @return goodsPic
-	*/
-	
-	public String getGoodsPic() {
-		return goodsPic;
-	}
-
-	
-	/**
-	 * @param goodsPic the goodsPic to set
-	 */
-	
-	public void setGoodsPic(String goodsPic) {
-		this.goodsPic = goodsPic;
-	}
-
 	/**
 	* @return gid
 	*/
@@ -166,6 +83,22 @@ public class TGoods {
 	}
 	
 	/**
+	* @return goodsPic
+	*/
+	
+	public String getGoodsPic() {
+		return goodsPic;
+	}
+	
+	/**
+	 * @param goodsPic the goodsPic to set
+	 */
+	
+	public void setGoodsPic(String goodsPic) {
+		this.goodsPic = goodsPic;
+	}
+	
+	/**
 	* @return cid
 	*/
 	
@@ -179,6 +112,22 @@ public class TGoods {
 	
 	public void setCid(Long cid) {
 		this.cid = cid;
+	}
+	
+	/**
+	* @return categoryName
+	*/
+	
+	public String getCategoryName() {
+		return categoryName;
+	}
+	
+	/**
+	 * @param categoryName the categoryName to set
+	 */
+	
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 	
 	/**
@@ -228,24 +177,54 @@ public class TGoods {
 	public void setUpdateTime(Long updateTime) {
 		this.updateTime = updateTime;
 	}
-
-
-
-
 	
-	    /* (非 Javadoc)
-	    * 
-	    * 
-	    * @return
-	    * @see java.lang.Object#toString()
-	    */
-	    
-	@Override
-	public String toString() {
-		return "TGoods [gid=" + gid + ", goodsName=" + goodsName + ", goodsCode=" + goodsCode + ", goodsPic=" + goodsPic
-				+ ", cid=" + cid + ", price=" + price + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", status=" + status + ", sales=" + sales + "]";
+	/**
+	* @return sales
+	*/
+	
+	public Long getSales() {
+		return sales;
 	}
-
+	
+	/**
+	 * @param sales the sales to set
+	 */
+	
+	public void setSales(Long sales) {
+		this.sales = sales;
+	}
+	
+	/**
+	* @return stock
+	*/
+	
+	public Long getStock() {
+		return stock;
+	}
+	
+	/**
+	 * @param stock the stock to set
+	 */
+	
+	public void setStock(Long stock) {
+		this.stock = stock;
+	}
+	
+	/**
+	* @return status
+	*/
+	
+	public String getStatus() {
+		return status;
+	}
+	
+	/**
+	 * @param status the status to set
+	 */
+	
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	
 }

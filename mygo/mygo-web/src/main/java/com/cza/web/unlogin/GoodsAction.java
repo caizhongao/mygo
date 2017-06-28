@@ -29,10 +29,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
+import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.goods.TCategoryAttr;
 import com.cza.service.goods.CategoryService;
+import com.cza.service.goods.GoodsIndexService;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.CategoryVo;
 import com.cza.service.goods.vo.GoodsVo;
@@ -55,18 +57,36 @@ public class GoodsAction extends CommonAction{
 	private GoodsService goodsService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private GoodsIndexService goodsIndexService;
+	
+	@RequestMapping("search")
+	public String search(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		goods.setStart(0);
+		goods.setPageSize(20);
+		ServiceResponse<Pager<GoodsVo>>resp=goodsIndexService.search(goods);
+		if(resp.isSuccess()){
+			request.setAttribute("pager", resp.getData());
+		}
+		return webPage("goods/search");
+	}
+	
 	@RequestMapping("listNewGoods")
 	public void listNewGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		goods.setStart(0);
+		goods.setPageSize(8);
 		ServiceResponse<List<GoodsVo>> resp=goodsService.listNewGoods(goods);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().println(JSON.toJSONString(resp.getData()));
 		}
 	}
 	@RequestMapping("listHotGoods")
 	public void listHotGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		goods.setStart(0);
+		goods.setPageSize(8);
 		ServiceResponse<List<GoodsVo>> resp=goodsService.listHotGoods(goods);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().println(JSON.toJSONString(resp.getData()));
 		}
@@ -76,10 +96,11 @@ public class GoodsAction extends CommonAction{
 	public void listCategoryGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		//查询出用户选择的类目下商品
 		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
-		ServiceResponse<List<GoodsVo>> resp=goodsService.listGoods(goods);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		goods.setPageSize(8);
+		ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
+		if(resp.isSuccess()){
 			response.setCharacterEncoding("utf-8");
-			response.getWriter().println(JSON.toJSONString(resp.getData()));
+			response.getWriter().println(JSON.toJSONString(resp.getData().getResult()));
 		}
 	}
 	
@@ -89,7 +110,7 @@ public class GoodsAction extends CommonAction{
 		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
 		category.setPid(0l);
 		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
 			List<CategoryVo> categoryList=resp.getData();
 			request.setAttribute("categoryList", categoryList);
 		}else{
@@ -98,7 +119,7 @@ public class GoodsAction extends CommonAction{
 		GoodsVo param=new GoodsVo();
 		param.setGid(Long.valueOf(request.getParameter("gid")));
 		ServiceResponse<GoodsVo> goodsResp=goodsService.queryGoods(param);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(goodsResp.getCode())){
+		if(resp.isSuccess()){
 			GoodsVo goodsVo=goodsResp.getData();
 			request.setAttribute("goods", goodsVo);
 			request.setAttribute("attrs", initAttr(goodsVo));

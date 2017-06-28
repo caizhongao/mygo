@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.alibaba.fastjson.JSON;
+import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.goods.TCategoryAttr;
@@ -59,9 +60,11 @@ public class GoodsAction extends CommonAction{
 	
 	@RequestMapping("listGoods")
 	public String listGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response){
-		ServiceResponse<List<GoodsVo>> resp=goodsService.listGoods(goods);
+		log.info("GoodsAction.listGoods 请求参数,goods:{}",goods);
+		request.setAttribute("goods", goods);
+		ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			request.setAttribute("goodsList", resp.getData());
+			request.setAttribute("pager", resp.getData());
 		}else{
 			request.setAttribute("status", "service errro!");
 		}

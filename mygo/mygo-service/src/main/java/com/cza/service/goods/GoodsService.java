@@ -12,6 +12,7 @@ package com.cza.service.goods;
 
 import java.util.List;
 
+import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.dto.goods.TSkuStock;
 import com.cza.service.goods.vo.GoodsVo;
@@ -37,7 +38,7 @@ public interface GoodsService {
 		    * @throws
 		    */
 		    
-		ServiceResponse<List<GoodsVo>> listGoods(GoodsVo goods);
+		ServiceResponse<Pager<GoodsVo>> listGoods(GoodsVo goods);
 
 			
 			    /**
@@ -143,5 +144,17 @@ public interface GoodsService {
 											    */
 											    
 											ServiceResponse<TSkuStock> querySkuStock(Long sid);
+
+
+												
+												    /**
+												    * @Title: batchUpdateGoodsIndex
+												    * @Description: TODO(这里用一句话描述这个方法的作用)
+												    * @param @param gids    参数
+												    * @return void    返回类型
+												    * @throws
+												    */
+												    
+												void batchUpdateGoodsIndex(List<Long> gids);
 	
 }

@@ -29,8 +29,14 @@
 		background-color: #EFEEF0;
 		color: #666666;
 	}
-	
-}
+	.queryParam{
+	width: 80%;height: 30px;
+	margin-top:25px;
+	font-size: 14px;color: #666666;
+	}
+	.queryParam input,select{
+		width: 150px;
+	}
 </style>
 <script type="text/javascript">
 function updateGoodsStatus(obj,gid){
@@ -69,6 +75,24 @@ function updateGoodsStatus(obj,gid){
 </head>
 <body>
 	<div style="width:95%;margin: 0px auto;">
+		<form action="${ctx}/manager/goods/listGoods.do" method="post">
+		<div class="queryParam">
+			<span style="display: inline-block;width: 250px">
+				商品名称：<input type="text" name="goodsName" value="${goods.goodsName}">
+			</span>
+			<span style="display: inline-block;width: 250px">
+				商品状态：<select name="status">
+					<option value="">所有</option>
+					<option value="W" <c:if test='${goods.status=="W"}'>selected="selected"</c:if>>待上架</option>
+					<option value="O" <c:if test='${goods.status=="O"}'>selected="selected"</c:if>>已上架</option>
+					<option value="F" <c:if test='${goods.status=="F"}'>selected="selected"</c:if>>已下架</option>
+				</select>
+			</span>
+			<span style="display: inline-block;width: 150px;text-align: center">
+				<input type="button" class="manager_button" onclick="$('form').eq(0).submit()" style="width: 100px" value="查询">
+			</span>
+		</div>
+		</form>
 	<table style="width: 95%" cellpadding="0" cellspacing="0">
 		<tr>
 			<td colspan="7" style="border-right: none;text-align: right;height: 50px;"> 
@@ -98,7 +122,7 @@ function updateGoodsStatus(obj,gid){
 				操作
 			</th>	
 		</tr>
-		<c:forEach items="${goodsList}" var="goods">
+		<c:forEach items="${pager.result}" var="goods">
 			<tr>
 				<td>
 					<img src="${goods.goodsPic}" width="100px">
@@ -144,6 +168,8 @@ function updateGoodsStatus(obj,gid){
 		</c:forEach>
 		
 	</table>
+		<br>
+		<%@ include file="/common/page.jsp" %>
 	</div>
 </body> 
 </html>

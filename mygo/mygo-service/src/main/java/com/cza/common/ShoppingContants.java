@@ -41,6 +41,12 @@ public interface ShoppingContants {
 	public static final String GOODS_STATUS_OFF="F";
 	
 	
+	public static final Integer GOODS_INDEX_WAIT=0;
+	
+	public static final Integer GOODS_INDEX_HAS=1;	
+	
+	
+	
 	public static final Integer SKU_STATUS_NORMAL=0;
 	
 	public static final Integer SKU_STATUS_DELETE=1;

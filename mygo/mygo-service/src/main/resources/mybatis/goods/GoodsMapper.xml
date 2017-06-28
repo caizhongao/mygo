@@ -64,13 +64,13 @@
 	</select>
 	
 	
-	<select id="listNewGoods" resultMap="goods">
+	<select id="listNewGoods" parameterType="com.cza.service.goods.vo.GoodsVo" resultMap="goods">
 		select 
 			<include refid="allColumns"></include>
 		from t_goods 
 			where status='O'
 			order by gid desc
-			limit 0,6;
+			limit #{start},#{pageSize};
 	</select>
 	
 	
@@ -80,10 +80,40 @@
 		from t_goods 
 			where status='O'
 			order by sales desc
-			limit 0,6;
+			limit #{start},#{pageSize};
 	</select>
 	
-	<select id="listGoods" parameterType="com.cza.dto.goods.TGoods" resultMap="goods">
+	<select id="countGoods" parameterType="com.cza.service.goods.vo.GoodsVo" resultType="java.lang.Long">
+		select 
+			count(1)
+		from t_goods 
+			<where>
+				<if test="gid!=null">
+					and gid = #{gid}
+				</if>
+				<if test="cid!=null">
+					and cid = #{cid}
+				</if>
+				<if test="goodsName!=null and goodsName!=''">
+					and goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
+				</if>
+				<if test="price!=null">
+					and price=#{price}
+				</if>
+				<if test="goodsCode!=null and goodsCode!=''">
+					and goods_code = #{goodsCode}
+				</if>
+				<if test="status!=null and status!=''">
+					and status = #{status}
+				</if>
+				<if test="goodsIndex!=null">
+					and goods_index = #{goodsIndex}
+				</if>
+			</where>
+	</select>
+	
+	
+	<select id="listGoods" parameterType="com.cza.service.goods.vo.GoodsVo" resultMap="goods">
 		select 
 			<include refid="allColumns"></include>
 		from t_goods 
@@ -95,7 +125,7 @@
 					and cid = #{cid}
 				</if>
 				<if test="goodsName!=null and goodsName!=''">
-					and goods_name = #{goodsName}
+					and goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
 				</if>
 				<if test="price!=null">
 					and price=#{price}
@@ -103,10 +133,22 @@
 				<if test="goodsCode!=null and goodsCode!=''">
 					and goods_code = #{goodsCode}
 				</if>
-				<if test="status!=null">
+				<if test="status!=null and status!=''">
 					and status = #{status}
 				</if>
+				<if test="goodsIndex!=null">
+					and goods_index = #{goodsIndex}
+				</if>
 			</where>
+			order by create_time desc
+			limit #{start},#{pageSize}
 	</select>
 		
+	<select id="batchUpdateGoodsIndex">
+	update t_goods set goods_index=1
+		WHERE gid IN 
+		<foreach collection="list" item="gid" open="(" close=")" separator=",">
+    		#{gid}
+    	</foreach>
+	</select>
 </mapper>
