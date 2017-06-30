@@ -45,19 +45,21 @@
 									'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+goods.goodsName+'</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>'+goods.price+'</span>'+
 								'</div>'+
 							'</td>';
-				if(trGoodsNum==4){
+				if(trGoodsNum==0){
 					goodsHtml+='</tr>';
 				}else{
 					goodsHtml+='<td>&nbsp</td>';
 				}
 			});
 			//lastTdGoodsNum 最后一行的商品数，不足4个的补足4个
-			for(trGoodsNum=trGoodsNum+1;trGoodsNum<=4;trGoodsNum++){
-				goodsHtml+='<td width="310px">&nbsp</td>';
-				if(trGoodsNum==4){
-					goodsHtml+='</tr>';
-				}else{
-					goodsHtml+='<td>&nbsp</td>';
+			if(trGoodsNum!=0){
+				for(trGoodsNum=trGoodsNum+1;trGoodsNum<=4;trGoodsNum++){
+					goodsHtml+='<td width="310px">&nbsp</td>';
+					if(trGoodsNum==4){
+						goodsHtml+='</tr>';
+					}else{
+						goodsHtml+='<td>&nbsp</td>';
+					}
 				}
 			}
 		}

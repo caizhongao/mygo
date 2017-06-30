@@ -126,7 +126,7 @@
 				if(erroMsg!=""){
 					erroMsg+="<br>";
 				}
-				erroMsg+=".用户名长度不能超过20个字符";
+				erroMsg+=".用户名长度必须在6到20个字符之间";
 				isOk=false;
 			}
 		}

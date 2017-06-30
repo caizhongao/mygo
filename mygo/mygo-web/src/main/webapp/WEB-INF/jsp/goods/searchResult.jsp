@@ -88,22 +88,24 @@
 										</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>${goods.price }</span>
 									</div>
 								</td>
-						<c:if test="${status.index%4!=3 }">
+						<c:if test="${num!=0}">
 							<td>&nbsp</td>
 						</c:if>
-						<c:if test="${status.index%4==3 }">
+						<c:if test="${num==0 }">
 							</tr>
 						</c:if>
 					</c:forEach>
-					<c:forEach begin="${num }" var="i" end="4">
-						<td width="310px">&nbsp</td>
-						<c:if test="${i%4!=3 }">
-							<td>&nbsp</td>
-						</c:if>
-						<c:if test="${i%4==3 }">
-							</tr>
-						</c:if>
-					</c:forEach>
+					<c:if test="${num!=0}">
+						<c:forEach begin="${num+1 }" var="i" end="4">
+							<td width="310px">&nbsp</td>
+							<c:if test="${i!=4 }">
+								<td>&nbsp</td>
+							</c:if>
+							<c:if test="${i==4 }">
+								</tr>
+							</c:if>
+						</c:forEach>
+					</c:if>
 				</c:otherwise>
 			</c:choose>
 		</table>
