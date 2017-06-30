@@ -193,10 +193,10 @@
 				<td>商品分类：</td>
 				<td>
 					<select id="cid" name="cid" onchange="listAttrs()" disabled="disabled">
-						<option value="1" <c:if test="goods.cid==1">selected="selected"</c:if>>食品</option>
-						<option value="2" <c:if test="goods.cid==2">selected="selected"</c:if>>服装</option>
-						<option value="3" <c:if test="goods.cid==3">selected="selected"</c:if>>家具</option>
-						<option value="4" <c:if test="goods.cid==4">selected="selected"</c:if>>电器</option>
+						<option value="1" <c:if test="${goods.cid==1 }">selected="selected"</c:if>>食品</option>
+						<option value="2" <c:if test="${goods.cid==2 }">selected="selected"</c:if>>服装</option>
+						<option value="3" <c:if test="${goods.cid==3 }">selected="selected"</c:if>>家具</option>
+						<option value="4" <c:if test="${goods.cid==4 }">selected="selected"</c:if>>电器</option>
 					</select>
 					<input type="hidden" name="cid" value="${goods.cid}">
 				</td>

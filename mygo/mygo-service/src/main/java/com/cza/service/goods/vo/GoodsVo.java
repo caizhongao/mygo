@@ -43,14 +43,152 @@ public class GoodsVo {
 	private Integer pageNum=1;
 	private Integer pageSize=15;
 	private Integer start=0;
+	/**用于scroll分页*/
+	//scroId对应的页码
+	private Integer scrollPage=0;
+	//scroId
+	private String scrollId;
+	//总记录数
+	private Long count;
 	
 	
 	
 	
 	
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
+	
+	/**
+	* @return count
+	*/
+	
+	public Long getCount() {
+		return count;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param count the count to set
+	 */
+	
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	* @return scrollPage
+	*/
+	
+	public Integer getScrollPage() {
+		return scrollPage;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param scrollPage the scrollPage to set
+	 */
+	
+	public void setScrollPage(Integer scrollPage) {
+		this.scrollPage = scrollPage;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	* @return scrollId
+	*/
+	
+	public String getScrollId() {
+		return scrollId;
+	}
+
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param scrollId the scrollId to set
+	 */
+	
+	public void setScrollId(String scrollId) {
+		this.scrollId = scrollId;
+	}
+
+
+
+
+
+
+
+
+
 	/**
 	* @return searchKey
 	*/
@@ -434,6 +572,15 @@ public class GoodsVo {
 
 
 
+
+
+
+
+
+
+
+
+
 	
 	    /* (非 Javadoc)
 	    * 
@@ -445,9 +592,42 @@ public class GoodsVo {
 	@Override
 	public String toString() {
 		return "GoodsVo [gid=" + gid + ", goodsName=" + goodsName + ", goodsCode=" + goodsCode + ", goodsPic="
-				+ goodsPic + ", cid=" + cid + ", price=" + price + ", createTime=" + createTime + ", updateTime="
-				+ updateTime + ", status=" + status + ", skus=" + skus + "]";
+				+ goodsPic + ", cid=" + cid + ", categoryName=" + categoryName + ", price=" + price + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + ", sales=" + sales + ", stock=" + stock + ", status="
+				+ status + ", skus=" + skus + ", goodsIndex=" + goodsIndex + ", searchKey=" + searchKey + ", pageNum="
+				+ pageNum + ", pageSize=" + pageSize + ", start=" + start + ", scrollPage=" + scrollPage + ", scrollId="
+				+ scrollId + ", count=" + count + "]";
 	}
+
+
+
+
+
+
+
+
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
+
+
+
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
+
 
 
 }

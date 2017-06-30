@@ -10,7 +10,7 @@
  </style>
 <div style="width: 80%; margin: 0px auto;margin-bottom: 20px;">
 	<div class="search d1" style="float: right">
-		  <form action="${ctx}/unlogin/goods/search.do" method="get">
+		  <form action="${ctx}/unlogin/goods/scrollSearch.do" method="get">
 		  <input type="text" name="searchKey" value="${goods.searchKey}" placeholder="搜索">
 		  <button type="submit"></button>
 		  </form>

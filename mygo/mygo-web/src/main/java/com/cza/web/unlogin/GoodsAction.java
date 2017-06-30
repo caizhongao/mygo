@@ -13,15 +13,13 @@ package com.cza.web.unlogin;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -32,7 +30,6 @@ import com.alibaba.fastjson.JSON;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
-import com.cza.dto.goods.TCategoryAttr;
 import com.cza.service.goods.CategoryService;
 import com.cza.service.goods.GoodsIndexService;
 import com.cza.service.goods.GoodsService;
@@ -59,17 +56,54 @@ public class GoodsAction extends CommonAction{
 	private CategoryService categoryService;
 	@Autowired
 	private GoodsIndexService goodsIndexService;
-	
+	private static final Logger log = LoggerFactory.getLogger(UserAction.class);
 	@RequestMapping("search")
 	public String search(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		log.info("GoodsAction.search param:{}",goods);
+		//查询出类目
+		CategoryVo category=new CategoryVo();
+		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
+		category.setPid(0l);
+		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			List<CategoryVo> categoryList=resp.getData();
+			request.setAttribute("categoryList", categoryList);
+		}
 		goods.setStart(0);
 		goods.setPageSize(20);
-		ServiceResponse<Pager<GoodsVo>>resp=goodsIndexService.search(goods);
+		ServiceResponse<Pager<GoodsVo>>goodsResp=goodsIndexService.search(goods);
 		if(resp.isSuccess()){
-			request.setAttribute("pager", resp.getData());
+			request.setAttribute("pager", goodsResp.getData());
+			request.setAttribute("goods", goods);
 		}
-		return webPage("goods/search");
+		return webPage("goods/searchResult");
 	}
+	
+	//经过对比，发现scroll分页还是不好用，用from，size比较好，性能的话，控制数量就行，一般控制10页
+	@RequestMapping("scrollSearch")
+	public String scrollSearch(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		log.info("GoodsAction.search param:{}",goods);
+		//查询出类目
+		CategoryVo category=new CategoryVo();
+		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
+		category.setPid(0l);
+		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			List<CategoryVo> categoryList=resp.getData();
+			request.setAttribute("categoryList", categoryList);
+		}
+		goods.setPageSize(20);
+		ServiceResponse<Pager<GoodsVo>>goodsResp=goodsIndexService.scrollSearch(goods);
+		if(resp.isSuccess()){
+			request.setAttribute("pager", goodsResp.getData());
+			goods.setScrollPage(goodsResp.getData().getScrollPage());
+			goods.setScrollId(goodsResp.getData().getScrollId());
+			goods.setCount(goodsResp.getData().getCount());
+			request.setAttribute("goods", goods);
+		}
+		return webPage("goods/scrollSearchResult");
+	}
+	
 	
 	@RequestMapping("listNewGoods")
 	public void listNewGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{

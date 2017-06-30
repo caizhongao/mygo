@@ -140,7 +140,7 @@
 					and goods_index = #{goodsIndex}
 				</if>
 			</where>
-			order by create_time desc
+			order by gid desc
 			limit #{start},#{pageSize}
 	</select>
 		

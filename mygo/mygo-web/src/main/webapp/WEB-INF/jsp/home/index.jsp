@@ -42,45 +42,7 @@
 			type:'post',
 			dataType:'json',
 			success:function(goodsList){
-				var goodsHtml="";
-				var lastTdGoodsNum=0;
-				//一列4个商品
-				$.each(goodsList,function(index,goods){
-					if(index%4==0){
-						goodsHtml+="<tr>";
-						lastTdGoodsNum=0;
-					}
-					lastTdGoodsNum++;
-					if(index%4==3){
-						goodsHtml+='<td width="310px">'+
-										'<div class="goods_img_div">'+
-										'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+'<img alt="" src="'+goods.goodsPic+'" style="width:300px;height:300px;">'+'</a>'+
-										'</div>'+
-										'<div class="goods_name_price">'+
-											'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+goods.goodsName+'</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>'+goods.price+'</span>'+
-										'</div>'+
-									'</td></tr>';
-						
-					}else{
-						goodsHtml+='<td width="310px">'+
-										'<div class="goods_img_div">'+
-										'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+'<img alt="" src="'+goods.goodsPic+'" style="width:300px;height:300px;">'+'</a>'+
-										'</div>'+
-										'<div class="goods_name_price">'+
-											'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+goods.goodsName+'</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>'+goods.price+'</span>'+
-										'</div>'+
-									'</td><td>&nbsp</td>';
-					}
-				});
-				//lastTdGoodsNum 最后一行的商品数，不足4个的补足4个
-				for(lastTdGoodsNum=lastTdGoodsNum+1;lastTdGoodsNum<=4;lastTdGoodsNum++){
-					if(lastTdGoodsNum==4){
-						goodsHtml+='<td width="310px">&nbsp</td></tr>';
-					}else{
-						goodsHtml+='<td width="310px">&nbsp</td><td>&nbsp</td>';
-					}
-				}
-				$('#newGoods').append(goodsHtml);
+				$('#newGoods').append(makeGoodsHtml(goodsList));
 			}
 		});
 		
@@ -89,43 +51,7 @@
 			type:'post',
 			dataType:'json',
 			success:function(goodsList){
-				var goodsHtml="";
-				$.each(goodsList,function(index,goods){
-					if(index%4==0){
-						goodsHtml+="<tr>";
-						lastTdGoodsNum=0;
-					}
-					lastTdGoodsNum++;
-					if(index%4==3){
-						goodsHtml+='<td width="310px">'+
-										'<div class="goods_img_div">'+
-										'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+'<img alt="" src="'+goods.goodsPic+'" style="width:300px;height:300px;">'+'</a>'+
-										'</div>'+
-										'<div class="goods_name_price">'+
-											'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+goods.goodsName+'</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>'+goods.price+'</span>'+
-										'</div>'+
-									'</td></tr>';
-						
-					}else{
-						goodsHtml+='<td width="310px">'+
-										'<div class="goods_img_div">'+
-										'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+'<img alt="" src="'+goods.goodsPic+'" style="width:300px;height:300px;">'+'</a>'+
-										'</div>'+
-										'<div class="goods_name_price">'+
-											'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+goods.goodsName+'</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>'+goods.price+'</span>'+
-										'</div>'+
-									'</td><td>&nbsp</td>';
-					}
-				});
-				//lastTdGoodsNum 最后一行的商品数，不足4个的补足4个
-				for(lastTdGoodsNum=lastTdGoodsNum+1;lastTdGoodsNum<=4;lastTdGoodsNum++){
-					if(lastTdGoodsNum==4){
-						goodsHtml+='<td width="310px">&nbsp</td></tr>';
-					}else{
-						goodsHtml+='<td width="310px">&nbsp</td><td>&nbsp</td>';
-					}
-				}
-				$('#hotGoods').append(goodsHtml);
+				$('#hotGoods').append(makeGoodsHtml(goodsList));
 			}
 		});
 	}

@@ -77,6 +77,7 @@ public class GoodsServiceImpl implements GoodsService {
 		try {
 			Long count=goodsMapper.countGoods(listParam);
 			listParam.setStart((listParam.getPageNum()-1)*listParam.getPageSize());
+			log.info("goodsMapper.listGoods param:{}",listParam);
 			List<TGoods> goodsList=goodsMapper.listGoods(listParam);
 			if(goodsList!=null&&goodsList.size()>0){
 				voList=new ArrayList<GoodsVo>();
@@ -154,7 +155,7 @@ public class GoodsServiceImpl implements GoodsService {
 				TSkuStock stock=new TSkuStock();
 				stock.setSid(sku.getSid());
 				stock.setStock(sku.getNumber());
-				stock.setNumber(sku.getStock());
+				stock.setNumber(sku.getNumber());
 				stockMapper.saveSkuStock(stock);
 				//保存sku属性
 				List<SkuAttrVo>attrs=sku.getAttrs();
@@ -412,6 +413,7 @@ public class GoodsServiceImpl implements GoodsService {
 		ServiceResponse<List<GoodsVo>> resp=new ServiceResponse<List<GoodsVo>>();
 		List<GoodsVo>voList=null;
 		try {
+			log.info("goodsMapper.listNewGoods params:{}",goods);
 			List<TGoods>goodsList=goodsMapper.listNewGoods(goods);
 			if(goodsList!=null&&goodsList.size()>0){
 				voList=new ArrayList<GoodsVo>();

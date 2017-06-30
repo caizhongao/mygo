@@ -31,7 +31,7 @@ public interface GoodsIndexService {
 	
 	    /**
 	    * @Title: search
-	    * @Description: TODO(这里用一句话描述这个方法的作用)
+	    * @Description: from，size分页，性能影响，如果from过大，会造成查询过多数据量
 	    * @param @param goods
 	    * @param @return    参数
 	    * @return ServiceResponse<Pager<GoodsVo>>    返回类型
@@ -39,4 +39,16 @@ public interface GoodsIndexService {
 	    */
 	    
 	public ServiceResponse<Pager<GoodsVo>> search(GoodsVo goods);
+	
+	
+    /**
+    * @Title: scrollSearch
+    * @Description: scroll方式分页，这种分页更高效
+    * @param @param goods
+    * @param @return    参数
+    * @return ServiceResponse<Pager<GoodsVo>>    返回类型
+    * @throws
+    */
+    
+public ServiceResponse<Pager<GoodsVo>> scrollSearch(GoodsVo goods);
 }

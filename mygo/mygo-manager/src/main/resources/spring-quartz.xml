@@ -24,7 +24,7 @@
 	<!-- ======================== 调度触发器 ======================== -->  
 	<bean id="GoodsIndexTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
 	    <property name="jobDetail" ref="GoodsIndexMethod"></property>  
-	    <property name="cronExpression" value="0 0/1 * * * ?"></property>  
+	    <property name="cronExpression" value="0 0/3 * * * ?"></property>  
 	</bean>  
 	<!-- ======================== 调度工厂 ======================== -->  
 	<bean id="SpringJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  

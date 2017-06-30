@@ -21,8 +21,16 @@
 				//activepage: "",//当前页选中样式
 				activepaf: "",//下一页选中样式
 				backfun: function(e) {
-					$('.page_middle form').eq(0).append('<input type="hidden" name="pageNum" value="'+e.current+'">');
-					$('.page_middle form').eq(0).submit();
+					if(e.current==pageNumber){
+						location.reload();
+					}else{
+						$('.page_middle form').eq(0).append('<input type="hidden" name="pageNum" value="'+e.current+'">');
+						$('.page_middle form').eq(0).append('<input type="hidden" name="scrollPage" value="${goods.scrollPage }">');
+						$('.page_middle form').eq(0).append('<input type="hidden" name="scrollId" value="${goods.scrollId }">');
+						$('.page_middle form').eq(0).append('<input type="hidden" name="count" value="${goods.count }">');
+						$('.page_middle form').eq(0).submit();
+					}
+					
 				}
 			});
 		}

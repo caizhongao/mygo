@@ -13,6 +13,7 @@ package com.cza.web.manager;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,6 +39,7 @@ import com.cza.dto.goods.TCategoryAttr;
 import com.cza.service.goods.CategoryService;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.GoodsVo;
+import com.cza.service.goods.vo.SkuAttrVo;
 import com.cza.service.goods.vo.SkuVo;
 import com.cza.web.CommonAction;
 
@@ -184,4 +186,307 @@ public class GoodsAction extends CommonAction{
 			response.getWriter().print("failed");
 		}
 	}
+	
+	
+	@RequestMapping("initTestData")
+	public void initTestData(HttpServletRequest request,HttpServletResponse response){
+		for(int i=1;i<5000;i++){
+			int num=(int)(Math.random()*4)+1;
+			if(num==1){
+				makeGoods1(i);
+			}else if(num==2){
+				makeGoods2(i);
+			}else if(num==3){
+				makeGoods3(i);
+			}else if(num==4){
+				makeGoods4(i);
+			}
+    	}
+	}
+
+	
+	    /**
+	    * @Title: makeGoods1
+	    * @Description: 生成服装数据
+	    * @param @param i    参数
+	    * @return void    返回类型
+	    * @throws
+	    */
+	    
+	private void makeGoods1(int i) {
+		String pic[]={"http://120.77.65.75:8088//goods/test001.jpg?d=1498794002365","http://120.77.65.75:8088//goods/fuzhuang.jpg","http://120.77.65.75:8088//goods/kuzi.jpg?d=1498820818598"};
+		String name[]={"情侣短袖黑白款","女士灰色有领休闲款T恤","夏季新款休闲裤男韩版修身九分裤夏天学生男裤长裤薄款男士裤子男"};
+		GoodsVo goods=new GoodsVo();
+		goods.setGoodsCode("test"+i);
+		goods.setGoodsName(name[i%3]+i);
+		goods.setPrice(new BigDecimal(99.0));
+		goods.setCid(2l);
+		goods.setGoodsPic(pic[i%3]);
+		List<SkuVo> skus=new ArrayList<>();
+		
+		SkuVo sku1=new SkuVo();
+		sku1.setBarcode("sku"+i+"1");
+		sku1.setGoodsName(goods.getGoodsName());
+		sku1.setNumber(100l);
+		sku1.setPrice(new BigDecimal(99.0));
+		List<SkuAttrVo> skuAttrVos1=new ArrayList<>();
+		SkuAttrVo skuAttr1=new SkuAttrVo();
+		skuAttr1.setAttrId(3l);
+		skuAttr1.setAttrValue("黑色");
+		skuAttrVos1.add(skuAttr1);
+		SkuAttrVo skuAttr2=new SkuAttrVo();
+		skuAttr2.setAttrId(4l);
+		skuAttr2.setAttrValue("大码");
+		skuAttrVos1.add(skuAttr2);
+		sku1.setAttrs(skuAttrVos1);
+		skus.add(sku1);
+		
+		SkuVo sku2=new SkuVo();
+		sku2.setBarcode("sku"+i+"2");
+		sku2.setGoodsName(goods.getGoodsName());
+		sku2.setNumber(100l);
+		sku2.setPrice(new BigDecimal(105.0));
+		List<SkuAttrVo> skuAttrVos2=new ArrayList<>();
+		SkuAttrVo skuAttr2_1=new SkuAttrVo();
+		skuAttr2_1.setAttrId(3l);
+		skuAttr2_1.setAttrValue("白色");
+		skuAttrVos2.add(skuAttr2_1);
+		SkuAttrVo skuAttr2_2=new SkuAttrVo();
+		skuAttr2_2.setAttrId(4l);
+		skuAttr2_2.setAttrValue("中码");
+		skuAttrVos2.add(skuAttr2_2);
+		sku2.setAttrs(skuAttrVos2);
+		skus.add(sku2);
+		
+		SkuVo sku3=new SkuVo();
+		sku3.setBarcode("sku"+i+"3");
+		sku3.setGoodsName(goods.getGoodsName());
+		sku3.setNumber(100l);
+		sku3.setPrice(new BigDecimal(100.0));
+		List<SkuAttrVo> skuAttrVos3=new ArrayList<>();
+		SkuAttrVo skuAttr3_1=new SkuAttrVo();
+		skuAttr3_1.setAttrId(3l);
+		skuAttr3_1.setAttrValue("灰色");
+		skuAttrVos3.add(skuAttr3_1);
+		SkuAttrVo skuAttr3_2=new SkuAttrVo();
+		skuAttr3_2.setAttrId(4l);
+		skuAttr3_2.setAttrValue("小码");
+		skuAttrVos3.add(skuAttr3_2);
+		sku3.setAttrs(skuAttrVos3);
+		skus.add(sku3);
+		goods.setSkus(skus);
+		goodsService.saveGoods(goods);
+		log.info("goods:{}",goods);
+	}
+	
+	
+	
+	   /**
+	    * @Title: makeGoods1
+	    * @Description: 生成电器数据
+	    * @param @param i    参数
+	    * @return void    返回类型
+	    * @throws
+	    */
+	    
+	private void makeGoods2(int i) {
+		String pic[]={"http://120.77.65.75:8088//goods/dianshi1.jpg?","http://120.77.65.75:8088//goods/bingxiang.jpg?d=1498820673193","http://120.77.65.75:8088//goods/xiyiji.jpg?d=1498820747866"};
+		String name[]={"4k液晶高清大电视","对开四门变频电脑冰箱节能家用","智能波轮家用全自动洗衣机 大容量"};
+		
+		GoodsVo goods=new GoodsVo();
+		goods.setGoodsCode("test"+i);
+		goods.setGoodsName(name[i%3]+i);
+		goods.setPrice(new BigDecimal(1999.0));
+		goods.setCid(4l);
+		goods.setGoodsPic(pic[i%3]);
+		List<SkuVo> skus=new ArrayList<>();
+		
+		SkuVo sku1=new SkuVo();
+		sku1.setBarcode("sku"+i+"1");
+		sku1.setGoodsName(goods.getGoodsName());
+		sku1.setNumber(100l);
+		sku1.setPrice(new BigDecimal(2299.0));
+		List<SkuAttrVo> skuAttrVos1=new ArrayList<>();
+		SkuAttrVo skuAttr1=new SkuAttrVo();
+		skuAttr1.setAttrId(5l);
+		skuAttr1.setAttrValue("黑色");
+		skuAttrVos1.add(skuAttr1);
+		SkuAttrVo skuAttr2=new SkuAttrVo();
+		skuAttr2.setAttrId(6l);
+		skuAttr2.setAttrValue("32寸");
+		skuAttrVos1.add(skuAttr2);
+		sku1.setAttrs(skuAttrVos1);
+		skus.add(sku1);
+		
+		SkuVo sku2=new SkuVo();
+		sku2.setBarcode("sku"+i+"2");
+		sku2.setGoodsName(goods.getGoodsName());
+		sku2.setNumber(100l);
+		sku2.setPrice(new BigDecimal(2999.0));
+		List<SkuAttrVo> skuAttrVos2=new ArrayList<>();
+		SkuAttrVo skuAttr2_1=new SkuAttrVo();
+		skuAttr2_1.setAttrId(5l);
+		skuAttr2_1.setAttrValue("灰色");
+		skuAttrVos2.add(skuAttr2_1);
+		SkuAttrVo skuAttr2_2=new SkuAttrVo();
+		skuAttr2_2.setAttrId(6l);
+		skuAttr2_2.setAttrValue("34寸");
+		skuAttrVos2.add(skuAttr2_2);
+		sku2.setAttrs(skuAttrVos2);
+		skus.add(sku2);
+		
+		SkuVo sku3=new SkuVo();
+		sku3.setBarcode("sku"+i+"3");
+		sku3.setGoodsName(goods.getGoodsName());
+		sku3.setNumber(100l);
+		sku3.setPrice(new BigDecimal(1999.0));
+		List<SkuAttrVo> skuAttrVos3=new ArrayList<>();
+		SkuAttrVo skuAttr3_1=new SkuAttrVo();
+		skuAttr3_1.setAttrId(5l);
+		skuAttr3_1.setAttrValue("银色");
+		skuAttrVos3.add(skuAttr3_1);
+		SkuAttrVo skuAttr3_2=new SkuAttrVo();
+		skuAttr3_2.setAttrId(6l);
+		skuAttr3_2.setAttrValue("30寸");
+		skuAttrVos3.add(skuAttr3_2);
+		sku3.setAttrs(skuAttrVos3);
+		skus.add(sku3);
+		goods.setSkus(skus);
+		goodsService.saveGoods(goods);
+		log.info("goods:{}",goods);
+	}
+	
+	
+	
+	 /**
+	    * @Title: makeGoods1
+	    * @Description: 生成电器数据
+	    * @param @param i    参数
+	    * @return void    返回类型
+	    * @throws
+	    */
+	    
+	private void makeGoods3(int i) {
+		String pic[]={"http://120.77.65.75:8088//goods/shipin.jpg?d=1498815087266","http://120.77.65.75:8088//goods/mianbao.jpg?d=1498819804254","http://120.77.65.75:8088//goods/gaodian.jpg?d=1498820211974"};
+		String name[]={"小贱香香脆米锅巴","良品铺子手撕大面包营养早餐食品","三只松鼠休闲零食特产小吃饼干糕点点心"};
+		
+		
+		
+		GoodsVo goods=new GoodsVo();
+		goods.setGoodsCode("test"+i);
+		goods.setGoodsName(name[i%3]+i);
+		goods.setPrice(new BigDecimal(2.2));
+		goods.setCid(1l);
+		goods.setGoodsPic(pic[i%3]+i);
+		List<SkuVo> skus=new ArrayList<>();
+		
+		SkuVo sku1=new SkuVo();
+		sku1.setBarcode("sku"+i+"1");
+		sku1.setGoodsName(goods.getGoodsName());
+		sku1.setNumber(100l);
+		sku1.setPrice(new BigDecimal(2.2));
+		List<SkuAttrVo> skuAttrVos1=new ArrayList<>();
+		SkuAttrVo skuAttr1=new SkuAttrVo();
+		skuAttr1.setAttrId(1l);
+		skuAttr1.setAttrValue("100g");
+		skuAttrVos1.add(skuAttr1);
+		SkuAttrVo skuAttr2=new SkuAttrVo();
+		skuAttr2.setAttrId(2l);
+		skuAttr2.setAttrValue("袋装");
+		skuAttrVos1.add(skuAttr2);
+		sku1.setAttrs(skuAttrVos1);
+		skus.add(sku1);
+		
+		SkuVo sku2=new SkuVo();
+		sku2.setBarcode("sku"+i+"2");
+		sku2.setGoodsName(goods.getGoodsName());
+		sku2.setNumber(100l);
+		sku2.setPrice(new BigDecimal(4));
+		List<SkuAttrVo> skuAttrVos2=new ArrayList<>();
+		SkuAttrVo skuAttr2_1=new SkuAttrVo();
+		skuAttr2_1.setAttrId(1l);
+		skuAttr2_1.setAttrValue("200g");
+		skuAttrVos2.add(skuAttr2_1);
+		SkuAttrVo skuAttr2_2=new SkuAttrVo();
+		skuAttr2_2.setAttrId(2l);
+		skuAttr2_2.setAttrValue("袋装");
+		skuAttrVos2.add(skuAttr2_2);
+		sku2.setAttrs(skuAttrVos2);
+		skus.add(sku2);
+		
+		SkuVo sku3=new SkuVo();
+		sku3.setBarcode("sku"+i+"3");
+		sku3.setGoodsName(goods.getGoodsName());
+		sku3.setNumber(100l);
+		sku3.setPrice(new BigDecimal(7));
+		List<SkuAttrVo> skuAttrVos3=new ArrayList<>();
+		SkuAttrVo skuAttr3_1=new SkuAttrVo();
+		skuAttr3_1.setAttrId(1l);
+		skuAttr3_1.setAttrValue("500g");
+		skuAttrVos3.add(skuAttr3_1);
+		SkuAttrVo skuAttr3_2=new SkuAttrVo();
+		skuAttr3_2.setAttrId(2l);
+		skuAttr3_2.setAttrValue("散装");
+		skuAttrVos3.add(skuAttr3_2);
+		sku3.setAttrs(skuAttrVos3);
+		skus.add(sku3);
+		
+		SkuVo sku4=new SkuVo();
+		sku4.setBarcode("sku"+i+"4");
+		sku4.setGoodsName(goods.getGoodsName());
+		sku4.setNumber(100l);
+		sku4.setPrice(new BigDecimal(4));
+		List<SkuAttrVo> skuAttrVos4=new ArrayList<>();
+		SkuAttrVo skuAttr4_1=new SkuAttrVo();
+		skuAttr4_1.setAttrId(1l);
+		skuAttr4_1.setAttrValue("250g");
+		skuAttrVos4.add(skuAttr4_1);
+		SkuAttrVo skuAttr4_2=new SkuAttrVo();
+		skuAttr4_2.setAttrId(2l);
+		skuAttr4_2.setAttrValue("散装");
+		skuAttrVos4.add(skuAttr4_2);
+		sku4.setAttrs(skuAttrVos4);
+		skus.add(sku4);
+		
+		
+		goods.setSkus(skus);
+		goodsService.saveGoods(goods);
+		log.info("goods:{}",goods);
+	}
+	
+	
+	 /**
+	    * @Title: makeGoods1
+	    * @Description: 生成家具数据
+	    * @param @param i    参数
+	    * @return void    返回类型
+	    * @throws
+	    */
+	    
+	private void makeGoods4(int i) {
+		String pic[]={"http://120.77.65.75:8088//goods/test003.jpg","http://120.77.65.75:8088//goods/chuangdian.jpg?d=1498820449657","http://120.77.65.75:8088//goods/dengzi.jpg?d=1498820552660"};
+		String name[]={"居家舒适大沙发","单双人榻榻米床垫保护垫薄防滑床护垫","小凳子实木沙发凳布艺高腿小板凳方凳矮凳时尚创意穿鞋换鞋凳"};
+		
+		
+		
+		GoodsVo goods=new GoodsVo();
+		goods.setGoodsCode("test"+i);
+		goods.setGoodsName(name[i%3]+i);
+		goods.setPrice(new BigDecimal(499));
+		goods.setCid(3l);
+		goods.setGoodsPic(pic[i%3]);
+		List<SkuVo> skus=new ArrayList<>();
+		
+		SkuVo sku1=new SkuVo();
+		sku1.setBarcode("sku"+i+"1");
+		sku1.setGoodsName(goods.getGoodsName());
+		sku1.setNumber(100l);
+		sku1.setPrice(new BigDecimal(499));
+		skus.add(sku1);
+		
+		goods.setSkus(skus);
+		goodsService.saveGoods(goods);
+		log.info("goods:{}",goods);
+	}
+	
 }

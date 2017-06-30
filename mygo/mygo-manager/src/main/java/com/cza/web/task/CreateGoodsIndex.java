@@ -48,6 +48,7 @@ public class CreateGoodsIndex {
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
 		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT);
+		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
 		while(true){
 			ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
 			if(resp.isSuccess()){

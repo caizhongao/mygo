@@ -16,6 +16,54 @@
 	function toIndex(){
 		location.href="${ctx}/";
 	}
+	
+	function makeGoodsHtml(goodsList){
+		var goodsHtml='';
+		if(goodsList==null||goodsList.length<1){
+			goodsHtml+='<tr>'+
+					'<td width="40px;">'+
+						
+					'</td>'+
+					'<td colspan="6" height="30px" style="font-weight: bolder;">'+
+						'<br>'+
+						'暂无商品'+
+					'</td>'+
+				'</tr>';
+		}else{
+			var trGoodsNum=0;
+			//一列4个商品
+			$.each(goodsList,function(index,goods){
+				trGoodsNum=(index+1)%4;
+				if(trGoodsNum==1){
+					goodsHtml+="<tr>";
+				}
+				goodsHtml+='<td width="310px">'+
+								'<div class="goods_img_div">'+
+								'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+'<img alt="" src="'+goods.goodsPic+'" style="width:300px;height:300px;">'+'</a>'+
+								'</div>'+
+								'<div class="goods_name_price">'+
+									'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+goods.goodsName+'</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>'+goods.price+'</span>'+
+								'</div>'+
+							'</td>';
+				if(trGoodsNum==4){
+					goodsHtml+='</tr>';
+				}else{
+					goodsHtml+='<td>&nbsp</td>';
+				}
+			});
+			//lastTdGoodsNum 最后一行的商品数，不足4个的补足4个
+			for(trGoodsNum=trGoodsNum+1;trGoodsNum<=4;trGoodsNum++){
+				goodsHtml+='<td width="310px">&nbsp</td>';
+				if(trGoodsNum==4){
+					goodsHtml+='</tr>';
+				}else{
+					goodsHtml+='<td>&nbsp</td>';
+				}
+			}
+		}
+		return goodsHtml;
+	}	
+	
 </script>
 <div style="width: 100%;background-color: #02AAF1;">
 	<table width="80%"  cellpadding="0" cellspacing="0" align="center">

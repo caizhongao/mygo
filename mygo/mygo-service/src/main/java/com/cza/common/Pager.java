@@ -24,15 +24,74 @@ public class Pager<T> {
 	private Integer pageSize;
 	private Integer pageNum;
 	
-	private Long total;
+	private Long count;
 	private List<T> result;
+	
+	//用于scroll分页
+	private Integer scrollPage=0;
+	private String scrollId;
 	
 	
 	
 	
 	
 	    
-	    /**
+
+
+
+
+
+	
+	
+	/**
+	* @return scrollPage
+	*/
+	
+	public Integer getScrollPage() {
+		return scrollPage;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param scrollPage the scrollPage to set
+	 */
+	
+	public void setScrollPage(Integer scrollPage) {
+		this.scrollPage = scrollPage;
+	}
+
+
+
+
+
+	/**
+	* @return scrollId
+	*/
+	
+	public String getScrollId() {
+		return scrollId;
+	}
+
+
+
+
+	
+	/**
+	 * @param scrollId the scrollId to set
+	 */
+	
+	public void setScrollId(String scrollId) {
+		this.scrollId = scrollId;
+	}
+
+
+
+
+		/**
 	     * 创建一个新的实例 Pager.
 	     *
 	     */
@@ -54,32 +113,46 @@ public class Pager<T> {
 		     * @param result
 		     */
 		    
-		public Pager(Integer pageSize, Integer pageNum, Long total, List<T> result) {
+		public Pager(Integer pageSize, Integer pageNum, Long count, List<T> result) {
 			super();
 			this.pageSize = pageSize;
 			this.pageNum = pageNum;
-			this.total = total;
+			this.count = count;
 			this.result = result;
 		}
 
 
 
-	/**
-	* @return total
-	*/
+
 	
-	public Long getTotal() {
-		return total;
-	}
 	
-	/**
-	 * @param total the total to set
-	 */
-	
-	public void setTotal(Long total) {
-		this.total = total;
-	}
-	
+			/**
+			* @return count
+			*/
+			
+			public Long getCount() {
+				return count;
+			}
+
+
+
+
+
+
+			
+			/**
+			 * @param count the count to set
+			 */
+			
+			public void setCount(Long count) {
+				this.count = count;
+			}
+
+
+
+
+
+
 	/**
 	* @return pageSize
 	*/
