@@ -38,6 +38,7 @@ import com.cza.service.goods.vo.GoodsVo;
 import com.cza.service.goods.vo.SkuAttrVo;
 import com.cza.service.goods.vo.SkuVo;
 import com.cza.web.CommonAction;
+import com.cza.web.filter.cache.WrapperResponse;
 
 /**
     * @ClassName: GoodsAction
@@ -106,36 +107,46 @@ public class GoodsAction extends CommonAction{
 	
 	
 	@RequestMapping("listNewGoods")
-	public void listNewGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+	public void listNewGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,WrapperResponse response) throws IOException{
 		goods.setStart(0);
-		goods.setPageSize(8);
+		goods.setPageSize(16);
 		ServiceResponse<List<GoodsVo>> resp=goodsService.listNewGoods(goods);
 		if(resp.isSuccess()){
-			response.setCharacterEncoding("utf-8");
-			response.getWriter().println(JSON.toJSONString(resp.getData()));
+			response.getOutputStream().write(JSON.toJSONString(resp.getData()).getBytes("utf-8"));
 		}
 	}
 	@RequestMapping("listHotGoods")
-	public void listHotGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+	public void listHotGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,WrapperResponse response) throws IOException{
 		goods.setStart(0);
-		goods.setPageSize(8);
+		goods.setPageSize(16);
 		ServiceResponse<List<GoodsVo>> resp=goodsService.listHotGoods(goods);
 		if(resp.isSuccess()){
-			response.setCharacterEncoding("utf-8");
-			response.getWriter().println(JSON.toJSONString(resp.getData()));
+			response.getOutputStream().write(JSON.toJSONString(resp.getData()).getBytes("utf-8"));
 		}
 	}
 	
 	@RequestMapping("listCategoryGoods")
-	public void listCategoryGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+	public String listCategoryGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		//查询出类目
+		CategoryVo category=new CategoryVo();
+		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
+		category.setPid(0l);
+		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			List<CategoryVo> categoryList=resp.getData();
+			request.setAttribute("categoryList", categoryList);
+		}
+		request.setAttribute("cid", goods.getCid());
+				
 		//查询出用户选择的类目下商品
 		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
-		goods.setPageSize(8);
-		ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
+		goods.setPageSize(20);
+		ServiceResponse<Pager<GoodsVo>> goodsResp=goodsService.listGoods(goods);
 		if(resp.isSuccess()){
-			response.setCharacterEncoding("utf-8");
-			response.getWriter().println(JSON.toJSONString(resp.getData().getResult()));
+			request.setAttribute("pager", goodsResp.getData());
+			request.setAttribute("goods", goods);
 		}
+		return webPage("home/categoryGoods");
 	}
 	
 	@RequestMapping("goodsDetail")

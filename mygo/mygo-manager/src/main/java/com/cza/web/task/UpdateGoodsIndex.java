@@ -37,19 +37,19 @@ import com.cza.service.goods.vo.GoodsVo;
     *
     */
 @Component
-public class CreateGoodsIndex {
-	private static final Logger log = LoggerFactory.getLogger(CreateGoodsIndex.class); 
+public class UpdateGoodsIndex {
+	private static final Logger log = LoggerFactory.getLogger(UpdateGoodsIndex.class); 
 	@Autowired
 	private GoodsService goodsService;
 	
 	@Autowired
 	private GoodsIndexService goodsIndexService;
 	public void execute(){
-		log.info("CreateGoodsIndex.execute start!");
+		log.info("UpdateGoodsIndex.execute start!");
 		long startTime=System.currentTimeMillis();
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
-		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT);
+		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_UPDATE);
 		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
 		while(true){
 			ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
@@ -67,12 +67,12 @@ public class CreateGoodsIndex {
 				}else{
 					break;
 				}
-				goodsIndexService.createIndex(indexList);
+				goodsIndexService.updateIndex(indexList);
 				goodsService.batchUpdateGoodsIndex(gids);
 			}else{
-				log.info("CreateGoodsIndex.execute query goods erro:{}",resp.getCode());
+				log.info("UpdateGoodsIndex.execute query goods erro:{}",resp.getCode());
 			}
 		}
-		log.info("CreateGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);
+		log.info("UpdateGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);
 	}
 }

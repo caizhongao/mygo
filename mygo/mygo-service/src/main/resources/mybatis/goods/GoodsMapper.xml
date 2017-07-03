@@ -12,18 +12,19 @@
 		<result property="gid" column="gid"/>
 		<result property="sales" column="sales"/>
 		<result property="status" column="status"/>
+		<result property="goodsIndex" column="goods_index"/>
 	</resultMap>
 	
 	<sql id="allColumns">
-			gid,goods_name,goods_code,cid,goods_pic,price,create_time,update_time,status,sales
+			gid,goods_name,goods_code,cid,goods_pic,price,create_time,update_time,status,sales,goods_index
 	</sql>
 	
 	<insert id="saveGoods" parameterType="com.cza.dto.goods.TGoods" useGeneratedKeys="true" keyProperty="gid" >
 			insert into t_goods (
-				goods_name,goods_code,cid,goods_pic,price,create_time,update_time,status
+				goods_name,goods_code,cid,goods_pic,price,create_time,update_time,status,goods_index
 			)
 			values (
-				#{goodsName}, #{goodsCode},#{cid},#{goodsPic},#{price},#{createTime},#{updateTime},#{status}
+				#{goodsName}, #{goodsCode},#{cid},#{goodsPic},#{price},#{createTime},#{updateTime},#{status},#{goodsIndex}
 			)
 	</insert>	
 	
@@ -56,8 +57,11 @@
 			<if test="status!=null and status!=''">
 				status = #{status},
 			</if>
-			<if test="updateTime!=null and updateTime!=''">
+			<if test="updateTime!=null">
 				update_time = #{updateTime},
+			</if>
+			<if test="goodsIndex!=null">
+				goods_index = #{goodsIndex},
 			</if>
 		</set> 
 		where gid = #{gid} 
@@ -144,11 +148,19 @@
 			limit #{start},#{pageSize}
 	</select>
 		
-	<select id="batchUpdateGoodsIndex">
-	update t_goods set goods_index=1
+		
+	<select id="batchUpdateGoodsIndex"  parameterType="java.util.Map">
+		<foreach collection="map" item="item" index="key" open="" close="" separator=";" >
+			update t_goods set goods_index=#{item} WHERE gid = #{key}
+    	</foreach>
+	</select>
+		
+		
+<!-- 	<select id="batchUpdateGoodsIndex">
+	update t_goods set goods_index=3
 		WHERE gid IN 
 		<foreach collection="list" item="gid" open="(" close=")" separator=",">
     		#{gid}
     	</foreach>
-	</select>
+	</select> -->
 </mapper>

@@ -16,9 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.action.count.CountResponse;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.TimeValue;
@@ -225,4 +228,41 @@ public class GoodsIndexServiceImpl implements GoodsIndexService {
 		}
 
 
+		@Override
+		public void updateIndex(List<GoodsIndexVo> indexList) {
+			long startTime=System.currentTimeMillis();
+			Client client=ElasticSearchUitl.getClient();
+			for (GoodsIndexVo index:indexList) {
+				try {
+					String jsonObj=JSONObject.toJSONString(index);
+					UpdateRequest updateRequest = new UpdateRequest();
+					updateRequest.index("mygo").type("goods").id(index.getGid().toString()).doc(jsonObj);
+					client.update(updateRequest).get();
+				} catch (Exception e) {
+					log.error("updateIndex index gid:{}, erro:",index.getGid(),e);
+				}
+			}
+			log.info("GoodsIndexService.updateIndex cost time:{}",System.currentTimeMillis()-startTime);
+		}
+		
+		
+		public void deleteIndex(List<GoodsIndexVo> indexList){
+			long startTime=System.currentTimeMillis();
+			Client client=ElasticSearchUitl.getClient();
+			for (GoodsIndexVo index:indexList) {
+				try {
+					DeleteResponse response = client.prepareDelete("mygo", "goods",index.getGid().toString()).get();
+				    if (response.isFound()) {
+				    	log.info("deleteIndex success,goodsId:{}",index.getGid());
+				    }else{
+				    	log.info("deleteIndex failed,goodsId:{}",index.getGid());
+				    }
+				} catch (Exception e) {
+					log.error("deleteIndex index gid:{}, erro:",index.getGid(),e);
+				}
+			}
+			log.info("GoodsIndexService.deleteIndex cost time:{}",System.currentTimeMillis()-startTime);
+		
+		}
+		
 }

@@ -12,6 +12,7 @@ package com.cza.service.goods.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,6 +135,8 @@ public class GoodsServiceImpl implements GoodsService {
 			param.setGoodsPic(goods.getGoodsPic());
 			param.setPrice(goods.getPrice());
 			param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
+			//创建商品时，设置索引状态为待创建
+			param.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT);
 			goodsMapper.saveGoods(param);
 			goods.setGid(param.getGid());
 			//保存sku
@@ -280,6 +283,9 @@ public class GoodsServiceImpl implements GoodsService {
 			param.setGoodsName(goods.getGoodsName());
 			param.setGoodsPic(goods.getGoodsPic());
 			param.setPrice(goods.getPrice());
+			if(ShoppingContants.GOODS_STATUS_OFF.equals(goods.getStatus())){//下架操作，更新索引为待删除
+				param.setGoodsIndex(ShoppingContants.GOODS_INDEX_DELETE);
+			}
 			param.setStatus(goods.getStatus());
 			goodsMapper.updateGoods(param);	
 			resp.setData(goods);
@@ -316,6 +322,7 @@ public class GoodsServiceImpl implements GoodsService {
 			param.setGoodsPic(goods.getGoodsPic());
 			param.setPrice(goods.getPrice());
 			param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
+			param.setGoodsIndex(ShoppingContants.GOODS_INDEX_UPDATE);
 			goodsMapper.updateGoods(param);
 			//保存sku
 			List<SkuVo>skus=goods.getSkus();
@@ -571,8 +578,8 @@ public class GoodsServiceImpl implements GoodsService {
 	    */
 	    
 	@Override
-	public void batchUpdateGoodsIndex(List<Long> gids) {
-		goodsMapper.batchUpdateGoodsIndex(gids);
+	public void batchUpdateGoodsIndex(Map<Long,Integer> goodsIndexs) {
+		goodsMapper.batchUpdateGoodsIndex(goodsIndexs);
 	}
 	
 

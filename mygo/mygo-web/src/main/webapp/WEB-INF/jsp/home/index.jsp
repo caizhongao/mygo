@@ -72,7 +72,7 @@
 			</tr>
 		</table>
 		<br>
-		<table id="hotGoods"  width="80%"  cellpadding="0" cellspacing="0" align="center" style="margin-top: 10px">
+		<table id="hotGoods"  width="80%"  cellpadding="0" cellspacing="0" align="center" style="margin-top: 30px">
 			<tr>
 				<td colspan="4" height="30px">
 					<span class="title_flag">HOT</span>

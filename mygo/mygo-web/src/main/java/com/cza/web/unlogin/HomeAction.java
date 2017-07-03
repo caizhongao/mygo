@@ -42,8 +42,6 @@ import com.cza.web.CommonAction;
 @RequestMapping("/unlogin/home")
 public class HomeAction extends CommonAction{
 	@Autowired
-	private GoodsService goodsService;
-	@Autowired
 	private CategoryService categoryService;
 	
 	@RequestMapping("index")
@@ -57,21 +55,6 @@ public class HomeAction extends CommonAction{
 			request.setAttribute("categoryList", categoryList);
 		}
 		return webPage("home/index");
-	}
-	
-	@RequestMapping("categoryGoods")
-	public String categoryGoods(HttpServletRequest request,HttpServletResponse response){
-		//查询出类目
-		CategoryVo category=new CategoryVo();
-		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
-		category.setPid(0l);
-		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			List<CategoryVo> categoryList=resp.getData();
-			request.setAttribute("categoryList", categoryList);
-		}
-		request.setAttribute("cid", request.getParameter("cid"));
-		return webPage("home/categoryGoods");
 	}
 	
 }

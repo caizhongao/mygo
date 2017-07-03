@@ -31,15 +31,6 @@
 	.goods_price{color:#FF464E;font-size:30px;}
 	.goods_price em{font-size:14px;font-style: normal;font-family: "微软雅黑","verdana";}
 </style>
-<script type="text/javascript">
-	function gotoPage(cid){
-		location.href="${ctx}/unlogin/home/categoryGoods.do?cid="+cid;
-	}
-	function toIndex(){
-		location.href="${ctx}/";
-	}
-
-</script>
 </head>
 <body  class="_body">
 <div  class="page_body">

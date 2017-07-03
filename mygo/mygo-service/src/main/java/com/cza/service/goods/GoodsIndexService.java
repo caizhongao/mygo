@@ -51,4 +51,28 @@ public interface GoodsIndexService {
     */
     
 public ServiceResponse<Pager<GoodsVo>> scrollSearch(GoodsVo goods);
+
+
+	
+	    /**
+	    * @Title: updateIndex
+	    * @Description: TODO(这里用一句话描述这个方法的作用)
+	    * @param @param indexList    参数
+	    * @return void    返回类型
+	    * @throws
+	    */
+	    
+	public void updateIndex(List<GoodsIndexVo> indexList);
+
+
+		
+		    /**
+		    * @Title: deleteIndex
+		    * @Description: TODO(这里用一句话描述这个方法的作用)
+		    * @param @param indexList    参数
+		    * @return void    返回类型
+		    * @throws
+		    */
+		    
+		public void deleteIndex(List<GoodsIndexVo> indexList);
 }

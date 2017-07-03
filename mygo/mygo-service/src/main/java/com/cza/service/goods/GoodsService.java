@@ -11,6 +11,7 @@
 package com.cza.service.goods;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
@@ -155,6 +156,6 @@ public interface GoodsService {
 												    * @throws
 												    */
 												    
-												void batchUpdateGoodsIndex(List<Long> gids);
+												void batchUpdateGoodsIndex(Map<Long,Integer> goodsIndexs);
 	
 }

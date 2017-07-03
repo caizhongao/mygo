@@ -11,7 +11,7 @@
 </style>
 <script>
 	function gotoPage(cid){
-		location.href="${ctx}/unlogin/home/categoryGoods.do?cid="+cid;
+		location.href="${ctx}/unlogin/goods/listCategoryGoods.do?cid="+cid;
 	}
 	function toIndex(){
 		location.href="${ctx}/";

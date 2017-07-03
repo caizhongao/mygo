@@ -40,10 +40,12 @@ public interface ShoppingContants {
 	
 	public static final String GOODS_STATUS_OFF="F";
 	
-	
+	//0：待创建，1：待修改，2：待删除，3：已完成
 	public static final Integer GOODS_INDEX_WAIT=0;
+	public static final Integer GOODS_INDEX_UPDATE=1;	
+	public static final Integer GOODS_INDEX_DELETE=2;
+	public static final Integer GOODS_INDEX_HAS=3;
 	
-	public static final Integer GOODS_INDEX_HAS=1;	
 	
 	
 	

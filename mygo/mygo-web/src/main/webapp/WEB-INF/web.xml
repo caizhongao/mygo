@@ -11,12 +11,23 @@
 	</context-param>
 	
 	<!-- 登录权限验证 -->
-		<filter>
+	<filter>
 		<filter-name>loginFilter</filter-name>
-		<filter-class>com.cza.web.auth.LoginFilter</filter-class>
+		<filter-class>com.cza.web.filter.LoginFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>loginFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
+	
+	<!-- 页面缓存过滤器 -->
+	<filter>
+		<filter-name>pageCacheFilter</filter-name>
+		<filter-class>com.cza.web.filter.PageCacheFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>pageCacheFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 	

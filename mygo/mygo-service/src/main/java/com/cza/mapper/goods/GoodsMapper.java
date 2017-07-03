@@ -11,6 +11,9 @@
 package com.cza.mapper.goods;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.cza.dto.goods.TGoods;
 import com.cza.service.goods.vo.GoodsVo;
@@ -66,7 +69,7 @@ public interface GoodsMapper {
 			    * @throws
 			    */
 			    
-			public void batchUpdateGoodsIndex(List<Long> gids);
+			public void batchUpdateGoodsIndex(@Param("map")Map<Long,Integer> goodsIndexs);
 
 				
 				    /**

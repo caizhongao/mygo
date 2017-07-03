@@ -9,14 +9,6 @@
 	.ct-icon-3{background-position: -144px 0;} /*家具**/
 	.ct-icon-4{background-position: -264px 0;} /*电器**/
 </style>
-<script>
-	function gotoPage(cid){
-		location.href="${ctx}/unlogin/home/categoryGoods.do?cid="+cid;
-	}
-	function toIndex(){
-		location.href="${ctx}/";
-	}
-</script>
 <div style="height: 40px;position:absolute;bottom:0;color: #c6c6c6;background-color: #f5f5f5;width: 100%">
 	<table width="100%"  cellpadding="0" cellspacing="0" align="center"  style="height: 40px;color: #c6c6c6;background-color: #f5f5f5;">
 		<tr>
