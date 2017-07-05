@@ -109,6 +109,7 @@ public class OrderServiceImpl implements OrderService{
 			saveOrder.setOid(makeOrderId());
 			saveOrder.setUid(orderVo.getUid());
 			saveOrder.setNumber(orderVo.getNumber());
+			saveOrder.setCreateTime(System.currentTimeMillis()/1000);
 			orderMapper.saveOrder(saveOrder);
 			orderVo.setOrderId(saveOrder.getOid());
 			//销量
@@ -132,7 +133,32 @@ public class OrderServiceImpl implements OrderService{
 	private Long makeOrderId(){
 		return System.currentTimeMillis()/1000;
 	}
-
+	
+    /* (非 Javadoc)
+    * 
+    * 
+    * @param order
+    * @return
+    * @see com.cza.service.order.OrderService#listOrder(com.cza.dto.order.TOrder)
+    */
+    
+@Override
+public ServiceResponse<List<Long>> listOrderIds(OrderVo listParam) {
+	ServiceResponse<List<Long>> resp=new ServiceResponse<List<Long>>();
+	try {
+		listParam.setStart((listParam.getPageNum()-1)*listParam.getPageSize());
+		List<Long> orderIds=orderMapper.listOrderIds(listParam);
+		resp.setData(orderIds);
+		resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+		resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+	} catch (Exception e) {
+		resp.setData(null);
+		resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+		resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+		log.error("保存商品异常!",e);
+	}
+	return resp;
+}
 
 
 	
@@ -205,8 +231,137 @@ public class OrderServiceImpl implements OrderService{
 		return resp;
 	}
 
+	
+	
+	/**
+	 * @param 订单id
+	 * */
+	@Override
+	public ServiceResponse<OrderVo> closeOrder(OrderVo orderVo) {
+		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
+		try {
+			TOrder queryOrder=orderMapper.queryOrder(orderVo.getOid());
+			if(ShoppingContants.ORDER_STATUS_NORMAL.equals(queryOrder.getStatus())&&ShoppingContants.ORDER_PAY_STATUS_NOT.equals(queryOrder.getPayStatus())){
+				TOrder updateParam=new TOrder();
+				updateParam.setOrderVersion(queryOrder.getOrderVersion()+1);
+				updateParam.setOid(queryOrder.getOid());
+				updateParam.setStatus(orderVo.getStatus());
+				int row=orderMapper.updateOrder(updateParam);
+				if(row==0){
+					log.warn("订单已被操作，此次操作失败!");
+					resp.setData(null);
+					resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
+					resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
+					return resp;
+				}
+				//订单关闭完后，归还库存
+				TSkuStock skuStock=new TSkuStock();
+				skuStock.setSid(queryOrder.getSid());
+				skuStock.setStock(-queryOrder.getNumber());
+				stockMapper.reduceSkuStock(skuStock);
+				log.info("订单关闭成功，订单号:{}",orderVo.getOid());
+				resp.setData(orderVo);
+				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+			}else{
+				log.warn("订单已被操作，此次操作失败!");
+				resp.setData(null);
+				resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
+				resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
+				return resp;
+			}
+		} catch (Exception e) {
+			resp.setData(null);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			log.error("closeOrder exception,",e);
+		}
+		return resp;
+	}
 
 
+    /* (非 Javadoc)
+    * 
+    * 
+    * @param order
+    * @return
+    * @see com.cza.service.order.OrderService#updatePayStatus(com.cza.service.order.vo.OrderVo)
+    */
+	@Override
+	public ServiceResponse<OrderVo> orderPay(OrderVo orderVo) {
+		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
+		try {
+			TOrder queryOrder=orderMapper.queryOrder(orderVo.getOid());
+			if(ShoppingContants.ORDER_STATUS_NORMAL.equals(queryOrder.getStatus())&&ShoppingContants.ORDER_PAY_STATUS_NOT.equals(queryOrder.getPayStatus())){
+				TOrder updateParam=new TOrder();
+				updateParam.setOrderVersion(queryOrder.getOrderVersion()+1);
+				updateParam.setOid(queryOrder.getOid());
+				updateParam.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_HAS);
+				updateParam.setPayNo(orderVo.getPayNo());
+				int row=orderMapper.updateOrder(updateParam);
+				if(row==0){
+					log.warn("订单已被操作，此次操作失败!");
+					resp.setData(null);
+					resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
+					resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
+					return resp;
+				}
+				resp.setData(orderVo);
+				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+			}else{//订单支付更新失败，应该要退款操作
+				log.warn("订单已被操作，此次操作失败!");
+				resp.setData(null);
+				resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
+				resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
+				return resp;
+			}
+		} catch (Exception e) {
+			resp.setData(null);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			log.error("orderPay exception,",e);
+		}
+		return resp;
+	}
+	
+	
+	@Override
+	public ServiceResponse<OrderVo> orderRefund(OrderVo orderVo) {
+		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
+		try {
+			TOrder queryOrder=orderMapper.queryOrder(orderVo.getOid());
+			if(ShoppingContants.ORDER_PAY_STATUS_HAS.equals(queryOrder.getPayStatus())){
+				TOrder updateParam=new TOrder();
+				updateParam.setOrderVersion(queryOrder.getOrderVersion()+1);
+				updateParam.setOid(queryOrder.getOid());
+				updateParam.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_REFUND);
+				int row=orderMapper.updateOrder(updateParam);
+				if(row==0){
+					log.warn("订单已被操作，此次操作失败!");
+					resp.setData(null);
+					resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
+					resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
+					return resp;
+				}
+				resp.setData(orderVo);
+				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+			}else{
+				log.warn("订单已被操作，此次操作失败!");
+				resp.setData(null);
+				resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
+				resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
+				return resp;
+			}
+		} catch (Exception e) {
+			resp.setData(null);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			log.error("orderPay exception,",e);
+		}
+		return resp;
+	}
 	
 	    /* (非 Javadoc)
 	    * 

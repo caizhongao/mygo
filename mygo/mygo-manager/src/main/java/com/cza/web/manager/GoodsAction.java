@@ -110,11 +110,9 @@ public class GoodsAction extends CommonAction{
 	}
 	
 	@RequestMapping("onShelf")
-	public void onShelf(HttpServletRequest request,HttpServletResponse response) throws IOException{
-		GoodsVo param=new GoodsVo();
-		param.setGid(Long.valueOf(request.getParameter("gid")));
-		param.setStatus(ShoppingContants.GOODS_STATUS_ON);
-		ServiceResponse<GoodsVo> resp=goodsService.updateGoods(param);
+	public void onShelf(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
+		ServiceResponse<GoodsVo> resp=goodsService.updateGoodsOnShelf(goods);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			response.getWriter().print("success");
 		}else{
@@ -123,11 +121,9 @@ public class GoodsAction extends CommonAction{
 	}
 	
 	@RequestMapping("offShelf")
-	public void offShelf(HttpServletRequest request,HttpServletResponse response) throws IOException{
-		GoodsVo param=new GoodsVo();
-		param.setGid(Long.valueOf(request.getParameter("gid")));
-		param.setStatus(ShoppingContants.GOODS_STATUS_OFF);
-		ServiceResponse<GoodsVo> resp=goodsService.updateGoods(param);
+	public void offShelf(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		goods.setStatus(ShoppingContants.GOODS_STATUS_OFF);
+		ServiceResponse<GoodsVo> resp=goodsService.updateGoodsOffShelf(goods);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			response.getWriter().print("success");
 		}else{

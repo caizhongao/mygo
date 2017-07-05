@@ -27,11 +27,8 @@ import com.cza.service.order.vo.OrderVo;
     */
 
 public interface OrderService {
-	public ServiceResponse<PreOrderVo> saveOrder(PreOrderVo orderVo);
 
-	
-
-
+			public ServiceResponse<PreOrderVo> saveOrder(PreOrderVo orderVo);
 		
 		    /**
 		    * @Title: listOrder
@@ -42,26 +39,32 @@ public interface OrderService {
 		    * @throws
 		    */
 		    
-	public ServiceResponse<Pager<OrderVo>> listOrder(OrderVo listOrderVo);
+			public ServiceResponse<Pager<OrderVo>> listOrder(OrderVo listOrderVo);
 
 
 
 
 
 			
-			    /**
-			    * @Title: updateOrder
-			    * @Description: TODO(这里用一句话描述这个方法的作用)
-			    * @param @param order
-			    * @param @return    参数
-			    * @return ServiceResponse<ListOrderVo>    返回类型
-			    * @throws
-			    */
+		    /**
+		    * @Title: updateOrder
+		    * @Description: TODO(这里用一句话描述这个方法的作用)
+		    * @param @param order
+		    * @param @return    参数
+		    * @return ServiceResponse<ListOrderVo>    返回类型
+		    * @throws
+		    */
 			    
-			public ServiceResponse<OrderVo> updateOrder(OrderVo order);
+			 public ServiceResponse<OrderVo> updateOrder(OrderVo order);
 
-
-
+			 /**
+			 * @param orderversion，oid，sid
+			  * */
+			 public ServiceResponse<OrderVo> closeOrder(OrderVo orderVo);
+	
+			 public ServiceResponse<OrderVo> orderPay(OrderVo order);
+	
+			 public ServiceResponse<OrderVo> orderRefund(OrderVo orderVo);
 
 
 				
@@ -73,6 +76,17 @@ public interface OrderService {
 				    * @return void    返回类型
 				    * @throws
 				    */
-				    
-				public ServiceResponse<OrderVo> queryOrder(Long oid);
+			  public ServiceResponse<OrderVo> queryOrder(Long oid);
+
+					
+					    /**
+					    * @Title: listOrderIds
+					    * @Description: TODO(这里用一句话描述这个方法的作用)
+					    * @param @param listOrderVo
+					    * @param @return    参数
+					    * @return ServiceResponse<Pager<Long>>    返回类型
+					    * @throws
+					    */
+					    
+					public ServiceResponse<List<Long>>listOrderIds(OrderVo listOrderVo);
 }

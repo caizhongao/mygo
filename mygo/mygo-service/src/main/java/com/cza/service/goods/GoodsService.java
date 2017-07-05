@@ -157,5 +157,34 @@ public interface GoodsService {
 												    */
 												    
 												void batchUpdateGoodsIndex(Map<Long,Integer> goodsIndexs);
+
+
+
+
+															
+															    /**
+															    * @Title: updateGoodsOnShelf
+															    * @Description: TODO(这里用一句话描述这个方法的作用)
+															    * @param @param goods
+															    * @param @return    参数
+															    * @return ServiceResponse<GoodsVo>    返回类型
+															    * @throws
+															    */
+															    
+															ServiceResponse<GoodsVo> updateGoodsOnShelf(GoodsVo goods);
+
+
+																
+																    /**
+																    * @Title: updateGoodsOffShelf
+																    * @Description: TODO(这里用一句话描述这个方法的作用)
+																    * @param @param goods
+																    * @param @return    参数
+																    * @return ServiceResponse<GoodsVo>    返回类型
+																    * @throws
+																    */
+																    
+																ServiceResponse<GoodsVo> updateGoodsOffShelf(
+																		GoodsVo goods);
 	
 }

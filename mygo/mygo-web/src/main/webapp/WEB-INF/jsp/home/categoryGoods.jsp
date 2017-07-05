@@ -62,7 +62,7 @@
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle" style="margin-top: 50px;">
 	<form action="${ctx}/unlogin/goods/listCategoryGoods.do">
-		<input type="hidden" name="cid" value="${cid }">
+		<input type="hidden" name="cid" value="${cid}">
 	</form>
 	<%@ include file="/common/search/search.jsp" %>
 		<%@ include file="/common/category.jsp" %>

@@ -49,7 +49,7 @@ public class DeleteGoodsIndex {
 		long startTime=System.currentTimeMillis();
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
-		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_DELETE);
+		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_DELETE);
 		while(true){
 			ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
 			if(resp.isSuccess()){
@@ -61,7 +61,7 @@ public class DeleteGoodsIndex {
 						GoodsIndexVo index=new GoodsIndexVo();
 						BeanUtils.copyProperties(vo, index);
 						indexList.add(index);
-						gids.put(index.getGid(),ShoppingContants.GOODS_INDEX_HAS);
+						gids.put(index.getGid(),ShoppingContants.GOODS_INDEX_HAS_DELETE);
 					}
 				}else{
 					break;
@@ -69,7 +69,8 @@ public class DeleteGoodsIndex {
 				goodsIndexService.deleteIndex(indexList);
 				goodsService.batchUpdateGoodsIndex(gids);
 			}else{
-				log.info("DeleteGoodsIndex.execute query goods erro:{}",resp.getCode());
+				log.info("DeleteGoodsIndex.execute query goods param:{},erro:{}",goods,resp.getCode());
+				break;
 			}
 		}
 		log.info("DeleteGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);

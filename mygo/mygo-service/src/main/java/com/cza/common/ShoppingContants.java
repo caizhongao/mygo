@@ -40,12 +40,12 @@ public interface ShoppingContants {
 	
 	public static final String GOODS_STATUS_OFF="F";
 	
-	//0：待创建，1：待修改，2：待删除，3：已完成
-	public static final Integer GOODS_INDEX_WAIT=0;
-	public static final Integer GOODS_INDEX_UPDATE=1;	
-	public static final Integer GOODS_INDEX_DELETE=2;
-	public static final Integer GOODS_INDEX_HAS=3;
-	
+	//0：待创建，1：待修改，2：待删除，3：已完成 4:已删除
+	public static final Integer GOODS_INDEX_WAIT_CREATE=0;
+	public static final Integer GOODS_INDEX_WAIT_UPDATE=1;	
+	public static final Integer GOODS_INDEX_WAIT_DELETE=2;
+	public static final Integer GOODS_INDEX_COMPLETE=3;
+	public static final Integer GOODS_INDEX_HAS_DELETE=4;
 	
 	
 	
@@ -75,13 +75,20 @@ public interface ShoppingContants {
 	//商品不存在
 	public static final Integer RESP_CODE_GOODS_NOT_EXIST=1000;
 	public static final String RESP_MSG_GOODS_NOT_EXIST="goods not exist!";
+	//商品已经被操作
+	public static final Integer RESP_CODE_GOODS_HAS_OPT=1001;
+	public static final String RESP_MSG_GOODS_HAS_OPT="goods has operate by others!";
 	//sku不存在
-	public static final Integer RESP_CODE_SKU_NOT_EXIST=1001;
+	public static final Integer RESP_CODE_SKU_NOT_EXIST=2000;
 	public static final String RESP_MSG_SKU_NOT_EXIST="sku not exist!";
-	
 	//order不存在
-	public static final Integer RESP_CODE_ORDER_NOT_EXIST=2000;
+	public static final Integer RESP_CODE_ORDER_NOT_EXIST=3000;
 	public static final String RESP_MSG_ORDER_NOT_EXIST="order not exist!";
+	
+	public static final Integer RESP_CODE_ORDER_HAS_OPT=3001;
+	public static final String RESP_MSG_ORDER_HAS_OPT="order has operate by others!";
+	
+	
 	
 	
 	public static final String FILE_UPLOAD_PREFIX="upload.file.path.prefix";

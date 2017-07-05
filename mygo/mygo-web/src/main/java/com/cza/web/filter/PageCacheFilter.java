@@ -73,7 +73,7 @@ public class PageCacheFilter implements  Filter{
 		HttpServletRequest req=(HttpServletRequest) request;
 		String uri=req.getRequestURI();
 		//目前仅对首页缓存
-		if(uri.indexOf("/index.do")>=0||uri.indexOf("/listNewGoods.do")>=0||uri.indexOf("/listHotGoods.do")>=0){
+		if(uri.indexOf("/listCategory.do")>=0||uri.indexOf("/listNewGoods.do")>=0||uri.indexOf("/listHotGoods.do")>=0){
 			long startTime=System.currentTimeMillis();
 			byte[]content=PageCache.getContent(uri);
 			if(content==null){

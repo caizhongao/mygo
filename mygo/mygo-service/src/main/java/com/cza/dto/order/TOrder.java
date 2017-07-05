@@ -42,10 +42,97 @@ public class TOrder implements Serializable{
 	private String payNo;
 	
 	
+	private Long createTime;
+	
+	private Long updateTime;
+	private Long orderVersion;
 	
 	
 	
 	
+	
+	
+	
+	/**
+	* @return updateTime
+	*/
+	
+	public Long getUpdateTime() {
+		return updateTime;
+	}
+
+
+
+
+
+
+	
+	/**
+	 * @param updateTime the updateTime to set
+	 */
+	
+	public void setUpdateTime(Long updateTime) {
+		this.updateTime = updateTime;
+	}
+
+
+
+
+
+
+	
+	/**
+	* @return orderVersion
+	*/
+	
+	public Long getOrderVersion() {
+		return orderVersion;
+	}
+
+
+
+
+
+
+	
+	/**
+	 * @param orderVersion the orderVersion to set
+	 */
+	
+	public void setOrderVersion(Long orderVersion) {
+		this.orderVersion = orderVersion;
+	}
+
+
+
+
+
+
+	/**
+	* @return createTime
+	*/
+	
+	public Long getCreateTime() {
+		return createTime;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param createTime the createTime to set
+	 */
+	
+	public void setCreateTime(Long createTime) {
+		this.createTime = createTime;
+	}
+
+
+
+
+
 	/**
 	* @return payNo
 	*/
@@ -348,6 +435,9 @@ public class TOrder implements Serializable{
 
 
 
+
+
+
 	
 	    /* (非 Javadoc)
 	    * 
@@ -361,8 +451,16 @@ public class TOrder implements Serializable{
 		return "TOrder [oid=" + oid + ", uid=" + uid + ", province=" + province + ", city=" + city + ", area=" + area
 				+ ", addr=" + addr + ", receiver=" + receiver + ", mobilphone=" + mobilphone + ", sid=" + sid
 				+ ", goodsName=" + goodsName + ", orderPrice=" + orderPrice + ", amount=" + amount + ", number="
-				+ number + ", payStatus=" + payStatus + ", status=" + status + ", deleteDesc=" + deleteDesc + "]";
+				+ number + ", payStatus=" + payStatus + ", status=" + status + ", deleteDesc=" + deleteDesc + ", payNo="
+				+ payNo + ", createTime=" + createTime + ", updateTime=" + updateTime + ", orderVersion=" + orderVersion
+				+ "]";
 	}
+
+
+
+
+	
+
 
 
 

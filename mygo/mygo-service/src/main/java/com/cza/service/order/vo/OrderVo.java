@@ -41,6 +41,10 @@ public class OrderVo {
 	private String userName;
 	
 	private String payNo;
+	private Long createTime;
+	private Long updateTime;
+	
+	private Long orderVersion;
 	
 	
 	private Integer pageNum=1;
@@ -57,6 +61,100 @@ public class OrderVo {
 	
 	
 	
+	
+	
+	/**
+	* @return updateTime
+	*/
+	
+	public Long getUpdateTime() {
+		return updateTime;
+	}
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param updateTime the updateTime to set
+	 */
+	
+	public void setUpdateTime(Long updateTime) {
+		this.updateTime = updateTime;
+	}
+
+
+
+
+
+
+
+
+	
+	/**
+	* @return orderVersion
+	*/
+	
+	public Long getOrderVersion() {
+		return orderVersion;
+	}
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param orderVersion the orderVersion to set
+	 */
+	
+	public void setOrderVersion(Long orderVersion) {
+		this.orderVersion = orderVersion;
+	}
+
+
+
+
+
+
+
+
+	/**
+	* @return createTime
+	*/
+	
+	public Long getCreateTime() {
+		return createTime;
+	}
+
+
+
+
+
+
+
+	
+	/**
+	 * @param createTime the createTime to set
+	 */
+	
+	public void setCreateTime(Long createTime) {
+		this.createTime = createTime;
+	}
+
+
+
+
+
+
+
 	/**
 	* @return start
 	*/
@@ -470,6 +568,11 @@ public class OrderVo {
 
 
 
+
+
+
+
+
 	
 	    /* (非 Javadoc)
 	    * 
@@ -484,8 +587,11 @@ public class OrderVo {
 				+ ", addr=" + addr + ", receiver=" + receiver + ", mobilphone=" + mobilphone + ", sid=" + sid
 				+ ", goodsName=" + goodsName + ", orderPrice=" + orderPrice + ", amount=" + amount + ", number="
 				+ number + ", payStatus=" + payStatus + ", status=" + status + ", deleteDesc=" + deleteDesc
-				+ ", userName=" + userName + "]";
+				+ ", userName=" + userName + ", payNo=" + payNo + ", createTime=" + createTime + ", updateTime="
+				+ updateTime + ", orderVersion=" + orderVersion + ", pageNum=" + pageNum + ", pageSize=" + pageSize
+				+ ", start=" + start + "]";
 	}
+
 
 	
 	

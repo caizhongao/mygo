@@ -3,6 +3,8 @@
 	<name>mygo-web</name>
 	<comment></comment>
 	<projects>
+		<project>mygo-alipay</project>
+		<project>mygo-service</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

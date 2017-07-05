@@ -16,69 +16,40 @@
 	function toIndex(){
 		location.href="${ctx}/";
 	}
+ 	
+	$(function(){
+		initCategory();
+	});
 	
-	function makeGoodsHtml(goodsList){
-		var goodsHtml='';
-		if(goodsList==null||goodsList.length<1){
-			goodsHtml+='<tr>'+
-					'<td width="40px;">'+
-						
-					'</td>'+
-					'<td colspan="6" height="30px" style="font-weight: bolder;">'+
-						'<br>'+
-						'暂无商品'+
-					'</td>'+
-				'</tr>';
-		}else{
-			var trGoodsNum=0;
-			//一列4个商品
-			$.each(goodsList,function(index,goods){
-				trGoodsNum=(index+1)%4;
-				if(trGoodsNum==1){
-					goodsHtml+="<tr>";
-				}
-				goodsHtml+='<td width="310px">'+
-								'<div class="goods_img_div">'+
-								'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+'<img alt="" src="'+goods.goodsPic+'" style="width:300px;height:300px;">'+'</a>'+
-								'</div>'+
-								'<div class="goods_name_price">'+
-									'<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank"  class="goods_name">'+goods.goodsName+'</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>'+goods.price+'</span>'+
-								'</div>'+
-							'</td>';
-				if(trGoodsNum==0){
-					goodsHtml+='</tr>';
-				}else{
-					goodsHtml+='<td>&nbsp</td>';
-				}
-			});
-			//lastTdGoodsNum 最后一行的商品数，不足4个的补足4个
-			if(trGoodsNum!=0){
-				for(trGoodsNum=trGoodsNum+1;trGoodsNum<=4;trGoodsNum++){
-					goodsHtml+='<td width="310px">&nbsp</td>';
-					if(trGoodsNum==4){
-						goodsHtml+='</tr>';
-					}else{
-						goodsHtml+='<td>&nbsp</td>';
+	function initCategory(){
+		var cid='${cid}';
+		$.ajax({
+			url:'${ctx}/unlogin/goods/listCategory.do',
+			type:'post',
+			dataType:'json',
+			success:function(categoryList){
+				var categoryHtml='';
+				$.each(categoryList,function(index,category){
+					var active='';
+					if(cid==category.cid){
+						active='active';
 					}
-				}
+					categoryHtml+='<td width="20px">&nbsp;</td>'+
+									'<td width="80px" class="category '+active+'" onclick="gotoPage('+category.cid+')">'+
+									'<i class="ct-icon ct-icon-'+category.cid+'"></i>'+
+									category.cname+
+								   '</td>';
+				});
+				categoryHtml+='<td>&nbsp;</td>';
+				$('#firstTd').after(categoryHtml);
 			}
-		}
-		return goodsHtml;
-	}	
-	
+		});
+	}
 </script>
 <div style="width: 100%;background-color: #02AAF1;">
 	<table width="80%"  cellpadding="0" cellspacing="0" align="center">
 		<tr style="height: 35px;color: white;">
-			<!-- <td width="40px">&nbsp;</td> -->
-			<td width="80px" class="category <c:if test="${cid==null}">active</c:if>" onclick="toIndex()">首页</td>
-			<c:forEach items="${categoryList}" var="category">
-				<td width="20px">&nbsp;</td>
-				<td width="80px" class="category <c:if test="${cid==category.cid}">active</c:if>" onclick="gotoPage(${category.cid})">
-					<i class="ct-icon ct-icon-${category.cid}"></i>
-					${category.cname}
-				</td>
-			</c:forEach>
+			<td width="80px" class="category <c:if test="${cid==null}">active</c:if>" onclick="toIndex()"  id="firstTd">首页</td>
 			<td>&nbsp;</td>
 		</tr>		
 	</table>

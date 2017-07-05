@@ -45,7 +45,7 @@ public interface OrderMapper {
 	    * @throws
 	    */
 	    
-	public void updateOrder(TOrder updateParam);
+	public int updateOrder(TOrder updateParam);
 
 		
 		    /**
@@ -58,5 +58,17 @@ public interface OrderMapper {
 		    */
 		    
 		public Long countOrder(OrderVo listParam);
+
+			
+			    /**
+			    * @Title: listOrderIds
+			    * @Description: TODO(这里用一句话描述这个方法的作用)
+			    * @param @param listParam
+			    * @param @return    参数
+			    * @return List<Long>    返回类型
+			    * @throws
+			    */
+			    
+			public List<Long> listOrderIds(OrderVo listParam);
 	
 }

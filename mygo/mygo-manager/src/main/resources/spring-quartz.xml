@@ -24,7 +24,7 @@
 	<!-- ======================== 调度触发器 ======================== -->  
 	<bean id="CreateIndexTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
 	    <property name="jobDetail" ref="CreateIndexMethod"></property>  
-	    <property name="cronExpression" value="0 0/3 * * * ?"></property>  
+	    <property name="cronExpression" value="0 0/5 * * * ?"></property>  
 	</bean>  
 	
 	
@@ -42,7 +42,7 @@
 	<!-- ======================== 调度触发器 ======================== -->  
 	<bean id="UpdateIndexTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
 	    <property name="jobDetail" ref="UpdateIndexMethod"></property>  
-	    <property name="cronExpression" value="0 0/3 * * * ?"></property>  
+	    <property name="cronExpression" value="0 0/5 * * * ?"></property>  
 	</bean>  
 	
 	
@@ -60,8 +60,28 @@
 	<!-- ======================== 调度触发器 ======================== -->  
 	<bean id="DeleteIndexTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
 	    <property name="jobDetail" ref="DeleteIndexMethod"></property>  
-	    <property name="cronExpression" value="0 0/3 * * * ?"></property>  
+	    <property name="cronExpression" value="0 0/5 * * * ?"></property>  
 	</bean>  
+	
+	
+		
+	<!-- 定义要执行的作业 -->       
+	<bean id="UpdateNotPayOrderJob" class="com.cza.web.task.UpdateNotPayOrder"/>  
+	<!-- 指定方法 -->
+	<bean id="UpdateNotPayOrderMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+	    <property name="targetObject">  
+	        <ref bean="UpdateNotPayOrderJob"/>  
+	    </property>  
+	    <property name="targetMethod">
+	        <value>execute</value>  
+	    </property>  
+	</bean>  
+	<!-- ======================== 调度触发器 ======================== -->  
+	<bean id="UpdateNotPayOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+	    <property name="jobDetail" ref="UpdateNotPayOrderMethod"></property>  
+	    <property name="cronExpression" value="0 0/1 * * * ?"></property>  
+	</bean>  
+	
 	
 	<!-- ======================== 调度工厂 ======================== -->  
 	<bean id="SpringJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
@@ -70,6 +90,7 @@
 	            <ref bean="CreateIndexTrigger"/>  
 	            <ref bean="UpdateIndexTrigger"/>
 	            <ref bean="DeleteIndexTrigger"/>
+	            <ref bean="UpdateNotPayOrderTrigger"/>
 	        </list>  
 	    </property>  
 	</bean>  

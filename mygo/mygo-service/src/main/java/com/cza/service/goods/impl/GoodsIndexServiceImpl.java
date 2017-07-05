@@ -103,7 +103,7 @@ public class GoodsIndexServiceImpl implements GoodsIndexService {
 			        .setQuery(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("goodsName", searchKey)).should(QueryBuilders.matchQuery("categoryName", searchKey)))
 			        .execute()
 			        .actionGet().getCount();
-			
+			log.info("elasticsearch searchkey:{},total result:{}",searchKey,count);
 			SearchResponse response = client.prepareSearch("mygo")
 			        .setTypes("goods")
 			        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
@@ -136,7 +136,6 @@ public class GoodsIndexServiceImpl implements GoodsIndexService {
 				vo.setGoodsPic(map.get("goodsPic").toString());
 				vo.setPrice(new BigDecimal(map.get("price").toString()) );
 				vo.setGid(new Long(map.get("gid").toString()));
-				log.info("query goodsname:{}",vo.getGoodsName());
 				voList.add(vo);
 			}
 			resp.setData(new Pager<>(goods.getPageSize(), goods.getPageNum(), count, voList));

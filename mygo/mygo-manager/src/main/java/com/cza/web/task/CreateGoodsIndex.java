@@ -49,7 +49,7 @@ public class CreateGoodsIndex {
 		long startTime=System.currentTimeMillis();
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
-		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT);
+		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
 		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
 		while(true){
 			ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
@@ -62,7 +62,7 @@ public class CreateGoodsIndex {
 						GoodsIndexVo index=new GoodsIndexVo();
 						BeanUtils.copyProperties(vo, index);
 						indexList.add(index);
-						gids.put(index.getGid(),ShoppingContants.GOODS_INDEX_HAS);
+						gids.put(index.getGid(),ShoppingContants.GOODS_INDEX_COMPLETE);
 					}
 				}else{
 					break;
@@ -70,7 +70,8 @@ public class CreateGoodsIndex {
 				goodsIndexService.createIndex(indexList);
 				goodsService.batchUpdateGoodsIndex(gids);
 			}else{
-				log.info("CreateGoodsIndex.execute query goods erro:{}",resp.getCode());
+				log.info("CreateGoodsIndex.execute query goods param:{},erro:{}",goods,resp.getCode());
+				break;
 			}
 		}
 		log.info("CreateGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);

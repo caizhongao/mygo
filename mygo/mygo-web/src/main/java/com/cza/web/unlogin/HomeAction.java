@@ -10,7 +10,6 @@
     
 package com.cza.web.unlogin;
 
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,12 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.cza.common.ServiceResponse;
-import com.cza.common.ShoppingContants;
 import com.cza.service.goods.CategoryService;
-import com.cza.service.goods.GoodsService;
-import com.cza.service.goods.vo.CategoryVo;
-import com.cza.service.goods.vo.GoodsVo;
 import com.cza.service.user.vo.UserVo;
 import com.cza.web.CommonAction;
 
@@ -46,14 +40,6 @@ public class HomeAction extends CommonAction{
 	
 	@RequestMapping("index")
 	public String index(@ModelAttribute UserVo user,HttpServletRequest request,HttpServletResponse response){
-		CategoryVo category=new CategoryVo();
-		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
-		category.setPid(0l);
-		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			List<CategoryVo> categoryList=resp.getData();
-			request.setAttribute("categoryList", categoryList);
-		}
 		return webPage("home/index");
 	}
 	

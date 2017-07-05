@@ -39,7 +39,7 @@
 	}
 </style>
 <script type="text/javascript">
-function updateGoodsStatus(obj,gid){
+function updateGoodsStatus(obj,gid,goodsIndex){
 	if(obj=="on"){
 		$.ajax({
 			url:'${ctx}/manager/goods/onShelf.do',
@@ -161,7 +161,7 @@ function updateGoodsStatus(obj,gid){
 						<a href="javascript:updateGoodsStatus('off',${goods.gid});" class="manager_button">下架</a>
 					</c:if>
 					<c:if test='${goods.status=="F"}'>
-						<a  class="manager_button" style="visibility:hidden">下架</a>
+						<a href="javascript:updateGoodsStatus('on',${goods.gid});" class="manager_button">上架</a>
 					</c:if>
 				</td>
 			</tr>

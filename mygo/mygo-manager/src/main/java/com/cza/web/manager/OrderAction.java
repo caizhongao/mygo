@@ -94,7 +94,7 @@ public class OrderAction extends CommonAction{
 	public void deleteOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ) throws IOException{
 		log.info("OrderAction.deleteOrder 请求参数,order:{}",order);
 		order.setStatus(ShoppingContants.ORDER_STATUS_SYS_DELETE);
-		ServiceResponse<OrderVo> resp=orderService.updateOrder(order);
+		ServiceResponse<OrderVo> resp=orderService.closeOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			log.info("OrderAction.deleteOrder success,orderNo:{}",order.getOid());
 			response.getWriter().print("success");

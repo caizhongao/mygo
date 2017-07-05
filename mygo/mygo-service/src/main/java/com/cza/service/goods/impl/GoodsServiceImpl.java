@@ -96,6 +96,7 @@ public class GoodsServiceImpl implements GoodsService {
 					vo.setUpdateTime(result.getUpdateTime());
 					vo.setStatus(result.getStatus());
 					vo.setSales(result.getSales());
+					vo.setGoodsIndex(result.getGoodsIndex());
 					voList.add(vo);
 				}
 			}
@@ -136,7 +137,7 @@ public class GoodsServiceImpl implements GoodsService {
 			param.setPrice(goods.getPrice());
 			param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
 			//创建商品时，设置索引状态为待创建
-			param.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT);
+			param.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
 			goodsMapper.saveGoods(param);
 			goods.setGid(param.getGid());
 			//保存sku
@@ -267,8 +268,111 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 		return resp;
 	}
-
-
+	
+	
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @param goods
+	    * @return
+	    * @see com.cza.service.goods.GoodsService#updateGoodsOffShelf(com.cza.service.goods.vo.GoodsVo)
+	    */
+	    
+	@Override
+	public ServiceResponse<GoodsVo> updateGoodsOffShelf(GoodsVo goods) {
+		ServiceResponse<GoodsVo> resp=new ServiceResponse<GoodsVo>();
+		try {
+			TGoods queryGoods=goodsMapper.queryGoods(goods.getGid());
+			if(ShoppingContants.GOODS_STATUS_ON.equals(queryGoods.getStatus())){
+				TGoods updateParam=new TGoods();
+				updateParam.setGid(goods.getGid());
+				updateParam.setUpdateTime(System.currentTimeMillis()/1000);
+				if(hasIndex(queryGoods.getGoodsIndex())){
+					updateParam.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_UPDATE);
+				}else{
+					updateParam.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
+				}
+				updateParam.setStatus(goods.getStatus());
+				goodsMapper.updateGoods(updateParam);	
+				resp.setData(goods);
+				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+			}else{
+				log.warn("this goods has be operate by other goodsId:{}",goods.getGid());
+				resp.setData(null);
+				resp.setMsg(ShoppingContants.RESP_MSG_GOODS_HAS_OPT);
+				resp.setCode(ShoppingContants.RESP_CODE_GOODS_HAS_OPT);
+			}
+			
+		} catch (Exception e) {
+			resp.setData(null);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			log.error("更新商品异常!",e);
+		}
+		return resp;
+	
+	}
+	
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @param goods
+	    * @return
+	    * @see com.cza.service.goods.GoodsService#updateGoodsOnShelf(com.cza.service.goods.vo.GoodsVo)
+	    */
+	    
+	@Override
+	public ServiceResponse<GoodsVo> updateGoodsOnShelf(GoodsVo goods) {
+		ServiceResponse<GoodsVo> resp=new ServiceResponse<GoodsVo>();
+		try {
+			TGoods queryGoods=goodsMapper.queryGoods(goods.getGid());
+			if(!ShoppingContants.GOODS_STATUS_ON.equals(queryGoods.getStatus())){
+				TGoods updateParam=new TGoods();
+				updateParam.setGid(goods.getGid());
+				updateParam.setUpdateTime(System.currentTimeMillis()/1000);
+				if(hasIndex(queryGoods.getGoodsIndex())){
+					updateParam.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_UPDATE);
+				}else{
+					updateParam.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
+				}
+				updateParam.setStatus(goods.getStatus());
+				goodsMapper.updateGoods(updateParam);	
+				resp.setData(goods);
+				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+			}else{
+				log.warn("this goods has be operate by other goodsId:{}",goods.getGid());
+				resp.setData(null);
+				resp.setMsg(ShoppingContants.RESP_MSG_GOODS_HAS_OPT);
+				resp.setCode(ShoppingContants.RESP_CODE_GOODS_HAS_OPT);
+			}
+			
+		} catch (Exception e) {
+			resp.setData(null);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			log.error("更新商品异常!",e);
+		}
+		return resp;
+	
+	}
+	
+	private boolean hasIndex(Integer index){
+		if(ShoppingContants.GOODS_INDEX_WAIT_DELETE.equals(index)||
+				ShoppingContants.GOODS_INDEX_COMPLETE.equals(index)||
+				ShoppingContants.GOODS_INDEX_WAIT_UPDATE.equals(index)){
+			return true;
+		}
+		if(ShoppingContants.GOODS_INDEX_WAIT_CREATE.equals(index)||
+				ShoppingContants.GOODS_INDEX_HAS_DELETE.equals(index)){
+			return false;
+		}
+		return false;
+	}
+	
 	
 	@Override
 	public ServiceResponse<GoodsVo> updateGoods(GoodsVo goods) {
@@ -283,9 +387,6 @@ public class GoodsServiceImpl implements GoodsService {
 			param.setGoodsName(goods.getGoodsName());
 			param.setGoodsPic(goods.getGoodsPic());
 			param.setPrice(goods.getPrice());
-			if(ShoppingContants.GOODS_STATUS_OFF.equals(goods.getStatus())){//下架操作，更新索引为待删除
-				param.setGoodsIndex(ShoppingContants.GOODS_INDEX_DELETE);
-			}
 			param.setStatus(goods.getStatus());
 			goodsMapper.updateGoods(param);	
 			resp.setData(goods);
@@ -322,7 +423,6 @@ public class GoodsServiceImpl implements GoodsService {
 			param.setGoodsPic(goods.getGoodsPic());
 			param.setPrice(goods.getPrice());
 			param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
-			param.setGoodsIndex(ShoppingContants.GOODS_INDEX_UPDATE);
 			goodsMapper.updateGoods(param);
 			//保存sku
 			List<SkuVo>skus=goods.getSkus();

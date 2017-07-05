@@ -190,8 +190,7 @@ public class OrderAction extends CommonAction{
 				//更新db状态
 				OrderVo order=new OrderVo();
 				order.setOid(new Long(out_trade_no));
-				order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_REFUND);
-				orderService.updateOrder(order);
+				orderService.orderRefund(order);
 				response.getWriter().print("success");
 			}else{
 				response.getWriter().print("failed");
@@ -248,7 +247,7 @@ public class OrderAction extends CommonAction{
 	
 	
 	
-	
+	//通知用户
 	@RequestMapping("toPayResultPage")
 	public String toPayResultPage(HttpServletRequest request,HttpServletResponse response ) throws UnsupportedEncodingException, AlipayApiException{
 		Map<String,String> params = new HashMap<String,String>();
@@ -287,7 +286,7 @@ public class OrderAction extends CommonAction{
 		return webPage("/home/payResult");
 	}
 	
-	
+	//通知服务器
 	@RequestMapping("notifyPayResult")
 	public void notifyPayResult(HttpServletRequest request,HttpServletResponse response ) throws IOException, AlipayApiException{
 		//获取支付宝POST过来反馈信息
@@ -341,9 +340,8 @@ public class OrderAction extends CommonAction{
 				
 				OrderVo order=new OrderVo();
 				order.setOid(new Long(out_trade_no));
-				order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_HAS);
 				order.setPayNo(trade_no);
-				orderService.updateOrder(order);
+				orderService.orderPay(order);
 				//注意：
 				//付款完成后，支付宝系统发送该交易状态通知
 			}
@@ -383,7 +381,7 @@ public class OrderAction extends CommonAction{
 	public void deleteOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ) throws IOException{
 		log.info("OrderAction.deleteOrder 请求参数,order:{}",order);
 		order.setStatus(ShoppingContants.ORDER_STATUS_USER_DELETE);
-		ServiceResponse<OrderVo> resp=orderService.updateOrder(order);
+		ServiceResponse<OrderVo> resp=orderService.closeOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			log.info("OrderAction.deleteOrder success,orderNo:{}",order.getOid());
 			response.getWriter().print("success");

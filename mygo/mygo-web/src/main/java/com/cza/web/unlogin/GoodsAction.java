@@ -11,6 +11,7 @@
 package com.cza.web.unlogin;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,22 +62,15 @@ public class GoodsAction extends CommonAction{
 	@RequestMapping("search")
 	public String search(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		log.info("GoodsAction.search param:{}",goods);
-		//查询出类目
-		CategoryVo category=new CategoryVo();
-		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
-		category.setPid(0l);
-		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			List<CategoryVo> categoryList=resp.getData();
-			request.setAttribute("categoryList", categoryList);
-		}
+		Long startTime=System.currentTimeMillis();
 		goods.setStart(0);
 		goods.setPageSize(20);
 		ServiceResponse<Pager<GoodsVo>>goodsResp=goodsIndexService.search(goods);
-		if(resp.isSuccess()){
+		if(goodsResp.isSuccess()){
 			request.setAttribute("pager", goodsResp.getData());
 			request.setAttribute("goods", goods);
 		}
+		log.info("GoodsAction.search cost time:{}",System.currentTimeMillis()-startTime);
 		return webPage("goods/searchResult");
 	}
 	
@@ -84,18 +78,9 @@ public class GoodsAction extends CommonAction{
 	@RequestMapping("scrollSearch")
 	public String scrollSearch(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		log.info("GoodsAction.search param:{}",goods);
-		//查询出类目
-		CategoryVo category=new CategoryVo();
-		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
-		category.setPid(0l);
-		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			List<CategoryVo> categoryList=resp.getData();
-			request.setAttribute("categoryList", categoryList);
-		}
 		goods.setPageSize(20);
 		ServiceResponse<Pager<GoodsVo>>goodsResp=goodsIndexService.scrollSearch(goods);
-		if(resp.isSuccess()){
+		if(goodsResp.isSuccess()){
 			request.setAttribute("pager", goodsResp.getData());
 			goods.setScrollPage(goodsResp.getData().getScrollPage());
 			goods.setScrollId(goodsResp.getData().getScrollId());
@@ -108,63 +93,65 @@ public class GoodsAction extends CommonAction{
 	
 	@RequestMapping("listNewGoods")
 	public void listNewGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,WrapperResponse response) throws IOException{
+		Long startTime=System.currentTimeMillis();
 		goods.setStart(0);
 		goods.setPageSize(16);
 		ServiceResponse<List<GoodsVo>> resp=goodsService.listNewGoods(goods);
 		if(resp.isSuccess()){
 			response.getOutputStream().write(JSON.toJSONString(resp.getData()).getBytes("utf-8"));
 		}
+		log.info("GoodsAction.listNewGoods cost time:{}",System.currentTimeMillis()-startTime);
 	}
+	
 	@RequestMapping("listHotGoods")
 	public void listHotGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,WrapperResponse response) throws IOException{
+		Long startTime=System.currentTimeMillis();
 		goods.setStart(0);
 		goods.setPageSize(16);
 		ServiceResponse<List<GoodsVo>> resp=goodsService.listHotGoods(goods);
 		if(resp.isSuccess()){
 			response.getOutputStream().write(JSON.toJSONString(resp.getData()).getBytes("utf-8"));
 		}
+		log.info("GoodsAction.listHotGoods cost time:{}",System.currentTimeMillis()-startTime);
 	}
 	
-	@RequestMapping("listCategoryGoods")
-	public String listCategoryGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
-		//查询出类目
+	
+	@RequestMapping("listCategory")
+	public void listCategory(HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException, IOException{
 		CategoryVo category=new CategoryVo();
 		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
 		category.setPid(0l);
 		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			List<CategoryVo> categoryList=resp.getData();
-			request.setAttribute("categoryList", categoryList);
+		if(resp.isSuccess()){
+			response.getOutputStream().write(JSON.toJSONString(resp.getData()).getBytes("utf-8"));
 		}
+	}
+	
+	
+	@RequestMapping("listCategoryGoods")
+	public String listCategoryGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		Long startTime=System.currentTimeMillis();
 		request.setAttribute("cid", goods.getCid());
-				
 		//查询出用户选择的类目下商品
 		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
 		goods.setPageSize(20);
 		ServiceResponse<Pager<GoodsVo>> goodsResp=goodsService.listGoods(goods);
-		if(resp.isSuccess()){
+		if(goodsResp.isSuccess()){
 			request.setAttribute("pager", goodsResp.getData());
 			request.setAttribute("goods", goods);
 		}
+		log.info("GoodsAction.listCategoryGoods cost time:{}",System.currentTimeMillis()-startTime);
 		return webPage("home/categoryGoods");
 	}
 	
 	@RequestMapping("goodsDetail")
 	public String goodsDetail(HttpServletRequest request,HttpServletResponse response) throws IOException{
-		CategoryVo category=new CategoryVo();
-		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
-		category.setPid(0l);
-		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
-		if(resp.isSuccess()){
-			List<CategoryVo> categoryList=resp.getData();
-			request.setAttribute("categoryList", categoryList);
-		}else{
-			return erroPage(request, resp.getCode());
-		}
+		Long startTime=System.currentTimeMillis();
 		GoodsVo param=new GoodsVo();
 		param.setGid(Long.valueOf(request.getParameter("gid")));
 		ServiceResponse<GoodsVo> goodsResp=goodsService.queryGoods(param);
-		if(resp.isSuccess()){
+		log.info("GoodsAction.goodsDetail cost time:{}",System.currentTimeMillis()-startTime);
+		if(goodsResp.isSuccess()){
 			GoodsVo goodsVo=goodsResp.getData();
 			request.setAttribute("goods", goodsVo);
 			request.setAttribute("attrs", initAttr(goodsVo));
