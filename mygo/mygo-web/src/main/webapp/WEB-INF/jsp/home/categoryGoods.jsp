@@ -39,23 +39,6 @@
 	.goods_price{color:#FF464E;font-size:30px;}
 	.goods_price em{font-size:14px;font-style: normal;font-family: "微软雅黑","verdana";}
 </style>
-<script type="text/javascript">
-	$(function(){
-		initGoodsList();
-	});
-	
-/* 	function initGoodsList(){
-		$.ajax({
-			url:"${ctx}/unlogin/goods/listCategoryGoods.do?cid=${cid}",
-			type:'post',
-			dataType:'json',
-			success:function(goodsList){
-				$('#newGoods').append(makeGoodsHtml(goodsList));
-			}
-		});
-	} */
-	
-</script>
 </head>
 <body  class="_body">
 <div  class="page_body">
