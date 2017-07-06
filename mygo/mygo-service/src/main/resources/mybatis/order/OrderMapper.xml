@@ -63,9 +63,6 @@
 				<if test="uid!=null">
 					and uid = #{uid}
 				</if>
-				<if test="goodsName!=null and goodsName!=''">
-					and goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
-				</if>
 				<if test="sid!=null">
 					and sid=#{sid}
 				</if>
@@ -116,10 +113,10 @@
 	</select>
 	<insert id="saveOrder" parameterType="com.cza.dto.order.TOrder">
 			insert into t_order (
-				oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,number,create_time,update_time
+				oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,number,create_time,update_time,order_version
 			)
 			values (
-				#{oid},#{uid},#{province},#{area},#{city},#{addr},#{receiver},#{mobilphone},#{sid},#{goodsName},#{orderPrice},#{amount},#{number},#{createTime},${updateTime}
+				#{oid},#{uid},#{province},#{area},#{city},#{addr},#{receiver},#{mobilphone},#{sid},#{goodsName},#{orderPrice},#{amount},#{number},#{createTime},${updateTime},${orderVersion}
 			)
 	</insert>	
 	
@@ -147,13 +144,13 @@
 					pay_no=#{payNo},
 				</if>
 				<if test="orderVersion!=null">
-					and orderVersion = #{orderVersion},
+					order_version = #{orderVersion},
 				</if>
 		</set>
 		<where> 
 			oid = #{oid}
 			<if test="orderVersion!=null">
-				and orderVersion &lt; #{orderVersion},
+				and order_version &lt; #{orderVersion}
 			</if>
 		</where>
 	</update>

@@ -54,9 +54,10 @@ public class UpdateNotPayOrder {
 						OrderVo order=new OrderVo();
 						order.setOid(oid);
 						order.setStatus(ShoppingContants.ORDER_STATUS_SYS_DELETE);
+						order.setDeleteDesc("超时未付款关闭订单");
 						ServiceResponse<OrderVo> closeResp=	orderService.closeOrder(order);
 						if(!closeResp.isSuccess()){
-							log.info("UpdateNotPayOrder.execute erro:{}",resp.getCode());
+							log.info("UpdateNotPayOrder.execute erro:{}",closeResp.getCode());
 						}
 					}
 				}else{

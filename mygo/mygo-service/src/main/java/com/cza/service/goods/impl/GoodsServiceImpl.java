@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
@@ -122,9 +123,9 @@ public class GoodsServiceImpl implements GoodsService {
 	    */
 	    
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public ServiceResponse<GoodsVo> saveGoods(GoodsVo goods) {
 		ServiceResponse<GoodsVo> resp=new ServiceResponse<GoodsVo>();
-		try {
 			Long now=System.currentTimeMillis()/1000;
 			TGoods param=new TGoods();
 			param.setCid(goods.getCid());
@@ -176,12 +177,6 @@ public class GoodsServiceImpl implements GoodsService {
 			resp.setData(goods);
 			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-		} catch (Exception e) {
-			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
-			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
-			log.error("保存商品异常!",e);
-		}
 		return resp;
 	}
 
@@ -410,9 +405,9 @@ public class GoodsServiceImpl implements GoodsService {
 	    */
 	    
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public ServiceResponse<GoodsVo> updateGoodsPageInfo(GoodsVo goods) {
 		ServiceResponse<GoodsVo> resp=new ServiceResponse<GoodsVo>();
-		try {
 			Long now=System.currentTimeMillis()/1000;
 			TGoods param=new TGoods();
 			param.setGid(goods.getGid());
@@ -496,12 +491,6 @@ public class GoodsServiceImpl implements GoodsService {
 			resp.setData(goods);
 			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-		} catch (Exception e) {
-			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
-			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
-			log.error("更新商品异常!",e);
-		}
 		return resp;
 	}
 

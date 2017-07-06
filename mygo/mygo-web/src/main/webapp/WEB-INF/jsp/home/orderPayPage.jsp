@@ -109,27 +109,27 @@
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle" style="margin-top: 50px;">
 		<div style="width: 400px;margin-left:20%;height: 40px;">
-				<form name=alipayment action="${ctx}/login/order/toPay.do" method="post">
+				<form name=alipayment action="${ctx}/login/order/toAliPayPage.do" method="post">
 			<div id="body1" class="show" name="divcontent">
 				<dl class="content">
 					<dt>商户订单号 ：</dt>
 					<dd>
-						<input id="WIDout_trade_no" name="WIDout_trade_no" value="${order.oid}" />
+						<input id="WIDout_trade_no" name="oid" value="${order.oid}" />
 					</dd>
 					<hr class="one_line">
 					<dt>订单名称 ：</dt>
 					<dd>
-						<input id="WIDsubject" name="WIDsubject" value="mygo_test"/>
+						<input id="WIDsubject" name="orderName" value="mygo_test"/>
 					</dd>
 					<hr class="one_line">
 					<dt>付款金额 ：</dt>
 					<dd>
-						<input id="WIDtotal_amount" name="WIDtotal_amount" value="${order.amount}"/>
+						<input id="WIDtotal_amount" name="amount" value="${order.amount}"/>
 					</dd>
 					<hr class="one_line">
-					<dt>商品描述：</dt>
+					<dt>订单描述：</dt>
 					<dd>
-						<input id="WIDbody" name="WIDbody" value="${order.goodsName}" />
+						<input id="WIDbody" name="orderDesc" value="测试订单" />
 					</dd>
 					<hr class="one_line">
 					<dt></dt>

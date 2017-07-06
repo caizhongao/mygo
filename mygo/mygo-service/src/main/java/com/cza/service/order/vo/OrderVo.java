@@ -46,7 +46,7 @@ public class OrderVo {
 	
 	private Long orderVersion;
 	
-	
+	private String orderName;
 	private Integer pageNum=1;
 	private Integer pageSize=15;
 	private Integer start=0;
@@ -63,6 +63,40 @@ public class OrderVo {
 	
 	
 	
+	
+	/**
+	* @return orderName
+	*/
+	
+	public String getOrderName() {
+		return orderName;
+	}
+
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param orderName the orderName to set
+	 */
+	
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
+	}
+
+
+
+
+
+
+
+
+
 	/**
 	* @return updateTime
 	*/
@@ -573,6 +607,7 @@ public class OrderVo {
 
 
 
+
 	
 	    /* (非 Javadoc)
 	    * 
@@ -588,9 +623,36 @@ public class OrderVo {
 				+ ", goodsName=" + goodsName + ", orderPrice=" + orderPrice + ", amount=" + amount + ", number="
 				+ number + ", payStatus=" + payStatus + ", status=" + status + ", deleteDesc=" + deleteDesc
 				+ ", userName=" + userName + ", payNo=" + payNo + ", createTime=" + createTime + ", updateTime="
-				+ updateTime + ", orderVersion=" + orderVersion + ", pageNum=" + pageNum + ", pageSize=" + pageSize
-				+ ", start=" + start + "]";
+				+ updateTime + ", orderVersion=" + orderVersion + ", orderName=" + orderName + ", pageNum=" + pageNum
+				+ ", pageSize=" + pageSize + ", start=" + start + "]";
 	}
+
+
+
+
+
+
+
+
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+
+
+
+
+
+
+
+
+
+
+
 
 
 	

@@ -88,6 +88,9 @@ public interface ShoppingContants {
 	public static final Integer RESP_CODE_ORDER_HAS_OPT=3001;
 	public static final String RESP_MSG_ORDER_HAS_OPT="order has operate by others!";
 	
+	public static final Integer RESP_CODE_ORDER_AMOUNT_ERRO=3002;
+	public static final String RESP_MSG_ORDER_AMOUNT_ERRO="order amount erro!";
+	
 	
 	
 	

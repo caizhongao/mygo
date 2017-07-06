@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
@@ -71,9 +72,9 @@ public class OrderServiceImpl implements OrderService{
 	    */
 	    
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public ServiceResponse<PreOrderVo> saveOrder(PreOrderVo orderVo) {
 		ServiceResponse<PreOrderVo> resp=new ServiceResponse<PreOrderVo>();
-		try {
 			TSkuStock skuStock=new TSkuStock();
 			skuStock.setSid(orderVo.getSkuId());
 			skuStock.setStock(orderVo.getNumber().longValue());
@@ -85,6 +86,7 @@ public class OrderServiceImpl implements OrderService{
 				resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 				return resp;
 			}
+			Long now=System.currentTimeMillis()/1000;
 			TOrder saveOrder=new TOrder();
 			TUserAddr addr=addrMapper.queryAddr(orderVo.getAddrId());
 			if(addr==null){
@@ -109,7 +111,9 @@ public class OrderServiceImpl implements OrderService{
 			saveOrder.setOid(makeOrderId());
 			saveOrder.setUid(orderVo.getUid());
 			saveOrder.setNumber(orderVo.getNumber());
-			saveOrder.setCreateTime(System.currentTimeMillis()/1000);
+			saveOrder.setCreateTime(now);
+			saveOrder.setUpdateTime(now);
+			saveOrder.setOrderVersion(0L);
 			orderMapper.saveOrder(saveOrder);
 			orderVo.setOrderId(saveOrder.getOid());
 			//销量
@@ -119,12 +123,6 @@ public class OrderServiceImpl implements OrderService{
 			resp.setData(orderVo);
 			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-		} catch (Exception e) {
-			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
-			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
-			log.error("保存商品异常!",e);
-		}
 		return resp;
 	}
 	
@@ -147,6 +145,7 @@ public ServiceResponse<List<Long>> listOrderIds(OrderVo listParam) {
 	ServiceResponse<List<Long>> resp=new ServiceResponse<List<Long>>();
 	try {
 		listParam.setStart((listParam.getPageNum()-1)*listParam.getPageSize());
+		log.info("listOrderIds param:{}",listParam);
 		List<Long> orderIds=orderMapper.listOrderIds(listParam);
 		resp.setData(orderIds);
 		resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
@@ -237,15 +236,16 @@ public ServiceResponse<List<Long>> listOrderIds(OrderVo listParam) {
 	 * @param 订单id
 	 * */
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public ServiceResponse<OrderVo> closeOrder(OrderVo orderVo) {
 		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
-		try {
 			TOrder queryOrder=orderMapper.queryOrder(orderVo.getOid());
 			if(ShoppingContants.ORDER_STATUS_NORMAL.equals(queryOrder.getStatus())&&ShoppingContants.ORDER_PAY_STATUS_NOT.equals(queryOrder.getPayStatus())){
 				TOrder updateParam=new TOrder();
 				updateParam.setOrderVersion(queryOrder.getOrderVersion()+1);
 				updateParam.setOid(queryOrder.getOid());
 				updateParam.setStatus(orderVo.getStatus());
+				updateParam.setDeleteDesc(orderVo.getDeleteDesc());
 				int row=orderMapper.updateOrder(updateParam);
 				if(row==0){
 					log.warn("订单已被操作，此次操作失败!");
@@ -270,13 +270,7 @@ public ServiceResponse<List<Long>> listOrderIds(OrderVo listParam) {
 				resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
 				return resp;
 			}
-		} catch (Exception e) {
-			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
-			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
-			log.error("closeOrder exception,",e);
-		}
-		return resp;
+			return resp;
 	}
 
 
@@ -292,30 +286,57 @@ public ServiceResponse<List<Long>> listOrderIds(OrderVo listParam) {
 		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
 		try {
 			TOrder queryOrder=orderMapper.queryOrder(orderVo.getOid());
-			if(ShoppingContants.ORDER_STATUS_NORMAL.equals(queryOrder.getStatus())&&ShoppingContants.ORDER_PAY_STATUS_NOT.equals(queryOrder.getPayStatus())){
-				TOrder updateParam=new TOrder();
-				updateParam.setOrderVersion(queryOrder.getOrderVersion()+1);
-				updateParam.setOid(queryOrder.getOid());
-				updateParam.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_HAS);
-				updateParam.setPayNo(orderVo.getPayNo());
-				int row=orderMapper.updateOrder(updateParam);
-				if(row==0){
+			//按照阿里的要求，验证订单号和订单金额
+			if(queryOrder==null){
+				log.warn("订单不存在，此次操作失败,oid:{}!",orderVo.getOid());
+				resp.setData(null);
+				resp.setMsg(ShoppingContants.RESP_MSG_ORDER_NOT_EXIST);
+				resp.setCode(ShoppingContants.RESP_CODE_ORDER_NOT_EXIST);
+				return resp;
+			}
+			//验证金额
+			if(!queryOrder.getAmount().equals(orderVo.getAmount())){
+				log.warn("订单金额不对，此次操作失败!");
+				resp.setData(null);
+				resp.setMsg(ShoppingContants.RESP_MSG_ORDER_AMOUNT_ERRO);
+				resp.setCode(ShoppingContants.RESP_CODE_ORDER_AMOUNT_ERRO);
+				return resp;
+			}
+			
+			if(ShoppingContants.ORDER_PAY_STATUS_HAS.equals(queryOrder.getPayStatus())){
+				//如果订单状态已经是付款成功，则不处理
+				//因为支付宝同一个订单号只能支付一次，所以不用担心用户多支付，之所以可能出现已处理，是因为支付宝可能会多次通知，导致这边已经处理过,所以已经处理的，不用再处理)
+				resp.setData(orderVo);
+				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+			}else{//如果不是已付款，那就要判断订单状态是否正常， 并且支付状态是否未支付，满足才能支付成功
+				if(ShoppingContants.ORDER_STATUS_NORMAL.equals(queryOrder.getStatus())&&ShoppingContants.ORDER_PAY_STATUS_NOT.equals(queryOrder.getPayStatus())){
+					
+					TOrder updateParam=new TOrder();
+					updateParam.setOrderVersion(queryOrder.getOrderVersion()+1);
+					updateParam.setOid(queryOrder.getOid());
+					updateParam.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_HAS);
+					updateParam.setPayNo(orderVo.getPayNo());
+					int row=orderMapper.updateOrder(updateParam);
+					if(row==0){
+						log.warn("订单已被操作，此次操作失败!");
+						resp.setData(null);
+						resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
+						resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
+						return resp;
+					}
+					resp.setData(orderVo);
+					resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+					resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+				}else{//订单支付更新失败，应该要退款操作
 					log.warn("订单已被操作，此次操作失败!");
 					resp.setData(null);
 					resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
 					resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
 					return resp;
 				}
-				resp.setData(orderVo);
-				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
-				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			}else{//订单支付更新失败，应该要退款操作
-				log.warn("订单已被操作，此次操作失败!");
-				resp.setData(null);
-				resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
-				resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
-				return resp;
 			}
+			
 		} catch (Exception e) {
 			resp.setData(null);
 			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
@@ -327,38 +348,38 @@ public ServiceResponse<List<Long>> listOrderIds(OrderVo listParam) {
 	
 	
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public ServiceResponse<OrderVo> orderRefund(OrderVo orderVo) {
 		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
-		try {
-			TOrder queryOrder=orderMapper.queryOrder(orderVo.getOid());
-			if(ShoppingContants.ORDER_PAY_STATUS_HAS.equals(queryOrder.getPayStatus())){
-				TOrder updateParam=new TOrder();
-				updateParam.setOrderVersion(queryOrder.getOrderVersion()+1);
-				updateParam.setOid(queryOrder.getOid());
-				updateParam.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_REFUND);
-				int row=orderMapper.updateOrder(updateParam);
-				if(row==0){
-					log.warn("订单已被操作，此次操作失败!");
-					resp.setData(null);
-					resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
-					resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
-					return resp;
-				}
-				resp.setData(orderVo);
-				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
-				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			}else{
+		TOrder queryOrder=orderMapper.queryOrder(orderVo.getOid());
+		if(ShoppingContants.ORDER_PAY_STATUS_REFUND.equals(queryOrder.getPayStatus())){
+			log.warn("订单已被操作，此次操作失败!");
+			resp.setData(null);
+			resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
+			resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
+			return resp;
+		}else{
+			TOrder updateParam=new TOrder();
+			updateParam.setOrderVersion(queryOrder.getOrderVersion()+1);
+			updateParam.setOid(queryOrder.getOid());
+			updateParam.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_REFUND);
+			int row=orderMapper.updateOrder(updateParam);
+			if(row==0){
 				log.warn("订单已被操作，此次操作失败!");
 				resp.setData(null);
 				resp.setMsg(ShoppingContants.RESP_MSG_ORDER_HAS_OPT);
 				resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
 				return resp;
 			}
-		} catch (Exception e) {
-			resp.setData(null);
-			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
-			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
-			log.error("orderPay exception,",e);
+			//订单关闭完后，归还库存
+			TSkuStock skuStock=new TSkuStock();
+			skuStock.setSid(queryOrder.getSid());
+			skuStock.setStock(-queryOrder.getNumber());
+			stockMapper.reduceSkuStock(skuStock);
+			log.info("订单退款成功，订单号:{}",orderVo.getOid());
+			resp.setData(orderVo);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		}
 		return resp;
 	}

@@ -37,6 +37,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.alipay.api.util.AliPayUtils;
 import com.cza.common.Pager;
 import com.cza.common.PropertyUtil;
 import com.cza.common.ServiceResponse;
@@ -136,6 +137,10 @@ public class OrderAction extends CommonAction{
 		}
 	}
 	
+	/**
+     * @Title: toOrderPayPage
+     * @Description: 跳转到系统付款页面
+	 */
 	@RequestMapping("toOrderPayPage")
 	public String toOrderPayPage(HttpServletRequest request,HttpServletResponse response ){
 		String str=request.getParameter("oid");
@@ -151,212 +156,131 @@ public class OrderAction extends CommonAction{
 			return erroPage(request, resp.getCode());
 		}
 	}
-	@RequestMapping("toRefund")
-	public void toRefund(HttpServletRequest request,HttpServletResponse response ) throws IOException{
-		
-		String str=request.getParameter("oid");
-		if(StringUtils.isEmpty(str)){
-			response.getWriter().print("failed");
-		}
-		ServiceResponse<OrderVo> resp=orderService.queryOrder(Long.valueOf(str));
-		
-		//获得初始化的AlipayClient
-		AlipayClient alipayClient = new DefaultAlipayClient((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_GATEWAY_URL), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_APP_ID), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PRIVATE_KEY), "json",(String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE));
-		
-		//设置请求参数
-		AlipayTradeRefundRequest alipayRequest = new AlipayTradeRefundRequest();
-		
-		//商户订单号，商户网站订单系统中唯一订单号
-		String out_trade_no = new String(resp.getData().getOid().toString());
-		//支付宝交易号
-		String trade_no = new String(resp.getData().getPayNo());
-		//请二选一设置
-		//需要退款的金额，该金额不能大于订单金额，必填
-		String refund_amount = new String(resp.getData().getAmount().toString());
-		//退款的原因说明
-		String refund_reason = new String("mygo-test");
-		//标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传
-		String out_request_no = new String(resp.getData().getOid().toString());
-		
-		alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
-				+ "\"trade_no\":\""+ trade_no +"\"," 
-				+ "\"refund_amount\":\""+ refund_amount +"\"," 
-				+ "\"refund_reason\":\""+ refund_reason +"\"," 
-				+ "\"out_request_no\":\""+ out_request_no +"\"}");
-		//请求
-		try {
-			AlipayTradeRefundResponse alipayResp= alipayClient.execute(alipayRequest);
-			if(alipayResp.isSuccess()&&alipayResp.getFundChange().equals("Y")){
-				//更新db状态
-				OrderVo order=new OrderVo();
-				order.setOid(new Long(out_trade_no));
-				orderService.orderRefund(order);
-				response.getWriter().print("success");
-			}else{
-				response.getWriter().print("failed");
-			}
-		} catch (Exception e) {
-			log.info("OrderAction.toPay erro",e);
-		}
-	}
 	
-	@RequestMapping("toPay")
-	public String toPay(HttpServletRequest request,HttpServletResponse response ) throws UnsupportedEncodingException, AlipayApiException{
-		//获得初始化的AlipayClient
-		AlipayClient alipayClient = new DefaultAlipayClient((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_GATEWAY_URL), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_APP_ID), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PRIVATE_KEY), "json",(String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE));
-		//设置请求参数
-		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
-		alipayRequest.setReturnUrl((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_RETURN_URL));
-		alipayRequest.setNotifyUrl((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_NOTIFY_URL));
-		
-		//商户订单号，商户网站订单系统中唯一订单号，必填
-		String out_trade_no = new String(request.getParameter("WIDout_trade_no").getBytes("ISO-8859-1"),"UTF-8");
-		//付款金额，必填
-		String total_amount = new String(request.getParameter("WIDtotal_amount").getBytes("ISO-8859-1"),"UTF-8");
-		//订单名称，必填
-		String subject = new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");
-		//商品描述，可空
-		String body = new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
-		
-		alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
-				+ "\"total_amount\":\""+ total_amount +"\"," 
-				+ "\"subject\":\""+ subject +"\"," 
-				+ "\"body\":\""+ body +"\"," 
-				+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
-		
-		//若想给BizContent增加其他可选请求参数，以增加自定义超时时间参数timeout_express来举例说明
-		//alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
-		//		+ "\"total_amount\":\""+ total_amount +"\"," 
-		//		+ "\"subject\":\""+ subject +"\"," 
-		//		+ "\"body\":\""+ body +"\"," 
-		//		+ "\"timeout_express\":\"10m\"," 
-		//		+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
-		//请求参数可查阅【电脑网站支付的API文档-alipay.trade.page.pay-请求参数】章节
-		//请求
-		try {
-			String result = alipayClient.pageExecute(alipayRequest).getBody();
-			request.setAttribute("result", result);
+	/**
+	 * 
+     * @Title: toAliPayPage
+     * @Description: 跳转到支付宝支付页面
+	 */
+	@RequestMapping("toAliPayPage")
+	public String toAliPayPage(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ) throws UnsupportedEncodingException, AlipayApiException{
+		log.info("toAliPayPage param:{}",order);
+		ServiceResponse<String> resp=AliPayUtils.aliPayPage(order.getOid(),order.getAmount(),order.getOrderName());
+		if(resp.isSuccess()){
+			request.setAttribute("result", resp.getData());
 			return webPage("/home/pay");
-		} catch (Exception e) {
-			log.info("OrderAction.toPay erro",e);
-			return erroPage(request, ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+		}else{
+			return erroPage(request,resp.getCode());
 		}
-		
 	}
 	
 	
 	
 	
-	//通知用户
+	/**
+	 * @Title: notifyPayResult
+	 * @Description: 支付宝同步通知用户支付结果
+	   	用户支付完后，收到redirect请求，跳转到当前action
+	 */
 	@RequestMapping("toPayResultPage")
+	@SuppressWarnings("unchecked")
 	public String toPayResultPage(HttpServletRequest request,HttpServletResponse response ) throws UnsupportedEncodingException, AlipayApiException{
-		Map<String,String> params = new HashMap<String,String>();
-		Map<String,String[]> requestParams = request.getParameterMap();
-		for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
-			String name = (String) iter.next();
-			String[] values = (String[]) requestParams.get(name);
-			String valueStr = "";
-			for (int i = 0; i < values.length; i++) {
-				valueStr = (i == values.length - 1) ? valueStr + values[i]
-						: valueStr + values[i] + ",";
+		request.setAttribute("payResult","failed");//设置默认为失败
+		ServiceResponse<Boolean> validateResp=AliPayUtils.validatePayResult(request.getParameterMap());
+		if(validateResp.isSuccess()){//方法执行成工
+			if(validateResp.getData()){//验证成功
+				request.setAttribute("oid", request.getParameter("out_trade_no"));
+				request.setAttribute("amount", request.getParameter("total_amount"));
+				request.setAttribute("payNo", request.getParameter("trade_no"));
+				request.setAttribute("payResult","success");//设置通知结果为成功
 			}
-			//乱码解决，这段代码在出现乱码时使用
-			//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-			params.put(name, valueStr);
-		}
-		log.info("OrderAction.updatePayStatus params:{}",params);
-		boolean signVerified = AlipaySignature.rsaCheckV1(params, (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE)); //调用SDK验证签名
-		log.info("OrderAction.updatePayStatus public_key:{},charset:{},sign_type:{},signVerified:{}",PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY),PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE),signVerified);
-		
-		//——请在这里编写您的程序（以下代码仅作参考）——
-		if(signVerified) {
-			//商户订单号
-			String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
-			//支付宝交易号
-			String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
-			//付款金额
-			String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
-			request.setAttribute("oid", out_trade_no);
-			request.setAttribute("amount", total_amount);
-			request.setAttribute("payNo", trade_no);
-			request.setAttribute("payResult","success");
-		}else {
-			request.setAttribute("payResult","failed");
 		}
 		return webPage("/home/payResult");
 	}
 	
-	//通知服务器
-	@RequestMapping("notifyPayResult")
-	public void notifyPayResult(HttpServletRequest request,HttpServletResponse response ) throws IOException, AlipayApiException{
-		//获取支付宝POST过来反馈信息
-		Map<String,String> params = new HashMap<String,String>();
-		@SuppressWarnings("unchecked")
-		Map<String,String[]> requestParams = request.getParameterMap();
-		for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
-			String name = (String) iter.next();
-			String[] values = (String[]) requestParams.get(name);
-			String valueStr = "";
-			for (int i = 0; i < values.length; i++) {
-				valueStr = (i == values.length - 1) ? valueStr + values[i]
-						: valueStr + values[i] + ",";
-			}
-			//乱码解决，这段代码在出现乱码时使用
-			//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-			params.put(name, valueStr);
-		}
-		log.info("OrderAction.updatePayStatus params:{}",params);
-		boolean signVerified = AlipaySignature.rsaCheckV1(params, (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE)); //调用SDK验证签名
-		log.info("OrderAction.updatePayStatus public_key:{},charset:{},sign_type:{},signVerified:{}",PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY),PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE),signVerified);
-		//——请在这里编写您的程序（以下代码仅作参考）——
-		
-		/* 实际验证过程建议商户务必添加以下校验：
+	/**
+	 * @Title: notifyPayResult
+	 * @Description: 支付宝异步通知服务器支付结果
+	   	实际验证过程建议商户务必添加以下校验：
 		1、需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号，
 		2、判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额），
 		3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email）
 		4、验证app_id是否为该商户本身。
-		*/
-		if(signVerified) {//验证成功
-			//商户订单号
-			String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
-		
-			//支付宝交易号
-			String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
-		
-			//交易状态
-			String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
-			
-			if(trade_status.equals("TRADE_FINISHED")){
-				//判断该笔订单是否在商户网站中已经做过处理
-				//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-				//如果有做过处理，不执行商户的业务程序
-					
-				//注意：
-				//退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
-			}else if (trade_status.equals("TRADE_SUCCESS")){
-				//判断该笔订单是否在商户网站中已经做过处理
-				//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-				//如果有做过处理，不执行商户的业务程序
-				
-				OrderVo order=new OrderVo();
-				order.setOid(new Long(out_trade_no));
-				order.setPayNo(trade_no);
-				orderService.orderPay(order);
-				//注意：
-				//付款完成后，支付宝系统发送该交易状态通知
+	 */
+	@RequestMapping("notifyPayResult")
+	@SuppressWarnings("unchecked")
+	public void notifyPayResult(HttpServletRequest request,HttpServletResponse response ) throws IOException, AlipayApiException{
+		ServiceResponse<Boolean> validateResp=AliPayUtils.validatePayResult(request.getParameterMap());
+		if(validateResp.isSuccess()){//方法执行成功
+			if(validateResp.getData()) {//验证成功
+				//商户订单号
+				String oid = request.getParameter("out_trade_no");
+				String amount= request.getParameter("total_amount");
+				//支付宝交易号
+				String trade_no =request.getParameter("trade_no");
+				//交易状态
+				String trade_status =request.getParameter("trade_status");
+				if(trade_status.equals("TRADE_FINISHED")){
+					//判断该笔订单是否在商户网站中已经做过处理
+					//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
+					//如果有做过处理，不执行商户的业务程序
+					//注意：
+					//退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
+				}else if (trade_status.equals("TRADE_SUCCESS")){
+					//判断该笔订单是否在商户网站中已经做过处理
+					//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
+					//如果有做过处理，不执行商户的业务程序
+					OrderVo order=new OrderVo();
+					order.setOid(new Long(oid));
+					order.setPayNo(trade_no);
+					order.setAmount(new BigDecimal(amount));
+					ServiceResponse<OrderVo> payResp=orderService.orderPay(order);
+					if(payResp.isSuccess()){
+						log.info("订单支付状态更新成功,oid:",oid);
+					}else{
+						//状态变更失败，退款
+						ServiceResponse<Boolean> refundResp=AliPayUtils.refund(new Long(oid),trade_no,new BigDecimal(amount));
+						if(refundResp.isSuccess()&&refundResp.getData()){
+							log.info("系统发起退款成功,oid:{}!",oid);
+						}else{
+							log.info("系统发起退款失败,oid:{}!",oid);
+						}
+					}
+				}
+				response.getWriter().println("success");
 			}
-			response.getWriter().println("success");
-			
-		}else {//验证失败
-			response.getWriter().println("fail");
-		
-			//调试用，写文本函数记录程序运行情况是否正常
-			String sWord = AlipaySignature.getSignCheckContentV1(params);
-			log.info("OrderAction.updatePayStatus valid faild sWord:{}",sWord);
 		}
+		response.getWriter().println("fail");
 		
 	}
 	
+	
+	/**
+	 * 
+     * @Title: toRefund
+     * @Description: 用户发起退款，同步收到退款结果
+	 */
+	@RequestMapping("toRefund")
+	public void toRefund(HttpServletRequest request,HttpServletResponse response ) throws IOException{
+		String str=request.getParameter("oid");
+		log.info("toRefund oid:{}",str);
+		if(!StringUtils.isEmpty(str)){
+			ServiceResponse<OrderVo> resp=orderService.queryOrder(Long.valueOf(str));
+			if(resp.isSuccess()){
+				final OrderVo order=resp.getData();
+				ServiceResponse<Boolean> refundResp=AliPayUtils.refund(order.getOid(), order.getPayNo(), order.getAmount());
+				if(refundResp.isSuccess()){//方法执行成功
+					if(refundResp.getData()){//退款成功
+						OrderVo refundParam=new OrderVo();
+						refundParam.setOid(order.getOid());
+						orderService.orderRefund(refundParam);
+						response.getWriter().print("success");
+					}
+				}
+			}
+		}
+		response.getWriter().print("failed");
+	}
 	
 	
 	@RequestMapping("listOrder")

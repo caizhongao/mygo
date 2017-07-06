@@ -174,10 +174,12 @@
 						<td align="center" style="border-bottom: 1px dashed #ccc;">${order.number}</td>
 						<td align="center" style="border-bottom: 1px dashed #ccc;">${order.amount}</td>
 					</tr>
+					<tr>
+						<td colspan="4">&nbsp;</td>
+						<td align="center">
+						<br><input type="button" value="确认订单" class="manager_button" onclick="makeOrder()"></td>
+					</tr>
 				</table>
-				<div style="width: 1000px;text-align: right;top: 30px;margin-top: 20px">
-					<input type="button" value="确认订单" class="manager_button" onclick="makeOrder()">
-				</div>
 			</form>
 		</div>
 	</div>
