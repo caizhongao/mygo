@@ -22,10 +22,11 @@
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
 		<result property="orderVersion" column="order_version"/>
+		<result property="gid" column="gid"/>
 	</resultMap>
 	
 	<sql id="allColumns">
-			oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,number,pay_status,status,delete_desc,pay_no,create_time,update_time,order_version
+			oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,number,pay_status,status,delete_desc,pay_no,create_time,update_time,order_version,gid
 	</sql>
 	
 	
@@ -113,10 +114,12 @@
 	</select>
 	<insert id="saveOrder" parameterType="com.cza.dto.order.TOrder">
 			insert into t_order (
-				oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,number,create_time,update_time,order_version
+				oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,
+				order_price,amount,number,create_time,update_time,order_version,gid
 			)
 			values (
-				#{oid},#{uid},#{province},#{area},#{city},#{addr},#{receiver},#{mobilphone},#{sid},#{goodsName},#{orderPrice},#{amount},#{number},#{createTime},${updateTime},${orderVersion}
+				#{oid},#{uid},#{province},#{area},#{city},#{addr},#{receiver},#{mobilphone},#{sid},#{goodsName},
+				#{orderPrice},#{amount},#{number},#{createTime},${updateTime},${orderVersion},${gid}
 			)
 	</insert>	
 	

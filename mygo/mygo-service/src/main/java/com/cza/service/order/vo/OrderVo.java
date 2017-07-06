@@ -45,7 +45,7 @@ public class OrderVo {
 	private Long updateTime;
 	
 	private Long orderVersion;
-	
+	private Long gid;
 	private String orderName;
 	private Integer pageNum=1;
 	private Integer pageSize=15;
@@ -64,6 +64,42 @@ public class OrderVo {
 	
 	
 	
+	
+	/**
+	* @return gid
+	*/
+	
+	public Long getGid() {
+		return gid;
+	}
+
+
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param gid the gid to set
+	 */
+	
+	public void setGid(Long gid) {
+		this.gid = gid;
+	}
+
+
+
+
+
+
+
+
+
+
 	/**
 	* @return orderName
 	*/

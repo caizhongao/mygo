@@ -107,6 +107,7 @@ public class OrderServiceImpl implements OrderService{
 			saveOrder.setOrderPrice(sku.getPrice());
 			saveOrder.setAmount(sku.getPrice().multiply(new BigDecimal(orderVo.getNumber())));
 			saveOrder.setSid(orderVo.getSkuId());
+			saveOrder.setGid(sku.getGid());
 			saveOrder.setGoodsName(sku.getGoodsName());
 			saveOrder.setOid(makeOrderId());
 			saveOrder.setUid(orderVo.getUid());

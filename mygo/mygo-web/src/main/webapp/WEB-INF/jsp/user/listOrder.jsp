@@ -173,7 +173,9 @@ function toRefund(oid){
 					${order.oid}
 				</td>
 				<td>
+				<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${order.gid }" target="_blank">
 					${order.goodsName }
+					</a>
 				</td>
 				<td>
 					${order.orderPrice}

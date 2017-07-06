@@ -48,11 +48,43 @@ public class TOrder implements Serializable{
 	private Long orderVersion;
 	
 	
+	private Long gid;
 	
 	
 	
 	
 	
+	
+	
+	/**
+	* @return gid
+	*/
+	
+	public Long getGid() {
+		return gid;
+	}
+
+
+
+
+
+
+
+	
+	/**
+	 * @param gid the gid to set
+	 */
+	
+	public void setGid(Long gid) {
+		this.gid = gid;
+	}
+
+
+
+
+
+
+
 	/**
 	* @return updateTime
 	*/

@@ -58,6 +58,7 @@
 								'<td width="190px" align="center">价格</td>'+
 								'<td width="190px" align="center">库存</td>'+
 								'<td width="190px" align="center">剩余库存</td>'+
+								'<td width="190px" align="center">图片</td>'+
 								'<td  width="80px" align="center" class="optTh">操作</td>'+
 							'</tr>'+
 							'<tr class="skuTr" height="25px">'+
@@ -65,6 +66,23 @@
 								'<td align="center"><input type="text" name="price" value=""></td>'+
 								'<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>'+
 								'<td align="center"><input type="text" name="stock" value=""  readonly="readonly" ></td>'+
+								'<td>'+
+									'<p>'+
+									 ' <table cellpadding="0" cellspacing="0">'+
+									  	'<tr>'+
+									  		'<td>'+
+									  			'<div>'+
+									  				'<img src="${ctx}/img/goods/default.png" id="upImg" alt="上传图片" width="113px"/>'+
+									  				'<input type="hidden" name="goodsPic" id="goodsPic">'+
+									  			'</div>'+
+									  		'</td>'+
+									  	'</tr>'+
+									  '</table>'+
+									  	'<br>'+
+									 	 '<input class="text-input small-input" type="file" id="upFile" />'+
+									'</p>'+
+								'</td>'+
+								
 								'<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>'+
 							'</tr>'
 							);
@@ -234,6 +252,7 @@
 				<td width="190px" align="center">价格</td>
 				<td width="190px" align="center">总库存</td>
 				<td width="190px" align="center">剩余库存</td>
+				<td width="190px" align="center">图片</td>
 				<td  width="80px" align="center" class="optTh">操作</td>
 			</tr>
 			<tr class="skuTr" height="25px">
@@ -241,10 +260,27 @@
 				<td align="center"><input type="text" name="price" value=""></td>
 				<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>
 				<td align="center"><input type="text" name="stock" readonly="readonly"></td>
+				<td>
+					<p>
+					  <table cellpadding="0" cellspacing="0">
+					  	<tr>
+					  		<td>
+					  			<div>
+					  				<img src="${ctx}/img/goods/default.png" id="upImg" alt="上传图片" width="60px"/>
+					  				<input type="hidden" name="goodsPic" id="goodsPic">
+					  			</div>
+					  		</td>
+					  	</tr>
+					  </table>
+					  	<br>
+					 	 <input class="text-input small-input" type="file" id="upFile" style="width: 100px;font-size: 13px;"/>
+					</p>
+				</td>
 				<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>
 			</tr>
 		</table>
-		<br><p>
+		<br>
+		<p>
 		  <table cellpadding="0" cellspacing="0">
 		  	<tr>
 		  		<td style="font-weight:bold">
@@ -254,7 +290,7 @@
 		  	<tr>
 		  		<td>
 		  			<div>
-		  				<img src="${ctx}/img/goods/default.png" id="upImg" alt="上传图片" width="107px"/>
+		  				<img src="${ctx}/img/goods/default.png" id="upImg" alt="上传图片" width="113px"/>
 		  				<input type="hidden" name="goodsPic" id="goodsPic">
 		  			</div>
 		  		</td>
@@ -262,7 +298,7 @@
 		  </table>
 		  	<br>
 		 	 <input class="text-input small-input" type="file" id="upFile" />
-		  </p>
+		</p>
 		<br>
 		<table>
 			<tr>

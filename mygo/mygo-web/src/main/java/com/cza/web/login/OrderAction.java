@@ -248,6 +248,7 @@ public class OrderAction extends CommonAction{
 					}
 				}
 				response.getWriter().println("success");
+				return;
 			}
 		}
 		response.getWriter().println("fail");
@@ -275,6 +276,7 @@ public class OrderAction extends CommonAction{
 						refundParam.setOid(order.getOid());
 						orderService.orderRefund(refundParam);
 						response.getWriter().print("success");
+						return;
 					}
 				}
 			}
