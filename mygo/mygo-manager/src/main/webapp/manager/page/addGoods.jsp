@@ -58,77 +58,18 @@
 								'<td width="190px" align="center">价格</td>'+
 								'<td width="190px" align="center">库存</td>'+
 								'<td width="190px" align="center">剩余库存</td>'+
-								'<td width="190px" align="center">图片</td>'+
 								'<td  width="80px" align="center" class="optTh">操作</td>'+
 							'</tr>'+
 							'<tr class="skuTr" height="25px">'+
-								'<td align="center"><input type="text" name="barcode" value=""></td>'+
+								'<td align="center"><input type="text" name="barcode" before="" onblur="updateSkuSelect(this)" value=""><input type="hidden" name="skuPic" value="123"></td>'+
 								'<td align="center"><input type="text" name="price" value=""></td>'+
 								'<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>'+
 								'<td align="center"><input type="text" name="stock" value=""  readonly="readonly" ></td>'+
-								'<td>'+
-									'<p>'+
-									 ' <table cellpadding="0" cellspacing="0">'+
-									  	'<tr>'+
-									  		'<td>'+
-									  			'<div>'+
-									  				'<img src="${ctx}/img/goods/default.png" id="upImg" alt="上传图片" width="113px"/>'+
-									  				'<input type="hidden" name="goodsPic" id="goodsPic">'+
-									  			'</div>'+
-									  		'</td>'+
-									  	'</tr>'+
-									  '</table>'+
-									  	'<br>'+
-									 	 '<input class="text-input small-input" type="file" id="upFile" />'+
-									'</p>'+
-								'</td>'+
-								
 								'<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>'+
 							'</tr>'
 							);
 	}
-	
-	
-	
-	$(function(){
-		listAttrs();
-		 $('#upFile').uploadify({
-	            'swf'      		:   "${ctx}/js/uploadify/uploadify.swf",
-	            'uploader' 		: 	"${ctx}/manager/goods/uploadPic.do",
-	            'cancelImg'		:	"${ctx}/js/uploadify/uploadify-cancel.png",
-	            'debug'			:	false,
-	            'buttonText'	:	'选择照片',
-				'method'			:	'post',
-				'buttonClass'	:  'upload_button',
-				'fileTypeDesc'	:	'图片文件',
-				'fileTypeExts'	:	'*.gif;*.jpg;*.png;*.bmp',
-				'multi'				:	false,
-				'formData'      :  {'goodsCode':$('#goodsCode').val()},
-				'onSelect':function(file){
-					var goodsCode=$('#goodsCode').val();
-					if(goodsCode==""){
-						alert("请选填写商品编码!");
-						$('#upFile').uploadify('cancel', file.id);
-	            		return false;
-	            	}
-					
-				},
-	            'onUploadComplete':	function(file){
-	        	},
-	            'onUploadStart': function (file) { 
-	            	$("#upFile").uploadify("settings", "formData", { 'goodsCode': $('#goodsCode').val()});  
-	            },
 
-				/**
-				 * 上传成功后触发事件
-				 */
-				'onUploadSuccess' : function(file, data, response) {
-					$('#upImg').attr("src",data+"?d="+new Date().getTime());
-					$('#goodsPic').val(data);
-	    		}
-	        });
-		
-	});
 	
 	function syncStock(obj){
 		$(obj).parent().parent().find('input[name="stock"]').val($(obj).val());
@@ -142,6 +83,12 @@
 		goods.cid=$('#cid option:selected').val();
 		var skus=[];
 		var skuIndex=0;
+		
+		
+		if($('.skuPicInfo').length<$('.skuTr').length){
+			alert("每个sku都需要上传图片!");
+			return;
+		}
 		$('.skuTr').each(function(){
 			var sku=new Object();
 			sku.barcode=$(this).find("input[name='barcode']").eq(0).val();
@@ -150,8 +97,24 @@
 				isOk=false;
 				return false;
 			}
+			sku.pic=$(this).find('input[name="skuPic"]');
+			if(sku.pic==''){
+				alert("sku:{"+sku.barcode+"}图片不能为空!");
+				isOk=false;
+				return false;
+			}
 			sku.price=$(this).find("input[name='price']").eq(0).val();
+			if(sku.price==''){
+				alert("sku:{"+sku.barcode+"}价格不能为空!");
+				isOk=false;
+				return false;
+			}
 			sku.number=$(this).find("input[name='number']").eq(0).val();
+			if(sku.price==''){
+				alert("sku:{"+sku.number+"}初始库存不能为空!");
+				isOk=false;
+				return false;
+			}
 			sku.stock=$(this).find("input[name='stock']").eq(0).val();
 			var attrs=[];
 			var attrIndex=0;
@@ -188,9 +151,26 @@
 		
 	}
 	
+	function updateSkuSelect(obj){
+		if($(obj).attr('before')!=''){
+			$('.skuCode option').each(function(){
+				if($(this).html()==$(obj).attr('before')){
+					$(this).val($(obj).val());
+					$(this).html($(obj).val());
+				}
+			})	
+		}else{
+			$('.skuCode').append('<option value="'+$(obj).val()+'">'+$(obj).val()+'</option>');
+		}
+		$(obj).attr('before',$(obj).val());
+	}
 	
 </script>
 <style type="text/css">
+	.manager_button1{
+		width: 50px;
+		height: 30px;
+	}
 	table{
 		font-size: 14px;
 		color: #666666;
@@ -252,35 +232,18 @@
 				<td width="190px" align="center">价格</td>
 				<td width="190px" align="center">总库存</td>
 				<td width="190px" align="center">剩余库存</td>
-				<td width="190px" align="center">图片</td>
 				<td  width="80px" align="center" class="optTh">操作</td>
 			</tr>
 			<tr class="skuTr" height="25px">
-				<td align="center"><input type="text" name="barcode" value=""></td>
+				<td align="center"><input type="text" name="barcode" before="" onblur="updateSkuSelect(this)" value=""><input type="hidden" name="skuPic"></td>
 				<td align="center"><input type="text" name="price" value=""></td>
 				<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>
 				<td align="center"><input type="text" name="stock" readonly="readonly"></td>
-				<td>
-					<p>
-					  <table cellpadding="0" cellspacing="0">
-					  	<tr>
-					  		<td>
-					  			<div>
-					  				<img src="${ctx}/img/goods/default.png" id="upImg" alt="上传图片" width="60px"/>
-					  				<input type="hidden" name="goodsPic" id="goodsPic">
-					  			</div>
-					  		</td>
-					  	</tr>
-					  </table>
-					  	<br>
-					 	 <input class="text-input small-input" type="file" id="upFile" style="width: 100px;font-size: 13px;"/>
-					</p>
-				</td>
 				<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>
 			</tr>
 		</table>
 		<br>
-		<p>
+<%-- 		<p>
 		  <table cellpadding="0" cellspacing="0">
 		  	<tr>
 		  		<td style="font-weight:bold">
@@ -299,10 +262,12 @@
 		  	<br>
 		 	 <input class="text-input small-input" type="file" id="upFile" />
 		</p>
-		<br>
+		<br> --%>
+		
+		<%@ include file="/common/upload/upload.jsp" %>
 		<table>
-			<tr>
-				<td><input type="button" class="manager_button" onclick="submitForm()" value=" 提交 "></td>
+			<tr><!-- -->
+				<td><input type="button" class="manager_button"  onclick="submitForm()"value=" 提交 "></td>
 			</tr>
 		</table>
 	</form>

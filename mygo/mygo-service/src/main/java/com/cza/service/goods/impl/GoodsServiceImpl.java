@@ -134,7 +134,7 @@ public class GoodsServiceImpl implements GoodsService {
 			param.setGid(null);//自动生成
 			param.setGoodsCode(goods.getGoodsCode());
 			param.setGoodsName(goods.getGoodsName());
-			param.setGoodsPic(goods.getGoodsPic());
+			param.setGoodsPic(goods.getSkus().get(0).getSkuPic());
 			param.setPrice(goods.getPrice());
 			param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
 			//创建商品时，设置索引状态为待创建
@@ -152,7 +152,7 @@ public class GoodsServiceImpl implements GoodsService {
 				skuParam.setUpdateTime(now);
 				skuParam.setGid(goods.getGid());
 				skuParam.setGoodsName(goods.getGoodsName());
-				skuParam.setSkuPic(goods.getGoodsPic());
+				skuParam.setSkuPic(sku.getSkuPic());
 				skuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
 				skuMapper.saveSku(skuParam);
 				sku.setSid(skuParam.getSid());

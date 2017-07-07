@@ -27,7 +27,7 @@ public class SkuVo {
 	private String barcode;
 	private List<SkuAttrVo>attrs;
 	private String goodsName;
-	
+	private String skuPic;
 	private Long number;//库存
 	
 	private Long stock;
@@ -35,6 +35,30 @@ public class SkuVo {
 	
 	
 	
+	
+	/**
+	* @return skuPic
+	*/
+	
+	public String getSkuPic() {
+		return skuPic;
+	}
+
+
+
+
+	
+	/**
+	 * @param skuPic the skuPic to set
+	 */
+	
+	public void setSkuPic(String skuPic) {
+		this.skuPic = skuPic;
+	}
+
+
+
+
 	/**
 	* @return stock
 	*/

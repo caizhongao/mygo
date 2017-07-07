@@ -39,7 +39,7 @@ public class CommonAction {
 	
 	public String getGoodsRequestPath(String fileName){
 		String basePath=(String) PropertyUtil.getProperty(ShoppingContants.FILE_REQUEST_PREFIX);
-		return basePath+File.separator+"goods"+File.separator+fileName;
+		return basePath+"goods"+"/"+fileName;
 	}
 	
 	public String referPage(HttpServletRequest request){

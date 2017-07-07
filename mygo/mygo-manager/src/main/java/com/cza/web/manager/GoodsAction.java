@@ -150,14 +150,14 @@ public class GoodsAction extends CommonAction{
                 MultipartFile file=multiRequest.getFile(iter.next().toString());
                 if(file!=null){
                 	String originalFileName=file.getOriginalFilename();
-                	String fileName=request.getParameter("goodsCode")+"."+originalFileName.substring(originalFileName.lastIndexOf(".")+1);
+                	String fileName=request.getParameter("skuCode")+"."+originalFileName.substring(originalFileName.lastIndexOf(".")+1);
                 	String filePath=getGoodsUploadPath(fileName);
                     //上传
                 	log.info("save file:{}",filePath);
                     file.transferTo(new File(filePath));
                     String requestPath=getGoodsRequestPath(fileName);
                     log.info("request path file:{}",requestPath);
-                    response.getWriter().println(requestPath);
+                    response.getWriter().println("{\"skuCode\":\""+request.getParameter("skuCode")+"\",\"skuPic\":\""+requestPath+"\"}");
                 }
             }
         }
