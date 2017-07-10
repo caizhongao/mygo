@@ -145,7 +145,7 @@ public class UserAction extends CommonAction{
 	@RequestMapping("logout")
 	public String logout(HttpServletRequest request,HttpServletResponse response){
 		request.getSession().invalidate();
-		if(request.getHeader("Referer").indexOf("/login/")>=0){
+		if(request.getHeader("Referer")==null||request.getHeader("Referer").indexOf("/login/")>=0){
 			return webAction("/unlogin/home/index.do");
 		}
 		return referPage(request);

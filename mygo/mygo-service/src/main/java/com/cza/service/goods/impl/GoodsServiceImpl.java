@@ -436,8 +436,8 @@ public class GoodsServiceImpl implements GoodsService {
 					updateSkuParam.setPrice(sku.getPrice());
 					updateSkuParam.setSkuPic(sku.getSkuPic());
 					updateSkuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
+					updateSkuParam.setGoodsName(goods.getGoodsName());
 					skuMapper.updateSku(updateSkuParam);
-					
 					//保存库存信息
 					TSkuStock stock=new TSkuStock();
 					stock.setSid(sku.getSid());

@@ -189,6 +189,7 @@ public class SkuVo {
 
 
 
+
 	
 	    /* (非 Javadoc)
 	    * 
@@ -200,8 +201,13 @@ public class SkuVo {
 	@Override
 	public String toString() {
 		return "SkuVo [sid=" + sid + ", price=" + price + ", barcode=" + barcode + ", attrs=" + attrs + ", goodsName="
-				+ goodsName + ", number=" + number + ", stock=" + stock + "]";
+				+ goodsName + ", skuPic=" + skuPic + ", number=" + number + ", stock=" + stock + "]";
 	}
+
+
+
+
+
 
 
 

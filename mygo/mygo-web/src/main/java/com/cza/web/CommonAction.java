@@ -13,9 +13,14 @@ package com.cza.web;
 import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cza.common.PropertyUtil;
 import com.cza.common.ShoppingContants;
+import com.cza.service.order.vo.PreOrderVo;
 import com.cza.service.user.vo.UserVo;
 
 /**
@@ -27,9 +32,17 @@ import com.cza.service.user.vo.UserVo;
     */
 
 public class CommonAction {
-	public String erroPage(HttpServletRequest request,int erroCode){
-		request.setAttribute("erroCode", erroCode);
-		return webPage("erro");
+	
+	public String erroPage(Integer erroCode){
+		return webAction("/unlogin/home/erro.do?erroCode="+ erroCode);
+	}
+	
+	public String orderExistPage(){
+		return webAction("/unlogin/home/orderExist.do");
+	}
+	
+	public String orderErroPage(){
+		return webAction("/unlogin/home/orderErro.do");
 	}
 	
 	public String getGoodsUploadPath(String fileName){

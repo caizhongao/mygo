@@ -35,6 +35,7 @@ public class PreOrderVo {
 	
 	private Long orderId;
 	
+	private String token;
 	
 	
 	
@@ -45,6 +46,35 @@ public class PreOrderVo {
 	
 	
 	
+	
+	
+	
+	
+	/**
+	* @return token
+	*/
+	
+	public String getToken() {
+		return token;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param token the token to set
+	 */
+	
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+
+
+
+
 	/**
 	* @return orderId
 	*/
@@ -204,10 +234,26 @@ public class PreOrderVo {
 
 
 
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
 	@Override
 	public String toString() {
-		return "OrderVo [sku=" + sku + ", skuId=" + skuId + ", number=" + number + ", amount=" + amount + ", addrId=" + addrId + ", addr=" + addr + ", uid=" + uid + ", orderId=" + orderId + "]";
+		return "PreOrderVo [sku=" + sku + ", skuId=" + skuId + ", number=" + number + ", amount=" + amount + ", addrId="
+				+ addrId + ", addr=" + addr + ", uid=" + uid + ", orderId=" + orderId + ", token=" + token + "]";
 	}
+
+
+
+
+
+
 	
 	
 	

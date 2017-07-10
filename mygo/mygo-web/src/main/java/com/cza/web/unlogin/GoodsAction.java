@@ -150,7 +150,7 @@ public class GoodsAction extends CommonAction{
 		GoodsVo param=new GoodsVo();
 		param.setGid(Long.valueOf(request.getParameter("gid")));
 		ServiceResponse<GoodsVo> goodsResp=goodsService.queryGoods(param);
-		log.info("GoodsAction.goodsDetail cost time:{}",System.currentTimeMillis()-startTime);
+		log.info("GoodsAction.goodsDetail resp:{}, cost time:{}",goodsResp.getData(),System.currentTimeMillis()-startTime);
 		if(goodsResp.isSuccess()){
 			GoodsVo goodsVo=goodsResp.getData();
 			request.setAttribute("goods", goodsVo);
@@ -158,7 +158,7 @@ public class GoodsAction extends CommonAction{
 			request.setAttribute("cid", goodsVo.getCid());
 			return webPage("goods/goodsDetail");
 		}else{
-			return erroPage(request, goodsResp.getCode());
+			return erroPage(goodsResp.getCode());
 		}
 	}
 	

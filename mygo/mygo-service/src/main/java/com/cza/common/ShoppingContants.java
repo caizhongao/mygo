@@ -32,6 +32,8 @@ public interface ShoppingContants {
 	
 	public static final String USER_TYPE_ADMIN="a";
 	
+	public static final String TOKEN_MAKE_ORDER="make_order_token";
+	
 	
 	//商品常量
 	public static final String GOODS_STATUS_WAIT="W";
@@ -72,6 +74,10 @@ public interface ShoppingContants {
 	//入参不对
 	public static final Integer RESP_CODE_PARAM_ERRO=888;
 	public static final String RESP_MSG_PARAM_ERRO="param erro!";
+	
+	//入参不对
+	public static final Integer RESP_CODE_TOKEN_ERRO=777;
+	public static final String RESP_MSG_TOKEN_ERRO="token erro!";
 	//商品不存在
 	public static final Integer RESP_CODE_GOODS_NOT_EXIST=1000;
 	public static final String RESP_MSG_GOODS_NOT_EXIST="goods not exist!";
@@ -111,6 +117,9 @@ public interface ShoppingContants {
 	public static final Integer ORDER_STATUS_NORMAL=0;
 	public static final Integer ORDER_STATUS_SYS_DELETE=1;
 	public static final Integer ORDER_STATUS_USER_DELETE=2;
+	
+	
+	
 	
 	//alipay 常量
 	// 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
