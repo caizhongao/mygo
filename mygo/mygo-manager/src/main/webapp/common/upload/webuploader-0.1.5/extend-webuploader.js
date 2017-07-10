@@ -31,7 +31,7 @@ jQuery(function(){
     var origin;
     var is_moveing = false;
     var $wrap = $('#' + window.webuploader.config.wrapId);
-    var $queue = $('<ul class="filelist"></ul>').appendTo( $wrap.find('.queueList'));
+    var $queue = $('<ul class="filelist" style="height:310px"></ul>').appendTo( $wrap.find('.queueList'));
     var $statusBar = $wrap.find('.statusBar');
     var $info = $statusBar.find('.info');
     var $upload = $wrap.find('.uploadBtn');
@@ -182,7 +182,8 @@ jQuery(function(){
             wrapHeight = imgTop + wrapHeight;
             imgLeft = (index % (parseInt(wrapWidth/(thumbnailWidth+10)) ) ) * (thumbnailWidth+10);
         }
-        $queue.height(wrapHeight);
+        //wrapHeight
+        $queue.height("325");
         
         var selectHtml='<select name="skuCode" style="width:110px;height:26px;text-align: center;" class="skuCode"><option value="">--请选择--</option>';
         $('input[name="barcode"]').each(function(){
@@ -191,10 +192,12 @@ jQuery(function(){
         	}
         });
         selectHtml+='</select>';
-        var $li = $('<li data-key="'+file.key+'"  data-src="'+file.src+'" data-sort="'+index+'" draggable="true" id="' + file.id + '" style="position:absolute;margin:0;cursor:move;width:'+thumbnailWidth+'px;height:'+thumbnailHeight+'px;left:'+imgLeft+'px;top:'+imgTop+'">' +
+        var $li = $('<li data-key="'+file.key+'"  data-src="'+file.src+'" data-sort="'+index+'" draggable="true" id="' + file.id + '" style="position:absolute;margin:0;cursor:move;width:'+thumbnailWidth+'px;height:'+275+'px;left:'+imgLeft+'px;top:'+imgTop+'">' +
                 
                 '<p class="imgWrap"></p>' + 
-                '<p class="title"><div class="skuPicInfo" style="margin:0px auto;width:150px;color:#666666;margin-top:5px;">SKU：'+selectHtml+'</div></p>' +
+                '<p class="title" style="margin-top:5px"><span class="skuPicInfo" style="margin:0px auto;width:150px;color:#666666;">SKU：'+selectHtml+'</span></p>' +
+                
+                
                 '<p class="progress"><span></span></p>' + '</li>'
             ),
             $btns = $('<div class="file-panel">' +

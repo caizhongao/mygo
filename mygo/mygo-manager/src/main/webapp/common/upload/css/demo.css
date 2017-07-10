@@ -22,7 +22,7 @@ ul.filelist li.move { -webkit-transform: scale3d(1.1, 1.1, 1.1); }
 #uploader .filelist li { background: url(../images/bg.png) no-repeat; text-align: center; margin: 0 8px 20px 0; position: relative; display: inline; float: left; /* overflow: hidden;  */font-size: 12px; }
 ul.filelist li:hover { border-color: #9a9fa4; box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.85); }
 #uploader .filelist li p.log { position: relative; top: -45px; }
-#uploader .filelist li p.title { position: absolute; top: 0; left: 0; width: 100%; /* overflow: hidden; */ white-space: nowrap; text-overflow : ellipsis; top: 5px; text-indent: 5px; text-align: left; }
+#uploader .filelist li p.title { /* position: absolute; */ top: 0; left: 0; width: 100%; /* overflow: hidden; */ white-space: nowrap; text-overflow : ellipsis; top: 5px; text-indent: 5px; text-align: left; }
 #uploader .filelist li p.progress { position: absolute; width: 100%; bottom: 0; left: 0; height: 8px; overflow: hidden; z-index: 50; margin: 0; border-radius: 0; background: none; -webkit-box-shadow: 0 0 0; }
 #uploader .filelist li p.progress span { display: none; overflow: hidden; width: 0; height: 100%; background: #1483d8 url(../images/progress.png) repeat-x; -webit-transition: width 200ms linear; -moz-transition: width 200ms linear; -o-transition: width 200ms linear; -ms-transition: width 200ms linear; transition: width 200ms linear; -webkit-animation: progressmove 2s linear infinite; -moz-animation: progressmove 2s linear infinite; -o-animation: progressmove 2s linear infinite; -ms-animation: progressmove 2s linear infinite; animation: progressmove 2s linear infinite; -webkit-transform: translateZ(0); }
  @-webkit-keyframes progressmove {
