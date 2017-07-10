@@ -97,7 +97,6 @@
 }
 </style>
 <script type="text/javascript">
-
 	function makeOrder(){
 		if($('input[name="addrId"]').eq(0).val()==''){
 			alert('请选择收获地址！');
@@ -113,6 +112,7 @@
 	<div class="page_middle">
 		<div style="margin: 0px auto;width: 80%">
 			<form action="${ctx}/login/order/saveOrder.do" id="addrForm" method="post" enctype="application/x-www-form-urlencoded">
+				<input type="hidden" name="token" value="${order.token}">
 				<span style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px">选择收货地址</span>
 				<table class="editTable order-address">
 					<c:if test="${order.addr==null }">

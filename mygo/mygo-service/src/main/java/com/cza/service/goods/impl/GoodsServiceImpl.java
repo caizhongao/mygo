@@ -220,7 +220,7 @@ public class GoodsServiceImpl implements GoodsService {
 					skuVo.setPrice(sku.getPrice());
 					skuVo.setBarcode(sku.getBarcode());
 					skuVo.setSid(sku.getSid());
-					 
+					skuVo.setSkuPic(sku.getSkuPic());
 					TSkuStock stockParam=new TSkuStock();
 					stockParam.setSid(sku.getSid());
 					TSkuStock stock=stockMapper.querySkuStock(stockParam);
@@ -436,8 +436,8 @@ public class GoodsServiceImpl implements GoodsService {
 					updateSkuParam.setPrice(sku.getPrice());
 					updateSkuParam.setSkuPic(goods.getGoodsPic());
 					updateSkuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
+					updateSkuParam.setGoodsName(goods.getGoodsName());
 					skuMapper.updateSku(updateSkuParam);
-					
 					//保存库存信息
 					TSkuStock stock=new TSkuStock();
 					stock.setSid(sku.getSid());

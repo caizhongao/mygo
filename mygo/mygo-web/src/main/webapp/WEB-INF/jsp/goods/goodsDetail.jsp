@@ -60,7 +60,16 @@
 		text-decoration: none;
 		cursor: pointer;
 	}
+	.skuPic{
+		border: 2px solid #fff;
+	}
+	.skuPic:HOVER{
+		cursor: pointer;
+	}
 	
+	.skuPicSelect{
+		border: 2px solid #f40;
+	}
 }
 </style>
 <script type="text/javascript">
@@ -79,7 +88,7 @@
 			alert("请选择完整的规格!");
 			return;
 		}
-		var number=$("input[name='number']").val();
+		var number=$("input[name='optNumber']").val();
 		if(parseInt(number)<=0){
 			alert("购买数量必须大于0！");
 			return false;
@@ -89,7 +98,9 @@
 			alert("库存不足！");
 			return false;
 		}
-		location.href="${ctx}/login/order/toMakeOrderPage.do?number="+number+"&sid="+sid;
+		$('#form_sku_id').val(sid);
+		$('#form_sku_number').val(number);
+		$('#myform').submit();
 	}
 	//根据已选的规格，更新其他规格的状态
 	function updateAttrObj(attrtmps){
@@ -170,7 +181,7 @@
 		Combination(0,[]);
 		updateRealStock();
 	}
-	
+	//更新sku库存显示，sku图片显示，sku价格显示
 	function updateRealStock(){
 		var sid=0;
 		if($('.attrTr').size()<=0){
@@ -187,6 +198,8 @@
 			return;
 		}
 		$('#realStock').html($('#skuStock'+sid).val());
+		$('#goodsPrice').html($('#skuPrice'+sid).val());
+		showSkuPic(sid);
 	}
 	
 	
@@ -222,6 +235,10 @@
 			$('#number').val(1);
 			return false;
 		}
+		if(parseInt($('#number').val())<0){
+			$('#number').val(1);
+			return false;
+		}
 		return true;
 	}
 	
@@ -233,9 +250,18 @@
 		if(type=='add'){
 			$('#number').val(parseInt(number)+1);
 		}else{
+			if(parseInt($('#number').val())<=1){
+				return false;
+			}
 			$('#number').val(parseInt(number)-1);
 		}
 		
+	}
+	
+	function showSkuPic(skuId){
+		$('.skuPic').removeClass("skuPicSelect");
+		$('#skuPic'+skuId).addClass("skuPicSelect");
+		$('#goodsDetailPic').attr('src',$('#skuPic'+skuId).attr('src'));
 	}
 	
 </script>
@@ -245,20 +271,35 @@
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle" style="margin-top: 30px">
 		<%@ include file="/common/category.jsp" %>
-		<div style="width: 70%;margin: 0px auto">
+		<div style="width: 80%;margin: 0px auto">
 			<c:forEach items="${goods.skus}" var="sku">
 				<div class="skuInfo">
 					<input type="hidden" name="skuId" value="${sku.sid}">
 					<input type="hidden" id="skuStock${sku.sid}" name="skuStock" value="${sku.stock}">
+					<input type="hidden" id="skuPrice${sku.sid}" name="skuPrice" value="${sku.price}">
 					<c:forEach items="${sku.attrs}" var="attr">
 						<input type="hidden" name="attrValue_${attr.attrId}" value="${attr.attrValue}">
 					</c:forEach>
 				</div>
 			</c:forEach>
-			<table width="1100px" cellpadding="0" cellspacing="0"  style="font-size: 14px;margin-top: 20px;height: 401px">
+			<form action="${ctx}/login/order/toMakeOrderPage.do" method="post" id="myform">
+				<input type="hidden" name="skuId" id="form_sku_id" value=""/>
+				<input type="hidden" name="number" id="form_sku_number" value=""/>
+			</form>
+			<table width="1100px" cellpadding="0" cellspacing="0"  style="font-size: 14px;color:#74777b;margin-top: 20px;height: 401px;font-family: Arial">
 				<tr>
 					<td rowspan="${fn:length(goods.skus[0].attrs)+5}" width="500px">
-						<img src="${goods.goodsPic}" width="400px" alt="商品详情图">
+						<div style="width: 400px;border: 1px solid #E8E8E8;">
+							<!-- margin-top: 1px;margin-left: 1px;margin-bottom: 1px -->
+							<img src="${goods.goodsPic}" width="400px" id="goodsDetailPic" alt="商品详情图" style="">
+						</div>
+						<ul style="width: 402px;margin-top: 2px;height: 100px">
+							<c:forEach items="${goods.skus}" var="sku">
+								<li style="float: left">
+									<img src="${sku.skuPic}" width="70px" id="skuPic${sku.sid}" alt="商品详情图" onmouseover="showSkuPic(${sku.sid})"  class="skuPic">
+								</li>
+							</c:forEach>
+						</ul>
 					</td>
 					<td style="font-weight: bold;font-size: 14px;color: #666666;">
 						${goods.goodsName}
@@ -266,16 +307,16 @@
 				</tr>
 				<tr>
 					<td>
-						价格：${goods.price}
+						价格&nbsp;&nbsp;<font style="color: red;font-weight: bold;font-size: 16px;" id="goodsPrice">${goods.price}</font>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						销量：${goods.sales}
+						销量&nbsp;&nbsp;<font style="font-weight: bold;font-size: 16px;">${goods.sales}</font>
 					</td>
 				</tr>
 				<c:forEach items="${attrs}" var="attr">
-					<tr class="attrTr">
+					<tr class="attrTr" height="60px;">
 						<td>
 						${attr.key}&nbsp;
 						<c:forEach items="${attr.value}" var="attrVal">
@@ -291,7 +332,7 @@
 						数量  
 						<span style="width: 103px;height: 26px;border: 1px solid #CCCCCC;display: inline-block;">
 							<span onclick="opNumber('cut');" title="减1" class="optNumber" style="display: inline-block;width: 23px;">-</span>
-				            <input type="text" id="number" onblur="checkNumber()" name="number" value="1" maxlength="8" title="请输入购买量" style="width: 50px;height: 26px;border-top: none;border-bottom: none;text-align: center">
+				            <input type="text" id="number" onblur="checkNumber()" name="optNumber" value="1" maxlength="8" title="请输入购买量" style="width: 50px;height: 26px;border-top: none;border-bottom: none;text-align: center">
 				            <span onclick="opNumber('add');" title="加1" class="optNumber">+</span>
 				        </span>件&nbsp;(库存&nbsp;<span id="realStock" style="display: inline-block;color: #666666">${goods.stock}</span>&nbsp;件)
 					</td>
@@ -302,7 +343,7 @@
 					</td>
 				</tr>
 			</table>
-			<div style="border: 1px solid #cccccc;width: 1000px;height:auto;margin-top: 20px;" class="mall_item_info">
+			<div style="border: 1px solid #cccccc;width: 80%;height:auto;margin-top: 20px;" class="mall_item_info">
 				<%@ include file="/common/goods-desc.jsp" %>
 			</div>
 		</div>

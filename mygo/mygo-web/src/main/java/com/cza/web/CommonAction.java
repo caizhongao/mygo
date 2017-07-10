@@ -29,7 +29,7 @@ import com.cza.service.user.vo.UserVo;
 public class CommonAction {
 	public String erroPage(HttpServletRequest request,int erroCode){
 		request.setAttribute("erroCode", erroCode);
-		return webPage("erro");
+		return "/common/erro.jsp";
 	}
 	
 	public String getGoodsUploadPath(String fileName){

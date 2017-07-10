@@ -9,7 +9,7 @@
 		<result property="price" column="price"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
-		<result property="sku_pic" column="skuPic"/>
+		<result property="skuPic" column="sku_pic"/>
 	</resultMap>
 	
 	<sql id="allColumns">

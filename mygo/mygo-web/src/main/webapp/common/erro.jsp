@@ -12,8 +12,17 @@
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle">
-		你好，系统发生错误，稍后再试!<div style="display: none">错误码：${erroCode}</div>
+		<div style="width: 80%;margin: 0px auto;">
+			<img src="${ctx}/img/erro.png" usemap="#planetmap">
+			<map name="planetmap" id="planetmap">
+				<area shape="rectangle" coords="893,665,1073,737" href ="${ctx}/" alt="Venus" />
+			</map>
+			<div style="display: none">错误码：${erroCode}</div>
+			<div style="position: absolute;top: 846px;left: "></div>
+		</div>
+		
 	</div>
+	<%@ include file="/common/bottom.jsp" %>
 </div>
 	
 </body> 
