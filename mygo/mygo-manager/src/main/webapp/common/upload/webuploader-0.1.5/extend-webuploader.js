@@ -131,23 +131,9 @@ jQuery(function(){
         });
     }
 
-    //删除服务端附件
-    function removeServerFile( file ){
-        $.ajax({
-            type:'get',
-            url: window.webuploader.removeUrl,
-            data:{id:file.name},
-            dataType:'json',
-            success:function(data){
-                fileCount--;
-                updateStatus();
-            }
-        });
-    }
-
     //初始化服务端附件
     function initServerFile(){
-        if( window.webuploader.initUrl ){
+        /*if( window.webuploader.initUrl ){
             $.ajax({
                 type:'get',
                 url: window.webuploader.initUrl,
@@ -162,7 +148,26 @@ jQuery(function(){
                     }
                 }
             });
-        }
+        }*/
+    	var data=new Object();
+    	var i=0;
+    	$('input[name="skuPic"]').each(function(){
+    		if($(this).val()!=''){
+    			data.src = "server";
+        		data.path=$(this).val();
+        		data.id = "SVR_FILE_"+i;
+        		data.rotation = 0;
+                fileQueue(data);
+                $('#' + data.id ).find('p.state').text('已上传');
+                  $('.skuCode').eq(i).val($('input[name="barcode"]').eq(i).val());
+                  $('.skuCode').eq(i).attr("disabled",true);
+                  $('.skuCode').eq(i).addClass("finishSku");
+                i++;
+    		}
+    		
+    	});
+    	
+    	
     }
 
     //添加附件到webuploader中
@@ -193,7 +198,7 @@ jQuery(function(){
                 '<p class="progress"><span></span></p>' + '</li>'
             ),
             $btns = $('<div class="file-panel">' +
-                '<span class="cancel">删除</span>').appendTo( $li ),
+                '<span class="cancel" fid="'+file.id+'">删除</span>').appendTo( $li ),
 
             $progess = $li.find('p.progress span'),
             $wrap = $li.find('p.imgWrap'),
@@ -224,7 +229,7 @@ jQuery(function(){
                         $wrap.text('不能预览');
                         return ;
                     }
-                    var img = $('<img draggable="true" src="'+src+'">');
+                    var img = $('<img style="height:275px" draggable="true" src="'+src+'">');
                     img.bind('load', setDragEvent);
                     $wrap.empty().append( img );
                 }, thumbnailWidth, thumbnailHeight);
@@ -259,9 +264,10 @@ jQuery(function(){
             });
         }
         else{
-            var img = $('<img draggable="true" src="'+file.path+'">');
+            var img = $('<img draggable="true"  style="height:275px" src="'+file.path+'">');
             img.bind('load',setDragEvent);
             $wrap.empty().append( img );
+            $li.append('<span class="success"></span>');
         }
 
         $li.on('mouseenter', function(){
@@ -273,12 +279,11 @@ jQuery(function(){
 
         $btns.on('click', 'span', function(){
             var index = $(this).index(), deg;
-
             switch( index ){
                 case 0:
                     //修改删除后面所有图片的位置
                     var allImgs = {};
-                    var del_sort = parseInt($('#'+file.id).attr('data-sort'));
+                    var del_sort = parseInt($('#'+$(this).attr('fid')).attr('data-sort'));
                     $queue.find('li').each(function(index, obj){
                         if( $(obj).attr('data-sort') > del_sort){
                             var sort = parseInt($(obj).attr('data-sort'));
@@ -296,8 +301,11 @@ jQuery(function(){
                     if( file.src == "client")
                         uploader.removeFile( file );
                     else{
-                        removeServerFile( file );
-                        $('#'+file.id).remove();
+                    	var $li = $('#'+$(this).attr('fid'));
+                    	fileCount--;
+                        updateTotalProgress();
+                        $li.off().find('.file-panel').off().end().remove();
+                        /*$('#'+$(this).attr('fid')).remove();*/
                     }
                     return;
                 case 1:
@@ -353,7 +361,9 @@ jQuery(function(){
     function updateStatus(){
         var text = '', stats;
         if( state == 'ready'){
-            text = '选中'+fileCount + '张图片，共'+ WebUploader.formatSize( fileSize ) +'.';
+           //text = '选中'+fileCount + '张图片，共'+ WebUploader.formatSize( fileSize ) +'.';
+            
+            text = '选中'+fileCount + '张图片.';
         } else if( state == 'confirm'){
             stats = uploader.getStats();
             if( stats.uploadFailNum ){
@@ -361,7 +371,8 @@ jQuery(function(){
             }
         } else {
             stats = uploader.getStats();
-            text = '共' + fileCount +'张('+WebUploader.formatSize(fileSize)+')，已上传'+stats.successNum+'张';
+            //text = '共' + fileCount +'张('+WebUploader.formatSize(fileSize)+')，已上传'+stats.successNum+'张';
+            text = '共' + fileCount +'张，已上传'+stats.successNum+'张';
             if( stats.uploadFailNum){
                 text += ',失败'+ stats.uploadFailNum +'张';
             }
@@ -484,7 +495,6 @@ jQuery(function(){
         		picObj.val(skupic.skuPic);
         	}
         })
-        
          $('.skuCode').each(function(){
         	if($(this).val()==skupic.skuCode){
         		$(this).attr("disabled",true);
@@ -530,21 +540,27 @@ jQuery(function(){
             return $('#'+obj1.id).attr('data-sort') > $('#'+obj2.id) ? -1: 1;
         });
         var isOk=true;
+       var index=0;
         $('.skuCode').each(function(){
+        	index++;
         	if(!$(this).attr("disabled")){
 	        	var wobj=$(this).val();
 	        	if(wobj==''){
-	            	alert("图片对应的sku条码不能为空！");
+	            	alert("图片"+index+"对应的sku条码不能为空！");
 	            	isOk=false;
 	            	return false;
 	            }
-	        	$(".finishSku").each(function(){
+	        	var count=0;
+	        	$(".skuCode").each(function(){
 	        		if($(this).val()==wobj){
-	        			alert("每个sku只能上传一张图片!");
-	        			isOk=false;
-		            	return false;
+	        			count++;
 	        		}
 	        	});
+	        	if(count>1){
+	        		alert("每个sku只能上传一张图片!");
+        			isOk=false;
+	            	return false;
+	        	}
         	}
         })
         if(isOk){

@@ -25,6 +25,7 @@
 			var ahtml='<tr class="skuTr"  height="25px">'+$('.skuTr:last').html()+'</tr>';
 			$('#skuTable').append(ahtml);
 			$('.skuTr :last').find('input[name="barcode"]').val('');
+			$('.skuTr :last').find('input[name="barcode"]').attr('before','');
 			$('.skuTr :last').find('input[name="sid"]').val('');
 			$('.skuTr :last').find('input[name="price"]').val('');
 			$('.skuTr :last').find('input[name="attrValue"]').val('');
@@ -45,7 +46,7 @@
 								'<td  width="80px" align="center" class="optTh">操作</td>'+
 							'</tr>'+
 							'<tr class="skuTr" height="25px">'+
-								'<td align="center"><input type="text" name="barcode" value=""></td>'+
+								'<td align="center"><input type="text" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic" value=""></td>'+
 								'<td align="center"><input type="text" name="price" value=""></td>'+
 								'<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>'+
 								'<td align="center"><input type="text" name="stock" value=""  readonly="readonly" ></td>'+
@@ -108,6 +109,7 @@
 		
 	}
 	function submitForm(){
+		var isOk=true;
 		var goods=new Object();
 		goods.gid=$('#gid').val();
 		goods.goodsCode=$('#goodsCode').val();
@@ -118,8 +120,41 @@
 		$('.skuTr').each(function(){
 			var sku=new Object();
 			sku.barcode=$(this).find("input[name='barcode']").eq(0).val();
+			if(sku.barcode==''){
+				alert("sku条码不能为空!");
+				isOk=false;
+				return false;
+			}
+			sku.skuPic=$(this).find('input[name="skuPic"]').eq(0).val();
+			if(sku.skuPic==''){
+				alert("sku:{"+sku.barcode+"}图片未上传!");
+				isOk=false;
+				return false;
+			}
+			var isup=false;
+			$('.finishSku').each(function(){
+				if($(this).val()==sku.barcode){
+					isup=true;
+				}
+			});
+			if(!isup){
+				alert("sku:{"+sku.barcode+"}图片未上传!");
+				isOk=false;
+				return false;
+			}
 			sku.price=$(this).find("input[name='price']").eq(0).val();
+			if(sku.price==''){
+				alert("sku:{"+sku.barcode+"}价格不能为空!");
+				isOk=false;
+				return false;
+			}
 			sku.number=$(this).find("input[name='number']").eq(0).val();
+			if(sku.price==''){
+				alert("sku:{"+sku.number+"}初始库存不能为空!");
+				isOk=false;
+				return false;
+			}
+			
 			sku.stock=$(this).find("input[name='stock']").eq(0).val();
 			sku.sid=$(this).find("input[name='sid']").eq(0).val();
 			var attrs=[];
@@ -136,9 +171,13 @@
 			skuIndex++;
 			
 		});
+		if(!isOk){
+			return;
+		}
 		goods.skus=skus;
 		goods.goodsPic=$('#goodsPic').val();
 		var goodsStr=JSON.stringify(goods);
+		alert(goodsStr);
 		$.ajax({
 			url:'${ctx}/manager/goods/updateGoods.do',
 			type:'post',
@@ -154,7 +193,36 @@
 		});
 		
 	}
-	
+	function updateBarcode(obj){
+		if($(obj).val()!=''){
+			var count=0;
+			$('input[name="barcode"]').each(function(){
+				if($(obj).val()==$(this).val()){
+					count++;
+				}
+			});
+			if(count>1){
+				alert("条码不能重复!");
+				$(obj).val($(obj).attr('before'));
+				return;
+			}
+		}
+		if($(obj).attr('before')!=''){
+			$('.skuCode option').each(function(){
+				if($(this).html()==$(obj).attr('before')){
+					if($(obj).val()==''){
+						$(this).remove();
+					}else{
+						$(this).val($(obj).val());
+						$(this).html($(obj).val());
+					}
+				}
+			});
+		}else{
+			$('.skuCode').append('<option value="'+$(obj).val()+'">'+$(obj).val()+'</option>');
+		}
+		$(obj).attr('before',$(obj).val());
+	}
 	
 </script>
 <style type="text/css">
@@ -239,7 +307,8 @@
 				<tr class="skuTr" height="25px">
 					<td align="center">
 						<input type="hidden" name="sid" value="${sku.sid}">
-						<input type="text" name="barcode" value="${sku.barcode}">
+						<input type="text" name="barcode" before="${sku.barcode}" onblur="updateBarcode(this)" value="${sku.barcode}">
+						<input type="hidden" name="skuPic" value="${sku.skuPic}">
 					</td>
 					<td align="center"><input type="text" name="price" value="${sku.price}"></td>
 					<td align="center"><input type="text" name="number" onblur="syncStock(this)"  number="${sku.number}" value="${sku.number}"></td>
@@ -254,25 +323,8 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<br><p>
-		  <table cellpadding="0" cellspacing="0">
-		  	<tr>
-		  		<td style="font-weight:bold">
-		  			商品图片信息<br>
-		  		</td>
-		  	</tr>
-		  	<tr>
-		  		<td>
-		  			<div>
-		  				<img src="${goods.goodsPic}" id="upImg" alt="上传图片" width="107px"/>
-		  				<input type="hidden" name="goodsPic" id="goodsPic" value="${goods.goodsPic}">
-		  			</div>
-		  		</td>
-		  	</tr>
-		  </table>
-		  	<br>
-		 	 <input class="text-input small-input" type="file" id="upFile" />
-		  </p>
+		<br>
+		<%@ include file="/common/upload/upload.jsp" %>
 		<br>
 		<table>
 			<tr>

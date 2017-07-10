@@ -10,6 +10,8 @@
 <script type="text/javascript" src="${ctx}/js/uploadify/jquery.uploadify.min.js"></script>
 <title>用户注册</title>
 <script type="text/javascript">
+$(function(){
+	listAttrs();})
 	function listAttrs(){
 		var cid=$('#cid option:selected').val();
 		$.ajax({
@@ -44,6 +46,10 @@
 		if(type==0){
 			var ahtml='<tr class="skuTr"  height="25px">'+$('.skuTr:last').html()+'</tr>';
 			$('#skuTable').append(ahtml);
+			$('.skuTr :last').find('input[name="barcode"]').val('');
+			$('.skuTr :last').find('input[name="barcode"]').attr('before','');
+			$('.skuTr :last').find('input[name="price"]').val('');
+			$('.skuTr :last').find('input[name="attrValue"]').val('');
 		}else{
 			if($('.skuTr').size()>1){
 				$(obj).parent().parent().remove();
@@ -61,7 +67,7 @@
 								'<td  width="80px" align="center" class="optTh">操作</td>'+
 							'</tr>'+
 							'<tr class="skuTr" height="25px">'+
-								'<td align="center"><input type="text" name="barcode" before="" onblur="updateSkuSelect(this)" value=""><input type="hidden" name="skuPic" value="123"></td>'+
+								'<td align="center"><input type="text" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic" value=""></td>'+
 								'<td align="center"><input type="text" name="price" value=""></td>'+
 								'<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>'+
 								'<td align="center"><input type="text" name="stock" value=""  readonly="readonly" ></td>'+
@@ -83,12 +89,6 @@
 		goods.cid=$('#cid option:selected').val();
 		var skus=[];
 		var skuIndex=0;
-		
-		
-		if($('.skuPicInfo').length<$('.skuTr').length){
-			alert("每个sku都需要上传图片!");
-			return;
-		}
 		$('.skuTr').each(function(){
 			var sku=new Object();
 			sku.barcode=$(this).find("input[name='barcode']").eq(0).val();
@@ -97,12 +97,24 @@
 				isOk=false;
 				return false;
 			}
-			sku.pic=$(this).find('input[name="skuPic"]');
-			if(sku.pic==''){
-				alert("sku:{"+sku.barcode+"}图片不能为空!");
+			sku.skuPic=$(this).find('input[name="skuPic"]').eq(0).val();
+			if(sku.skuPic==''){
+				alert("sku:{"+sku.barcode+"}图片未上传!");
 				isOk=false;
 				return false;
 			}
+			var isup=false;
+			$('.finishSku').each(function(){
+				if($(this).val()==sku.barcode){
+					isup=true;
+				}
+			});
+			if(!isup){
+				alert("sku:{"+sku.barcode+"}图片未上传!");
+				isOk=false;
+				return false;
+			}
+			
 			sku.price=$(this).find("input[name='price']").eq(0).val();
 			if(sku.price==''){
 				alert("sku:{"+sku.barcode+"}价格不能为空!");
@@ -151,14 +163,31 @@
 		
 	}
 	
-	function updateSkuSelect(obj){
+	function updateBarcode(obj){
+		if($(obj).val()!=''){
+			var count=0;
+			$('input[name="barcode"]').each(function(){
+				if($(obj).val()==$(this).val()){
+					count++;
+				}
+			});
+			if(count>1){
+				alert("条码不能重复!");
+				$(obj).val($(obj).attr('before'));
+				return;
+			}
+		}
 		if($(obj).attr('before')!=''){
 			$('.skuCode option').each(function(){
 				if($(this).html()==$(obj).attr('before')){
-					$(this).val($(obj).val());
-					$(this).html($(obj).val());
+					if($(obj).val()==''){
+						$(this).remove();
+					}else{
+						$(this).val($(obj).val());
+						$(this).html($(obj).val());
+					}
 				}
-			})	
+			});
 		}else{
 			$('.skuCode').append('<option value="'+$(obj).val()+'">'+$(obj).val()+'</option>');
 		}
@@ -235,7 +264,7 @@
 				<td  width="80px" align="center" class="optTh">操作</td>
 			</tr>
 			<tr class="skuTr" height="25px">
-				<td align="center"><input type="text" name="barcode" before="" onblur="updateSkuSelect(this)" value=""><input type="hidden" name="skuPic"></td>
+				<td align="center"><input type="text" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic"></td>
 				<td align="center"><input type="text" name="price" value=""></td>
 				<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>
 				<td align="center"><input type="text" name="stock" readonly="readonly"></td>
@@ -243,27 +272,6 @@
 			</tr>
 		</table>
 		<br>
-<%-- 		<p>
-		  <table cellpadding="0" cellspacing="0">
-		  	<tr>
-		  		<td style="font-weight:bold">
-		  			商品图片信息<br>
-		  		</td>
-		  	</tr>
-		  	<tr>
-		  		<td>
-		  			<div>
-		  				<img src="${ctx}/img/goods/default.png" id="upImg" alt="上传图片" width="113px"/>
-		  				<input type="hidden" name="goodsPic" id="goodsPic">
-		  			</div>
-		  		</td>
-		  	</tr>
-		  </table>
-		  	<br>
-		 	 <input class="text-input small-input" type="file" id="upFile" />
-		</p>
-		<br> --%>
-		
 		<%@ include file="/common/upload/upload.jsp" %>
 		<table>
 			<tr><!-- -->

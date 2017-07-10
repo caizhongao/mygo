@@ -9,7 +9,7 @@
 		<result property="price" column="price"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
-		<result property="sku_pic" column="skuPic"/>
+		<result property="skuPic" column="sku_pic"/>
 	</resultMap>
 	
 	<sql id="allColumns">
@@ -38,6 +38,9 @@
 		<set> 
 			<if test="goodsName!=null and goodsName!=''">
 				goods_name = #{goodsName},
+			</if>
+			<if test="barcode!=null and barcode!=''">
+				barcode = #{barcode},
 			</if>
 			<if test="skuPic!=null and skuPic!=''">
 				sku_pic = #{skuPic},

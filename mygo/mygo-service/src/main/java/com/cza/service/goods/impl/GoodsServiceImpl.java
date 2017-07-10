@@ -220,7 +220,7 @@ public class GoodsServiceImpl implements GoodsService {
 					skuVo.setPrice(sku.getPrice());
 					skuVo.setBarcode(sku.getBarcode());
 					skuVo.setSid(sku.getSid());
-					 
+					skuVo.setSkuPic(sku.getSkuPic());
 					TSkuStock stockParam=new TSkuStock();
 					stockParam.setSid(sku.getSid());
 					TSkuStock stock=stockMapper.querySkuStock(stockParam);
@@ -415,7 +415,7 @@ public class GoodsServiceImpl implements GoodsService {
 			param.setUpdateTime(now);
 			param.setGoodsCode(goods.getGoodsCode());
 			param.setGoodsName(goods.getGoodsName());
-			param.setGoodsPic(goods.getGoodsPic());
+			param.setGoodsPic(goods.getSkus().get(0).getSkuPic());
 			param.setPrice(goods.getPrice());
 			param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
 			goodsMapper.updateGoods(param);
@@ -434,7 +434,7 @@ public class GoodsServiceImpl implements GoodsService {
 					updateSkuParam.setUpdateTime(now);
 					updateSkuParam.setGid(goods.getGid());
 					updateSkuParam.setPrice(sku.getPrice());
-					updateSkuParam.setSkuPic(goods.getGoodsPic());
+					updateSkuParam.setSkuPic(sku.getSkuPic());
 					updateSkuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
 					skuMapper.updateSku(updateSkuParam);
 					
