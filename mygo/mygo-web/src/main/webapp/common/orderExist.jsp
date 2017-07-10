@@ -24,7 +24,7 @@
 									<p>可进入我的订单页查看订单</p>
 								</div>
 								<div class="oper">
-									<p><a href="${ctx}/login/order/listOrder.do" class="title_a">我的订单&gt;</a></p>
+									<p><a href="${ctx}/login/order/listOrder.do">我的订单&gt;</a></p>
 									<p><a href="${ctx}/">回到网站首页&gt;</a></p>
 								</div>
 							</div>
