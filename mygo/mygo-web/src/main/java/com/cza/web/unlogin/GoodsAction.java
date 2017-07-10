@@ -158,7 +158,7 @@ public class GoodsAction extends CommonAction{
 			request.setAttribute("cid", goodsVo.getCid());
 			return webPage("goods/goodsDetail");
 		}else{
-			return erroPage(request, goodsResp.getCode());
+			return erroPage(goodsResp.getCode());
 		}
 	}
 	

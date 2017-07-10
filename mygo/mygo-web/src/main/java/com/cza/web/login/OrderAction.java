@@ -88,7 +88,7 @@ public class OrderAction extends CommonAction{
 		try {
 			log.info("OrderAction.toMakeOrderPage 请求参数:{}",order);
 			if(StringUtils.isEmpty(order.getSkuId())||StringUtils.isEmpty(order.getNumber())){
-				return "/common/orderErro";
+				return orderErroPage();
 			}
 			UserVo userVo=getUser(request);
 			//获取sku信息
@@ -98,7 +98,7 @@ public class OrderAction extends CommonAction{
 				order.setSku(sku);
 				order.setAmount(sku.getPrice().multiply(new BigDecimal(order.getNumber())));
 			}else{
-				return erroPage(request, skuResp.getCode());
+				return erroPage( skuResp.getCode());
 			}
 			//获取默认地址
 			TUserAddr addrParam=new TUserAddr();
@@ -111,7 +111,7 @@ public class OrderAction extends CommonAction{
 					order.setAddr(addrs.get(0));
 				}
 			}else{
-				return erroPage(request, skuResp.getCode());
+				return erroPage( skuResp.getCode());
 			}
 			log.info("OrderAction.toMakeOrderPage 响应参数，order:{}",order);
 			String token=MygoUtil.makeToken(getUser(request).getUid());
@@ -121,7 +121,7 @@ public class OrderAction extends CommonAction{
 			return webPage("/home/preOrder");
 		} catch (Exception e) {
 			log.info("OrderAction.toMakeOrderPage exception:",e);
-			return erroPage(request, ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			return erroPage(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 		}
 	}
 	
@@ -130,17 +130,17 @@ public class OrderAction extends CommonAction{
 		log.info("OrderAction.saveOrder 请求参数,order:{}",order);
 		if(StringUtils.isEmpty(order.getToken())){
 			log.info("OrderAction.saveOrder token不能为空！");
-			return erroPage(request, ShoppingContants.RESP_CODE_TOKEN_ERRO);
+			return erroPage(ShoppingContants.RESP_CODE_TOKEN_ERRO);
 		}
 		if(!order.getToken().equals(request.getSession().getAttribute(ShoppingContants.TOKEN_MAKE_ORDER))){
 			log.info("OrderAction.saveOrder token erro！");
-			return "/common/orderExist";
+			return orderExistPage();
 		}else{
 			request.getSession().removeAttribute(ShoppingContants.TOKEN_MAKE_ORDER);
 		}
 		if(order.getSkuId()==null||order.getAddrId()==null||order.getNumber()==null){
 			log.info("OrderAction.saveOrder 参数错误！");
-			return erroPage(request, ShoppingContants.RESP_CODE_PARAM_ERRO);
+			return erroPage( ShoppingContants.RESP_CODE_PARAM_ERRO);
 		}else{
 			UserVo userVo=getUser(request);
 			order.setUid(userVo.getUid());
@@ -150,7 +150,7 @@ public class OrderAction extends CommonAction{
 				return "redirect:/login/order/toOrderPayPage.do?oid="+resp.getData().getOrderId();
 			}else{
 				log.info("OrderAction.saveOrder faild!");
-				return erroPage(request, resp.getCode());
+				return erroPage( resp.getCode());
 			}
 		}
 	}
@@ -163,7 +163,7 @@ public class OrderAction extends CommonAction{
 	public String toOrderPayPage(HttpServletRequest request,HttpServletResponse response ){
 		String str=request.getParameter("oid");
 		if(StringUtils.isEmpty(str)){
-			return erroPage(request, ShoppingContants.RESP_CODE_PARAM_ERRO);
+			return erroPage( ShoppingContants.RESP_CODE_PARAM_ERRO);
 		}
 		ServiceResponse<OrderVo> resp=orderService.queryOrder(Long.valueOf(str));
 		if(resp.isSuccess()){
@@ -171,7 +171,7 @@ public class OrderAction extends CommonAction{
 			return webPage("/home/orderPayPage");
 		}else{
 			log.info("OrderAction.toOrderPayPage faild!");
-			return erroPage(request, resp.getCode());
+			return erroPage(resp.getCode());
 		}
 	}
 	
@@ -188,7 +188,7 @@ public class OrderAction extends CommonAction{
 			request.setAttribute("result", resp.getData());
 			return webPage("/home/pay");
 		}else{
-			return erroPage(request,resp.getCode());
+			return erroPage(resp.getCode());
 		}
 	}
 	
@@ -317,7 +317,7 @@ public class OrderAction extends CommonAction{
 			return webPage("user/listOrder");
 		}else{
 			log.info("OrderAction.listNotPayOrder faild!");
-			return erroPage(request, resp.getCode());
+			return erroPage( resp.getCode());
 		}
 	}
 

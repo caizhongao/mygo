@@ -43,4 +43,20 @@ public class HomeAction extends CommonAction{
 		return webPage("home/index");
 	}
 	
+	
+	@RequestMapping("erro")
+	public String erroPage(@ModelAttribute String erroCode,HttpServletRequest request,HttpServletResponse response){
+		request.setAttribute("erroCode", erroCode);
+		return "/common/erro";
+	}
+	
+	@RequestMapping("orderErro")
+	public String orderErro(HttpServletRequest request,HttpServletResponse response){
+		return "/common/orderErro";
+	}
+	@RequestMapping("orderExist")
+	public String orderExist(HttpServletRequest request,HttpServletResponse response){
+		return "/common/orderExist";
+	}
+	
 }
