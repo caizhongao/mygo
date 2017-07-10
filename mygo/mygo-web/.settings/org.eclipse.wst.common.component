@@ -4,10 +4,10 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="mygo-service-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mygo-service/mygo-service">
+        <dependent-module archiveName="mygo-alipay-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mygo-alipay/mygo-alipay">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="mygo-alipay-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mygo-alipay/mygo-alipay">
+        <dependent-module archiveName="mygo-service-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mygo-service/mygo-service">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="mygo-web"/>
