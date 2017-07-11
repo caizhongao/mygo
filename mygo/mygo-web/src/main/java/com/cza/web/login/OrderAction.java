@@ -43,6 +43,7 @@ import com.cza.common.Pager;
 import com.cza.common.PropertyUtil;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
+import com.cza.dto.addr.TArea;
 import com.cza.dto.addr.TUserAddr;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.SkuVo;
@@ -100,24 +101,29 @@ public class OrderAction extends CommonAction{
 			}else{
 				return erroPage( skuResp.getCode());
 			}
-			//获取默认地址
+			//获取地址
 			TUserAddr addrParam=new TUserAddr();
 			addrParam.setUid(userVo.getUid());
-			addrParam.setIsDefault(ShoppingContants.ADDR_IS_DEFAULT);		
+			//addrParam.setIsDefault(ShoppingContants.ADDR_IS_DEFAULT);		
 			ServiceResponse<List<TUserAddr>> addrResp=addrService.listAddrs(addrParam);
 			if(addrResp.isSuccess()){
-				List<TUserAddr> addrs=addrResp.getData();
-				if(addrs!=null&&addrs.size()>0){
-					order.setAddr(addrs.get(0));
-				}
+				request.setAttribute("addrs", addrResp.getData());
 			}else{
 				return erroPage( skuResp.getCode());
 			}
-			log.info("OrderAction.toMakeOrderPage 响应参数，order:{}",order);
 			String token=MygoUtil.makeToken(getUser(request).getUid());
 			order.setToken(token);
 			request.setAttribute("order", order);
+			log.info("OrderAction.toMakeOrderPage 响应参数，order:{}",order);
+			
 			request.getSession().setAttribute(ShoppingContants.TOKEN_MAKE_ORDER,token);
+			TArea area=new TArea();
+			area.setPaid(0l);
+			ServiceResponse<List<TArea>>areaResp=addrService.listAreas(area);
+			if(ShoppingContants.RESP_CODE_SUCESS.equals(areaResp.getCode())){
+				List<TArea> provinces=areaResp.getData();
+				request.setAttribute("provinces", provinces);
+			}
 			return webPage("/home/preOrder");
 		} catch (Exception e) {
 			log.info("OrderAction.toMakeOrderPage exception:",e);

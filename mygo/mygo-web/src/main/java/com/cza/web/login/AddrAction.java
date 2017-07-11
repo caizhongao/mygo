@@ -103,7 +103,27 @@ public class AddrAction extends CommonAction{
 			addr.setIsDefault(0);
 		}
 		ServiceResponse<TUserAddr>resp=addrService.saveAddr(addr);
-		return webAction("/login/addr/editAddr.do");
+		if(resp.isSuccess()){
+			return webAction("/login/addr/editAddr.do");
+		}else{
+			return erroPage(resp.getCode());
+		}
+	}
+	
+	
+	@RequestMapping("saveAddrAjax")
+	public void saveAddrAjax(@ModelAttribute TUserAddr addr,HttpServletRequest request,HttpServletResponse response ) throws IOException{
+		UserVo userVo=getUser(request);
+		addr.setUid(userVo.getUid());
+		if(addr.getIsDefault()==null){
+			addr.setIsDefault(0);
+		}
+		ServiceResponse<TUserAddr>resp=addrService.saveAddr(addr);
+		if(resp.isSuccess()){
+			response.getWriter().print("success");
+		}else{
+			response.getWriter().print(resp.getCode());
+		}
 	}
 	
 	@RequestMapping("setDefault")

@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.cza.common.ShoppingContants;
 import com.cza.service.user.vo.UserVo;
@@ -80,8 +81,12 @@ public class PageCacheFilter implements  Filter{
 				WrapperResponse wrapperResponse = new WrapperResponse((HttpServletResponse) response);
 				chain.doFilter(request, wrapperResponse);
 				content=wrapperResponse.getContent();
-			    PageCache.putContent(uri, content);
-			    log.info("init pagecache content,uri:{}",uri);
+				if(!StringUtils.isEmpty(content)){
+					 PageCache.putContent(uri, content);
+					 log.info("init pagecache content,uri:{},content:{}",uri,content);
+				}else{
+					log.info("resp content is null:{}",content);
+				}
 			}
 			ServletOutputStream out = response.getOutputStream();
 	        out.write(content);
