@@ -99,9 +99,9 @@
 			return false;
 		}
 		location.href="${ctx}/login/order/toMakeOrderPage.do?number="+number+"&skuId="+sid;
-/* 		$('#form_sku_id').val(sid);
+ 		/* $('#form_sku_id').val(sid);
 		$('#form_sku_number').val(number);
-		$('#myform').submit(); */
+		$('#myform').submit();  */
 	}
 	//根据已选的规格，更新其他规格的状态
 	function updateAttrObj(attrtmps){

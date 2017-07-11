@@ -103,7 +103,7 @@
 	display: inline-block;
 }
 .address{
-	height: 30px;
+	min-height: 30px;
 	line-height: 30px;
 	width: 1000px;
 	border:1px solid white;
@@ -299,22 +299,15 @@ display:none;
 					if($('input[name="isDefault"]').prop('checked')){
 						isDefault=1;
 					}
-					$('.addr_select').find(".addressInfo").html('<div style="width: 30px;margin-left: 10px;">'+
+					$('.addr_select').find(".addressInfo").html('<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">'+
 							'<input type="radio" name="radioAddrId" checked="checked" value="${addr.uaid}" onclick="selectAddr(this)">'+
 							'</div>'+
-							'<div class="areaIds" pid="'+pid+'" aid="'+aid+'" cid="'+cid+'" addr="'+addr+'"'+
+							'<div class="areaIds" style="max-width: 550px" pid="'+pid+'" aid="'+aid+'" cid="'+cid+'" addr="'+addr+'"'+
 							'receiver="'+receiver+'" mobilphone="'+mobilphone+'" isDefault="'+isDefault+'" uaid="'+uaid+'">'+
-								'<em class="icons icons-address fl"></em>'+
-								province+'&nbsp;'+city+'&nbsp;'+area+'&nbsp;'+
-								addr+'&nbsp;&nbsp;'+
+								'<em class="icons icons-address fl"></em>'+province+'&nbsp;'+city+'&nbsp;'+area+'&nbsp;'+addr+'&nbsp;&nbsp;'+
 							'</div>'+
-							'<div>'+
-								'<em class="icons icons-user fl"></em>'+receiver+'&nbsp;收&nbsp;&nbsp;'+
-							'</div>'+
-							'<div>'+
-								'<em class="icons icons-phone  fl"></em>'+mobilphone+
-								'&nbsp;'+
-							'</div>');
+							'<div style="vertical-align: top;"><em class="icons icons-user fl"></em>'+receiver+'&nbsp;收&nbsp;&nbsp;</div>'+
+							'<div style="vertical-align: top;"><em class="icons icons-phone  fl"></em>'+mobilphone+'&nbsp;</div>');
 					alert("地址保存成功!");
 				}else{
 					alert('地址保存失败，错误码:['+data+']');
@@ -413,24 +406,14 @@ display:none;
 							<c:forEach items="${addrs}" var="addr">
 								<div class="address <c:if test="${addr.isDefault==1}">addr_select</c:if>">
 									<div style="width: 900px;" class="addressInfo">
-										<div style="width: 30px;margin-left: 10px;">
+										<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">
 											<input type="radio" name="radioAddrId" value="${addr.uaid}" onclick="selectAddr(this)" <c:if test="${addr.isDefault==1}">checked="checked"</c:if>>
 										</div>
-										<div class="areaIds" pid="${addr.provinceId}" aid="${addr.areaId}" cid="${addr.cityId}" addr="${addr.addr}"
-										receiver="${addr.receiver}" mobilphone="${addr.mobilphone}" isDefault="${addr.isDefault}" uaid="${addr.uaid}">
-											<em class="icons icons-address fl"></em>
-											${addr.province}&nbsp;${addr.city}&nbsp;${addr.area}&nbsp;
-											${addr.addr}&nbsp;&nbsp;
-										</div>
-										<div>
-											<em class="icons icons-user fl"></em>${addr.receiver}&nbsp;收&nbsp;&nbsp;
-										</div>
-										<div>
-											<em class="icons icons-phone  fl"></em>${addr.mobilphone}
-											&nbsp;
-										</div>
+										<div class="areaIds" pid="${addr.provinceId}" style="max-width: 550px" aid="${addr.areaId}" cid="${addr.cityId}" addr="${addr.addr}" receiver="${addr.receiver}" mobilphone="${addr.mobilphone}" isDefault="${addr.isDefault}" uaid="${addr.uaid}"><em class="icons icons-address fl"></em>${addr.province}&nbsp;${addr.city}&nbsp;${addr.area}&nbsp;${addr.addr}&nbsp;&nbsp;</div>
+										<div style="vertical-align: top;"><em class="icons icons-user fl"></em>${addr.receiver}&nbsp;收&nbsp;&nbsp;</div>
+										<div style="vertical-align: top;"><em class="icons icons-phone  fl"></em>${addr.mobilphone}&nbsp;</div>
 									</div>
-									<div style="text-align: right;width: 80px;<c:if test="${addr.isDefault==0}">display: none;</c:if>" class="editThisAddr">
+									<div style="text-align: right;vertical-align: top;width: 80px;<c:if test="${addr.isDefault==0}">display: none;</c:if>" class="editThisAddr">
 											<a href="javascript:editThisAddr(1)"  style="font-size: 13px">修改本地址</a>
 									</div>
 								</div>
@@ -441,7 +424,6 @@ display:none;
 						<a href="javascript:editThisAddr(0)" style="font-size: 13px">+使用新地址 </a>
 					</div>
 				</div>
-					
 				<br>
 				<span style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px">选择支付方式</span>
 				<div style="width: 500px;height: 80px;margin-top: 20px">

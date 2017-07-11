@@ -43,7 +43,7 @@
 <body  class="_body">
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
-	<div class="page_middle" style="margin-top: 50px;">
+	<div class="page_middle">
 	<form action="${ctx}/unlogin/goods/listCategoryGoods.do">
 		<input type="hidden" name="cid" value="${cid}">
 	</form>
