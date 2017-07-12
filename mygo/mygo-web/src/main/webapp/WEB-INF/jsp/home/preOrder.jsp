@@ -136,12 +136,11 @@ display:none;
 </style>
 <script type="text/javascript">
 	function makeOrder(){
-		var addrId=$('.addr_select').find('.areaIds').attr('uaid');
+		var addrId=$('input[name="addrId"]:checked').val();
 		if(addrId==''){
 			alert('请选择收获地址！');
 			return;
 		}
-		$('input[name="addrId"]').val(addrId);
 		$('#orderForm').submit();
 	}
 	
@@ -179,7 +178,6 @@ display:none;
 			}else{
 				$('input[name="isDefault"]').prop('checked',true);
 			}
-			
 			if(pid!=''){
 				$('#province').val(pid);
 				$.ajax({
@@ -215,9 +213,12 @@ display:none;
 				});
 			}
 		}else{
-			$(':input','#addrForm') 
-			.not(':button, :submit, :reset') 
-			.val('').removeAttr('selected');
+			$('input[name="uaid"]').val('');
+			$('input[name="receiver"]').val('');
+			$('input[name="mobilphone"]').val('');
+			$('#city').val('');
+			$('#area').val('');
+			$('textarea[name="addr"]').val('');
 			$('input[name="isDefault"]').prop('checked',false);
 		}
 	}
@@ -283,34 +284,39 @@ display:none;
 			url:'${ctx}/login/addr/saveAddrAjax.do?'+$('#addrForm').serialize(),
 			type:'get',
 			async:false,
+			dataType:'json',
 			success:function(data){
-				if(data=='success'){
-					var receiver=$('input[name="receiver"]').val();
-					var addr=$('textarea[name="addr"]').val();
-					var mobilphone=$('input[name="mobilphone"]').val();
-					var uaid=$('input[name="uaid"]').val();
-					var city=$('input[name="city"]').val();
-					var province=$('input[name="province"]').val();
-					var area=$('input[name="area"]').val();
-					var cid=$('#city').val();
-					var pid=$('#province').val();
-					var aid=$('#area').val();
-					var isDefault=0;
-					if($('input[name="isDefault"]').prop('checked')){
-						isDefault=1;
-					}
-					$('.addr_select').find(".addressInfo").html('<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">'+
-							'<input type="radio" name="radioAddrId" checked="checked" value="${addr.uaid}" onclick="selectAddr(this)">'+
-							'</div>'+
-							'<div class="areaIds" style="max-width: 550px" pid="'+pid+'" aid="'+aid+'" cid="'+cid+'" addr="'+addr+'"'+
-							'receiver="'+receiver+'" mobilphone="'+mobilphone+'" isDefault="'+isDefault+'" uaid="'+uaid+'">'+
-								'<em class="icons icons-address fl"></em>'+province+'&nbsp;'+city+'&nbsp;'+area+'&nbsp;'+addr+'&nbsp;&nbsp;'+
-							'</div>'+
-							'<div style="vertical-align: top;"><em class="icons icons-user fl"></em>'+receiver+'&nbsp;收&nbsp;&nbsp;</div>'+
-							'<div style="vertical-align: top;"><em class="icons icons-phone  fl"></em>'+mobilphone+'&nbsp;</div>');
+				if(data.message=='success'){
 					alert("地址保存成功!");
+					var result=data.result;
+					var uaid=$('input[name="uaid"]').val();
+					if(uaid==''){
+						$('.address').removeClass('addr_select');
+						$('#addAddrBtn').before('<div class="address addr_select">'+
+								'<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">'+
+								'<input type="radio" name="addrId" checked="checked" value="'+result.uaid+'" onclick="selectAddr(this)">'+
+								'</div>'+
+								'<div class="areaIds" style="max-width: 550px" pid="'+result.pid+'" aid="'+result.aid+'" cid="'+result.cid+'" addr="'+result.addr+'"'+
+								'receiver="'+result.receiver+'" mobilphone="'+result.mobilphone+'" isDefault="'+result.isDefault+'" uaid="'+result.uaid+'">'+
+									'<em class="icons icons-address fl"></em>'+result.province+'&nbsp;'+result.city+'&nbsp;'+result.area+'&nbsp;'+result.addr+'&nbsp;&nbsp;'+
+								'</div>'+
+								'<div style="vertical-align: top;"><em class="icons icons-user fl"></em>'+result.receiver+'&nbsp;收&nbsp;&nbsp;</div>'+
+								'<div style="vertical-align: top;"><em class="icons icons-phone  fl"></em>'+result.mobilphone+'&nbsp;</div>'+
+								'</div>');
+					}else{
+						$('.addr_select').find(".addressInfo").html('<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">'+
+								'<input type="radio" name="addrId" checked="checked" value="'+result.uaid+'" onclick="selectAddr(this)">'+
+								'</div>'+
+								'<div class="areaIds" style="max-width: 550px" pid="'+result.pid+'" aid="'+result.aid+'" cid="'+result.cid+'" addr="'+result.addr+'"'+
+								'receiver="'+result.receiver+'" mobilphone="'+result.mobilphone+'" isDefault="'+result.isDefault+'" uaid="'+result.uaid+'">'+
+									'<em class="icons icons-address fl"></em>'+result.province+'&nbsp;'+result.city+'&nbsp;'+result.area+'&nbsp;'+result.addr+'&nbsp;&nbsp;'+
+								'</div>'+
+								'<div style="vertical-align: top;"><em class="icons icons-user fl"></em>'+result.receiver+'&nbsp;收&nbsp;&nbsp;</div>'+
+								'<div style="vertical-align: top;"><em class="icons icons-phone  fl"></em>'+result.mobilphone+'&nbsp;</div>');
+					}
+					
 				}else{
-					alert('地址保存失败，错误码:['+data+']');
+					alert('地址保存失败，错误码:['+data.message+']');
 				}
 				closeBg();
 			}
@@ -326,7 +332,8 @@ display:none;
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle">
 		<div style="margin: 0px auto;width: 80%;">
-			<div id="fullbg" style="background-color:gray; left:0; opacity:0.5; position:absolute; top:0; z-index:3; filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity:0.5; "></div> 
+				<!-- 遮罩层 -->
+				<div id="fullbg" style="background-color:gray; left:0; opacity:0.5; position:absolute; top:0; z-index:3; filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity:0.5; "></div> 
 				<div style="display:none;position: absolute;border-radius:5px;width:600px;height: 400px;z-index: 100;background-color: #EFEEF0;left: 25%;top: 100px" id="editAddrInfo">
 				<div onclick="closeBg()" style="width: 580px;height: 20px;margin: 0px auto;line-height: 25px;color: #666666;font-size: 20px;font-weight: bold;text-align: right;cursor: pointer;">
 					×
@@ -398,16 +405,14 @@ display:none;
 				<div class="addressList">
 					<c:choose>
 						<c:when test="${addrs==null || empty addrs}">
-							<div class="address">无收获地址&nbsp;
-								<a href="${ctx}/login/addr/editAddr.do" target="_blank" style="font-size: 13px">新增地址</a>
-							</div>
+							<div class="address" style="margin-left: 20px">无收获地址!</div>
 						</c:when>
 						<c:otherwise>
 							<c:forEach items="${addrs}" var="addr">
 								<div class="address <c:if test="${addr.isDefault==1}">addr_select</c:if>">
 									<div style="width: 900px;" class="addressInfo">
 										<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">
-											<input type="radio" name="radioAddrId" value="${addr.uaid}" onclick="selectAddr(this)" <c:if test="${addr.isDefault==1}">checked="checked"</c:if>>
+											<input type="radio" name="addrId" value="${addr.uaid}" onclick="selectAddr(this)" <c:if test="${addr.isDefault==1}">checked="checked"</c:if>>
 										</div>
 										<div class="areaIds" pid="${addr.provinceId}" style="max-width: 550px" aid="${addr.areaId}" cid="${addr.cityId}" addr="${addr.addr}" receiver="${addr.receiver}" mobilphone="${addr.mobilphone}" isDefault="${addr.isDefault}" uaid="${addr.uaid}"><em class="icons icons-address fl"></em>${addr.province}&nbsp;${addr.city}&nbsp;${addr.area}&nbsp;${addr.addr}&nbsp;&nbsp;</div>
 										<div style="vertical-align: top;"><em class="icons icons-user fl"></em>${addr.receiver}&nbsp;收&nbsp;&nbsp;</div>
@@ -420,7 +425,7 @@ display:none;
 							</c:forEach>
 						</c:otherwise>
 					</c:choose>
-					<div class="address">
+					<div class="address" id="addAddrBtn">
 						<a href="javascript:editThisAddr(0)" style="font-size: 13px">+使用新地址 </a>
 					</div>
 				</div>
@@ -438,15 +443,17 @@ display:none;
 					<tr height="50px">
 						<td width="300px" align="center" style="border-bottom: 1px dashed #ccc;">商品</td>
 						<td width="200px" align="center" style="border-bottom: 1px dashed #ccc;">属性</td>
-						<td width="200px" align="center" style="border-bottom: 1px dashed #ccc;">单价</td>
+						<td width="200px" align="center" style="border-bottom: 1px dashed #ccc;">单价(元)</td>
 						<td width="200px" align="center" style="border-bottom: 1px dashed #ccc;">数量</td>
-						<td width="200px" align="center" style="border-bottom: 1px dashed #ccc;">金额</td>
+						<td width="200px" align="center" style="border-bottom: 1px dashed #ccc;">金额(元)</td>
 					</tr>
 					<tr height="100px">
 						<td align="center" style="border-bottom: 1px dashed #ccc;">
-							${order.sku.goodsName}
+							<img src="${order.sku.skuPic}" width="80px" style="border: 1px solid #ccc;vertical-align: middle;">
+							<div style="vertical-align: middle;display: inline-block; width: 150px;text-align: left;margin-left: 10px;">
+								${order.sku.goodsName}
+							</div>
 	 						<input type="hidden" name="skuId" value="${order.sku.sid}">
-	 						<input type="hidden" name="addrId" value="">
 							<input type="hidden" name="number" value="${order.number}">
 						</td>
 						<td align="center" style="border-bottom: 1px dashed #ccc;">

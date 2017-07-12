@@ -25,17 +25,22 @@ import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.addr.TUserAddr;
+import com.cza.dto.goods.TCategoryAttr;
 import com.cza.dto.goods.TGoods;
 import com.cza.dto.goods.TSku;
+import com.cza.dto.goods.TSkuAttr;
 import com.cza.dto.goods.TSkuStock;
 import com.cza.dto.order.TOrder;
 import com.cza.dto.user.TUser;
 import com.cza.mapper.addr.UserAddrMapper;
+import com.cza.mapper.goods.CategoryAttrMapper;
 import com.cza.mapper.goods.GoodsMapper;
+import com.cza.mapper.goods.SkuAttrMapper;
 import com.cza.mapper.goods.SkuMapper;
 import com.cza.mapper.goods.SkuStockMapper;
 import com.cza.mapper.order.OrderMapper;
 import com.cza.mapper.user.UserMapper;
+import com.cza.service.goods.vo.SkuAttrVo;
 import com.cza.service.order.OrderService;
 import com.cza.service.order.vo.PreOrderVo;
 import com.cza.service.order.vo.OrderVo;
@@ -59,7 +64,10 @@ public class OrderServiceImpl implements OrderService{
 	private GoodsMapper goodsMapper;
 	@Autowired
 	private UserMapper userMapper;
-	
+	@Autowired
+	private SkuAttrMapper skuAttrMapper;
+	@Autowired
+	private CategoryAttrMapper attrMapper;
 	@Autowired
 	private SkuMapper skuMapper;
 	private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class); 
@@ -112,6 +120,7 @@ public class OrderServiceImpl implements OrderService{
 			saveOrder.setOid(makeOrderId());
 			saveOrder.setUid(orderVo.getUid());
 			saveOrder.setNumber(orderVo.getNumber());
+			saveOrder.setSkuPic(sku.getSkuPic());
 			saveOrder.setCreateTime(now);
 			saveOrder.setUpdateTime(now);
 			saveOrder.setOrderVersion(0L);
@@ -186,6 +195,22 @@ public ServiceResponse<List<Long>> listOrderIds(OrderVo listParam) {
 					if(user!=null){
 						vo.setUserName(user.getUserName());
 					}
+					//购买的sku属性
+					TSkuAttr attrParam=new TSkuAttr();
+					attrParam.setSid(vo.getSid());
+					List<TSkuAttr>attrs=skuAttrMapper.listSkuAttrs(attrParam);
+					List<SkuAttrVo> attrVoList=new ArrayList<SkuAttrVo>();
+					if(attrs!=null&&attrs.size()>0){
+						for(TSkuAttr attr:attrs){
+							SkuAttrVo attrVo=new SkuAttrVo();
+							attrVo.setAttrId(attr.getCaid());
+							attrVo.setAttrValue(attr.getAttrValue());
+							TCategoryAttr ca= attrMapper.queryAttr(attr.getCaid());
+							attrVo.setAttrName(ca.getAttrName());
+							attrVoList.add(attrVo);
+						}
+					}
+					vo.setAttrVos(attrVoList);
 					voList.add(vo);
 				}
 			}

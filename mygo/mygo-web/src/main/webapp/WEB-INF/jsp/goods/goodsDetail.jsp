@@ -340,7 +340,8 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="button" onclick="butNow()" class="login_button" value="立即购买">
+						<input type="button" onclick="butNow()" class="login_button" style="padding:10 30 10 30;background-color: #ff0036;border: 1px solid #ff0036" value="加入购物车">&nbsp;
+						<input type="button" onclick="butNow()" class="login_button" value="立即购买" style="padding:10 40 10 40;">
 					</td>
 				</tr>
 			</table>

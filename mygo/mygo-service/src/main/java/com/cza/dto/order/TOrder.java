@@ -50,12 +50,48 @@ public class TOrder implements Serializable{
 	
 	private Long gid;
 	
+	private String skuPic;
 	
 	
 	
 	
 	
 	
+	
+	
+	
+	
+	/**
+	* @return skuPic
+	*/
+	
+	public String getSkuPic() {
+		return skuPic;
+	}
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param skuPic the skuPic to set
+	 */
+	
+	public void setSkuPic(String skuPic) {
+		this.skuPic = skuPic;
+	}
+
+
+
+
+
+
+
+
 	/**
 	* @return gid
 	*/

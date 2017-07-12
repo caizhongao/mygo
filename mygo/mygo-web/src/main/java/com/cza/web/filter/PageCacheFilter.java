@@ -77,16 +77,12 @@ public class PageCacheFilter implements  Filter{
 		if(uri.indexOf("/listCategory.do")>=0||uri.indexOf("/listNewGoods.do")>=0||uri.indexOf("/listHotGoods.do")>=0){
 			long startTime=System.currentTimeMillis();
 			byte[]content=PageCache.getContent(uri);
-			if(content==null){
+			if(content==null||content.length<=0){
 				WrapperResponse wrapperResponse = new WrapperResponse((HttpServletResponse) response);
 				chain.doFilter(request, wrapperResponse);
 				content=wrapperResponse.getContent();
-				if(!StringUtils.isEmpty(content)){
-					 PageCache.putContent(uri, content);
-					 log.info("init pagecache content,uri:{},content:{}",uri,content);
-				}else{
-					log.info("resp content is null:{}",content);
-				}
+				PageCache.putContent(uri, content);
+				log.info("init pagecache content,uri:{},content:{}",uri,content);
 			}
 			ServletOutputStream out = response.getOutputStream();
 	        out.write(content);

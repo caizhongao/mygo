@@ -47,11 +47,13 @@
 </style>
 <script type="text/javascript">
 	function clearForm(){
-		$(':input','#addrForm') 
-		.not(':button, :submit, :reset') 
-		.val('') 
-		.removeAttr('checked') 
-		.removeAttr('selected');
+		$('input[name="uaid"]').val('');
+		$('input[name="receiver"]').val('');
+		$('input[name="mobilphone"]').val('');
+		$('#city').val('');
+		$('#area').val('');
+		$('textarea[name="addr"]').val('');
+		$('input[name="isDefault"]').prop('checked',false);
 	}
 
 	function listCitys(){

@@ -11,7 +11,9 @@
 package com.cza.web.login;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -119,11 +121,16 @@ public class AddrAction extends CommonAction{
 			addr.setIsDefault(0);
 		}
 		ServiceResponse<TUserAddr>resp=addrService.saveAddr(addr);
+		Map<String,Object>webResp=new HashMap<>();
 		if(resp.isSuccess()){
-			response.getWriter().print("success");
+			webResp.put("message", "success");
+			webResp.put("result", resp.getData());
 		}else{
-			response.getWriter().print(resp.getCode());
+			webResp.put("message", "fail");
+			webResp.put("result", resp.getCode());
 		}
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(JSON.toJSONString(webResp));
 	}
 	
 	@RequestMapping("setDefault")

@@ -199,8 +199,6 @@ public class OrderAction extends CommonAction{
 	}
 	
 	
-	
-	
 	/**
 	 * @Title: notifyPayResult
 	 * @Description: 支付宝同步通知用户支付结果
@@ -315,7 +313,6 @@ public class OrderAction extends CommonAction{
 		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
 		order.setUid(userVo.getUid());
 		request.setAttribute("order", order);
-		Pager<List<OrderVo>> pager=new Pager<List<OrderVo>>();
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			request.setAttribute("pager", resp.getData());

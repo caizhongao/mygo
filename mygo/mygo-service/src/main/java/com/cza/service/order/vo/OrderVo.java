@@ -11,6 +11,9 @@
 package com.cza.service.order.vo;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import com.cza.service.goods.vo.SkuAttrVo;
 
 /**
     * @ClassName: ListOrderVo
@@ -44,8 +47,11 @@ public class OrderVo {
 	private Long createTime;
 	private Long updateTime;
 	
+	private List<SkuAttrVo> attrVos;
+	
 	private Long orderVersion;
 	private Long gid;
+	private String skuPic;
 	private String orderName;
 	private Integer pageNum=1;
 	private Integer pageSize=15;
@@ -65,6 +71,84 @@ public class OrderVo {
 	
 	
 	
+	
+	
+	/**
+	* @return attrVos
+	*/
+	
+	public List<SkuAttrVo> getAttrVos() {
+		return attrVos;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param attrVos the attrVos to set
+	 */
+	
+	public void setAttrVos(List<SkuAttrVo> attrVos) {
+		this.attrVos = attrVos;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	* @return skuPic
+	*/
+	
+	public String getSkuPic() {
+		return skuPic;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param skuPic the skuPic to set
+	 */
+	
+	public void setSkuPic(String skuPic) {
+		this.skuPic = skuPic;
+	}
+
+
+
+
+
+
+
+
+
+
+
 	/**
 	* @return gid
 	*/

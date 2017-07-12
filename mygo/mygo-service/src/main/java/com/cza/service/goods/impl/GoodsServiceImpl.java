@@ -600,6 +600,7 @@ public class GoodsServiceImpl implements GoodsService {
 			skuVo.setPrice(sku.getPrice());
 			skuVo.setBarcode(sku.getBarcode());
 			skuVo.setSid(sku.getSid());
+			skuVo.setSkuPic(sku.getSkuPic());
 			skuVo.setGoodsName(sku.getGoodsName());
 			TSkuAttr attrParam=new TSkuAttr();
 			attrParam.setSid(sku.getSid());

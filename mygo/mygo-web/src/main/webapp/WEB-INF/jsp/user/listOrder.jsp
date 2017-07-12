@@ -19,10 +19,10 @@
 		width: 150px;
 	}
 	#mytable td{
-		border-right: 1px solid #F2F2F2;
-		border-bottom: 1px solid #DFDFDF;
+		border-right: 1px dashed #F2F2F2;
+		border-bottom: 1px dashed #DFDFDF;
 		text-align: center;
-		height: 100px;
+		height: 110px;
 		color: #666666;
 		font-size: 14px;
 	}
@@ -43,13 +43,22 @@
 $(function() { 
 	$(window).scroll(function() { 
 		var top = $(window).scrollTop()+200; 
-		var left= $(window).scrollLeft()+420; 
-		$("#deleteDescDiv").css({ left:left + "px", top: top + "px" }); 
+		//var left= $(window).scrollLeft()+30%; 
+		$("#deleteDescDiv").css({ /* left:left + "px", */ top: top + "px" }); 
 	}); 
 }); 
 
 
 function showDesc(oid){
+	var bh = $("body").height(); 
+	var bw = $("body").width(); 
+	$("#fullbg").css({ 
+		height:bh, 
+		width:bw, 
+		display:"block" 
+	}); 
+	
+	
 	$('#oid').val(oid);
 	$('#oidTitle').html("订单【"+oid+"】");
 	$('#deleteDescDiv').css('display','block');
@@ -57,7 +66,7 @@ function showDesc(oid){
 
 function closeDesc(){
 	$('#oid').val('');
-	$('#deleteDescDiv').css('display','none');
+	$("#fullbg,#deleteDescDiv").hide(); 
 }
 function deleteOrder(){
 	$.ajax({
@@ -95,8 +104,9 @@ function toRefund(oid){
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle">
-	
-			<div style="display:none;position: absolute;border-radius:5px;width: 430px;height: 160px;margin: 0px auto;z-index: 100;top: 200px;left: 420px;background-color: #EFEEF0" id="deleteDescDiv">
+	<!-- 遮罩层 -->
+				<div id="fullbg" style="background-color:gray; left:0; opacity:0.5; position:absolute; top:0; z-index:3; filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity:0.5; "></div> 
+		<div style="display:none;position: absolute;border-radius:5px;width: 430px;height: 160px;z-index: 100;top: 200px;left:35%;background-color: #EFEEF0" id="deleteDescDiv">
 		<div onclick="closeDesc()" style="width: 400px;height: 20px;margin: 0px auto;line-height: 25px;color: #666666;font-size: 20px;font-weight: bold;text-align: right;cursor: pointer;">
 			×
 		</div>
@@ -137,10 +147,13 @@ function toRefund(oid){
 		<table style="width: 80%" id="mytable" cellpadding="0" cellspacing="0">
 		<tr>
 			<th>
+				序号
+			</th>
+			<th>
 				订单号
 			</th>
 			<th>
-				商品名称
+				商品信息
 			</th>
 			<th>
 				单价
@@ -167,44 +180,58 @@ function toRefund(oid){
 				操作
 			</th>
 		</tr>
-		<c:forEach items="${pager.result}" var="order">
+		<c:forEach items="${pager.result}" var="order" varStatus="status">
 			<tr>
-				<td>
+				<td width="50px">
+					${status.index+1}
+				</td>
+				<td width="100px">
 					${order.oid}
 				</td>
-				<td>
-				<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${order.gid }" target="_blank">
-					${order.goodsName }
+				<td width="300px" align="center">
+					&nbsp;<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${order.gid }" target="_blank"><img src="${order.skuPic}" width="80px" style="border: 1px solid #ccc;vertical-align: middle;"></a>
+						<div style="width: 200px;vertical-align: middle;display: inline-block; text-align: left;">
+							<div style="width: 190px;margin-left: 5px;">
+								<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${order.gid }" target="_blank">${order.goodsName}</a>
+							</div>
+							<div style="color: #9e9e9e;font-size: 12px;width: 190px;margin-left: 5px;margin-top: 10px;">
+								<c:forEach items="${order.attrVos }" var="attr">
+									${attr.attrName}：${attr.attrValue}&nbsp;
+								</c:forEach>
+							</div>
+							
+						</div>
+						
 					</a>
 				</td>
-				<td>
+				<td width="100px">
 					${order.orderPrice}
 				</td>
-				<td>
+				<td width="100px">
 					${order.number}
 				</td>
-				<td>
+				<td  width="100px">
 					${order.amount}
 				</td>
-				<td>
+				<td style="padding-left: 10px;padding-right: 10px">
 					${order.province} ${order.city} ${order.area}<br>
 					${order.addr}
 				</td>
-				<td>
+				<td width="100px">
 					${order.payNo }
 				</td>
-				<td>
+				<td width="100px">
 					<c:if test="${order.status==0}">
 						正常
 					</c:if>
 					<c:if test="${order.status==1}">
-						<font title="${order.deleteDesc}">系统关闭</font>
+						<font title="${order.deleteDesc}">关闭</font>
 					</c:if>
 					<c:if test="${order.status==2}">
-						<font title="${order.deleteDesc}">用户关闭</font>
+						<font title="${order.deleteDesc}">关闭</font>
 					</c:if>
 				</td>
-				<td>
+				<td width="100px">
 					<c:if test="${order.payStatus==0}">
 						未支付
 					</c:if>
@@ -215,16 +242,16 @@ function toRefund(oid){
 						已退款
 					</c:if>
 				</td>
-				<td style="width: 200px;">
+				<td width="140px">
 					<c:if test="${order.payStatus==0}">
 						<c:if test="${order.status==0}">
-							<a href="${ctx}/login/order/toOrderPayPage.do?oid=${order.oid}" class="manager_button" target="_blank">立即付款</a>
-							<a href="javascript:void(0)" onclick="showDesc(${order.oid})" class="manager_button" target="_blank">关闭订单</a>
+							<a href="${ctx}/login/order/toOrderPayPage.do?oid=${order.oid}" class="manager_button" target="_blank">付款</a>
+							<a href="javascript:void(0)" onclick="showDesc(${order.oid})" class="manager_button" target="_blank">关闭</a>
 						</c:if>
 					</c:if>
 					<c:if test="${order.payStatus==1}">
-						<a href="javascript:toRefund(${order.oid})" class="manager_button">申请退款</a>
-						<a class="manager_button" style="visibility:hidden">关闭订单</a>
+						<a href="javascript:toRefund(${order.oid})" class="manager_button">退款</a>
+						<a class="manager_button" style="visibility:hidden">关闭</a>
 					</c:if>
 				</td>
 				
