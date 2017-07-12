@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cza.common.Param;
 import com.cza.common.PropertyUtil;
 import com.cza.common.ShoppingContants;
 import com.cza.service.order.vo.PreOrderVo;
@@ -69,8 +70,21 @@ public class CommonAction {
 		return "/manager/page/"+url;
 	}
 	
-	public String webAction(String url){
-		return "redirect:"+url;
+	public String webAction(String url,Param ... params){
+		StringBuilder sb=new StringBuilder("");
+		sb.append("redirect:").append(url).append(".do");
+		if(params!=null&&params.length>0){
+			for(int i=0;i<params.length;i++){
+				Param param=params[i];
+				if(i==0){
+					sb.append("?");
+				}else{
+					sb.append("&");
+				}
+				sb.append(param.getKey()).append("=").append(param.getValue());
+			}
+		}
+		return sb.toString();
 	}
 	
 	public String managerAction(String url){

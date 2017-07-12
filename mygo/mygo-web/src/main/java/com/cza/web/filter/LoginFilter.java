@@ -78,9 +78,9 @@ public class LoginFilter implements  Filter{
 				if(user==null){
 					if(uri.indexOf("/toMakeOrderPage")>00){
 						String referer=req.getHeader("Referer");
-						resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+referer);
+						resp.sendRedirect("/unlogin/user/toLogin.do?ref="+referer);
 					}else{
-						resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+req.getRequestURL());
+						resp.sendRedirect("/unlogin/user/toLogin.do?ref="+req.getRequestURL());
 					}
 					return;
 				}

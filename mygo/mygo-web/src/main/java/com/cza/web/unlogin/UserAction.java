@@ -58,7 +58,7 @@ public class UserAction extends CommonAction{
 			ServiceResponse<UserVo> resp=userService.saveUser(user);
 			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){//成功，返回到主頁
 				request.getSession().setAttribute(ShoppingContants.USER_SESSION_KEY, user);
-				return "redirect:/unlogin/home/index.do";
+				return webAction("/unlogin/home/index");
 			}
 		}
 		//失败，返回到注册页

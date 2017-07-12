@@ -49,11 +49,33 @@ public interface ShoppingContants {
 	public static final Integer GOODS_INDEX_COMPLETE=3;
 	public static final Integer GOODS_INDEX_HAS_DELETE=4;
 	
-	
-	
 	public static final Integer SKU_STATUS_NORMAL=0;
 	
 	public static final Integer SKU_STATUS_DELETE=1;
+	
+	//购物袋常量
+	public static final String CART_SESSION_KEY="cart_session";
+	
+	
+	
+	
+	public static final String FILE_UPLOAD_PREFIX="upload.file.path.prefix";
+	
+	public static final String FILE_REQUEST_PREFIX="request.file.path.prefix";
+	
+	//地址常量
+	public static final Integer ADDR_IS_DEFAULT=1;
+	public static final Integer ADDR_NOT_DEFAULT=0;
+	
+	
+	//订单常量
+	public static final Integer ORDER_PAY_STATUS_NOT=0;
+	public static final Integer ORDER_PAY_STATUS_HAS=1;
+	public static final Integer ORDER_PAY_STATUS_REFUND=2;
+	
+	public static final Integer ORDER_STATUS_NORMAL=0;
+	public static final Integer ORDER_STATUS_SYS_DELETE=1;
+	public static final Integer ORDER_STATUS_USER_DELETE=2;
 	
 	
 	//类目常量
@@ -96,27 +118,7 @@ public interface ShoppingContants {
 	
 	public static final Integer RESP_CODE_ORDER_AMOUNT_ERRO=3002;
 	public static final String RESP_MSG_ORDER_AMOUNT_ERRO="order amount erro!";
-	
-	
-	
-	
-	public static final String FILE_UPLOAD_PREFIX="upload.file.path.prefix";
-	
-	public static final String FILE_REQUEST_PREFIX="request.file.path.prefix";
-	
-	//地址常量
-	public static final Integer ADDR_IS_DEFAULT=1;
-	public static final Integer ADDR_NOT_DEFAULT=0;
-	
-	
-	//订单常量
-	public static final Integer ORDER_PAY_STATUS_NOT=0;
-	public static final Integer ORDER_PAY_STATUS_HAS=1;
-	public static final Integer ORDER_PAY_STATUS_REFUND=2;
-	
-	public static final Integer ORDER_STATUS_NORMAL=0;
-	public static final Integer ORDER_STATUS_SYS_DELETE=1;
-	public static final Integer ORDER_STATUS_USER_DELETE=2;
+
 	
 	
 	

@@ -8,7 +8,7 @@
     * @version V1.0  
     */
     
-package com.cza.service.order.vo;
+package com.cza.service.cart.vo;
 
 
 import java.math.BigDecimal;
@@ -24,94 +24,29 @@ import com.cza.service.goods.vo.SkuVo;
     *
     */
 
-public class PreOrderVo {
-	private SkuVo sku;
+public class CartVo {
 	private Long skuId;
 	private Long number;
-	private BigDecimal amount;
-	private Long addrId;
 	private Long uid;
 	
-	private Long orderId;
-	
-	private String token;
-	
+	private SkuVo sku;
+	private BigDecimal amount;
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	* @return token
-	*/
-	
-	public String getToken() {
-		return token;
-	}
 
 
 
 
 
-	
-	/**
-	 * @param token the token to set
-	 */
-	
-	public void setToken(String token) {
-		this.token = token;
-	}
 
 
-
-
-
-	/**
-	* @return orderId
-	*/
-	
-	public Long getOrderId() {
-		return orderId;
-	}
-
-
-
-
-	
-	/**
-	 * @param orderId the orderId to set
-	 */
-	
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
-	}
-
-
-
-
-	/**
-	* @return uid
-	*/
-	
 	public Long getUid() {
 		return uid;
 	}
 
 
 
-	
-	/**
-	 * @param uid the uid to set
-	 */
-	
 	public void setUid(Long uid) {
 		this.uid = uid;
 	}
@@ -195,41 +130,22 @@ public class PreOrderVo {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	
-	/**
-	* @return addrId
-	*/
-	
-	public Long getAddrId() {
-		return addrId;
-	}
-	
-	/**
-	 * @param addrId the addrId to set
-	 */
-	
-	public void setAddrId(Long addrId) {
-		this.addrId = addrId;
-	}
 
 
 
-
-
-
-	
-	    /* (非 Javadoc)
-	    * 
-	    * 
-	    * @return
-	    * @see java.lang.Object#toString()
-	    */
-	    
 	@Override
 	public String toString() {
-		return "PreOrderVo [sku=" + sku + ", skuId=" + skuId + ", number=" + number + ", amount=" + amount + ", addrId="
-				+ addrId + ", uid=" + uid + ", orderId=" + orderId + ", token=" + token + "]";
+		return "CartVo [sku=" + sku + ", skuId=" + skuId + ", number=" + number + ", amount=" + amount + ", uid=" + uid + "]";
 	}
+
+
+
+
+
+
+
+
+
 
 
 

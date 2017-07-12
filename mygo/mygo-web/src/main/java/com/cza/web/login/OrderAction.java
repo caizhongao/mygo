@@ -40,6 +40,7 @@ import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.alipay.api.util.AliPayUtils;
 import com.cza.common.MygoUtil;
 import com.cza.common.Pager;
+import com.cza.common.Param;
 import com.cza.common.PropertyUtil;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
@@ -152,8 +153,8 @@ public class OrderAction extends CommonAction{
 			order.setUid(userVo.getUid());
 			ServiceResponse<PreOrderVo> resp=orderService.saveOrder(order);
 			if(resp.isSuccess()){
-				log.info("OrderAction.saveOrder success,orderNo:{}",order.getOrderId());
-				return "redirect:/login/order/toOrderPayPage.do?oid="+resp.getData().getOrderId();
+				log.info("OrderAction.saveOrder success,orderNo:{}",resp.getData().getOrderId());
+				return webAction("/login/order/toOrderPayPage", new Param("oid",resp.getData().getOrderId()));
 			}else{
 				log.info("OrderAction.saveOrder faild!");
 				return erroPage( resp.getCode());
