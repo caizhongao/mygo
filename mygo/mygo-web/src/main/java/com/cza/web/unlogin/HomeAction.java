@@ -35,14 +35,11 @@ import com.cza.web.CommonAction;
 @Scope("prototype")
 @RequestMapping("/unlogin/home")
 public class HomeAction extends CommonAction{
-	@Autowired
-	private CategoryService categoryService;
 	
 	@RequestMapping("index")
 	public String index(@ModelAttribute UserVo user,HttpServletRequest request,HttpServletResponse response){
 		return webPage("home/index");
 	}
-	
 	
 	@RequestMapping("erro")
 	public String erroPage(@ModelAttribute String erroCode,HttpServletRequest request,HttpServletResponse response){
@@ -54,6 +51,7 @@ public class HomeAction extends CommonAction{
 	public String orderErro(HttpServletRequest request,HttpServletResponse response){
 		return "/common/orderErro";
 	}
+	
 	@RequestMapping("orderExist")
 	public String orderExist(HttpServletRequest request,HttpServletResponse response){
 		return "/common/orderExist";

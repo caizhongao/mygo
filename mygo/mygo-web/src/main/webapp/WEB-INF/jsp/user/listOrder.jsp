@@ -75,7 +75,7 @@ function deleteOrder(){
 		data:{"oid":$('#oid').val(),"deleteDesc":$('#deleteDesc').val()},
 		dataType:'text',
 		success:function(data){
-			if(data=='success'){
+			if('success'==data.message){
 				location.reload();
 			}else{
 				alert("关闭订单失败，请联系管理员!");
@@ -89,7 +89,7 @@ function toRefund(oid){
 		data:{'oid':oid},
 		type:'post',
 		success:function(data){
-			if('success'==data){
+			if('success'==data.message){
 				alert('退款成功!');
 				location.reload();
 			}else{

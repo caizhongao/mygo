@@ -31,12 +31,23 @@ import com.cza.service.order.vo.OrderVo;
 
 public interface CartMapper {
 	
-	public List<TCart> listCart(CartVo listParam);
+	public List<TCart> listCart(TCart listParam);
 	
 	public TCart queryCart(Long cartId);
 	
 	public void saveCart(TCart cart);
 	    
 	public int updateCart(TCart updateParam);
+
+	
+	    /**
+	    * @Title: deleteCart
+	    * @Description: TODO(这里用一句话描述这个方法的作用)
+	    * @param @param deleteParam    参数
+	    * @return void    返回类型
+	    * @throws
+	    */
+	    
+	public void deleteCart(TCart deleteParam);
 	
 }

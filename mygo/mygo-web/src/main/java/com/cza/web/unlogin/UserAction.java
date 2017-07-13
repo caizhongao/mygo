@@ -92,7 +92,6 @@ public class UserAction extends CommonAction{
 		return webPage("user/register");
 	}
 	
-	
 	@RequestMapping("login")
 	public String login(@ModelAttribute UserVo user,HttpServletRequest request,HttpServletResponse response){
 		log.info("login param is:{}",user);
@@ -127,7 +126,7 @@ public class UserAction extends CommonAction{
 						if(!StringUtils.isEmpty(user.getRef())&&!"null".equals(user.getRef())){
 							return "redirect:"+user.getRef();
 						}
-						return webAction("/unlogin/home/index.do");
+						return webAction("/unlogin/home/index");
 					}else{
 						erroList.put("password","登录密码错误");
 					}
@@ -142,11 +141,12 @@ public class UserAction extends CommonAction{
 		request.setAttribute("user", user);
 		return webPage("user/login");
 	}
+	
 	@RequestMapping("logout")
 	public String logout(HttpServletRequest request,HttpServletResponse response){
 		request.getSession().invalidate();
 		if(request.getHeader("Referer")==null||request.getHeader("Referer").indexOf("/login/")>=0){
-			return webAction("/unlogin/home/index.do");
+			return webAction("/unlogin/home/index");
 		}
 		return referPage(request);
 	}
@@ -169,5 +169,4 @@ public class UserAction extends CommonAction{
 		request.setAttribute("ref", request.getParameter("ref"));
 		return webPage("user/login");
 	}
-
 }

@@ -6,3 +6,25 @@
 <script type="text/javascript" src="${ctx}/js/jquery.js"></script>
 <link rel="stylesheet" type="text/css" href="${ctx}/css/common.css" />
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
+<script>
+	function listAreas(paid){
+		var result;
+		$.ajax({
+			url:'${ctx}/login/addr/listAreas.do',
+			type:'post',
+			async:false,
+			dataType:'json',
+			data:{'paid':paid},
+			success:function(data){
+				if(data.message=='success'){
+					result=data.data;
+				}else{
+					alert('查询区域失败!');
+					result=null;
+				}
+			}
+		});
+		return result;
+	}
+	
+</script>

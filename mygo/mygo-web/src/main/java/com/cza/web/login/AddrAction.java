@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
+import com.cza.common.RespMsg;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.addr.TArea;
@@ -52,18 +53,19 @@ public class AddrAction extends CommonAction{
 	private static final Logger log = LoggerFactory.getLogger(AddrAction.class); 
 	@RequestMapping("listAreas")
 	public void listAreas(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		response.setCharacterEncoding("UTF-8");
 		TArea area=new TArea();
 		area.setPaid(Long.valueOf(request.getParameter("paid")));
 		log.info("AddrAction.listAreas 请求参数,paid:{}",area.getPaid());
 		ServiceResponse<List<TArea>>resp=addrService.listAreas(area);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			response.setCharacterEncoding("UTF-8");
 			List<TArea> areas=resp.getData();
 			String result=JSON.toJSONString(areas);
 			log.info("AddrAction.listAreas 响应结果:{}",result);
-			response.getWriter().println(result);
+			response.getWriter().println(new RespMsg("success", result).toJson());
 		}else{
 			log.info("AddrAction.listAreas 查询失败");
+			response.getWriter().println(new RespMsg("fail", null).toJson());
 		}
 	}
 	@RequestMapping("editAddr")
@@ -106,7 +108,7 @@ public class AddrAction extends CommonAction{
 		}
 		ServiceResponse<TUserAddr>resp=addrService.saveAddr(addr);
 		if(resp.isSuccess()){
-			return webAction("/login/addr/editAddr.do");
+			return webAction("/login/addr/editAddr");
 		}else{
 			return erroPage(resp.getCode());
 		}
@@ -115,22 +117,18 @@ public class AddrAction extends CommonAction{
 	
 	@RequestMapping("saveAddrAjax")
 	public void saveAddrAjax(@ModelAttribute TUserAddr addr,HttpServletRequest request,HttpServletResponse response ) throws IOException{
+		response.setCharacterEncoding("utf-8");
 		UserVo userVo=getUser(request);
 		addr.setUid(userVo.getUid());
 		if(addr.getIsDefault()==null){
 			addr.setIsDefault(0);
 		}
 		ServiceResponse<TUserAddr>resp=addrService.saveAddr(addr);
-		Map<String,Object>webResp=new HashMap<>();
 		if(resp.isSuccess()){
-			webResp.put("message", "success");
-			webResp.put("result", resp.getData());
+			response.getWriter().println(new RespMsg("success", resp.getData()).toJson());
 		}else{
-			webResp.put("message", "fail");
-			webResp.put("result", resp.getCode());
+			response.getWriter().println(new RespMsg("fail", resp.getCode()).toJson());
 		}
-		response.setCharacterEncoding("utf-8");
-		response.getWriter().print(JSON.toJSONString(webResp));
 	}
 	
 	@RequestMapping("setDefault")
@@ -140,7 +138,12 @@ public class AddrAction extends CommonAction{
 		addr.setUid(userVo.getUid());
 		addr.setUaid(Long.valueOf(request.getParameter("uaid")));
 		ServiceResponse<TUserAddr>resp=addrService.setDefault(addr);
-		return webAction("/login/addr/editAddr.do");
+		if(resp.isSuccess()){
+			return webAction("/login/addr/editAddr");
+		}else{
+			return erroPage(resp.getCode());
+		}
+		
 	}
 		
 	

@@ -25,7 +25,7 @@ import com.cza.service.goods.vo.SkuVo;
     */
 
 public class CartVo {
-	private Long skuId;
+	private Long sid;
 	private Long number;
 	private Long uid;
 	
@@ -53,32 +53,38 @@ public class CartVo {
 
 
 
+
+
+
+	
+	
+	
+	
+
+
+	
+	
 	/**
-	* @return skuId
+	* @return sid
 	*/
 	
-	public Long getSkuId() {
-		return skuId;
+	public Long getSid() {
+		return sid;
 	}
+
 
 
 	
 	/**
-	 * @param skuId the skuId to set
+	 * @param sid the sid to set
 	 */
 	
-	public void setSkuId(Long skuId) {
-		this.skuId = skuId;
+	public void setSid(Long sid) {
+		this.sid = sid;
 	}
 
 
-	
-	
-	
-	
 
-
-	
 	/**
 	* @return sku
 	*/
@@ -135,7 +141,7 @@ public class CartVo {
 
 	@Override
 	public String toString() {
-		return "CartVo [sku=" + sku + ", skuId=" + skuId + ", number=" + number + ", amount=" + amount + ", uid=" + uid + "]";
+		return "CartVo [sku=" + sku + ", sid=" + sid + ", number=" + number + ", amount=" + amount + ", uid=" + uid + "]";
 	}
 
 

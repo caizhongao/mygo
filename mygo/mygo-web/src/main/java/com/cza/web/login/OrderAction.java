@@ -13,10 +13,7 @@ package com.cza.web.login;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,17 +28,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.alipay.api.request.AlipayTradeRefundRequest;
-import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.alipay.api.util.AliPayUtils;
 import com.cza.common.MygoUtil;
 import com.cza.common.Pager;
 import com.cza.common.Param;
-import com.cza.common.PropertyUtil;
+import com.cza.common.RespMsg;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.addr.TArea;
@@ -298,13 +289,13 @@ public class OrderAction extends CommonAction{
 						OrderVo refundParam=new OrderVo();
 						refundParam.setOid(order.getOid());
 						orderService.orderRefund(refundParam);
-						response.getWriter().print("success");
+						response.getWriter().println(new RespMsg("success", null).toJson());
 						return;
 					}
 				}
 			}
 		}
-		response.getWriter().print("failed");
+		response.getWriter().println(new RespMsg("fail", null).toJson());
 	}
 	
 	
@@ -332,10 +323,10 @@ public class OrderAction extends CommonAction{
 		ServiceResponse<OrderVo> resp=orderService.closeOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			log.info("OrderAction.deleteOrder success,orderNo:{}",order.getOid());
-			response.getWriter().print("success");
+			response.getWriter().println(new RespMsg("success", null).toJson());
 		}else{
 			log.info("OrderAction.deleteOrder faild!");
-			response.getWriter().print("faild");
+			response.getWriter().println(new RespMsg("fail", null).toJson());
 		}
 	}
 }

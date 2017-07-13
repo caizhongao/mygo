@@ -60,41 +60,21 @@
 		$('#city').html('<option value="">请选择</option>')
 		$('#area').html('<option value="">请选择</option>')
 		var aid=$('#province option:selected').val();
-		if(aid==''){
-			return;
+		if(aid!=''){
+			$.each(listAreas(aid),function(index,city){
+				$('#city').append('<option value="'+city.aid+'">'+city.aname+'</option>');
+			});
 		}
-		$.ajax({
-			url:'${ctx}/login/addr/listAreas.do',
-			type:'post',
-			dataType:'json',
-			data:{'paid':aid},
-			success:function(data){
-				$.each(data,function(index,city){
-					$('#city').append('<option value="'+city.aid+'">'+city.aname+'</option>');
-				});
-			}
-		});
 	}
 	
 	function listAreas(){
 		$('#area').html('<option value="">请选择</option>')
-		
 		var aid=$('#city option:selected').val();
-		if(aid==''){
-			return;
+		if(aid!=''){
+			$.each(listAreas(aid),function(index,area){
+				$('#area').append('<option value="'+area.aid+'">'+area.aname+'</option>');
+			});
 		}
-		$.ajax({
-			url:'${ctx}/login/addr/listAreas.do',
-			type:'post',
-			dataType:'json',
-			data:{'paid':aid},
-			success:function(data){
-				
-				$.each(data,function(index,area){
-					$('#area').append('<option value="'+area.aid+'">'+area.aname+'</option>');
-				});
-			}
-		});
 	}
 	function submitAddr(){
 		if($('#province option:selected').val()==''){
@@ -122,41 +102,22 @@
 		var cid='${addr.cityId}';
 		var aid='${addr.areaId}';
 		if(pid!=''){
-			$.ajax({
-				url:'${ctx}/login/addr/listAreas.do',
-				type:'post',
-				dataType:'json',
-				data:{'paid':pid},
-				success:function(data){
-					$.each(data,function(index,city){
-						if((city.aid+'')==cid){
-							$('#city').append('<option selected="selected" value="'+city.aid+'">'+city.aname+'</option>');
-						}else{
-							$('#city').append('<option value="'+city.aid+'">'+city.aname+'</option>');
-						}
-						
-					});
+			$.each(listAreas(pid),function(index,city){
+				if((city.aid+'')==cid){
+					$('#city').append('<option selected="selected" value="'+city.aid+'">'+city.aname+'</option>');
+				}else{
+					$('#city').append('<option value="'+city.aid+'">'+city.aname+'</option>');
 				}
 			});
-			$.ajax({
-				url:'${ctx}/login/addr/listAreas.do',
-				type:'post',
-				dataType:'json',
-				data:{'paid':cid},
-				success:function(data){
-					$.each(data,function(index,area){
-						if((area.aid+'')==aid){
-							$('#area').append('<option selected="selected" value="'+area.aid+'">'+area.aname+'</option>');
-						}else{
-							$('#area').append('<option value="'+area.aid+'">'+area.aname+'</option>');
-						}
-						
-					});
+			$.each(listAreas(cid),function(index,area){
+				if((area.aid+'')==aid){
+					$('#area').append('<option selected="selected" value="'+area.aid+'">'+area.aname+'</option>');
+				}else{
+					$('#area').append('<option value="'+area.aid+'">'+area.aname+'</option>');
 				}
 			});
 		}
-		
-	})
+	});
 </script>
 </head>
 <body class="_body">

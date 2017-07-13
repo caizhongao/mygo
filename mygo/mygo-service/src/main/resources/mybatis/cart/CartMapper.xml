@@ -46,6 +46,13 @@
 			where cart_id = #{cartId} 
 	</select>
 	
+	
+	<select id="deleteCart" parameterType="com.cza.dto.cart.TCart">
+		delete
+		from t_cart 
+			where sid = #{sid} and uid=#{uid}
+	</select>
+	
 	<update id="updateCart" parameterType="com.cza.dto.cart.TCart">
 		update t_cart
 		<set>
@@ -53,7 +60,7 @@
 					number=#{number},
 				</if>
 		</set>
-		where cart_id = #{cartId} 
+		where sid = #{sid} and uid=#{uid}
 	</update>
 	
 	

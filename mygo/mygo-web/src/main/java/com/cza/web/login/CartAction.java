@@ -4,6 +4,8 @@
  *****************************************************************************/
 package com.cza.web.login;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cza.common.RespMsg;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.service.cart.CartService;
@@ -36,14 +39,16 @@ public class CartAction extends CommonAction{
 	public CartService cartService;
 	
 	@RequestMapping("addCart")
-	public String addCart(@ModelAttribute CartVo cart,HttpServletRequest request,HttpServletResponse response){
+	public void addCart(@ModelAttribute CartVo cart,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		response.setCharacterEncoding("utf-8");
+		PrintWriter pw=response.getWriter();
 		UserVo user=getUser(request);
 		cart.setUid(user.getUid());
 		ServiceResponse<CartVo>resp=cartService.addCart(cart);
 		if(resp.isSuccess()){
-			return webAction("/login/cart/listCart");
+			pw.println(new RespMsg("success", null).toJson());
 		}else{
-			return erroPage(resp.getCode());
+			pw.println(new RespMsg("fail", null).toJson());
 		}
 	}
 	
