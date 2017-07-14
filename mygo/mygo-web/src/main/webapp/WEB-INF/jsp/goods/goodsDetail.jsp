@@ -29,13 +29,9 @@
 	.attrObj{
 		display: inline-block;
 		border: 1px solid #cccccc;
-		padding-left:10px;
-		padding-right:10px;
-		padding-top:4px;
-		padding-bottom:4px;
+		padding: 4 10 4 10 ;
 		font-size: 14px;
-		color: #666666;
-		font-weight: bold;
+		color: #3C3C3C;/* font-weight: bold; */
 		cursor: pointer;
 	}
 	.attrObj_disable{
@@ -357,41 +353,54 @@
 						</div>
 						<ul style="width: 402px;margin-top: 2px;height: 100px">
 							<c:forEach items="${goods.skus}" var="sku">
-								<li style="float: left">
+								<li style="display: inline-block;">
 									<img src="${sku.skuPic}" width="70px" id="skuPic${sku.sid}" alt="商品详情图" onmouseover="showSkuPic(${sku.sid})"  class="skuPic">
 								</li>
 							</c:forEach>
 						</ul>
 					</td>
-					<td style="font-weight: bold;font-size: 14px;color: #666666;">
+					<td colspan="2" style="font-weight: bold;font-size: 14px;color: #666666;">
 						${goods.goodsName}
 					</td>
 				</tr>
 				<tr>
-					<td>
-						价格&nbsp;&nbsp;<font style="color: red;font-weight: bold;font-size: 16px;" id="goodsPrice">${goods.price}</font>
+					<td width="70px">
+						价格
+					</td>
+					<td style="color: #f40;font-size: 24px;font-style: normal;" >
+						<font style="font-family: arial">¥</font>
+						<font id="goodsPrice" style="font-weight: 700;font-family: verdana,arial;">${goods.price}</font>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						销量&nbsp;&nbsp;<font style="font-weight: bold;font-size: 16px;">${goods.sales}</font>
+						销量
+					</td>
+					<td style="font-weight: bold;font-size: 16px;">
+						${goods.sales}
 					</td>
 				</tr>
 				<c:forEach items="${attrs}" var="attr">
 					<tr class="attrTr" height="60px;">
+						<td valign="center">
+							${attr.key}
+						</td>
 						<td>
-						${attr.key}&nbsp;
-						<c:forEach items="${attr.value}" var="attrVal">
-							<div class="attrObj" attrId="${attrVal.value}" attrValue="${attrVal.key}" onclick="selectAttr(this)">
-								${attrVal.key}
-							</div>
-						</c:forEach>
+							<ul>
+								<c:forEach items="${attr.value}" var="attrVal">
+									<li class="attrObj" attrId="${attrVal.value}" attrValue="${attrVal.key}" onclick="selectAttr(this)">
+										${attrVal.key}
+									</li>
+								</c:forEach>
+							</ul>
 						</td>
 					</tr>
 				</c:forEach>
 				<tr>
 					<td>
-						数量  
+						数量
+					</td>
+					<td>
 						<div class="optNumber_div">
 							<div onclick="opNumber('cut');" title="减1" class="optNumber_cut">-</div>
 							<input type="text"  onblur="checkNumber()"  title="请输入购买量" class="optNumber" id="number" name="optNumber" value="1" maxlength="8">
@@ -400,9 +409,10 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<input type="button" onclick="addCart()" class="login_button" style="padding:10 30 10 30;background-color: #ff0036;border: 1px solid #ff0036" value="加入购物车">&nbsp;
-						<input type="button" onclick="butNow()" class="login_button" value="立即购买" style="padding:10 40 10 40;">
+					<td colspan="2">
+						<input type="button" onclick="butNow()" class="buy_button" value="立即购买">
+					&nbsp;
+						<input type="button" onclick="addCart()" class="cart_button" value="加入购物车">
 					</td>
 				</tr>
 			</table>

@@ -12,6 +12,7 @@ package com.cza.service.order.vo;
 
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.cza.dto.addr.TUserAddr;
 import com.cza.service.goods.vo.SkuVo;
@@ -25,7 +26,7 @@ import com.cza.service.goods.vo.SkuVo;
     */
 
 public class PreOrderVo {
-	private SkuVo sku;
+	private List<SkuVo> skus;
 	private Long skuId;
 	private Long number;
 	private BigDecimal amount;

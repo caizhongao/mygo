@@ -104,6 +104,25 @@ function allCheck(){
 		border-top:none;
 		vertical-align: middle;
 	}
+	#empty{
+	padding: 88px 0 100px 156px;
+    background: url('${ctx}/img/cart.png') no-repeat 40px 86px;
+    position: relative;
+   	width: 80%;
+   	margin: 0px auto;
+   	margin-top: 30px
+	}
+	#empty h2 {
+    font: 700 14px / 20px arial;
+	}
+#empty ul {
+    margin-top: 12px;
+    line-height: 20px;
+} ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 </style>
 </head>
 <body  class="_body" style="font-family: sans-serif;">
@@ -112,8 +131,19 @@ function allCheck(){
 	<div class="page_middle">
 	<%@ include file="/common/search/search.jsp" %>
 	<div style="width: 80%;margin: 0px auto">
-		<div style="width: 90%;font-size: 30px;font-weight: bold;color: #f40;padding-left: 20px;margin-top: 20px;border-bottom: 2px solid #e6e6e6;">购物车</div>
-		<table  id="mytable" width="90%" cellpadding="0" cellspacing="0" style="margin-top: 20px">
+		<div style="width: 100%;font-size: 30px;font-weight: bold;color: #f40;padding-left: 20px;margin-top: 20px;border-bottom: 2px solid #e6e6e6;">购物车</div>
+		<c:choose>
+		<c:when test="${cartList==null || empty cartList}">
+		<div id="empty">
+			<h2>您的购物车还是空的，赶紧行动吧！您可以：</h2>
+			<ul>
+				<li>看看 <a href="//shoucang.taobao.com/shop_collect_list.htm" target="_blank">我的收藏夹</a></li>
+				<li>看看 <a href="//trade.taobao.com/trade/itemlist/list_bought_items.htm" target="_blank">已买到的宝贝</a></li>
+			</ul>
+		</div>
+		</c:when>
+		<c:otherwise>
+		<table  id="mytable" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 20px">
 		<tr height="50px">
 			<th align="left">
 				<input type="checkbox" onclick="allCheck()" class="allCheck" style="width: 15px;height: 15px;">全选
@@ -167,7 +197,7 @@ function allCheck(){
 					${cart.amount}
 				</td>
 				<td width="140px" align="center">
-					删除
+					<a href="${ctx}/login/cart/removeCart.do?sid=${cart.sid}">删除</a>
 				</td>
 			</tr>
 		</c:forEach>
@@ -185,10 +215,12 @@ function allCheck(){
 				合计：&nbsp;<font style="color: red;font-weight: bold;font-size: 16px" class="total_amount">0.00</font>
 			</td>
 			<td style="background-color: #e5e5e5" align="right">	
-				<input type="button" class="manager_button" value="结算" style="height: 50px;width: 110px;border-radius:0px;">
+				<input type="button" class="manager_button" value="结算" onclick="" style="height: 50px;width: 110px;border-radius:0px;">
 			</td>
 		</tr>
 	</table>
+	</c:otherwise>
+	</c:choose>
 	</div>
 	</div>
 	<%@ include file="/common/bottom.jsp" %>

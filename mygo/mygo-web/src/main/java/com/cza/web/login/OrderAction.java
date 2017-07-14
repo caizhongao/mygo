@@ -123,6 +123,65 @@ public class OrderAction extends CommonAction{
 		}
 	}
 	
+	/**
+	 * 
+	    * @Title: toPreOrderPage
+	    * @Description: 跳转订单生成页面
+	    * @param @param request
+	    * @param @param response
+	    * @param @return
+	    * @param @throws IOException    参数
+	    * @return String    返回类型
+	    * @throws
+	 */
+	@RequestMapping("toMakeOrderPage")
+	public String toMakeOrderPage(@ModelAttribute PreOrderVo order,HttpServletRequest request,HttpServletResponse response){
+		try {
+			log.info("OrderAction.toMakeOrderPage 请求参数:{}",order);
+			if(StringUtils.isEmpty(order.getSkuId())||StringUtils.isEmpty(order.getNumber())){
+				return orderErroPage();
+			}
+			UserVo userVo=getUser(request);
+			//获取sku信息
+			ServiceResponse<SkuVo> skuResp=goodsService.querySku(order.getSkuId());
+			if(skuResp.isSuccess()){
+				SkuVo sku=skuResp.getData();
+				order.setSku(sku);
+				order.setAmount(sku.getPrice().multiply(new BigDecimal(order.getNumber())));
+			}else{
+				return erroPage( skuResp.getCode());
+			}
+			//获取地址
+			TUserAddr addrParam=new TUserAddr();
+			addrParam.setUid(userVo.getUid());
+			//addrParam.setIsDefault(ShoppingContants.ADDR_IS_DEFAULT);		
+			ServiceResponse<List<TUserAddr>> addrResp=addrService.listAddrs(addrParam);
+			if(addrResp.isSuccess()){
+				request.setAttribute("addrs", addrResp.getData());
+			}else{
+				return erroPage( skuResp.getCode());
+			}
+			String token=MygoUtil.makeToken(getUser(request).getUid());
+			order.setToken(token);
+			request.setAttribute("order", order);
+			log.info("OrderAction.toMakeOrderPage 响应参数，order:{}",order);
+			
+			request.getSession().setAttribute(ShoppingContants.TOKEN_MAKE_ORDER,token);
+			TArea area=new TArea();
+			area.setPaid(0l);
+			ServiceResponse<List<TArea>>areaResp=addrService.listAreas(area);
+			if(ShoppingContants.RESP_CODE_SUCESS.equals(areaResp.getCode())){
+				List<TArea> provinces=areaResp.getData();
+				request.setAttribute("provinces", provinces);
+			}
+			return webPage("/home/preOrder");
+		} catch (Exception e) {
+			log.info("OrderAction.toMakeOrderPage exception:",e);
+			return erroPage(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+		}
+	}
+	
+	
 	@RequestMapping("saveOrder")
 	public String saveOrder(@ModelAttribute PreOrderVo order,HttpServletRequest request,HttpServletResponse response ){
 		log.info("OrderAction.saveOrder 请求参数,order:{}",order);

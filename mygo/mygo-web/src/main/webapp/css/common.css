@@ -30,9 +30,6 @@
 	color: white;
 	border: 1px solid #21B1E3
 }
-.register_button,.login_button:HOVER {
-	cursor: pointer;
-}
 .login_button{
 	padding:10 60 10 60;
 	font-size:16px;
@@ -45,13 +42,6 @@
 	border: 1px solid #21B1E3
 }
 
-a{color: #679AEF;text-decoration: none;} /* 未访问的链接 */
-a:hover{color:#E06F6F;text-decoration:underline; }
-
-
-.manager_button:HOVER{
-	background-color: #02AAF1;
-}
 .manager_button{
 	padding-left:10px;
 	padding-right:10px;
@@ -66,9 +56,41 @@ a:hover{color:#E06F6F;text-decoration:underline; }
 	border: 1px solid #21B1E3
 }
 
-.manager_button:HOVER {
-		cursor: pointer;
+.buy_button{
+	padding:10 40 10 40;
+	font-size:13px;
+	width: auto;
+	height:auto;
+	border-radius:3px;
+	background-color: #FFE4D0;
+	color: #E5511D;
+	border: 1px solid #F0CAB6
+}
+.buy_button:HOVER{
+	cursor: pointer;
+	background-color: #F9E4D0;
+}
+.cart_button{
+	padding:10 30 10 30;
+	font-size:13px;
+	width: auto;
+	height:auto;
+	border-radius:3px;
+	background-color: #E92250;
+	color: white;
+	border: 1px solid #E92250;
+}
+.cart_button:HOVER{
+	cursor: pointer;
+	background-color: #F92250;
+}
+
+.register_button:HOVER,.login_button:HOVER,.manager_button:HOVER {
+	cursor: pointer;
+	background-color: #02AAF1;
 }
 
 
-.btn_red
+a{color: #679AEF;text-decoration: none;} /* 未访问的链接 */
+a:hover{color:#E06F6F;text-decoration:underline; }
+
