@@ -189,13 +189,13 @@ function toRefund(oid){
 					${order.oid}
 				</td>
 				<td width="300px" align="center">
-					&nbsp;<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${order.gid }" target="_blank"><img src="${order.skuPic}" width="80px" style="border: 1px solid #ccc;vertical-align: middle;"></a>
+					&nbsp;<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${order.gid }" target="_blank"><img src="${order.sku.skuPic}" width="80px" style="border: 1px solid #ccc;vertical-align: middle;"></a>
 						<div style="width: 200px;vertical-align: middle;display: inline-block; text-align: left;">
 							<div style="width: 190px;margin-left: 5px;">
 								<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${order.gid }" target="_blank">${order.goodsName}</a>
 							</div>
 							<div style="color: #9e9e9e;font-size: 12px;width: 190px;margin-left: 5px;margin-top: 10px;">
-								<c:forEach items="${order.attrVos }" var="attr">
+								<c:forEach items="${order.sku.attrs }" var="attr">
 									${attr.attrName}：${attr.attrValue}&nbsp;
 								</c:forEach>
 							</div>

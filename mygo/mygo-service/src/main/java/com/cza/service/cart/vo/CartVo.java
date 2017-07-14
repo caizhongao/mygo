@@ -26,6 +26,7 @@ import com.cza.service.goods.vo.SkuVo;
 
 public class CartVo {
 	private Long sid;
+	private Long gid;
 	private Long number;
 	private Long uid;
 	
@@ -38,6 +39,28 @@ public class CartVo {
 
 
 
+
+
+
+	
+	/**
+	* @return gid
+	*/
+	
+	public Long getGid() {
+		return gid;
+	}
+
+
+
+	
+	/**
+	 * @param gid the gid to set
+	 */
+	
+	public void setGid(Long gid) {
+		this.gid = gid;
+	}
 
 
 

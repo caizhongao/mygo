@@ -41,6 +41,7 @@ import com.cza.mapper.goods.SkuStockMapper;
 import com.cza.mapper.order.OrderMapper;
 import com.cza.mapper.user.UserMapper;
 import com.cza.service.goods.vo.SkuAttrVo;
+import com.cza.service.goods.vo.SkuVo;
 import com.cza.service.order.OrderService;
 import com.cza.service.order.vo.PreOrderVo;
 import com.cza.service.order.vo.OrderVo;
@@ -62,8 +63,6 @@ public class OrderServiceImpl implements OrderService{
 	private UserAddrMapper addrMapper;
 	@Autowired
 	private GoodsMapper goodsMapper;
-	@Autowired
-	private UserMapper userMapper;
 	@Autowired
 	private SkuAttrMapper skuAttrMapper;
 	@Autowired
@@ -119,8 +118,8 @@ public class OrderServiceImpl implements OrderService{
 			saveOrder.setGoodsName(sku.getGoodsName());
 			saveOrder.setOid(makeOrderId());
 			saveOrder.setUid(orderVo.getUid());
+			saveOrder.setUserName(orderVo.getUserName());
 			saveOrder.setNumber(orderVo.getNumber());
-			saveOrder.setSkuPic(sku.getSkuPic());
 			saveOrder.setCreateTime(now);
 			saveOrder.setUpdateTime(now);
 			saveOrder.setOrderVersion(0L);
@@ -191,13 +190,15 @@ public ServiceResponse<List<Long>> listOrderIds(OrderVo listParam) {
 				for(TOrder order:orderList){
 					OrderVo vo=new OrderVo();
 					BeanUtils.copyProperties(order, vo);
-					TUser user=userMapper.queryUser(vo.getUid());
-					if(user!=null){
-						vo.setUserName(user.getUserName());
-					}
+					TSku sku=skuMapper.querySku(vo.getSid());
+					SkuVo skuVo=new SkuVo();
+					skuVo.setPrice(sku.getPrice());
+					skuVo.setBarcode(sku.getBarcode());
+					skuVo.setSid(sku.getSid());
+					skuVo.setSkuPic(sku.getSkuPic());
 					//购买的sku属性
 					TSkuAttr attrParam=new TSkuAttr();
-					attrParam.setSid(vo.getSid());
+					attrParam.setSid(sku.getSid());
 					List<TSkuAttr>attrs=skuAttrMapper.listSkuAttrs(attrParam);
 					List<SkuAttrVo> attrVoList=new ArrayList<SkuAttrVo>();
 					if(attrs!=null&&attrs.size()>0){
@@ -210,7 +211,8 @@ public ServiceResponse<List<Long>> listOrderIds(OrderVo listParam) {
 							attrVoList.add(attrVo);
 						}
 					}
-					vo.setAttrVos(attrVoList);
+					skuVo.setAttrs(attrVoList);
+					vo.setSku(skuVo);
 					voList.add(vo);
 				}
 			}

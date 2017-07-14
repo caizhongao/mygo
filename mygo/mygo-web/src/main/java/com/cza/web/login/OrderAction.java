@@ -142,6 +142,7 @@ public class OrderAction extends CommonAction{
 		}else{
 			UserVo userVo=getUser(request);
 			order.setUid(userVo.getUid());
+			order.setUserName(userVo.getUserName());
 			ServiceResponse<PreOrderVo> resp=orderService.saveOrder(order);
 			if(resp.isSuccess()){
 				log.info("OrderAction.saveOrder success,orderNo:{}",resp.getData().getOrderId());

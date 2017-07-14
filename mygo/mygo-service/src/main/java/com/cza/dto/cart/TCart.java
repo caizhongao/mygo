@@ -22,10 +22,18 @@ import java.math.BigDecimal;
     */
 
 public class TCart implements Serializable{
+	
+	    /**
+	    * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
+	    */
+	    
+	private static final long serialVersionUID = -8269380921183291045L;
 	private Long cartId;         
 	private Long uid ;         
-	private Long sid;           
+	private Long sid;      
 	private Long number;
+	
+	
 	public Long getCartId() {
 		return cartId;
 	}

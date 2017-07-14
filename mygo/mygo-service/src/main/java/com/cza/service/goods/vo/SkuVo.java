@@ -29,13 +29,39 @@ public class SkuVo {
 	private String goodsName;
 	private String skuPic;
 	private Long number;//库存
-	
+	private Long gid;
 	private Long stock;
 	
 	
 	
 	
 	
+	
+	/**
+	* @return gid
+	*/
+	
+	public Long getGid() {
+		return gid;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param gid the gid to set
+	 */
+	
+	public void setGid(Long gid) {
+		this.gid = gid;
+	}
+
+
+
+
+
 	/**
 	* @return skuPic
 	*/

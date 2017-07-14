@@ -48,17 +48,36 @@
 		min-height: 50px;
 	}
 	
-	.optNumber{
+	 .optNumber_div{
+		 height: 30px;
+		 display: inline-block;
+		 border: 1px solid #CCCCCC;
+	 }
+ 	.optNumber_add,.optNumber_cut{
 		font-weight:bolder;
 		color:#666666;
 		text-align: center;
 		font-size: 18px;
 		text-decoration: none;
+		display: inline-block;
+		width: 23px;
+		vertical-align: middle;
+		line-height:28px;
+		height: 28px;
 	}
-	.optNumber:HOVER {
+	.optNumber_add:HOVER,.optNumber_cut:HOVER {
 		color: red;
 		text-decoration: none;
 		cursor: pointer;
+	}
+	.optNumber{
+		width: 50px;
+		text-align: center;
+		border: 1px solid #CCCCCC;
+		height: 28px;
+		border-bottom:none;
+		border-top:none;
+		vertical-align: middle;
 	}
 	.skuPic{
 		border: 2px solid #fff;
@@ -98,10 +117,52 @@
 			alert("库存不足！");
 			return false;
 		}
-		location.href="${ctx}/login/order/toMakeOrderPage.do?number="+number+"&skuId="+sid;
- 		/* $('#form_sku_id').val(sid);
+		//location.href="${ctx}/login/order/toMakeOrderPage.do?number="+number+"&skuId="+sid;
+ 		 $('#form_sku_id').val(sid);
 		$('#form_sku_number').val(number);
-		$('#myform').submit();  */
+		$('#myform').submit(); 
+	}
+	
+	function addCart(){
+		var sid=0;
+		if($('.attrTr').size()<=0){
+			sid=$('input[name="skuId"]').eq(0).val();
+		}else{
+			if(attrs.length<$('.attrTr').size()){
+				alert("请选择完整的规格！");
+				return;
+			}
+			sid=getSku(attrs);
+		}
+		if(sid==''){
+			alert("请选择完整的规格!");
+			return;
+		}
+		var number=$("input[name='optNumber']").val();
+		if(parseInt(number)<=0){
+			alert("购买数量必须大于0！");
+			return false;
+		}
+		var realStock=$('#realStock').html();
+		if(parseInt(number)>parseInt(realStock)){
+			alert("库存不足！");
+			return false;
+		}
+		$.ajax({
+			url:"${ctx}/login/cart/addCart.do",
+			data:{"sid":sid,"number":number},
+			type:"post",
+			dataType:'json',
+			success:function(data){
+				if(data.message=='success'){
+					alert('添加购物车成功!');
+				}else if(data.message=='forbidden'){
+					location.href=data.data;
+				}else{
+					alert('添加购物车失败!');
+				}
+			}
+		});
 	}
 	//根据已选的规格，更新其他规格的状态
 	function updateAttrObj(attrtmps){
@@ -247,14 +308,14 @@
 		if(!checkNumber()){
 			return false;
 		}
-		var number=$('#number').val();
+		var number=parseInt($('#number').val());
 		if(type=='add'){
-			$('#number').val(parseInt(number)+1);
+			$('#number').val(number+1);
 		}else{
-			if(parseInt($('#number').val())<=1){
+			if(number<=1){
 				return false;
 			}
-			$('#number').val(parseInt(number)-1);
+			$('#number').val(number-1);
 		}
 		
 	}
@@ -331,16 +392,16 @@
 				<tr>
 					<td>
 						数量  
-						<span style="width: 103px;height: 26px;border: 1px solid #CCCCCC;display: inline-block;">
-							<span onclick="opNumber('cut');" title="减1" class="optNumber" style="display: inline-block;width: 23px;">-</span>
-				            <input type="text" id="number" onblur="checkNumber()" name="optNumber" value="1" maxlength="8" title="请输入购买量" style="width: 50px;height: 26px;border-top: none;border-bottom: none;text-align: center">
-				            <span onclick="opNumber('add');" title="加1" class="optNumber">+</span>
-				        </span>件&nbsp;(库存&nbsp;<span id="realStock" style="display: inline-block;color: #666666">${goods.stock}</span>&nbsp;件)
+						<div class="optNumber_div">
+							<div onclick="opNumber('cut');" title="减1" class="optNumber_cut">-</div>
+							<input type="text"  onblur="checkNumber()"  title="请输入购买量" class="optNumber" id="number" name="optNumber" value="1" maxlength="8">
+							<div onclick="opNumber('add');" title="加1" class="optNumber_add">+</div>
+				    	</div>件&nbsp;(库存&nbsp;<span id="realStock" style="display: inline-block;color: #666666">${goods.stock}</span>&nbsp;件)
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<input type="button" onclick="butNow()" class="login_button" style="padding:10 30 10 30;background-color: #ff0036;border: 1px solid #ff0036" value="加入购物车">&nbsp;
+						<input type="button" onclick="addCart()" class="login_button" style="padding:10 30 10 30;background-color: #ff0036;border: 1px solid #ff0036" value="加入购物车">&nbsp;
 						<input type="button" onclick="butNow()" class="login_button" value="立即购买" style="padding:10 40 10 40;">
 					</td>
 				</tr>

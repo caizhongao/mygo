@@ -4,6 +4,7 @@
  *****************************************************************************/
 package com.cza.service.cart.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +16,17 @@ import org.springframework.stereotype.Service;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.cart.TCart;
+import com.cza.dto.goods.TCategoryAttr;
+import com.cza.dto.goods.TSku;
+import com.cza.dto.goods.TSkuAttr;
 import com.cza.mapper.cart.CartMapper;
+import com.cza.mapper.goods.CategoryAttrMapper;
+import com.cza.mapper.goods.SkuAttrMapper;
+import com.cza.mapper.goods.SkuMapper;
 import com.cza.service.cart.CartService;
 import com.cza.service.cart.vo.CartVo;
+import com.cza.service.goods.vo.SkuAttrVo;
+import com.cza.service.goods.vo.SkuVo;
 
 /**
  * 作用：
@@ -29,6 +38,12 @@ public class CartServiceImpl implements CartService {
 	private static final Logger log = LoggerFactory.getLogger(CartServiceImpl.class);
 	@Autowired
 	private CartMapper cartMapper;
+	@Autowired
+	private SkuAttrMapper skuAttrMapper;
+	@Autowired
+	private CategoryAttrMapper attrMapper;
+	@Autowired
+	private SkuMapper skuMapper;
 	@Override
 	public ServiceResponse<CartVo> addCart(CartVo cart) {
 		ServiceResponse<CartVo> resp=new ServiceResponse<CartVo>();
@@ -85,7 +100,7 @@ public class CartServiceImpl implements CartService {
 		ServiceResponse<List<CartVo>> resp=new ServiceResponse<List<CartVo>>();
 		try{
 			TCart listParam=new TCart();
-			listParam.setSid(cart.getUid());
+			listParam.setUid(cart.getUid());
 			List<TCart> cartList=cartMapper.listCart(listParam);
 			List<CartVo> voList=new ArrayList<>();
 			if(cartList!=null&&cartList.size()>0){
@@ -94,6 +109,33 @@ public class CartServiceImpl implements CartService {
 					vo.setNumber(result.getNumber());
 					vo.setSid(result.getSid());
 					vo.setUid(result.getUid());
+					//查询sku
+					TSku sku=skuMapper.querySku(vo.getSid());
+					SkuVo skuVo=new SkuVo();
+					skuVo.setPrice(sku.getPrice());
+					skuVo.setBarcode(sku.getBarcode());
+					skuVo.setSid(sku.getSid());
+					skuVo.setSkuPic(sku.getSkuPic());
+					skuVo.setGid(sku.getGid());
+					skuVo.setGoodsName(sku.getGoodsName());
+					//购买的sku属性
+					TSkuAttr attrParam=new TSkuAttr();
+					attrParam.setSid(sku.getSid());
+					List<TSkuAttr>attrs=skuAttrMapper.listSkuAttrs(attrParam);
+					List<SkuAttrVo> attrVoList=new ArrayList<SkuAttrVo>();
+					if(attrs!=null&&attrs.size()>0){
+						for(TSkuAttr attr:attrs){
+							SkuAttrVo attrVo=new SkuAttrVo();
+							attrVo.setAttrId(attr.getCaid());
+							attrVo.setAttrValue(attr.getAttrValue());
+							TCategoryAttr ca= attrMapper.queryAttr(attr.getCaid());
+							attrVo.setAttrName(ca.getAttrName());
+							attrVoList.add(attrVo);
+						}
+					}
+					skuVo.setAttrs(attrVoList);
+					vo.setSku(skuVo);
+					vo.setAmount(skuVo.getPrice().multiply(new BigDecimal(vo.getNumber())));
 					voList.add(vo);
 				}
 			}

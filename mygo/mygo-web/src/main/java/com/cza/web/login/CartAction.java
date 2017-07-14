@@ -6,12 +6,13 @@ package com.cza.web.login;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cza.common.RespMsg;
 import com.cza.common.ServiceResponse;
-import com.cza.common.ShoppingContants;
 import com.cza.service.cart.CartService;
 import com.cza.service.cart.vo.CartVo;
 import com.cza.service.user.vo.UserVo;
@@ -37,7 +37,7 @@ import com.cza.web.CommonAction;
 public class CartAction extends CommonAction{
 	@Autowired
 	public CartService cartService;
-	
+	private static final Logger log = LoggerFactory.getLogger(CartAction.class); 
 	@RequestMapping("addCart")
 	public void addCart(@ModelAttribute CartVo cart,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		response.setCharacterEncoding("utf-8");
@@ -70,7 +70,9 @@ public class CartAction extends CommonAction{
 		listParam.setUid(user.getUid());
 		ServiceResponse<List<CartVo>>resp=cartService.listCart(listParam);
 		if(resp.isSuccess()){
-			return webPage("/user/cartList");
+			log.info("CartAction.listCart success,cartList:{}",resp.getData());
+			request.setAttribute("cartList", resp.getData());
+			return webPage("/user/listCart");
 		}else{
 			return erroPage(resp.getCode());
 		}

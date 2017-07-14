@@ -35,15 +35,15 @@ import com.cza.service.user.vo.UserVo;
 public class CommonAction {
 	
 	public String erroPage(Integer erroCode){
-		return webAction("/unlogin/home/erro.do?erroCode="+ erroCode);
+		return webAction("/unlogin/home/erro",new Param("erroCode", erroCode));
 	}
 	
 	public String orderExistPage(){
-		return webAction("/unlogin/home/orderExist.do");
+		return webAction("/unlogin/home/orderExist");
 	}
 	
 	public String orderErroPage(){
-		return webAction("/unlogin/home/orderErro.do");
+		return webAction("/unlogin/home/orderErro");
 	}
 	
 	public String getGoodsUploadPath(String fileName){

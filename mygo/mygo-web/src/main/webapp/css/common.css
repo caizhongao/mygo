@@ -49,7 +49,9 @@ a{color: #679AEF;text-decoration: none;} /* 未访问的链接 */
 a:hover{color:#E06F6F;text-decoration:underline; }
 
 
-
+.manager_button:HOVER{
+	background-color: #02AAF1;
+}
 .manager_button{
 	padding-left:10px;
 	padding-right:10px;

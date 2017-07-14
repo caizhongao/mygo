@@ -165,8 +165,9 @@ public class UserAction extends CommonAction{
 				userVo.setRememberMe(1);
 			}
 		}
+		String referer=request.getHeader("Referer");
 		request.setAttribute("user", userVo);
-		request.setAttribute("ref", request.getParameter("ref"));
+		request.setAttribute("ref", referer);
 		return webPage("user/login");
 	}
 }

@@ -28,6 +28,9 @@
 					<a href="${ctx}/" class="title_a">首页</a> &nbsp;
 				</td>
 				<td  style="width: 100px;" align="right">
+					<a href="${ctx}/login/cart/listCart.do" class="title_a">购物车</a>&nbsp;
+				</td>
+				<td  style="width: 100px;" align="right">
 					<a href="${ctx}/login/order/listOrder.do" class="title_a">我的订单</a>&nbsp;
 				</td>
 				<td  style="font-size: 14px;width: 100px;" align="right">

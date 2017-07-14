@@ -22,8 +22,15 @@ import java.math.BigDecimal;
     */
 
 public class TOrder implements Serializable{
+	
+	    /**
+	    * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
+	    */
+	    
+	private static final long serialVersionUID = -6854927376341586525L;
 	private Long oid;         
-	private Long uid ;         
+	private Long uid ;   
+	private String userName;
 	private String province;              
 	private String city   ;              
 	private String area  ;              
@@ -31,7 +38,6 @@ public class TOrder implements Serializable{
 	private String receiver;        
 	private String mobilphone;  
 	private Long sid;           
-	private String goodsName;     
 	private BigDecimal orderPrice;     
 	private BigDecimal amount;
 	private Long number;
@@ -47,49 +53,29 @@ public class TOrder implements Serializable{
 	private Long updateTime;
 	private Long orderVersion;
 	
-	
 	private Long gid;
-	
-	private String skuPic;
-	
-	
-	
-	
-	
-	
+	private String goodsName;
 	
 	
 	
 	
 	/**
-	* @return skuPic
+	* @return userName
 	*/
 	
-	public String getSkuPic() {
-		return skuPic;
+	public String getUserName() {
+		return userName;
 	}
-
-
-
-
-
-
 
 
 	
 	/**
-	 * @param skuPic the skuPic to set
+	 * @param userName the userName to set
 	 */
 	
-	public void setSkuPic(String skuPic) {
-		this.skuPic = skuPic;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-
-
-
-
-
-
 
 
 	/**
@@ -100,12 +86,6 @@ public class TOrder implements Serializable{
 		return gid;
 	}
 
-
-
-
-
-
-
 	
 	/**
 	 * @param gid the gid to set
@@ -115,167 +95,22 @@ public class TOrder implements Serializable{
 		this.gid = gid;
 	}
 
-
-
-
-
-
-
+	
 	/**
-	* @return updateTime
+	* @return goodsName
 	*/
 	
-	public Long getUpdateTime() {
-		return updateTime;
+	public String getGoodsName() {
+		return goodsName;
 	}
-
-
-
-
-
 
 	
 	/**
-	 * @param updateTime the updateTime to set
+	 * @param goodsName the goodsName to set
 	 */
 	
-	public void setUpdateTime(Long updateTime) {
-		this.updateTime = updateTime;
-	}
-
-
-
-
-
-
-	
-	/**
-	* @return orderVersion
-	*/
-	
-	public Long getOrderVersion() {
-		return orderVersion;
-	}
-
-
-
-
-
-
-	
-	/**
-	 * @param orderVersion the orderVersion to set
-	 */
-	
-	public void setOrderVersion(Long orderVersion) {
-		this.orderVersion = orderVersion;
-	}
-
-
-
-
-
-
-	/**
-	* @return createTime
-	*/
-	
-	public Long getCreateTime() {
-		return createTime;
-	}
-
-
-
-
-
-	
-	/**
-	 * @param createTime the createTime to set
-	 */
-	
-	public void setCreateTime(Long createTime) {
-		this.createTime = createTime;
-	}
-
-
-
-
-
-	/**
-	* @return payNo
-	*/
-	
-	public String getPayNo() {
-		return payNo;
-	}
-
-
-
-
-	
-	/**
-	 * @param payNo the payNo to set
-	 */
-	
-	public void setPayNo(String payNo) {
-		this.payNo = payNo;
-	}
-	
-	/**
-	* @return deleteDesc
-	*/
-	
-	public String getDeleteDesc() {
-		return deleteDesc;
-	}
-
-
-
-	
-	/**
-	 * @param deleteDesc the deleteDesc to set
-	 */
-	
-	public void setDeleteDesc(String deleteDesc) {
-		this.deleteDesc = deleteDesc;
-	}
-
-
-
-	/**
-	* @return payStatus
-	*/
-	
-	public Integer getPayStatus() {
-		return payStatus;
-	}
-
-
-	
-	/**
-	 * @param payStatus the payStatus to set
-	 */
-	
-	public void setPayStatus(Integer payStatus) {
-		this.payStatus = payStatus;
-	}
-
-
-	/**
-	* @return number
-	*/
-	
-	public Long getNumber() {
-		return number;
-	}
-
-	
-	/**
-	 * @param number the number to set
-	 */
-	
-	public void setNumber(Long number) {
-		this.number = number;
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
 	}
 
 	/**
@@ -423,22 +258,6 @@ public class TOrder implements Serializable{
 	}
 	
 	/**
-	* @return goodsName
-	*/
-	
-	public String getGoodsName() {
-		return goodsName;
-	}
-	
-	/**
-	 * @param goodsName the goodsName to set
-	 */
-	
-	public void setGoodsName(String goodsName) {
-		this.goodsName = goodsName;
-	}
-	
-	/**
 	* @return orderPrice
 	*/
 	
@@ -469,17 +288,38 @@ public class TOrder implements Serializable{
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-
-
-
 	
-	    /* (非 Javadoc)
-	    * 
-	    * 
-	    * @return
-	    * @see java.lang.Object#toString()
-	    */
-	    
+	/**
+	* @return number
+	*/
+	
+	public Long getNumber() {
+		return number;
+	}
+	
+	/**
+	 * @param number the number to set
+	 */
+	
+	public void setNumber(Long number) {
+		this.number = number;
+	}
+	
+	/**
+	* @return payStatus
+	*/
+	
+	public Integer getPayStatus() {
+		return payStatus;
+	}
+	
+	/**
+	 * @param payStatus the payStatus to set
+	 */
+	
+	public void setPayStatus(Integer payStatus) {
+		this.payStatus = payStatus;
+	}
 	
 	/**
 	* @return status
@@ -488,9 +328,6 @@ public class TOrder implements Serializable{
 	public Integer getStatus() {
 		return status;
 	}
-
-
-
 	
 	/**
 	 * @param status the status to set
@@ -499,11 +336,94 @@ public class TOrder implements Serializable{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
-
-
-
-
+	
+	/**
+	* @return deleteDesc
+	*/
+	
+	public String getDeleteDesc() {
+		return deleteDesc;
+	}
+	
+	/**
+	 * @param deleteDesc the deleteDesc to set
+	 */
+	
+	public void setDeleteDesc(String deleteDesc) {
+		this.deleteDesc = deleteDesc;
+	}
+	
+	/**
+	* @return payNo
+	*/
+	
+	public String getPayNo() {
+		return payNo;
+	}
+	
+	/**
+	 * @param payNo the payNo to set
+	 */
+	
+	public void setPayNo(String payNo) {
+		this.payNo = payNo;
+	}
+	
+	/**
+	* @return createTime
+	*/
+	
+	public Long getCreateTime() {
+		return createTime;
+	}
+	
+	/**
+	 * @param createTime the createTime to set
+	 */
+	
+	public void setCreateTime(Long createTime) {
+		this.createTime = createTime;
+	}
+	
+	/**
+	* @return updateTime
+	*/
+	
+	public Long getUpdateTime() {
+		return updateTime;
+	}
+	
+	/**
+	 * @param updateTime the updateTime to set
+	 */
+	
+	public void setUpdateTime(Long updateTime) {
+		this.updateTime = updateTime;
+	}
+	
+	/**
+	* @return orderVersion
+	*/
+	
+	public Long getOrderVersion() {
+		return orderVersion;
+	}
+	
+	/**
+	 * @param orderVersion the orderVersion to set
+	 */
+	
+	public void setOrderVersion(Long orderVersion) {
+		this.orderVersion = orderVersion;
+	}
+	
+	/**
+	* @return serialversionuid
+	*/
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 
 	
@@ -518,19 +438,16 @@ public class TOrder implements Serializable{
 	public String toString() {
 		return "TOrder [oid=" + oid + ", uid=" + uid + ", province=" + province + ", city=" + city + ", area=" + area
 				+ ", addr=" + addr + ", receiver=" + receiver + ", mobilphone=" + mobilphone + ", sid=" + sid
-				+ ", goodsName=" + goodsName + ", orderPrice=" + orderPrice + ", amount=" + amount + ", number="
-				+ number + ", payStatus=" + payStatus + ", status=" + status + ", deleteDesc=" + deleteDesc + ", payNo="
-				+ payNo + ", createTime=" + createTime + ", updateTime=" + updateTime + ", orderVersion=" + orderVersion
-				+ "]";
+				+ ", orderPrice=" + orderPrice + ", amount=" + amount + ", number=" + number + ", payStatus="
+				+ payStatus + ", status=" + status + ", deleteDesc=" + deleteDesc + ", payNo=" + payNo + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + ", orderVersion=" + orderVersion + ", gid=" + gid
+				+ ", goodsName=" + goodsName + "]";
 	}
 
-
-
+	
+	    
 
 	
-
-
-
 
 	
 }

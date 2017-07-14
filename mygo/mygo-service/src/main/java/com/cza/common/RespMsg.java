@@ -21,7 +21,7 @@ import com.alibaba.fastjson.JSON;
     */
 
 public class RespMsg {
-	//success or fail
+	//success / fail / forbidden
 	private String message;
 	private Object data;
 	

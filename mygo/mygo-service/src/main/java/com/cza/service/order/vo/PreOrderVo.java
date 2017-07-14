@@ -31,7 +31,7 @@ public class PreOrderVo {
 	private BigDecimal amount;
 	private Long addrId;
 	private Long uid;
-	
+	private String userName;
 	private Long orderId;
 	
 	private String token;
@@ -49,6 +49,34 @@ public class PreOrderVo {
 	
 	
 	
+	
+	/**
+	* @return userName
+	*/
+	
+	public String getUserName() {
+		return userName;
+	}
+
+
+
+
+
+
+	
+	/**
+	 * @param userName the userName to set
+	 */
+	
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
+
+
+
+
 	/**
 	* @return token
 	*/

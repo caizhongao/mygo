@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.cza.service.goods.vo.SkuAttrVo;
+import com.cza.service.goods.vo.SkuVo;
 
 /**
     * @ClassName: ListOrderVo
@@ -32,8 +33,9 @@ public class OrderVo {
 	private String addr  ;     
 	private String receiver;        
 	private String mobilphone;  
-	private Long sid;           
-	private String goodsName;     
+	private Long sid;   
+	private Long gid;
+	private String goodsName;
 	private BigDecimal orderPrice;     
 	private BigDecimal amount;
 	private Long number;
@@ -47,11 +49,9 @@ public class OrderVo {
 	private Long createTime;
 	private Long updateTime;
 	
-	private List<SkuAttrVo> attrVos;
+	private SkuVo sku;
 	
 	private Long orderVersion;
-	private Long gid;
-	private String skuPic;
 	private String orderName;
 	private Integer pageNum=1;
 	private Integer pageSize=15;
@@ -73,82 +73,8 @@ public class OrderVo {
 	
 	
 	
-	/**
-	* @return attrVos
-	*/
 	
-	public List<SkuAttrVo> getAttrVos() {
-		return attrVos;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
 	
-	/**
-	 * @param attrVos the attrVos to set
-	 */
-	
-	public void setAttrVos(List<SkuAttrVo> attrVos) {
-		this.attrVos = attrVos;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-	/**
-	* @return skuPic
-	*/
-	
-	public String getSkuPic() {
-		return skuPic;
-	}
-
-
-
-
-
-
-
-
-
-
-
-	
-	/**
-	 * @param skuPic the skuPic to set
-	 */
-	
-	public void setSkuPic(String skuPic) {
-		this.skuPic = skuPic;
-	}
-
-
-
-
-
-
-
-
-
-
-
 	/**
 	* @return gid
 	*/
@@ -156,6 +82,10 @@ public class OrderVo {
 	public Long getGid() {
 		return gid;
 	}
+
+
+
+
 
 
 
@@ -174,6 +104,118 @@ public class OrderVo {
 	public void setGid(Long gid) {
 		this.gid = gid;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	/**
+	* @return goodsName
+	*/
+	
+	public String getGoodsName() {
+		return goodsName;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param goodsName the goodsName to set
+	 */
+	
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	* @return sku
+	*/
+	
+	public SkuVo getSku() {
+		return sku;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	/**
+	 * @param sku the sku to set
+	 */
+	
+	public void setSku(SkuVo sku) {
+		this.sku = sku;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -613,24 +655,6 @@ public class OrderVo {
 
 	
 	/**
-	* @return goodsName
-	*/
-	
-	public String getGoodsName() {
-		return goodsName;
-	}
-
-	
-	/**
-	 * @param goodsName the goodsName to set
-	 */
-	
-	public void setGoodsName(String goodsName) {
-		this.goodsName = goodsName;
-	}
-
-	
-	/**
 	* @return orderPrice
 	*/
 	
@@ -728,6 +752,11 @@ public class OrderVo {
 
 
 
+
+
+
+
+
 	
 	    /* (非 Javadoc)
 	    * 
@@ -739,42 +768,13 @@ public class OrderVo {
 	@Override
 	public String toString() {
 		return "OrderVo [oid=" + oid + ", uid=" + uid + ", province=" + province + ", city=" + city + ", area=" + area
-				+ ", addr=" + addr + ", receiver=" + receiver + ", mobilphone=" + mobilphone + ", sid=" + sid
-				+ ", goodsName=" + goodsName + ", orderPrice=" + orderPrice + ", amount=" + amount + ", number="
+				+ ", addr=" + addr + ", receiver=" + receiver + ", mobilphone=" + mobilphone + ", sid=" + sid + ", gid="
+				+ gid + ", goodsName=" + goodsName + ", orderPrice=" + orderPrice + ", amount=" + amount + ", number="
 				+ number + ", payStatus=" + payStatus + ", status=" + status + ", deleteDesc=" + deleteDesc
 				+ ", userName=" + userName + ", payNo=" + payNo + ", createTime=" + createTime + ", updateTime="
-				+ updateTime + ", orderVersion=" + orderVersion + ", orderName=" + orderName + ", pageNum=" + pageNum
-				+ ", pageSize=" + pageSize + ", start=" + start + "]";
+				+ updateTime + ", sku=" + sku + ", orderVersion=" + orderVersion + ", orderName=" + orderName
+				+ ", pageNum=" + pageNum + ", pageSize=" + pageSize + ", start=" + start + "]";
 	}
 
 
-
-
-
-
-
-
-
-	
-	    /* (非 Javadoc)
-	    * 
-	    * 
-	    * @return
-	    * @see java.lang.Object#toString()
-	    */
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-	
 }
