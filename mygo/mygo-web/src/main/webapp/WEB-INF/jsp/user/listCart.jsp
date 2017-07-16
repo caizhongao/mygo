@@ -68,6 +68,35 @@ function allCheck(){
 }
 
 
+function butNow(){
+	var html='<input type="hidden" name="type" value="1">';
+	var index=0;
+	if($('.check_goods:checked').size()<=0){
+		alert("请选择需要结算的商品!");
+		return;
+	}
+	$('.check_goods:checked').each(function(){
+		var selectSku=$(this).parent().parent().parent().find('.optNumber');
+		var skuId=selectSku.attr('skuId');
+		var number=selectSku.val();
+		var skuStock=selectSku.attr('skuStock');
+		if(parseInt(number)<=0){
+			alert("购买数量必须大于0！");
+			return false;
+		}
+		if(parseInt(number)>parseInt(skuStock)){
+			alert("库存不足！");
+			return false;
+		} 
+		html+='<input type="hidden" name="detailVos['+index+'].sid" id="form_sku_id" value="'+skuId+'"/>'+
+			'<input type="hidden" name="detailVos['+index+'].number" id="form_sku_number" value="'+number+'"/>';
+		index++;
+	});
+	$('#myform').html(html);
+	//return false;
+	$('#myform').submit(); 
+}
+
 </script>
 <style type="text/css">
 	#mytable th{
@@ -131,14 +160,17 @@ function allCheck(){
 	<div class="page_middle">
 	<%@ include file="/common/search/search.jsp" %>
 	<div style="width: 80%;margin: 0px auto">
+			<form action="${ctx}/login/order/savePreOrder.do" method="post" id="myform">
+				
+			</form>
 		<div style="width: 100%;font-size: 30px;font-weight: bold;color: #f40;padding-left: 20px;margin-top: 20px;border-bottom: 2px solid #e6e6e6;">购物车</div>
 		<c:choose>
 		<c:when test="${cartList==null || empty cartList}">
 		<div id="empty">
 			<h2>您的购物车还是空的，赶紧行动吧！您可以：</h2>
 			<ul>
-				<li>看看 <a href="//shoucang.taobao.com/shop_collect_list.htm" target="_blank">我的收藏夹</a></li>
-				<li>看看 <a href="//trade.taobao.com/trade/itemlist/list_bought_items.htm" target="_blank">已买到的宝贝</a></li>
+				<li>看看 <a href="${ctx}/" target="_blank">首页商品</a></li>
+				<li>看看 <a href="${ctx}/login/order/listOrder.do" target="_blank">已买到的宝贝</a></li>
 			</ul>
 		</div>
 		</c:when>
@@ -169,16 +201,19 @@ function allCheck(){
 				<td width="55px" align="left" valign="bottom">
 					<div style="height: 100px"><input type="checkbox" class="check_goods" onclick="check()" style="width: 15px;height: 15px;"></div>
 				</td>
-				<td align="center" width="600px">
+				<td align="center" width="500px">
 					&nbsp;<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${cart.sku.gid }" target="_blank"><img src="${cart.sku.skuPic}" width="100px" style="border: 1px solid #ccc;vertical-align: middle;"></a>
-						<div style="width: 480px;vertical-align: middle;display: inline-block; text-align: left;">
-							<div style="width: 470px;margin-left: 5px;">
+						<div style="width: 350px;vertical-align: middle;display: inline-block; text-align: left;">
+							<div style="width: 340px;margin-left: 5px;">
 								<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${cart.sku.gid }" target="_blank">${cart.sku.goodsName}</a>
 							</div>
-							<div style="color: #9e9e9e;font-size: 12px;width: 470px;margin-left: 5px;margin-top: 10px;">
+							<div style="color: #9e9e9e;font-size: 12px;width: 340px;margin-left: 5px;margin-top: 10px;">
 								<c:forEach items="${cart.sku.attrs }" var="attr">
 									${attr.attrName}：${attr.attrValue}&nbsp;
 								</c:forEach>
+							</div>
+							<div style="color: #9e9e9e;font-size: 12px;width: 340px;margin-left: 5px;margin-top: 10px;">
+									剩余库存：<font style="color: #666666">${cart.sku.stock}</font>&nbsp;件
 							</div>
 						</div>
 					</a>
@@ -186,14 +221,14 @@ function allCheck(){
 				<td align="center">
 					${cart.sku.price}
 				</td>
-				<td align="center" width="300px">
+				<td align="center">
 					<div class="optNumber_div">
 						<div onclick="opNumber('cut',this);" title="减1" class="optNumber_cut">-</div>
-						<input type="text"  onblur="checkNumber(this)"  title="请输入购买量" class="optNumber" value="${cart.number}" name="optNumber" maxlength="8">
+						<input type="text"  onblur="checkNumber(this)"  title="请输入购买量" class="optNumber" skuStock="${cart.sku.stock}" skuId="${cart.sku.sid}" value="${cart.number}" name="optNumber" maxlength="8">
 						<div onclick="opNumber('add',this);" title="加1" class="optNumber_add">+</div>
 				    </div>
 				</td>
-				<td align="center" class="amount" width="250px">
+				<td align="center" class="amount">
 					${cart.amount}
 				</td>
 				<td width="140px" align="center">
@@ -215,7 +250,7 @@ function allCheck(){
 				合计：&nbsp;<font style="color: red;font-weight: bold;font-size: 16px" class="total_amount">0.00</font>
 			</td>
 			<td style="background-color: #e5e5e5" align="right">	
-				<input type="button" class="manager_button" value="结算" onclick="" style="height: 50px;width: 110px;border-radius:0px;">
+				<input type="button" class="manager_button" value="结算" onclick="butNow()" style="height: 50px;width: 110px;border-radius:0px;">
 			</td>
 		</tr>
 	</table>

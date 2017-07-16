@@ -113,7 +113,7 @@
 			alert("库存不足！");
 			return false;
 		}
-		//location.href="${ctx}/login/order/toMakeOrderPage.do?number="+number+"&skuId="+sid;
+		//location.href="${ctx}/login/order/toMakeOrderPage.do?detailVos[0].number="+number+"&detailVos[0].skuId="+sid;
  		 $('#form_sku_id').val(sid);
 		$('#form_sku_number').val(number);
 		$('#myform').submit(); 
@@ -340,9 +340,9 @@
 					</c:forEach>
 				</div>
 			</c:forEach>
-			<form action="${ctx}/login/order/toMakeOrderPage.do" method="post" id="myform">
-				<input type="hidden" name="skuId" id="form_sku_id" value=""/>
-				<input type="hidden" name="number" id="form_sku_number" value=""/>
+			<form action="${ctx}/login/order/savePreOrder.do" method="post" id="myform">
+				<input type="hidden" name="detailVos[0].sid" id="form_sku_id" value=""/>
+				<input type="hidden" name="detailVos[0].number" id="form_sku_number" value=""/>
 			</form>
 			<table width="1100px" cellpadding="0" cellspacing="0"  style="font-size: 14px;color:#74777b;margin-top: 20px;height: 401px;font-family: Arial">
 				<tr>

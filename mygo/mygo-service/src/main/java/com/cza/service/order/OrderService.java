@@ -14,8 +14,6 @@ import java.util.List;
 
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
-import com.cza.dto.order.TOrder;
-import com.cza.service.order.vo.PreOrderVo;
 import com.cza.service.order.vo.OrderVo;
 
 /**
@@ -28,7 +26,9 @@ import com.cza.service.order.vo.OrderVo;
 
 public interface OrderService {
 
-			public ServiceResponse<PreOrderVo> saveOrder(PreOrderVo orderVo);
+			public ServiceResponse<OrderVo> savePreOrder(OrderVo orderVo);
+			
+			public ServiceResponse<OrderVo> confirmOrder(OrderVo orderVo);
 		
 		    /**
 		    * @Title: listOrder
@@ -95,7 +95,7 @@ public interface OrderService {
 				    * @return void    返回类型
 				    * @throws
 				    */
-			  public ServiceResponse<OrderVo> queryOrder(Long oid);
+			  public ServiceResponse<OrderVo> queryOrder(String oid);
 
 					
 					    /**
@@ -107,5 +107,12 @@ public interface OrderService {
 					    * @throws
 					    */
 					    
-					public ServiceResponse<List<Long>>listOrderIds(OrderVo listOrderVo);
+					public ServiceResponse<List<String>>listOrderIds(OrderVo listOrderVo);
+
+						/**作用：
+						 *@param oid
+						 *@return
+						 *@return ServiceResponse<OrderVo>
+						 */
+						public ServiceResponse<String> deleteOrder(String oid);
 }

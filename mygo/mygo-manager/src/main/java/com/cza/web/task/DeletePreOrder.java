@@ -10,9 +10,7 @@
     
 package com.cza.web.task;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,15 +30,15 @@ import com.cza.service.order.vo.OrderVo;
     *
     */
 @Component
-public class UpdateNotPayOrder {
-	private static final Logger log = LoggerFactory.getLogger(UpdateNotPayOrder.class); 
+public class DeletePreOrder {
+	private static final Logger log = LoggerFactory.getLogger(DeletePreOrder.class); 
 	@Autowired
 	private OrderService orderService;
 	public void execute(){
-		log.info("UpdateNotPayOrder.execute start!");
+		log.info("DeletePreOrder.execute start!");
 		long startTime=System.currentTimeMillis();
 		OrderVo listOrderVo=new OrderVo();
-		listOrderVo.setStatus(ShoppingContants.ORDER_STATUS_WAIT_PAY);
+		listOrderVo.setStatus(ShoppingContants.ORDER_STATUS_PRE);
 		listOrderVo.setPageSize(100);
 		listOrderVo.setCreateTime(startTime/1000 -5*60);
 		while(true){
@@ -49,16 +47,14 @@ public class UpdateNotPayOrder {
 				List<String> oidList=resp.getData();
 				if(oidList!=null&&oidList.size()>0){
 					for(String oid:oidList){
-						//关闭订单
+						//删除订单
 						OrderVo order=new OrderVo();
 						order.setOid(oid);
-						order.setStatus(ShoppingContants.ORDER_STATUS_SYS_DELETE);
-						order.setDeleteDesc("超时未付款关闭订单");
-						ServiceResponse<OrderVo> closeResp=	orderService.closeOrder(order);
+						ServiceResponse<String> closeResp=	orderService.deleteOrder(oid);
 						if(!closeResp.isSuccess()){
-							log.warn("UpdateNotPayOrder.execute erro:{}",closeResp.getCode());
+							log.warn("DeletePreOrder.execute erro code:{},msg:{}",closeResp.getCode(),closeResp.getMsg());
 						}else{
-							log.warn("UpdateNotPayOrder.execute close oid:{}",oid);
+							log.warn("DeletePreOrder.execute delete oid:{}",oid);
 						}
 					}
 				}else{

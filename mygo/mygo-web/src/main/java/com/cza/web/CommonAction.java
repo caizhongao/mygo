@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.cza.common.Param;
 import com.cza.common.PropertyUtil;
 import com.cza.common.ShoppingContants;
-import com.cza.service.order.vo.PreOrderVo;
 import com.cza.service.user.vo.UserVo;
 
 /**
@@ -40,6 +39,10 @@ public class CommonAction {
 	
 	public String orderExistPage(){
 		return webAction("/unlogin/home/orderExist");
+	}
+	
+	public String orderOverTime(){
+		return webAction("/unlogin/home/orderOverTime");
 	}
 	
 	public String orderErroPage(){

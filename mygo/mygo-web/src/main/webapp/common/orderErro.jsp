@@ -19,12 +19,12 @@
 						<div class="error-main clearfix">
 							<div class="label"></div>
 							<div class="info" style="padding-top:30px ">
-								<h3 class="title">对不起，无法购买</h3>
+								<h3 class="title">请勿重复生成订单</h3>
 								<div class="reason">
-									<p>请重新选择商品进行购买!</p>
+									<p>可进入我的订单页查看订单</p>
 								</div>
 								<div class="oper">
-									<p><a href="javascript:history.go(-1);">返回上一级页面&gt;</a></p>
+									<p><a href="${ctx}/login/order/listOrder.do">我的订单&gt;</a></p>
 									<p><a href="${ctx}/">回到网站首页&gt;</a></p>
 								</div>
 							</div>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cza.mapper.order.OrderDetailMapper">
+	<resultMap id="orderDetail" type="com.cza.dto.order.TOrderDetail">
+		<result property="oid" column="oid"/>
+		<result property="odid" column="odid"/>
+		<result property="sid" column="sid"/>
+		<result property="goodsName" column="goods_name"/>
+		<result property="orderDetailPrice" column="orderDetail_price"/>
+		<result property="amount" column="amount"/>
+		<result property="number" column="number"/>
+		<result property="gid" column="gid"/>
+	</resultMap>
+	
+	<sql id="allColumns">
+		odid,oid,sid,goods_name,order_price,amount,number,gid
+	</sql>
+	
+	<select id="listOrderDetail" parameterType="com.cza.dto.order.TOrderDetail" resultMap="orderDetail">
+		select 
+		<include refid="allColumns"></include>
+		from t_order_detail 
+			<where>
+				<if test="oid!=null">
+					and oid like CONCAT(CONCAT('%',#{oid}),'%')
+				</if>
+				<if test="uid!=null">
+					and uid = #{uid}
+				</if>
+				<if test="goodsName!=null and goodsName!=''">
+					and goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
+				</if>
+				<if test="sid!=null">
+					and sid=#{sid}
+				</if>
+				<if test="payStatus!=null">
+					and pay_status=#{payStatus}
+				</if>
+				<if test="status!=null">
+					and status=#{status}
+				</if>
+				<if test="createTime!=null">
+					and create_time &lt; #{createTime}
+				</if>
+			</where>
+			orderDetail by create_time desc
+			limit #{start},#{pageSize}
+			
+	</select>
+	<insert id="saveOrderDetail" parameterType="com.cza.dto.order.TOrderDetail">
+			insert into t_order_detail (
+				odid,oid,sid,goods_name,order_price,amount,number,gid
+			)
+			values (
+				#{odid},#{oid},#{sid},#{goodsName},#{orderPrice},#{amount},#{number},#{gid}
+			)
+	</insert>	
+	
+	
+	<select id="queryOrderDetail" parameterType="java.lang.Long" resultMap="orderDetail">
+		select 
+			<include refid="allColumns"></include>
+		from t_order_detail 
+			where odid = #{odid} 
+	</select>
+	
+	
+	
+		
+</mapper>

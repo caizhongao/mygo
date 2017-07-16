@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cza.mapper.order.OrderMapper">
 	<resultMap id="order" type="com.cza.dto.order.TOrder">
-		<result property="oid" column="oid"/>
+		<id property="oid" column="oid"/>
 		<result property="uid" column="uid"/>
 		<result property="userName" column="user_name"/>
 		<result property="province" column="province"/>
@@ -11,54 +11,166 @@
 		<result property="addr" column="addr"/>
 		<result property="receiver" column="receiver"/>
 		<result property="mobilphone" column="mobilphone"/>
-		<result property="sid" column="sid"/>
-		<result property="goodsName" column="goods_name"/>
-		<result property="orderPrice" column="order_price"/>
 		<result property="amount" column="amount"/>
-		<result property="number" column="number"/>
-		<result property="payStatus" column="pay_status"/>
 		<result property="status" column="status"/>
 		<result property="deleteDesc" column="delete_desc"/>
 		<result property="payNo" column="pay_no"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
 		<result property="orderVersion" column="order_version"/>
-		<result property="gid" column="gid"/>
+		<collection property="details" ofType="com.cza.dto.order.TOrderDetail" column="oid">
+			<id property="odid" column="odid"/>
+			<result property="oid" column="b_oid"/>
+			<result property="sid" column="sid"/>
+			<result property="goodsName" column="goods_name"/>
+			<result property="orderPrice" column="order_price"/>
+			<result property="amount" column="b_amount"/>
+			<result property="number" column="number"/>
+			<result property="gid" column="gid"/>
+		</collection>
 	</resultMap>
+		<select id="listOrder" parameterType="com.cza.dto.order.TOrder" resultMap="order">
+		select 
+			a.oid as oid,uid,province,area,city,addr,receiver,mobilphone,a.amount as amount,
+			status,delete_desc,pay_no,create_time,update_time,order_version,user_name,
+			odid,b.oid as b_oid,sid,goods_name,order_price,b.amount as b_amount,number,gid
+		from t_order a,t_order_detail b where 
+		a.oid=b.oid and a.oid in(
+		SELECT oid FROM
+  			(select a.oid
+			from t_order a,t_order_detail b
+				<where>
+					and a.oid=b.oid
+					and a.status!=0
+					<if test="oid!=null">
+						and a.oid like CONCAT(CONCAT('%',#{oid}),'%')
+					</if>
+					<if test="uid!=null">
+						and a.uid = #{uid}
+					</if>
+					<if test="goodsName!=null and goodsName!=''">
+						and b.goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
+					</if>
+					<if test="status!=null">
+						and a.status=#{status}
+					</if>
+					<if test="createTime!=null">
+						and a.create_time &lt; #{createTime}
+					</if>
+				</where>
+				group by a.oid
+				order by a.create_time desc
+				limit #{start},#{pageSize}) AS c
+		)
+	</select>
+	
+		
+	
+	<select id="queryOrder" parameterType="java.lang.String" resultMap="order">
+		select 
+			a.oid as oid,uid,province,area,city,addr,receiver,mobilphone,a.amount as amount,
+			status,delete_desc,pay_no,create_time,update_time,order_version,user_name,
+			odid,b.oid as b_oid,sid,goods_name,order_price,b.amount as b_amount,number,gid
+		from t_order a,t_order_detail b where a.oid=b.oid and a.oid= #{oid} 
+	</select>
+	
+	<select id="countOrder" parameterType="com.cza.dto.order.TOrder" resultType="java.lang.Long">
+		select count(oid) from(
+		select a.oid
+			from t_order a,t_order_detail b
+				<where>
+					and a.oid=b.oid
+					<if test="oid!=null">
+						and a.oid like CONCAT(CONCAT('%',#{oid}),'%')
+					</if>
+					<if test="uid!=null">
+						and a.uid = #{uid}
+					</if>
+					<if test="goodsName!=null and goodsName!=''">
+						and b.goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
+					</if>
+					<if test="status!=null">
+						and a.status=#{status}
+					</if>
+					<if test="createTime!=null">
+						and a.create_time &lt; #{createTime}
+					</if>
+				</where>
+				group by a.oid)a
+	</select>
 	
 	<sql id="allColumns">
-			oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,order_price,amount,
-			number,pay_status,status,delete_desc,pay_no,create_time,update_time,order_version,gid,user_name
+			oid,uid,province,area,city,addr,receiver,mobilphone,amount,
+			status,delete_desc,pay_no,create_time,update_time,order_version,gid,user_name
 	</sql>
 	
 	
-	<select id="countOrder" parameterType="com.cza.dto.order.TOrder" resultType="java.lang.Long">
-		select count(oid)
-		from t_order 
-			<where>
-				<if test="oid!=null">
-					and oid like CONCAT(CONCAT('%',#{oid}),'%')
-				</if>
-				<if test="uid!=null">
-					and uid = #{uid}
-				</if>
-				<if test="goodsName!=null and goodsName!=''">
-					and goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
-				</if>
-				<if test="sid!=null">
-					and sid=#{sid}
-				</if>
-				<if test="payStatus!=null">
-					and pay_status=#{payStatus}
-				</if>
+	<insert id="saveOrder" parameterType="com.cza.dto.order.TOrder">
+			insert into t_order (
+				oid,uid,province,area,city,addr,receiver,mobilphone,
+				amount,create_time,update_time,order_version,user_name
+			)
+			values (
+				#{oid},#{uid},#{province},#{area},#{city},#{addr},#{receiver},#{mobilphone},
+				#{amount},#{createTime},#{updateTime},#{orderVersion},#{userName}
+			)
+	</insert>	
+	<delete id="deleteOrder" parameterType="com.cza.dto.order.TOrder">
+		delete from t_order 
+		<where> 
+			oid = #{oid}
+			<if test="orderVersion!=null">
+				and order_version = #{orderVersion}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="updateOrder" parameterType="com.cza.dto.order.TOrder">
+		update t_order
+		<set>
 				<if test="status!=null">
-					and status=#{status}
+					status=#{status},
 				</if>
-			</where>
-	</select>
+				<if test="updateTime!=null">
+					update_time=#{updateTime},
+				</if>
+				<if test="deleteDesc!=null and deleteDesc!=''">
+					delete_desc=#{deleteDesc},
+				</if>
+				<if test="payNo!=null and payNo!=''">
+					pay_no=#{payNo},
+				</if>
+				<if test="orderVersion!=null">
+					order_version = order_version+1,
+				</if>
+				<if test="addr!=null and addr!=''">
+					addr = #{addr},
+				</if>
+				<if test="province!=null and province!=''">
+					province = #{province},
+				</if>
+				<if test="area!=null and area!=''">
+					area = #{area},
+				</if>
+				<if test="city!=null and city!=''">
+					city = #{city},
+				</if>
+				<if test="receiver!=null and receiver!=''">
+					receiver = #{receiver},
+				</if>
+				<if test="mobilphone!=null and mobilphone!=''">
+					mobilphone = #{mobilphone},
+				</if>
+		</set>
+		<where> 
+				oid = #{oid}
+			<if test="orderVersion!=null">
+				and order_version = #{orderVersion}
+			</if>
+		</where>
+	</update>
 	
-	
-	<select id="listOrderIds" parameterType="com.cza.dto.order.TOrder" resultType="java.lang.Long">
+		<select id="listOrderIds" parameterType="com.cza.dto.order.TOrder" resultType="java.lang.String">
 		select 
 			oid
 		from t_order 
@@ -69,9 +181,6 @@
 				<if test="sid!=null">
 					and sid=#{sid}
 				</if>
-				<if test="payStatus!=null">
-					and pay_status=#{payStatus}
-				</if>
 				<if test="status!=null">
 					and status=#{status}
 				</if>
@@ -80,86 +189,6 @@
 				</if>
 			</where>
 			limit #{start},#{pageSize}
-			
 	</select>
-	
-	<select id="listOrder" parameterType="com.cza.dto.order.TOrder" resultMap="order">
-		select 
-		<include refid="allColumns"></include>
-		from t_order 
-			<where>
-				<if test="oid!=null">
-					and oid like CONCAT(CONCAT('%',#{oid}),'%')
-				</if>
-				<if test="uid!=null">
-					and uid = #{uid}
-				</if>
-				<if test="goodsName!=null and goodsName!=''">
-					and goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
-				</if>
-				<if test="sid!=null">
-					and sid=#{sid}
-				</if>
-				<if test="payStatus!=null">
-					and pay_status=#{payStatus}
-				</if>
-				<if test="status!=null">
-					and status=#{status}
-				</if>
-				<if test="createTime!=null">
-					and create_time &lt; #{createTime}
-				</if>
-			</where>
-			order by create_time desc
-			limit #{start},#{pageSize}
-			
-	</select>
-	<insert id="saveOrder" parameterType="com.cza.dto.order.TOrder">
-			insert into t_order (
-				oid,uid,province,area,city,addr,receiver,mobilphone,sid,goods_name,
-				order_price,amount,number,create_time,update_time,order_version,gid,user_name
-			)
-			values (
-				#{oid},#{uid},#{province},#{area},#{city},#{addr},#{receiver},#{mobilphone},#{sid},#{goodsName},
-				#{orderPrice},#{amount},#{number},#{createTime},#{updateTime},#{orderVersion},#{gid},#{userName}
-			)
-	</insert>	
-	
-	
-	<select id="queryOrder" parameterType="java.lang.Long" resultMap="order">
-		select 
-			<include refid="allColumns"></include>
-		from t_order 
-			where oid = #{oid} 
-	</select>
-	
-	<update id="updateOrder" parameterType="com.cza.dto.order.TOrder">
-		update t_order
-		<set>
-				<if test="payStatus!=null">
-					pay_status=#{payStatus},
-				</if>
-				<if test="status!=null">
-					status=#{status},
-				</if>
-				<if test="deleteDesc!=null and deleteDesc!=''">
-					delete_desc=#{deleteDesc},
-				</if>
-				<if test="payNo!=null and payNo!=''">
-					pay_no=#{payNo},
-				</if>
-				<if test="orderVersion!=null">
-					order_version = #{orderVersion},
-				</if>
-		</set>
-		<where> 
-			oid = #{oid}
-			<if test="orderVersion!=null">
-				and order_version &lt; #{orderVersion}
-			</if>
-		</where>
-	</update>
-	
-	
 		
 </mapper>

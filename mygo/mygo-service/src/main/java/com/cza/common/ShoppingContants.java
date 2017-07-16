@@ -69,14 +69,19 @@ public interface ShoppingContants {
 	
 	
 	//订单常量
-	public static final Integer ORDER_PAY_STATUS_NOT=0;
-	public static final Integer ORDER_PAY_STATUS_HAS=1;
-	public static final Integer ORDER_PAY_STATUS_REFUND=2;
-	
-	public static final Integer ORDER_STATUS_NORMAL=0;
-	public static final Integer ORDER_STATUS_SYS_DELETE=1;
-	public static final Integer ORDER_STATUS_USER_DELETE=2;
-	
+	//预备订单
+	public static final Integer ORDER_STATUS_PRE=0;
+	//待支付
+	public static final Integer ORDER_STATUS_WAIT_PAY=1;
+	//已支付
+	public static final Integer ORDER_STATUS_HAS_PAY=2;
+	//已退款
+	public static final Integer ORDER_STATUS_REFUND=3;
+	//用户关闭
+	public static final Integer ORDER_STATUS_USER_DELETE=4;
+	//系统关闭
+	public static final Integer ORDER_STATUS_SYS_DELETE=5;
+
 	
 	//类目常量
 	public static final Integer CATEGORY_STATUS_NORMAL=0;

@@ -31,7 +31,7 @@ public interface OrderMapper {
 	
 	public List<TOrder> listOrder(OrderVo listParam);
 	
-	public TOrder queryOrder(Long oid);
+	public TOrder queryOrder(String oid);
 	
 	public void saveOrder(TOrder order);
 
@@ -69,6 +69,13 @@ public interface OrderMapper {
 			    * @throws
 			    */
 			    
-			public List<Long> listOrderIds(OrderVo listParam);
+			public List<String> listOrderIds(OrderVo listParam);
+
+				/**作用：
+				 *@param oid
+				 *@return
+				 *@return TOrder
+				 */
+				public int deleteOrder(TOrder param);
 	
 }

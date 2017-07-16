@@ -11,9 +11,6 @@
 package com.cza.web.manager;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,18 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
-import com.cza.dto.addr.TUserAddr;
-import com.cza.dto.goods.TSkuStock;
-import com.cza.dto.order.TOrder;
-import com.cza.service.goods.GoodsService;
-import com.cza.service.goods.vo.SkuVo;
 import com.cza.service.order.OrderService;
-import com.cza.service.order.vo.PreOrderVo;
 import com.cza.service.order.vo.OrderVo;
-import com.cza.service.user.AddrService;
-import com.cza.service.user.vo.UserVo;
 import com.cza.web.CommonAction;
-import com.cza.web.manager.GoodsAction;
 
 /**
     * @ClassName: OrderAction
@@ -62,7 +50,7 @@ public class OrderAction extends CommonAction{
 	public String listNotPayOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
 		log.info("OrderAction.listNotPayOrder 请求参数,order:{}",order);
 		request.setAttribute("order", order);
-		order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_NOT);
+		order.setStatus(ShoppingContants.ORDER_STATUS_WAIT_PAY);
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			request.setAttribute("pager", resp.getData());
@@ -78,7 +66,7 @@ public class OrderAction extends CommonAction{
 	public String listPayOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
 		request.setAttribute("order", order);
 		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
-		order.setPayStatus(ShoppingContants.ORDER_PAY_STATUS_HAS);
+		order.setStatus(ShoppingContants.ORDER_STATUS_HAS_PAY);
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			request.setAttribute("pager", resp.getData());

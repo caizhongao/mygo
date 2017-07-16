@@ -19,10 +19,12 @@ import com.cza.dto.cart.TCart;
 import com.cza.dto.goods.TCategoryAttr;
 import com.cza.dto.goods.TSku;
 import com.cza.dto.goods.TSkuAttr;
+import com.cza.dto.goods.TSkuStock;
 import com.cza.mapper.cart.CartMapper;
 import com.cza.mapper.goods.CategoryAttrMapper;
 import com.cza.mapper.goods.SkuAttrMapper;
 import com.cza.mapper.goods.SkuMapper;
+import com.cza.mapper.goods.SkuStockMapper;
 import com.cza.service.cart.CartService;
 import com.cza.service.cart.vo.CartVo;
 import com.cza.service.goods.vo.SkuAttrVo;
@@ -44,6 +46,9 @@ public class CartServiceImpl implements CartService {
 	private CategoryAttrMapper attrMapper;
 	@Autowired
 	private SkuMapper skuMapper;
+	
+	@Autowired
+	private SkuStockMapper stockMapper;
 	@Override
 	public ServiceResponse<CartVo> addCart(CartVo cart) {
 		ServiceResponse<CartVo> resp=new ServiceResponse<CartVo>();
@@ -134,6 +139,18 @@ public class CartServiceImpl implements CartService {
 						}
 					}
 					skuVo.setAttrs(attrVoList);
+					TSkuStock stockParam=new TSkuStock();
+					stockParam.setSid(sku.getSid());
+					TSkuStock stock=stockMapper.querySkuStock(stockParam);
+					if(stock!=null){
+						skuVo.setNumber(stock.getNumber());
+						skuVo.setStock(stock.getStock());
+					}else{
+						skuVo.setNumber(0L);
+						skuVo.setStock(0L);
+					}
+					
+					
 					vo.setSku(skuVo);
 					vo.setAmount(skuVo.getPrice().multiply(new BigDecimal(vo.getNumber())));
 					voList.add(vo);

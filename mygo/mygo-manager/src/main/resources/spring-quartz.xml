@@ -82,6 +82,23 @@
 	    <property name="cronExpression" value="0 0/1 * * * ?"></property>  
 	</bean>  
 	
+		<!-- 定义要执行的作业 -->       
+	<bean id="DeletePreOrderJob" class="com.cza.web.task.DeletePreOrder"/>  
+	<!-- 指定方法 -->
+	<bean id="UpdateNotPayOrderMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+	    <property name="targetObject">  
+	        <ref bean="DeletePreOrderJob"/>  
+	    </property>  
+	    <property name="targetMethod">
+	        <value>execute</value>  
+	    </property>  
+	</bean>  
+	<!-- ======================== 调度触发器 ======================== -->  
+	<bean id="DeletePreOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+	    <property name="jobDetail" ref="DeletePreOrderMethod"></property>  
+	    <property name="cronExpression" value="0 0/1 * * * ?"></property>  
+	</bean>  
+	
 	
 	<!-- ======================== 调度工厂 ======================== -->  
 	<bean id="SpringJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
@@ -91,6 +108,7 @@
 	            <ref bean="UpdateIndexTrigger"/>
 	            <ref bean="DeleteIndexTrigger"/>
 	            <ref bean="UpdateNotPayOrderTrigger"/>
+	            <ref bean="DeletePreOrderTrigger"/>
 	        </list>  
 	    </property>  
 	</bean>  

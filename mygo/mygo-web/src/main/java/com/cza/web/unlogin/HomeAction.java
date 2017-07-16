@@ -54,7 +54,13 @@ public class HomeAction extends CommonAction{
 	
 	@RequestMapping("orderExist")
 	public String orderExist(HttpServletRequest request,HttpServletResponse response){
-		return "/common/orderExist";
+		request.setAttribute("message", "请勿重复生成订单!");
+		return "/common/orderErro";
 	}
 	
+	@RequestMapping("orderOverTime")
+	public String orderOverTime(HttpServletRequest request,HttpServletResponse response){
+		request.setAttribute("message", "订单超时，请重新购买!");
+		return "/common/orderErro";
+	}
 }

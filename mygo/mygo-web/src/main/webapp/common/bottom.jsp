@@ -9,8 +9,8 @@
 	.ct-icon-3{background-position: -144px 0;} /*家具**/
 	.ct-icon-4{background-position: -264px 0;} /*电器**/
 </style>
-<div style="height: 40px;position:absolute;bottom:0;color: #c6c6c6;background-color: #f5f5f5;width: 100%">
-	<table width="100%"  cellpadding="0" cellspacing="0" align="center"  style="height: 40px;color: #c6c6c6;background-color: #f5f5f5;">
+<div style="height: 40px;position:absolute;bottom:0;color: #c6c6c6;background-color: #f5f5f5;width: 100%;border-top: 1px solid #eee;">
+	<table width="100%"  cellpadding="0" cellspacing="0" align="center"  style="height: 40px;color: #c6c6c6;">
 		<tr>
 			<td  style="border-left: 1px solid white;font-size: 14px" align="center" >
 				Copyright © 2016 -2017 mygo.com All Rights Reserved

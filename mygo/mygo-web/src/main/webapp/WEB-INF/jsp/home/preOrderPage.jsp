@@ -361,8 +361,9 @@ display:none;
 			</div>
 			
 			
-			<form action="${ctx}/login/order/saveOrder.do" id="orderForm" method="post" enctype="application/x-www-form-urlencoded">
-				<input type="hidden" name="token" value="${order.token}">
+			<form action="${ctx}/login/order/confirmOrder.do" id="orderForm" method="post" enctype="application/x-www-form-urlencoded">
+				<input type="hidden" name="oid" value="${order.oid}">
+				<input type="hidden" name="type" value="${order.type}">
 				<div style="width: 1000px;border-bottom: 2px solid #F1F1F1">
 					<div style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px;width: 300px;float: left">选择收货地址</div>
 					<div style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px;width: 700px;text-align: right;float: left "><a href="${ctx}/login/addr/editAddr.do" target="_blank" style="font-size: 13px">管理收货地址</a>&nbsp;</div>
@@ -413,24 +414,26 @@ display:none;
 						<td width="200px" align="center" style="border-bottom: 1px dashed #ccc;">数量</td>
 						<td width="200px" align="center" style="border-bottom: 1px dashed #ccc;">金额(元)</td>
 					</tr>
-					<tr height="100px">
-						<td align="center" style="border-bottom: 1px dashed #ccc;">
-							<img src="${order.sku.skuPic}" width="80px" style="border: 1px solid #ccc;vertical-align: middle;">
-							<div style="vertical-align: middle;display: inline-block; width: 150px;text-align: left;margin-left: 10px;">
-								${order.sku.goodsName}
-							</div>
-	 						<input type="hidden" name="skuId" value="${order.sku.sid}">
-							<input type="hidden" name="number" value="${order.number}">
-						</td>
-						<td align="center" style="border-bottom: 1px dashed #ccc;">
-							<c:forEach items="${order.sku.attrs }" var="attr">
-								${attr.attrName}:${attr.attrValue}<br>
-							</c:forEach>
-						</td>
-						<td align="center" style="border-bottom: 1px dashed #ccc;">${order.sku.price}</td>
-						<td align="center" style="border-bottom: 1px dashed #ccc;">${order.number}</td>
-						<td align="center" style="border-bottom: 1px dashed #ccc;">${order.amount}</td>
-					</tr>
+					<c:forEach items="${order.detailVos}" var="detail" varStatus="status">
+						<tr height="100px">
+							<td align="center" style="border-bottom: 1px dashed #ccc;">
+								<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc;vertical-align: middle;">
+								<div style="vertical-align: middle;display: inline-block; width: 150px;text-align: left;margin-left: 10px;">
+									${detail.sku.goodsName}
+								</div>
+		 						<input type="hidden" name="detailVos[${status.index}].sid" value="${detail.sku.sid}">
+								<input type="hidden" name="detailVos[${status.index}].number" value="${detail.number}">
+							</td>
+							<td align="center" style="border-bottom: 1px dashed #ccc;">
+								<c:forEach items="${detail.sku.attrs }" var="attr">
+									${attr.attrName}:${attr.attrValue}<br>
+								</c:forEach>
+							</td>
+							<td align="center" style="border-bottom: 1px dashed #ccc;">${detail.sku.price}</td>
+							<td align="center" style="border-bottom: 1px dashed #ccc;">${detail.number}</td>
+							<td align="center" style="border-bottom: 1px dashed #ccc;">${detail.amount}</td>
+						</tr>
+					</c:forEach>
 					<tr>
 						<td colspan="4">&nbsp;</td>
 						<td align="center">

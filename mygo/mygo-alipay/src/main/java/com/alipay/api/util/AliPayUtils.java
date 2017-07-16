@@ -44,7 +44,7 @@ import com.cza.service.order.vo.OrderVo;
 
 public class AliPayUtils {
 	private static Logger log = LoggerFactory.getLogger(ElasticSearchUitl.class); 
-	public static ServiceResponse<Boolean> refund(Long oid,String payNo,BigDecimal acmount){
+	public static ServiceResponse<Boolean> refund(String oid,String payNo,BigDecimal acmount){
 		ServiceResponse<Boolean> resp=new ServiceResponse<>();
 		boolean result=false;
 		//获得初始化的AlipayClient
@@ -54,9 +54,9 @@ public class AliPayUtils {
 		AlipayTradeRefundRequest alipayRequest = new AlipayTradeRefundRequest();
 		
 		//商户订单号，商户网站订单系统中唯一订单号
-		String out_trade_no = new String(oid.toString());
+		String out_trade_no = oid;
 		//支付宝交易号
-		String trade_no = new String(payNo);
+		String trade_no = payNo;
 		//请二选一设置
 		//需要退款的金额，该金额不能大于订单金额，必填
 		String refund_amount = new String(acmount.toString());
@@ -88,7 +88,7 @@ public class AliPayUtils {
 		return resp;
 	}
 	
-	public static ServiceResponse<String> aliPayPage(Long oid,BigDecimal acmount,String orderName){
+	public static ServiceResponse<String> aliPayPage(String oid,BigDecimal acmount,String orderName){
 		ServiceResponse<String> resp=new ServiceResponse<>();
 		try {
 			
@@ -99,7 +99,7 @@ public class AliPayUtils {
 			alipayRequest.setReturnUrl((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_RETURN_URL));
 			alipayRequest.setNotifyUrl((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_NOTIFY_URL));
 			//商户订单号，商户网站订单系统中唯一订单号，必填
-			String out_trade_no = oid.toString();
+			String out_trade_no = oid;
 			//付款金额，必填
 			String total_amount = acmount.toString();
 			//订单名称，必填

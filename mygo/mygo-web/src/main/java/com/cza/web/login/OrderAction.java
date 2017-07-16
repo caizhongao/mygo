@@ -38,10 +38,9 @@ import com.cza.common.ShoppingContants;
 import com.cza.dto.addr.TArea;
 import com.cza.dto.addr.TUserAddr;
 import com.cza.service.goods.GoodsService;
-import com.cza.service.goods.vo.SkuVo;
 import com.cza.service.order.OrderService;
+import com.cza.service.order.vo.OrderDetailVo;
 import com.cza.service.order.vo.OrderVo;
-import com.cza.service.order.vo.PreOrderVo;
 import com.cza.service.user.AddrService;
 import com.cza.service.user.vo.UserVo;
 import com.cza.web.CommonAction;
@@ -65,63 +64,6 @@ public class OrderAction extends CommonAction{
 	private OrderService orderService;
 	private static final Logger log = LoggerFactory.getLogger(OrderAction.class); 
 	
-	/**
-	 * 
-	    * @Title: toPreOrderPage
-	    * @Description: 跳转订单生成页面
-	    * @param @param request
-	    * @param @param response
-	    * @param @return
-	    * @param @throws IOException    参数
-	    * @return String    返回类型
-	    * @throws
-	 */
-	@RequestMapping("toMakeOrderPage")
-	public String toMakeOrderPage(@ModelAttribute PreOrderVo order,HttpServletRequest request,HttpServletResponse response){
-		try {
-			log.info("OrderAction.toMakeOrderPage 请求参数:{}",order);
-			if(StringUtils.isEmpty(order.getSkuId())||StringUtils.isEmpty(order.getNumber())){
-				return orderErroPage();
-			}
-			UserVo userVo=getUser(request);
-			//获取sku信息
-			ServiceResponse<SkuVo> skuResp=goodsService.querySku(order.getSkuId());
-			if(skuResp.isSuccess()){
-				SkuVo sku=skuResp.getData();
-				order.setSku(sku);
-				order.setAmount(sku.getPrice().multiply(new BigDecimal(order.getNumber())));
-			}else{
-				return erroPage( skuResp.getCode());
-			}
-			//获取地址
-			TUserAddr addrParam=new TUserAddr();
-			addrParam.setUid(userVo.getUid());
-			//addrParam.setIsDefault(ShoppingContants.ADDR_IS_DEFAULT);		
-			ServiceResponse<List<TUserAddr>> addrResp=addrService.listAddrs(addrParam);
-			if(addrResp.isSuccess()){
-				request.setAttribute("addrs", addrResp.getData());
-			}else{
-				return erroPage( skuResp.getCode());
-			}
-			String token=MygoUtil.makeToken(getUser(request).getUid());
-			order.setToken(token);
-			request.setAttribute("order", order);
-			log.info("OrderAction.toMakeOrderPage 响应参数，order:{}",order);
-			
-			request.getSession().setAttribute(ShoppingContants.TOKEN_MAKE_ORDER,token);
-			TArea area=new TArea();
-			area.setPaid(0l);
-			ServiceResponse<List<TArea>>areaResp=addrService.listAreas(area);
-			if(ShoppingContants.RESP_CODE_SUCESS.equals(areaResp.getCode())){
-				List<TArea> provinces=areaResp.getData();
-				request.setAttribute("provinces", provinces);
-			}
-			return webPage("/home/preOrder");
-		} catch (Exception e) {
-			log.info("OrderAction.toMakeOrderPage exception:",e);
-			return erroPage(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
-		}
-	}
 	
 	/**
 	 * 
@@ -134,78 +76,85 @@ public class OrderAction extends CommonAction{
 	    * @return String    返回类型
 	    * @throws
 	 */
-	@RequestMapping("toMakeOrderPage")
-	public String toMakeOrderPage(@ModelAttribute PreOrderVo order,HttpServletRequest request,HttpServletResponse response){
+	@RequestMapping("savePreOrder")
+	public String savePreOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response){
 		try {
-			log.info("OrderAction.toMakeOrderPage 请求参数:{}",order);
-			if(StringUtils.isEmpty(order.getSkuId())||StringUtils.isEmpty(order.getNumber())){
+			UserVo userVo=getUser(request);
+			log.info("OrderAction.makePreOrder 请求参数:{}",order);
+			//参数校验
+			if(order.getDetailVos()==null||order.getDetailVos().size()<=0){
+				log.info("OrderAction.makePreOrder 订单详细不能为空");
 				return orderErroPage();
 			}
-			UserVo userVo=getUser(request);
-			//获取sku信息
-			ServiceResponse<SkuVo> skuResp=goodsService.querySku(order.getSkuId());
-			if(skuResp.isSuccess()){
-				SkuVo sku=skuResp.getData();
-				order.setSku(sku);
-				order.setAmount(sku.getPrice().multiply(new BigDecimal(order.getNumber())));
-			}else{
-				return erroPage( skuResp.getCode());
+			for(OrderDetailVo detail:order.getDetailVos()){
+				if(MygoUtil.hasZeroNull(detail.getSid(),detail.getNumber())){
+					log.info("OrderAction.makePreOrder 订单详细里面的sid或者number不能为空");
+					return orderErroPage();
+				}
 			}
-			//获取地址
-			TUserAddr addrParam=new TUserAddr();
-			addrParam.setUid(userVo.getUid());
-			//addrParam.setIsDefault(ShoppingContants.ADDR_IS_DEFAULT);		
-			ServiceResponse<List<TUserAddr>> addrResp=addrService.listAddrs(addrParam);
-			if(addrResp.isSuccess()){
-				request.setAttribute("addrs", addrResp.getData());
-			}else{
-				return erroPage( skuResp.getCode());
-			}
-			String token=MygoUtil.makeToken(getUser(request).getUid());
-			order.setToken(token);
-			request.setAttribute("order", order);
-			log.info("OrderAction.toMakeOrderPage 响应参数，order:{}",order);
-			
-			request.getSession().setAttribute(ShoppingContants.TOKEN_MAKE_ORDER,token);
-			TArea area=new TArea();
-			area.setPaid(0l);
-			ServiceResponse<List<TArea>>areaResp=addrService.listAreas(area);
-			if(ShoppingContants.RESP_CODE_SUCESS.equals(areaResp.getCode())){
-				List<TArea> provinces=areaResp.getData();
-				request.setAttribute("provinces", provinces);
-			}
-			return webPage("/home/preOrder");
-		} catch (Exception e) {
-			log.info("OrderAction.toMakeOrderPage exception:",e);
-			return erroPage(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
-		}
-	}
-	
-	
-	@RequestMapping("saveOrder")
-	public String saveOrder(@ModelAttribute PreOrderVo order,HttpServletRequest request,HttpServletResponse response ){
-		log.info("OrderAction.saveOrder 请求参数,order:{}",order);
-		if(StringUtils.isEmpty(order.getToken())){
-			log.info("OrderAction.saveOrder token不能为空！");
-			return erroPage(ShoppingContants.RESP_CODE_TOKEN_ERRO);
-		}
-		if(!order.getToken().equals(request.getSession().getAttribute(ShoppingContants.TOKEN_MAKE_ORDER))){
-			log.info("OrderAction.saveOrder token erro！");
-			return orderExistPage();
-		}else{
-			request.getSession().removeAttribute(ShoppingContants.TOKEN_MAKE_ORDER);
-		}
-		if(order.getSkuId()==null||order.getAddrId()==null||order.getNumber()==null){
-			log.info("OrderAction.saveOrder 参数错误！");
-			return erroPage( ShoppingContants.RESP_CODE_PARAM_ERRO);
-		}else{
-			UserVo userVo=getUser(request);
 			order.setUid(userVo.getUid());
 			order.setUserName(userVo.getUserName());
-			ServiceResponse<PreOrderVo> resp=orderService.saveOrder(order);
-			if(resp.isSuccess()){
-				log.info("OrderAction.saveOrder success,orderNo:{}",resp.getData().getOrderId());
-				return webAction("/login/order/toOrderPayPage", new Param("oid",resp.getData().getOrderId()));
+			ServiceResponse<OrderVo> resp=orderService.savePreOrder(order);
+			return webAction("/login/order/preOrderPage", new Param("oid", resp.getData().getOid()), new Param("type",order.getType()));
+		} catch (Exception e) {
+			log.info("OrderAction.makePreOrder exception:",e);
+			return erroPage(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+		}
+	}
+	
+	
+	@RequestMapping("preOrderPage")
+	public String preOrderPage(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response){
+		UserVo userVo=getUser(request);
+		ServiceResponse<OrderVo> resp=orderService.queryOrder(order.getOid());
+		if(resp.isSuccess()){
+			OrderVo orderVo=resp.getData();
+			orderVo.setType(order.getType());
+			request.setAttribute("order",orderVo );
+		}else{
+			return erroPage( resp.getCode());
+		}
+		//查处找所有省份（一级下拉框）
+		TArea area=new TArea();
+		area.setPaid(0l);
+		ServiceResponse<List<TArea>>areaResp=addrService.listAreas(area);
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(areaResp.getCode())){
+			List<TArea> provinces=areaResp.getData();
+			request.setAttribute("provinces", provinces);
+		}else{
+			return erroPage( areaResp.getCode());
+		}
+		//获取地址
+		TUserAddr addrParam=new TUserAddr();
+		addrParam.setUid(userVo.getUid());
+		ServiceResponse<List<TUserAddr>> addrResp=addrService.listAddrs(addrParam);
+		if(addrResp.isSuccess()){
+			request.setAttribute("addrs", addrResp.getData());
+		}else{
+			return erroPage( addrResp.getCode());
+		}
+		return webPage("/home/preOrderPage");
+	}
+	
+	@RequestMapping("confirmOrder")
+	public String confirmOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
+		log.info("OrderAction.saveOrder 请求参数,order:{}",order);
+		//参数校验
+		if(MygoUtil.hasZeroNull(order.getAddrId())){
+			log.info("OrderAction.saveOrder 参数错误,地址为空！");
+			return erroPage( ShoppingContants.RESP_CODE_PARAM_ERRO);
+		}
+		ServiceResponse<OrderVo> resp=orderService.confirmOrder(order);
+		if(resp.isSuccess()){
+			log.info("OrderAction.saveOrder success,orderNo:{}",resp.getData().getOid());
+			return webAction("/login/order/toOrderPayPage", new Param("oid",resp.getData().getOid()));
+		}else{
+			if(ShoppingContants.RESP_CODE_ORDER_HAS_OPT.equals(resp.getCode())){
+				log.info("OrderAction.saveOrder faild!");
+				return orderExistPage();
+			}else if(ShoppingContants.RESP_CODE_ORDER_NOT_EXIST.equals(resp.getCode())){
+				log.info("OrderAction.saveOrder faild!");
+				return orderOverTime();
 			}else{
 				log.info("OrderAction.saveOrder faild!");
 				return erroPage( resp.getCode());
@@ -223,7 +172,7 @@ public class OrderAction extends CommonAction{
 		if(StringUtils.isEmpty(str)){
 			return erroPage( ShoppingContants.RESP_CODE_PARAM_ERRO);
 		}
-		ServiceResponse<OrderVo> resp=orderService.queryOrder(Long.valueOf(str));
+		ServiceResponse<OrderVo> resp=orderService.queryOrder(str);
 		if(resp.isSuccess()){
 			request.setAttribute("order", resp.getData());
 			return webPage("/home/orderPayPage");
@@ -305,7 +254,7 @@ public class OrderAction extends CommonAction{
 					//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 					//如果有做过处理，不执行商户的业务程序
 					OrderVo order=new OrderVo();
-					order.setOid(new Long(oid));
+					order.setOid(oid);
 					order.setPayNo(trade_no);
 					order.setAmount(new BigDecimal(amount));
 					ServiceResponse<OrderVo> payResp=orderService.orderPay(order);
@@ -313,7 +262,7 @@ public class OrderAction extends CommonAction{
 						log.info("订单支付状态更新成功,oid:",oid);
 					}else{
 						//状态变更失败，退款
-						ServiceResponse<Boolean> refundResp=AliPayUtils.refund(new Long(oid),trade_no,new BigDecimal(amount));
+						ServiceResponse<Boolean> refundResp=AliPayUtils.refund(oid,trade_no,new BigDecimal(amount));
 						if(refundResp.isSuccess()&&refundResp.getData()){
 							log.info("系统发起退款成功,oid:{}!",oid);
 						}else{
@@ -337,10 +286,10 @@ public class OrderAction extends CommonAction{
 	 */
 	@RequestMapping("toRefund")
 	public void toRefund(HttpServletRequest request,HttpServletResponse response ) throws IOException{
-		String str=request.getParameter("oid");
-		log.info("toRefund oid:{}",str);
-		if(!StringUtils.isEmpty(str)){
-			ServiceResponse<OrderVo> resp=orderService.queryOrder(Long.valueOf(str));
+		String oid=request.getParameter("oid");
+		log.info("toRefund oid:{}",oid);
+		if(!StringUtils.isEmpty(oid)){
+			ServiceResponse<OrderVo> resp=orderService.queryOrder(oid);
 			if(resp.isSuccess()){
 				final OrderVo order=resp.getData();
 				ServiceResponse<Boolean> refundResp=AliPayUtils.refund(order.getOid(), order.getPayNo(), order.getAmount());

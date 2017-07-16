@@ -237,6 +237,7 @@ public class GoodsIndexServiceImpl implements GoodsIndexService {
 					UpdateRequest updateRequest = new UpdateRequest();
 					updateRequest.index("mygo").type("goods").id(index.getGid().toString()).doc(jsonObj);
 					client.update(updateRequest).get();
+					log.info("updateIndex gid:{}",index.getGid().toString());
 				} catch (Exception e) {
 					log.error("updateIndex index gid:{}, erro:",index.getGid(),e);
 				}
