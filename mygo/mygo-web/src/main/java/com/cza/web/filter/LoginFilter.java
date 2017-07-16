@@ -85,7 +85,7 @@ public class LoginFilter implements  Filter{
 				if("XMLHttpRequest".equals(type)){//ajax 请求，不能重定向
 					resp.setCharacterEncoding("utf-8");
 					if(MygoUtil.containStr(referer, "save","confirm","add","update")){
-						resp.getWriter().println(new RespMsg("forbidden",req.getContextPath()+"/unlogin/user/toLogin.do?ref="+req.getContextPath()+"/").toJson());
+						resp.getWriter().println(new RespMsg("forbidden",req.getContextPath()+"/unlogin/user/toLogin.do?ref=/").toJson());
 					}else{
 						resp.getWriter().println(new RespMsg("forbidden",req.getContextPath()+"/unlogin/user/toLogin.do?ref="+referer).toJson());
 					}

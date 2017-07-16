@@ -61,10 +61,10 @@ public class DeletePreOrder {
 					break;
 				}
 			}else{
-				log.info("UpdateNotPayOrder.execute query orderID param:{}, erro:{}",listOrderVo,resp.getCode());
+				log.info("DeletePreOrder.execute query orderID param:{}, erro:{}",listOrderVo,resp.getCode());
 				break;
 			}
 		}
-		log.info("UpdateNotPayOrder.execute cost time:{}",System.currentTimeMillis()-startTime);
+		log.info("DeletePreOrder.execute cost time:{}",System.currentTimeMillis()-startTime);
 	}
 }

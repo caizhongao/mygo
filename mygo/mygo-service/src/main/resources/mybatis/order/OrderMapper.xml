@@ -178,9 +178,6 @@
 				<if test="uid!=null">
 					and uid = #{uid}
 				</if>
-				<if test="sid!=null">
-					and sid=#{sid}
-				</if>
 				<if test="status!=null">
 					and status=#{status}
 				</if>
