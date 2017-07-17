@@ -21,12 +21,16 @@ $(function(){
 			data:{'cid':cid},
 			success:function(data){
 				var attrHtml="";
-				$.each(data,function(index,content){
-					if(index!=0&&index%3==0){
-						attrHtml+="<br/>";
-					}
-					attrHtml+=content.attrName+'<input type="checkbox" style="width:20px;" name="attr" onchange="editAttrTableCell(this,'+content.caid+',\''+content.attrName+'\')" value="'+content.caid+'">';
-				});
+				if(data!=null&&data.length>0){
+					attrHtml+="<td>商品规格：</><td>";
+					$.each(data,function(index,content){
+						if(index!=0&&index%3==0){
+							attrHtml+="<br/>";
+						}
+						attrHtml+=content.attrName+'<input type="checkbox" style="width:20px;" name="attr" onchange="editAttrTableCell(this,'+content.caid+',\''+content.attrName+'\')" value="'+content.caid+'">';
+					});
+					attrHtml+="</td>";
+				}
 				$('#attrs').html(attrHtml);
 				initAttrTable();
 			}
@@ -35,8 +39,8 @@ $(function(){
 	
 	function editAttrTableCell(obj,caid,attrName){
 		if($(obj).prop('checked')){
-			$('.optTh').before('<td class="'+caid+'" width="190px" align="center">'+attrName+'</td>');
-			$('.optTr').before('<td class="'+caid+' skuAttr"><input type="hidden" name="attrId" value="'+caid+'"><input type="text" name="attrValue" align="center" value=""></td>');
+			$('.optTh').before('<td class="'+caid+'" width="210px" align="center">'+attrName+'</td>');
+			$('.optTr').before('<td class="'+caid+' skuAttr"><input type="hidden" name="attrId" value="'+caid+'"><input type="text" class="input_obj" name="attrValue" align="center" value=""></td>');
 		}else{
 			$('.'+caid).remove();
 		}
@@ -49,7 +53,11 @@ $(function(){
 			$('.skuTr :last').find('input[name="barcode"]').val('');
 			$('.skuTr :last').find('input[name="barcode"]').attr('before','');
 			$('.skuTr :last').find('input[name="price"]').val('');
+			$('.skuTr :last').find('input[name="number"]').val('');
+			$('.skuTr :last').find('input[name="stock"]').val('');
 			$('.skuTr :last').find('input[name="attrValue"]').val('');
+			
+			
 		}else{
 			if($('.skuTr').size()>1){
 				$(obj).parent().parent().remove();
@@ -60,17 +68,17 @@ $(function(){
 	
 	function initAttrTable(){
 		$('#skuTable').html('<tr>'+
-								'<td width="190px" align="center">条码</td>'+
-								'<td width="190px" align="center">价格</td>'+
-								'<td width="190px" align="center">库存</td>'+
-								'<td width="190px" align="center">剩余库存</td>'+
+								'<td width="210px" align="center">条码</td>'+
+								'<td width="210px" align="center">价格</td>'+
+								'<td width="210px" align="center">库存</td>'+
+								'<td width="210px" align="center">剩余库存</td>'+
 								'<td  width="80px" align="center" class="optTh">操作</td>'+
 							'</tr>'+
 							'<tr class="skuTr" height="25px">'+
-								'<td align="center"><input type="text" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic" value=""></td>'+
-								'<td align="center"><input type="text" name="price" value=""></td>'+
-								'<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>'+
-								'<td align="center"><input type="text" name="stock" value=""  readonly="readonly" ></td>'+
+								'<td align="center"><input type="text" class="input_obj" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic" value=""></td>'+
+								'<td align="center"><input type="text" class="input_obj" name="price" value=""></td>'+
+								'<td align="center"><input type="text" class="input_obj" name="number" onblur="syncStock(this)" value=""></td>'+
+								'<td align="center"><input type="text" class="input_obj" name="stock" value=""  readonly="readonly" ></td>'+
 								'<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>'+
 							'</tr>'
 							);
@@ -222,16 +230,16 @@ $(function(){
 			</tr>
 			<tr>
 				<td width="90px">商品编码：</td>
-				<td><input type="text" name="goodsCode" id="goodsCode"></td>
+				<td><input type="text" name="goodsCode" id="goodsCode" class="input_obj"></td>
 			</tr>
 			<tr>
 				<td>商品名称：</td>
-				<td><input type="goodsName" id="goodsName"></td>
+				<td><input type="goodsName" id="goodsName" class="input_obj"></td>
 			</tr>
 			<tr>
 				<td>商品分类：</td>
 				<td>
-					<select id="cid" name="cid" onchange="listAttrs()">
+					<select id="cid" name="cid" onchange="listAttrs()" class="input_obj">
 						<option value="1">食品</option>
 						<option value="2">服装</option>
 						<option value="3">家具</option>
@@ -239,11 +247,7 @@ $(function(){
 					</select>
 				</td>
 			</tr>
-			<tr>
-				<td>商品规格：</>
-				<td id="attrs">
-					<!-- 根据商品类别动态获取 -->
-				</td>
+			<tr id="attrs">
 			</tr>
 			<tr style="height: 15px"><td colspan="2"></td></tr>
 			<tr>
@@ -257,17 +261,17 @@ $(function(){
 		<br>
 		<table id="skuTable" cellpadding="0" cellspacing="0">
 			<tr>
-				<td width="190px" align="center">条码</td>
-				<td width="190px" align="center">价格</td>
-				<td width="190px" align="center">总库存</td>
-				<td width="190px" align="center">剩余库存</td>
+				<td width="210px" align="center">条码</td>
+				<td width="210px" align="center">价格</td>
+				<td width="210px" align="center">总库存</td>
+				<td width="210px" align="center">剩余库存</td>
 				<td  width="80px" align="center" class="optTh">操作</td>
 			</tr>
 			<tr class="skuTr" height="25px">
-				<td align="center"><input type="text" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic"></td>
-				<td align="center"><input type="text" name="price" value=""></td>
-				<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>
-				<td align="center"><input type="text" name="stock" readonly="readonly"></td>
+				<td align="center"><input type="text"  class="input_obj" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic"></td>
+				<td align="center"><input type="text"  class="input_obj" name="price" value=""></td>
+				<td align="center"><input type="text"  class="input_obj" name="number" onblur="syncStock(this)" value=""></td>
+				<td align="center"><input type="text"  class="input_obj" name="stock" readonly="readonly"></td>
 				<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>
 			</tr>
 		</table>

@@ -10,32 +10,29 @@
 	
 </script>
 <style type="text/css">
-	#mytable{
-		font-size: 14px;
-	}
 	table td{
-		border-right: 1px solid #F2F2F2;
-		border-bottom: 1px solid #DFDFDF;
+		border-right: 1px solid #daf3ff;
+		border-bottom: 1px solid #daf3ff;
 		text-align: center;
-		height: 100px;
+		height: 110px;
 		color: #666666;
 		font-size: 14px;
 	}
 	table th{
-		border-right: 1px solid #DFDFDF;
-		border-bottom: 1px solid #DFDFDF;
+		border-right: 1px solid #daf3ff;
+		border-bottom: 1px solid #daf3ff;
 		text-align: center;
 		height: 30px;
-		background-color: #EFEEF0;
+		background-color: #eaf8ff;
 		color: #666666;
 	}
 	.queryParam{
-	width: 80%;height: 30px;
+	width: 80%;
+	height: 30px;
 	margin-top:25px;
-	font-size: 14px;color: #666666;
-	}
-	.queryParam input,select{
-		width: 150px;
+	font-size: 14px;
+	color: #666666;
+	display: inline-block;
 	}
 </style>
 <script type="text/javascript">
@@ -75,13 +72,14 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 </head>
 <body>
 	<div style="width:95%;margin: 0px auto;">
-		<form action="${ctx}/manager/goods/listGoods.do" method="post">
+		<form action="${ctx}/manager/goods/listGoods.do" method="post" style="width: 95%">
 		<div class="queryParam">
-			<span style="display: inline-block;width: 250px">
-				商品名称：<input type="text" name="goodsName" value="${goods.goodsName}">
+			<span style="display: inline-block;width: 300px">
+				商品名称：<input type="text" class="query_obj" name="goodsName" value="${goods.goodsName}">
 			</span>
-			<span style="display: inline-block;width: 250px">
-				商品状态：<select name="status">
+			<span style="display: inline-block;width: 300px">
+				商品状态：
+				<select name="status" class="query_obj">
 					<option value="">所有</option>
 					<option value="W" <c:if test='${goods.status=="W"}'>selected="selected"</c:if>>待上架</option>
 					<option value="O" <c:if test='${goods.status=="O"}'>selected="selected"</c:if>>已上架</option>
@@ -92,13 +90,11 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 				<input type="button" class="manager_button" onclick="$('form').eq(0).submit()" style="width: 100px" value="查询">
 			</span>
 		</div>
+		<div style="display: inline-block;width: 19%;text-align: right">
+			<a href="${ctx}/manager/goods/addGoods.do" class="manager_button">添加商品</a>
+		</div>
 		</form>
 	<table style="width: 95%" cellpadding="0" cellspacing="0">
-		<tr>
-			<td colspan="7" style="border-right: none;text-align: right;height: 50px;"> 
-				<a href="${ctx}/manager/goods/addGoods.do" class="manager_button">添加商品</a>
-			</td>
-		</tr>
 		<tr>
 			<th>
 				商品图片

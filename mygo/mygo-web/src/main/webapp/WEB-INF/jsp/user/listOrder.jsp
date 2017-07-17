@@ -35,7 +35,6 @@
 	color: #666666;
 	font-size: 13px;
 }
-}
 </style>
 <script type="text/javascript">
 
@@ -231,7 +230,7 @@ function toRefund(oid){
 								<a href="javascript:void(0)" onclick="showDesc('${order.oid}')" class="manager_button" target="_blank">关闭</a>
 							</c:if> 
 							<c:if test="${order.status==2}">
-								<a href="javascript:toRefund(${order.oid})" class="manager_button">退款</a>
+								<a href="javascript:toRefund('${order.oid}')" class="manager_button">退款</a>
 								<a class="manager_button" style="visibility: hidden">&nbsp;</a>
 							</c:if>
 						</td>

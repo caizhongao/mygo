@@ -13,8 +13,8 @@
 	
 	function editAttrTableCell(obj,caid,attrName){
 		if($(obj).prop('checked')){
-			$('.optTh').before('<td class="'+caid+'" width="190px" align="center">'+attrName+'</td>');
-			$('.optTr').before('<td class="'+caid+' skuAttr"><input type="hidden" name="attrId" value="'+caid+'"><input type="text" name="attrValue" align="center" value=""></td>');
+			$('.optTh').before('<td class="'+caid+'" width="210px" align="center">'+attrName+'</td>');
+			$('.optTr').before('<td class="'+caid+' skuAttr"><input type="hidden" name="attrId" value="'+caid+'"><input class="input_obj" type="text" name="attrValue" align="center" value=""></td>');
 		}else{
 			$('.'+caid).remove();
 		}
@@ -26,6 +26,10 @@
 			$('#skuTable').append(ahtml);
 			$('.skuTr :last').find('input[name="barcode"]').val('');
 			$('.skuTr :last').find('input[name="barcode"]').attr('before','');
+			$('.skuTr :last').find('input[name="number"]').val('');
+			$('.skuTr :last').find('input[name="number"]').attr('before','0');
+			$('.skuTr :last').find('input[name="stock"]').val('');
+			$('.skuTr :last').find('input[name="stock"]').attr('before','0');
 			$('.skuTr :last').find('input[name="sid"]').val('');
 			$('.skuTr :last').find('input[name="price"]').val('');
 			$('.skuTr :last').find('input[name="attrValue"]').val('');
@@ -37,75 +41,16 @@
 		
 	}
 	
-	function initAttrTable(){
-		$('#skuTable').html('<tr>'+
-								'<td width="190px" align="center">条码</td>'+
-								'<td width="190px" align="center">价格</td>'+
-								'<td width="190px" align="center">总库存</td>'+
-								'<td width="190px" align="center">剩余库存</td>'+
-								'<td  width="80px" align="center" class="optTh">操作</td>'+
-							'</tr>'+
-							'<tr class="skuTr" height="25px">'+
-								'<td align="center"><input type="text" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic" value=""></td>'+
-								'<td align="center"><input type="text" name="price" value=""></td>'+
-								'<td align="center"><input type="text" name="number" onblur="syncStock(this)" value=""></td>'+
-								'<td align="center"><input type="text" name="stock" value=""  readonly="readonly" ></td>'+
-								'<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>'+
-							'</tr>'
-							);
-	}
 	
-	
-	
-	$(function(){
-		 $('#upFile').uploadify({
-	            'swf'      		:   "${ctx}/js/uploadify/uploadify.swf",
-	            'uploader' 		: 	"${ctx}/manager/goods/uploadPic.do",
-	            'cancelImg'		:	"${ctx}/js/uploadify/uploadify-cancel.png",
-	            'debug'			:	false,
-	            'buttonText'	:	'选择照片',
-				'method'			:	'post',
-				'buttonClass'	:  'upload_button',
-				'fileTypeDesc'	:	'图片文件',
-				'fileTypeExts'	:	'*.gif;*.jpg;*.png;*.bmp',
-				'multi'				:	false,
-				'formData'      :  {'goodsCode':$('#goodsCode').val()},
-				'onSelect':function(file){
-					var goodsCode=$('#goodsCode').val();
-					if(goodsCode==""){
-						alert("请选填写商品编码!");
-						$('#upFile').uploadify('cancel', file.id);
-	            		return false;
-	            	}
-					
-				},
-	            'onUploadComplete':	function(file){
-	        	},
-	            'onUploadStart': function (file) { 
-	            	$("#upFile").uploadify("settings", "formData", { 'goodsCode': $('#goodsCode').val()});  
-	            },
-
-				/**
-				 * 上传成功后触发事件
-				 */
-				'onUploadSuccess' : function(file, data, response) {
-					$('#upImg').attr("src",data+"?d="+new Date().getTime());
-					$('#goodsPic').val(data);
-	    		}
-	        });
-		
-	});
 	function syncStock(obj){
 		if($(obj).val()==''){
 			return;
 		}
 		var newNumber=parseInt($(obj).val());
-		var oldNumber=parseInt($(obj).attr("number"));
+		var oldNumber=parseInt($(obj).attr("before"));
 		var optObj=$(obj).parent().parent().find('input[name="stock"]');
-		var oldStock=parseInt(optObj.val());
-		var newStock=oldStock+(newNumber-oldNumber);
+		var newStock=parseInt(optObj.attr('before'))+(newNumber-oldNumber);
 		optObj.val(newStock);
-		$(obj).attr("number",newNumber);
 		
 	}
 	function submitForm(){
@@ -250,17 +195,17 @@
 				<td width="90px">商品编码：</td>
 				<td>
 					<input type="hidden" name="gid" value="${goods.gid}" id="gid" readonly="readonly">
-					<input type="text" name="goodsCode" value="${goods.goodsCode}" id="goodsCode" readonly="readonly">
+					<input class="input_obj" type="text" name="goodsCode" value="${goods.goodsCode}" id="goodsCode" readonly="readonly">
 				</td>
 			</tr>
 			<tr>
 				<td>商品名称：</td>
-				<td><input type="goodsName" id="goodsName" value="${goods.goodsName}"></td>
+				<td><input class="input_obj" type="text" id="goodsName" value="${goods.goodsName}"></td>
 			</tr>
 			<tr>
 				<td>商品分类：</td>
 				<td>
-					<select id="cid" name="cid" onchange="listAttrs()" disabled="disabled">
+					<select class="input_obj" id="cid" name="cid" onchange="listAttrs()" disabled="disabled">
 						<option value="1" <c:if test="${goods.cid==1 }">selected="selected"</c:if>>食品</option>
 						<option value="2" <c:if test="${goods.cid==2 }">selected="selected"</c:if>>服装</option>
 						<option value="3" <c:if test="${goods.cid==3 }">selected="selected"</c:if>>家具</option>
@@ -269,18 +214,20 @@
 					<input type="hidden" name="cid" value="${goods.cid}">
 				</td>
 			</tr>
-			<tr>
-				<td>商品规格：</>
-				<td id="attrs">
-					<c:forEach items="${attrs}" var="attr">
-						<c:forEach items="${goods.skus[0].attrs}" var="sattr">
-							<c:if test="${attr.caid==sattr.attrId}">
-								<c:set var="flag" value="1"></c:set>
-							</c:if>
+			<tr id="attrs">
+				<c:if test="${attrs!=null && !empty attrs}">
+					<td>商品规格：</>
+					<td>
+						<c:forEach items="${attrs}" var="attr">
+							<c:forEach items="${goods.skus[0].attrs}" var="sattr">
+								<c:if test="${attr.caid==sattr.attrId}">
+									<c:set var="flag" value="1"></c:set>
+								</c:if>
+							</c:forEach>
+							${attr.attrName} <input type="checkbox" style="width:20px;" disabled="disabled" name="attr" <c:if test="${flag==1}">checked="checked"</c:if> onchange="editAttrTableCell(this,${attr.caid},'${attr.attrName}')" value="${content.caid }">
 						</c:forEach>
-						${attr.attrName} <input type="checkbox" style="width:20px;" disabled="disabled" name="attr" <c:if test="${flag==1}">checked="checked"</c:if> onchange="editAttrTableCell(this,${attr.caid},'${attr.attrName}')" value="${content.caid }">
-					</c:forEach>
-				</td>   
+					</td>
+				</c:if>   
 			</tr>
 			<tr style="height: 15px"><td colspan="2"></td></tr>
 			<tr>
@@ -294,12 +241,12 @@
 		<br>
 		<table id="skuTable" cellpadding="0" cellspacing="0">
 			<tr>
-				<td width="190px" align="center">条码</td>
-				<td width="190px" align="center">价格</td>
-				<td width="190px" align="center">总库存</td>
-				<td width="190px" align="center">剩余库存</td>
+				<td width="210px" align="center">条码</td>
+				<td width="210px" align="center">价格</td>
+				<td width="210px" align="center">总库存</td>
+				<td width="210px" align="center">剩余库存</td>
 				<c:forEach items="${goods.skus[0].attrs}" var="attr">
-					<td width="190px" align="center">${attr.attrName}</td>
+					<td width="210px" align="center">${attr.attrName}</td>
 				</c:forEach>
 				<td  width="80px" align="center" class="optTh">操作</td>
 			</tr>
@@ -307,16 +254,16 @@
 				<tr class="skuTr" height="25px">
 					<td align="center">
 						<input type="hidden" name="sid" value="${sku.sid}">
-						<input type="text" name="barcode" before="${sku.barcode}" onblur="updateBarcode(this)" value="${sku.barcode}">
+						<input class="input_obj" type="text" name="barcode" before="${sku.barcode}" onblur="updateBarcode(this)" value="${sku.barcode}">
 						<input type="hidden" name="skuPic" value="${sku.skuPic}">
 					</td>
-					<td align="center"><input type="text" name="price" value="${sku.price}"></td>
-					<td align="center"><input type="text" name="number" onblur="syncStock(this)"  number="${sku.number}" value="${sku.number}"></td>
-					<td align="center"><input type="text" name="stock" value="${sku.stock}" readonly="readonly"></td>
+					<td align="center"><input class="input_obj" type="text" name="price" value="${sku.price}"></td>
+					<td align="center"><input class="input_obj" type="text" name="number" onblur="syncStock(this)"  before="${sku.number}" value="${sku.number}"></td>
+					<td align="center"><input class="input_obj" type="text" name="stock" value="${sku.stock}"  before="${sku.stock}" readonly="readonly"></td>
 					<c:forEach items="${sku.attrs}" var="attr">
 						<td width="190px" align="center" class="${attr.attrId} skuAttr">
 							<input type="hidden" name="attrId" value="${attr.attrId}">
-							<input type="text" name="attrValue" value="${attr.attrValue}">
+							<input class="input_obj" type="text" name="attrValue" value="${attr.attrValue}">
 						</td>
 					</c:forEach>
 					<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>

@@ -18,8 +18,15 @@
 a{color: #679AEF;text-decoration: none;} /* 未访问的链接 */
 a:hover{color:#E06F6F;text-decoration:underline; }
 
+.input_obj{
+	width: 200px;
+	height: 30px;
+}
 
-
+.query_obj{
+	width: 190px;
+	height: 28px;
+}
 
 
 

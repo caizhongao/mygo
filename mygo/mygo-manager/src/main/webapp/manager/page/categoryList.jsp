@@ -14,19 +14,19 @@
 		font-size: 14px;
 	}
 	table td{
-		border-right: 1px solid #F2F2F2;
-		border-bottom: 1px solid #DFDFDF;
+		border-right: 1px solid #daf3ff;
+		border-bottom: 1px solid #daf3ff;
 		text-align: center;
 		height: 100px;
 		color: #666666;
 		font-size: 14px;
 	}
 	table th{
-		border-right: 1px solid #DFDFDF;
-		border-bottom: 1px solid #DFDFDF;
+		border-right: 1px solid #daf3ff;
+		border-bottom: 1px solid #daf3ff;
 		text-align: center;
 		height: 30px;
-		background-color: #EFEEF0;
+		background-color: #eaf8ff;
 		color: #666666;
 	}
 	
