@@ -118,7 +118,7 @@ public class GoodsServiceImpl implements GoodsService {
 	    * 
 	    * 
 	    * @param goods
-	    * @return
+	    * @return success,exist;
 	    * @see com.cza.service.goods.GoodsService#saveGoods(com.cza.service.goods.vo.GoodsVo)
 	    */
 	    
@@ -126,57 +126,63 @@ public class GoodsServiceImpl implements GoodsService {
 	@Transactional(rollbackFor=Exception.class)
 	public ServiceResponse<GoodsVo> saveGoods(GoodsVo goods) {
 		ServiceResponse<GoodsVo> resp=new ServiceResponse<GoodsVo>();
-			Long now=System.currentTimeMillis()/1000;
-			TGoods param=new TGoods();
-			param.setCid(goods.getCid());
-			param.setCreateTime(now);
-			param.setUpdateTime(now);
-			param.setGid(null);//自动生成
-			param.setGoodsCode(goods.getGoodsCode());
-			param.setGoodsName(goods.getGoodsName());
-			param.setGoodsPic(goods.getSkus().get(0).getSkuPic());
-			param.setPrice(goods.getPrice());
-			param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
-			//创建商品时，设置索引状态为待创建
-			param.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
-			goodsMapper.saveGoods(param);
-			goods.setGid(param.getGid());
-			//保存sku
-			List<SkuVo>skus=goods.getSkus();
-			for(SkuVo sku:skus){
-				//保存sku基本信息
-				TSku skuParam=new TSku();
-				skuParam.setBarcode(sku.getBarcode());
-				skuParam.setPrice(sku.getPrice());
-				skuParam.setCreateTime(now);
-				skuParam.setUpdateTime(now);
-				skuParam.setGid(goods.getGid());
-				skuParam.setGoodsName(goods.getGoodsName());
-				skuParam.setSkuPic(sku.getSkuPic());
-				skuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
-				skuMapper.saveSku(skuParam);
-				sku.setSid(skuParam.getSid());
-				//保存库存信息
-				TSkuStock stock=new TSkuStock();
-				stock.setSid(sku.getSid());
-				stock.setStock(sku.getNumber());
-				stock.setNumber(sku.getNumber());
-				stockMapper.saveSkuStock(stock);
-				//保存sku属性
-				List<SkuAttrVo>attrs=sku.getAttrs();
-				if(attrs!=null&&attrs.size()>0){
-					for(SkuAttrVo attr:attrs){
-						TSkuAttr attrParam=new TSkuAttr();
-						attrParam.setAttrValue(attr.getAttrValue());
-						attrParam.setCaid(attr.getAttrId());
-						attrParam.setSid(sku.getSid());
-						skuAttrMapper.saveSkuAttr(attrParam);
-					}
+		TGoods queryGoods=goodsMapper.queryGoods(goods);
+		if(queryGoods!=null){
+			resp.setCode(ShoppingContants.RESP_CODE_GOODS_CODE_EXIST);
+			resp.setMsg(ShoppingContants.RESP_MSG_GOODS_CODE_EXIST);
+			return resp;
+		}
+		Long now=System.currentTimeMillis()/1000;
+		TGoods param=new TGoods();
+		param.setCid(goods.getCid());
+		param.setCreateTime(now);
+		param.setUpdateTime(now);
+		param.setGid(null);//自动生成
+		param.setGoodsCode(goods.getGoodsCode());
+		param.setGoodsName(goods.getGoodsName());
+		param.setGoodsPic(goods.getSkus().get(0).getSkuPic());
+		param.setPrice(goods.getPrice());
+		param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
+		//创建商品时，设置索引状态为待创建
+		param.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
+		goodsMapper.saveGoods(param);
+		goods.setGid(param.getGid());
+		//保存sku
+		List<SkuVo>skus=goods.getSkus();
+		for(SkuVo sku:skus){
+			//保存sku基本信息
+			TSku skuParam=new TSku();
+			skuParam.setBarcode(sku.getBarcode());
+			skuParam.setPrice(sku.getPrice());
+			skuParam.setCreateTime(now);
+			skuParam.setUpdateTime(now);
+			skuParam.setGid(goods.getGid());
+			skuParam.setGoodsName(goods.getGoodsName());
+			skuParam.setSkuPic(sku.getSkuPic());
+			skuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
+			skuMapper.saveSku(skuParam);
+			sku.setSid(skuParam.getSid());
+			//保存库存信息
+			TSkuStock stock=new TSkuStock();
+			stock.setSid(sku.getSid());
+			stock.setStock(sku.getNumber());
+			stock.setNumber(sku.getNumber());
+			stockMapper.saveSkuStock(stock);
+			//保存sku属性
+			List<SkuAttrVo>attrs=sku.getAttrs();
+			if(attrs!=null&&attrs.size()>0){
+				for(SkuAttrVo attr:attrs){
+					TSkuAttr attrParam=new TSkuAttr();
+					attrParam.setAttrValue(attr.getAttrValue());
+					attrParam.setCaid(attr.getAttrId());
+					attrParam.setSid(sku.getSid());
+					skuAttrMapper.saveSkuAttr(attrParam);
 				}
 			}
-			resp.setData(goods);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
-			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+		}
+		resp.setData(goods);
+		resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+		resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		return resp;
 	}
 
@@ -194,7 +200,7 @@ public class GoodsServiceImpl implements GoodsService {
 		ServiceResponse<GoodsVo> resp=new ServiceResponse<GoodsVo>();
 		try {
 			GoodsVo goodsVo=new GoodsVo();
-			TGoods goods=goodsMapper.queryGoods(param.getGid());
+			TGoods goods=goodsMapper.queryGoods(param);
 			if(goods==null){
 				resp.setCode(ShoppingContants.RESP_CODE_GOODS_NOT_EXIST);
 				resp.setMsg(ShoppingContants.RESP_MSG_GOODS_NOT_EXIST);
@@ -278,7 +284,7 @@ public class GoodsServiceImpl implements GoodsService {
 	public ServiceResponse<GoodsVo> updateGoodsOffShelf(GoodsVo goods) {
 		ServiceResponse<GoodsVo> resp=new ServiceResponse<GoodsVo>();
 		try {
-			TGoods queryGoods=goodsMapper.queryGoods(goods.getGid());
+			TGoods queryGoods=goodsMapper.queryGoods(goods);
 			if(ShoppingContants.GOODS_STATUS_ON.equals(queryGoods.getStatus())){
 				TGoods updateParam=new TGoods();
 				updateParam.setGid(goods.getGid());
@@ -323,7 +329,7 @@ public class GoodsServiceImpl implements GoodsService {
 	public ServiceResponse<GoodsVo> updateGoodsOnShelf(GoodsVo goods) {
 		ServiceResponse<GoodsVo> resp=new ServiceResponse<GoodsVo>();
 		try {
-			TGoods queryGoods=goodsMapper.queryGoods(goods.getGid());
+			TGoods queryGoods=goodsMapper.queryGoods(goods);
 			if(!ShoppingContants.GOODS_STATUS_ON.equals(queryGoods.getStatus())){
 				TGoods updateParam=new TGoods();
 				updateParam.setGid(goods.getGid());
@@ -408,89 +414,89 @@ public class GoodsServiceImpl implements GoodsService {
 	@Transactional(rollbackFor=Exception.class)
 	public ServiceResponse<GoodsVo> updateGoodsPageInfo(GoodsVo goods) {
 		ServiceResponse<GoodsVo> resp=new ServiceResponse<GoodsVo>();
-			Long now=System.currentTimeMillis()/1000;
-			TGoods param=new TGoods();
-			param.setGid(goods.getGid());
-			param.setCid(goods.getCid());
-			param.setUpdateTime(now);
-			param.setGoodsCode(goods.getGoodsCode());
-			param.setGoodsName(goods.getGoodsName());
-			param.setGoodsPic(goods.getSkus().get(0).getSkuPic());
-			param.setPrice(goods.getPrice());
-			param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
-			goodsMapper.updateGoods(param);
-			//保存sku
-			List<SkuVo>skus=goods.getSkus();
-			//先更新已有的sku为删除状态
-			TSku updateSkuStatusParam=new TSku();
-			updateSkuStatusParam.setGid(param.getGid());
-			updateSkuStatusParam.setStatus(ShoppingContants.SKU_STATUS_DELETE);
-			skuMapper.updateStatusByGid(updateSkuStatusParam);
-			for(SkuVo sku:skus){
-				if(sku.getSid()!=null){
-					TSku updateSkuParam=new TSku();
-					updateSkuParam.setSid(sku.getSid());
-					updateSkuParam.setBarcode(sku.getBarcode());
-					updateSkuParam.setUpdateTime(now);
-					updateSkuParam.setGid(goods.getGid());
-					updateSkuParam.setPrice(sku.getPrice());
-					updateSkuParam.setSkuPic(sku.getSkuPic());
-					updateSkuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
-					updateSkuParam.setGoodsName(goods.getGoodsName());
-					skuMapper.updateSku(updateSkuParam);
-					//保存库存信息
-					TSkuStock stock=new TSkuStock();
-					stock.setSid(sku.getSid());
-					stock.setStock(sku.getStock());
-					stock.setNumber(sku.getNumber());
-					stockMapper.updateSkuStock(stock);
-					
-					skuAttrMapper.deleteAttrBySkuId(sku.getSid());
-					List<SkuAttrVo>attrs=sku.getAttrs();
-					if(attrs!=null&&attrs.size()>0){
-						for(SkuAttrVo attr:attrs){
-							TSkuAttr attrParam=new TSkuAttr();
-							attrParam.setAttrValue(attr.getAttrValue());
-							attrParam.setCaid(attr.getAttrId());
-							attrParam.setSid(sku.getSid());
-							skuAttrMapper.saveSkuAttr(attrParam);
-						}
+		Long now=System.currentTimeMillis()/1000;
+		TGoods param=new TGoods();
+		param.setGid(goods.getGid());
+		param.setCid(goods.getCid());
+		param.setUpdateTime(now);
+		param.setGoodsCode(goods.getGoodsCode());
+		param.setGoodsName(goods.getGoodsName());
+		param.setGoodsPic(goods.getSkus().get(0).getSkuPic());
+		param.setPrice(goods.getPrice());
+		param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
+		goodsMapper.updateGoods(param);
+		//保存sku
+		List<SkuVo>skus=goods.getSkus();
+		//先更新已有的sku为删除状态
+		TSku updateSkuStatusParam=new TSku();
+		updateSkuStatusParam.setGid(param.getGid());
+		updateSkuStatusParam.setStatus(ShoppingContants.SKU_STATUS_DELETE);
+		skuMapper.updateStatusByGid(updateSkuStatusParam);
+		for(SkuVo sku:skus){
+			if(sku.getSid()!=null){
+				TSku updateSkuParam=new TSku();
+				updateSkuParam.setSid(sku.getSid());
+				updateSkuParam.setBarcode(sku.getBarcode());
+				updateSkuParam.setUpdateTime(now);
+				updateSkuParam.setGid(goods.getGid());
+				updateSkuParam.setPrice(sku.getPrice());
+				updateSkuParam.setSkuPic(sku.getSkuPic());
+				updateSkuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
+				updateSkuParam.setGoodsName(goods.getGoodsName());
+				skuMapper.updateSku(updateSkuParam);
+				//保存库存信息
+				TSkuStock stock=new TSkuStock();
+				stock.setSid(sku.getSid());
+				stock.setStock(sku.getStock());
+				stock.setNumber(sku.getNumber());
+				stockMapper.updateSkuStock(stock);
+				
+				skuAttrMapper.deleteAttrBySkuId(sku.getSid());
+				List<SkuAttrVo>attrs=sku.getAttrs();
+				if(attrs!=null&&attrs.size()>0){
+					for(SkuAttrVo attr:attrs){
+						TSkuAttr attrParam=new TSkuAttr();
+						attrParam.setAttrValue(attr.getAttrValue());
+						attrParam.setCaid(attr.getAttrId());
+						attrParam.setSid(sku.getSid());
+						skuAttrMapper.saveSkuAttr(attrParam);
 					}
-				}else{
-					TSku skuParam=new TSku();
-					skuParam.setBarcode(sku.getBarcode());
-					skuParam.setCreateTime(now);
-					skuParam.setUpdateTime(now);
-					skuParam.setGid(goods.getGid());
-					skuParam.setGoodsName(goods.getGoodsName());
-					skuParam.setPrice(sku.getPrice());
-					skuParam.setSkuPic(goods.getGoodsPic());
-					skuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
-					skuMapper.saveSku(skuParam);
-					sku.setSid(skuParam.getSid());
-					
-					//保存库存信息
-					TSkuStock stock=new TSkuStock();
-					stock.setSid(sku.getSid());
-					stock.setStock(sku.getNumber());
-					stock.setNumber(sku.getNumber());
-					stockMapper.saveSkuStock(stock);
-					
-					List<SkuAttrVo>attrs=sku.getAttrs();
-					if(attrs!=null&&attrs.size()>0){
-						for(SkuAttrVo attr:attrs){
-							TSkuAttr attrParam=new TSkuAttr();
-							attrParam.setAttrValue(attr.getAttrValue());
-							attrParam.setCaid(attr.getAttrId());
-							attrParam.setSid(sku.getSid());
-							skuAttrMapper.saveSkuAttr(attrParam);
-						}
+				}
+			}else{
+				TSku skuParam=new TSku();
+				skuParam.setBarcode(sku.getBarcode());
+				skuParam.setCreateTime(now);
+				skuParam.setUpdateTime(now);
+				skuParam.setGid(goods.getGid());
+				skuParam.setGoodsName(goods.getGoodsName());
+				skuParam.setPrice(sku.getPrice());
+				skuParam.setSkuPic(sku.getSkuPic());
+				skuParam.setStatus(ShoppingContants.SKU_STATUS_NORMAL);
+				skuMapper.saveSku(skuParam);
+				sku.setSid(skuParam.getSid());
+				
+				//保存库存信息
+				TSkuStock stock=new TSkuStock();
+				stock.setSid(sku.getSid());
+				stock.setStock(sku.getNumber());
+				stock.setNumber(sku.getNumber());
+				stockMapper.saveSkuStock(stock);
+				
+				List<SkuAttrVo>attrs=sku.getAttrs();
+				if(attrs!=null&&attrs.size()>0){
+					for(SkuAttrVo attr:attrs){
+						TSkuAttr attrParam=new TSkuAttr();
+						attrParam.setAttrValue(attr.getAttrValue());
+						attrParam.setCaid(attr.getAttrId());
+						attrParam.setSid(sku.getSid());
+						skuAttrMapper.saveSkuAttr(attrParam);
 					}
 				}
 			}
-			resp.setData(goods);
-			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
-			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+		}
+		resp.setData(goods);
+		resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+		resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		return resp;
 	}
 

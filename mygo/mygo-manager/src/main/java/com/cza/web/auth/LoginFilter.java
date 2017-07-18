@@ -63,21 +63,16 @@ public class LoginFilter implements  Filter{
 	    */
 	    
 	@Override
-	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)
-			throws IOException, ServletException {
+	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)throws IOException, ServletException {
 		HttpServletRequest req=(HttpServletRequest) arg0;
 		HttpServletResponse resp=(HttpServletResponse) arg1;
 		String uri=req.getRequestURI();
-		if(uri.indexOf("/manager/")>=0){
-			if(uri.indexOf("login.do")>=0||uri.indexOf("toLogin.do")>=0){//登录页面不需要权限
-				log.info("请求uri:{},无需登录权限！",uri);
-			}else{
-				log.info("请求uri:{},需要后台管理权限！",uri);
-				UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.ADMIN_SESSION_KEY);
-				if(user==null||!ShoppingContants.USER_TYPE_ADMIN.equals(user.getType())){
-					resp.sendRedirect("/mygo-manager/manager/home/toLogin.do");
-					return;
-				}
+		if(uri.indexOf("/login/")>=0){
+			log.info("请求uri:{},需要登录权限！",uri);
+			UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.ADMIN_SESSION_KEY);
+			if(user==null||!ShoppingContants.USER_TYPE_ADMIN.equals(user.getType())){
+				resp.sendRedirect("/mygo-manager/unlogin/user/toLoginRedirect.do");
+				return;
 			}
 		}else{
 			log.info("请求uri:{},无需登录权限！",uri);

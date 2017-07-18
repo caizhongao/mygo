@@ -33,7 +33,14 @@
 		select 
 			<include refid="allColumns"></include>
 		from t_goods 
-			where gid = #{gid} 
+			where 1=1 
+			<if test="gid!=null">
+				and gid = #{gid}
+			</if>
+			<if test="goodsCode!=null and goodsCode!=''">
+				and goods_code = #{goodsCode}
+			</if> 
+			limit 0,2  <!-- 防止参数有误，查询量过大 -->
 	</select>
 	
 	<select id="updateGoods" parameterType="com.cza.dto.goods.TGoods">

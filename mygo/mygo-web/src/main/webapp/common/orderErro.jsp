@@ -19,14 +19,39 @@
 						<div class="error-main clearfix">
 							<div class="label"></div>
 							<div class="info" style="padding-top:30px ">
-								<h3 class="title">请勿重复生成订单</h3>
-								<div class="reason">
-									<p>可进入我的订单页查看订单</p>
-								</div>
-								<div class="oper">
-									<p><a href="${ctx}/login/order/listOrder.do">我的订单&gt;</a></p>
-									<p><a href="${ctx}/">回到网站首页&gt;</a></p>
-								</div>
+								<c:choose>
+									<c:when test='${erroCode=="3001"}'>
+										<h3 class="title">请勿重复生成订单!</h3>
+										<div class="reason">
+											<p>可进入我的订单页查看订单</p>
+										</div>
+										<div class="oper">
+											<p><a href="${ctx}/login/order/listOrder.do">我的订单&gt;</a></p>
+											<p><a href="${ctx}/">回到网站首页&gt;</a></p>
+										</div>
+									</c:when>
+									<c:when test='${erroCode=="3000"}'>
+										<h3 class="title">订单超时，请重新购买!</h3>
+										<div class="reason">
+											<p>可回到商品详情页重新购买</p>
+										</div>
+										<div class="oper">
+											<p><a href="${ctx}/login/order/listOrder.do">我的订单&gt;</a></p>
+											<p><a href="${ctx}/">回到网站首页&gt;</a></p>
+										</div>
+									</c:when>
+									<c:when test='${erroCode=="3003"}'>
+										<h3 class="title">商品库存不足!</h3>
+										<div class="reason">
+											<p>请重新选择商品进行购买</p>
+										</div>
+										<div class="oper">
+											<p><a href="${ctx}/login/order/listOrder.do">我的订单&gt;</a></p>
+											<p><a href="${ctx}/">回到网站首页&gt;</a></p>
+										</div>
+									</c:when>
+								</c:choose>
+								
 							</div>
 						</div>
 					</div>

@@ -8,7 +8,7 @@
 </head>
 <body>
 <% 
-	response.sendRedirect("/mygo-manager/manager/home/index.do");
+	response.sendRedirect("/mygo-manager/login/home/index.do");
 %>
 </body>
 </html>

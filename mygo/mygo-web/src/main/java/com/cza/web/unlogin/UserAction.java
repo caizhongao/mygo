@@ -96,50 +96,55 @@ public class UserAction extends CommonAction{
 	public String login(@ModelAttribute UserVo user,HttpServletRequest request,HttpServletResponse response){
 		log.info("login param is:{}",user);
 		//校验登录请求参数
-		Map<String,String> erroList=UserInfoValidate.checkLoginParam(user,request);
-		if(erroList.isEmpty()){
-			UserVo listUserParam=new UserVo();
-			listUserParam.setUserName(user.getUserName());
-			ServiceResponse<List<UserVo>> resp=userService.listUser(listUserParam);
-			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-				List<UserVo>voList=resp.getData();
-				if(voList!=null&&voList.size()>0){
-					UserVo queryUser=voList.get(0);
-					if(queryUser.getPassword().equals(user.getPassword())){
-						//登录成功
-						if(user.getRememberMe()!=null&&user.getRememberMe()==1){
-							Cookie nameCookie = new Cookie("username",user.getUserName());
-							nameCookie.setMaxAge(60*60*24*7);
-							Cookie passCookie = new Cookie("password",user.getPassword());
-							passCookie.setMaxAge(60*60*24*7);
-							response.addCookie(nameCookie);
-							response.addCookie(passCookie);
+		try {
+			Map<String,String> erroList=UserInfoValidate.checkLoginParam(user,request);
+			if(erroList.isEmpty()){
+				UserVo listUserParam=new UserVo();
+				listUserParam.setUserName(user.getUserName());
+				ServiceResponse<List<UserVo>> resp=userService.listUser(listUserParam);
+				if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+					List<UserVo>voList=resp.getData();
+					if(voList!=null&&voList.size()>0){
+						UserVo queryUser=voList.get(0);
+						if(queryUser.getPassword().equals(user.getPassword())){
+							//登录成功
+							if(user.getRememberMe()!=null&&user.getRememberMe()==1){
+								Cookie nameCookie = new Cookie("username",user.getUserName());
+								nameCookie.setMaxAge(60*60*24*7);
+								Cookie passCookie = new Cookie("password",user.getPassword());
+								passCookie.setMaxAge(60*60*24*7);
+								response.addCookie(nameCookie);
+								response.addCookie(passCookie);
+							}else{
+								Cookie nameCookie = new Cookie("username",null);
+								nameCookie.setMaxAge(0);
+								Cookie passCookie = new Cookie("password",null);
+								passCookie.setMaxAge(0);
+								response.addCookie(nameCookie);
+								response.addCookie(passCookie);
+							}
+							request.getSession().setAttribute(ShoppingContants.USER_SESSION_KEY, queryUser);
+							if(!StringUtils.isEmpty(user.getRef())&&!"null".equals(user.getRef())){
+								return "redirect:"+user.getRef();
+							}
+							return webAction("/unlogin/home/index");
 						}else{
-							Cookie nameCookie = new Cookie("username",null);
-							nameCookie.setMaxAge(0);
-							Cookie passCookie = new Cookie("password",null);
-							passCookie.setMaxAge(0);
-							response.addCookie(nameCookie);
-							response.addCookie(passCookie);
+							erroList.put("password","登录密码错误");
 						}
-						request.getSession().setAttribute(ShoppingContants.USER_SESSION_KEY, queryUser);
-						if(!StringUtils.isEmpty(user.getRef())&&!"null".equals(user.getRef())){
-							return "redirect:"+user.getRef();
-						}
-						return webAction("/unlogin/home/index");
 					}else{
-						erroList.put("password","登录密码错误");
+						erroList.put("userName","登录名不存在");
 					}
-				}else{
-					erroList.put("userName","登录名不存在");
 				}
 			}
+			//登录失败
+			request.setAttribute("erroList", erroList);
+			request.setAttribute("ref", user.getRef());
+			request.setAttribute("user", user);
+			return webPage("user/login");
+		} catch (Exception e) {
+			log.info("login exception:",e);
+			return erroPage(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
 		}
-		//登录失败
-		request.setAttribute("erroList", erroList);
-		request.setAttribute("ref", user.getRef());
-		request.setAttribute("user", user);
-		return webPage("user/login");
 	}
 	
 	@RequestMapping("logout")

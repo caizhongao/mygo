@@ -114,7 +114,7 @@
 			return false;
 		}
 		//location.href="${ctx}/login/order/toMakeOrderPage.do?detailVos[0].number="+number+"&detailVos[0].skuId="+sid;
- 		 $('#form_sku_id').val(sid);
+ 		$('#form_sku_id').val(sid);
 		$('#form_sku_number').val(number);
 		$('#myform').submit(); 
 	}
@@ -287,13 +287,9 @@
 	
 	
 	function checkNumber(){
-		var reg = /\d+$/;
+		var reg = /^\d+$/;
 		if(!reg.test($('#number').val()))
 		{
-			$('#number').val(1);
-			return false;
-		}
-		if(parseInt($('#number').val())<0){
 			$('#number').val(1);
 			return false;
 		}

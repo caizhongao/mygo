@@ -84,12 +84,12 @@ public class OrderAction extends CommonAction{
 			//参数校验
 			if(order.getDetailVos()==null||order.getDetailVos().size()<=0){
 				log.info("OrderAction.makePreOrder 订单详细不能为空");
-				return orderErroPage();
+				return erroPage(ShoppingContants.RESP_CODE_PARAM_ERRO);
 			}
 			for(OrderDetailVo detail:order.getDetailVos()){
 				if(MygoUtil.hasZeroNull(detail.getSid(),detail.getNumber())){
 					log.info("OrderAction.makePreOrder 订单详细里面的sid或者number不能为空");
-					return orderErroPage();
+					return erroPage(ShoppingContants.RESP_CODE_PARAM_ERRO);
 				}
 			}
 			order.setUid(userVo.getUid());
@@ -112,7 +112,12 @@ public class OrderAction extends CommonAction{
 			orderVo.setType(order.getType());
 			request.setAttribute("order",orderVo );
 		}else{
-			return erroPage( resp.getCode());
+			log.info("OrderAction.queryOrder faild!");
+			if(ShoppingContants.RESP_CODE_SYSTEM_ERRO.equals(resp.getCode())){
+				return erroPage(resp.getCode());
+			}else{
+				return orderErro(resp.getCode());
+			}
 		}
 		//查处找所有省份（一级下拉框）
 		TArea area=new TArea();
@@ -149,16 +154,13 @@ public class OrderAction extends CommonAction{
 			log.info("OrderAction.saveOrder success,orderNo:{}",resp.getData().getOid());
 			return webAction("/login/order/toOrderPayPage", new Param("oid",resp.getData().getOid()));
 		}else{
-			if(ShoppingContants.RESP_CODE_ORDER_HAS_OPT.equals(resp.getCode())){
-				log.info("OrderAction.saveOrder faild!");
-				return orderExistPage();
-			}else if(ShoppingContants.RESP_CODE_ORDER_NOT_EXIST.equals(resp.getCode())){
-				log.info("OrderAction.saveOrder faild!");
-				return orderOverTime();
+			log.info("OrderAction.saveOrder faild!");
+			if(ShoppingContants.RESP_CODE_SYSTEM_ERRO.equals(resp.getCode())){
+				return erroPage(resp.getCode());
 			}else{
-				log.info("OrderAction.saveOrder faild!");
-				return erroPage( resp.getCode());
+				return orderErro(resp.getCode());
 			}
+			
 		}
 	}
 	

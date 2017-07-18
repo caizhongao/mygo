@@ -85,6 +85,19 @@ public class RespMsg {
 		this.data = data;
 	}
 	
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
+	@Override
+	public String toString() {
+		return toJson();
+	}
+	
 	public String toJson(){
 		return JSON.toJSONString(this);
 	}

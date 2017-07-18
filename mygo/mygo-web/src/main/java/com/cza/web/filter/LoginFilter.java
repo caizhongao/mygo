@@ -92,9 +92,9 @@ public class LoginFilter implements  Filter{
 				}else{
 					if(MygoUtil.containStr(uri, "save","confirm","add","update")){//如果是操作请求，则登录后跳转referer
 						if(MygoUtil.containStr(referer, "save","confirm","add","update")){
-							resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+referer);
-						}else{
 							resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref=/");
+						}else{
+							resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+referer);
 						}
 					}else{
 						resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+url);

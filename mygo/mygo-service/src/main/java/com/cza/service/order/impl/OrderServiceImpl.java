@@ -45,6 +45,7 @@ import com.cza.mapper.goods.SkuStockMapper;
 import com.cza.mapper.order.OrderDetailMapper;
 import com.cza.mapper.order.OrderMapper;
 import com.cza.mapper.user.UserMapper;
+import com.cza.service.goods.vo.GoodsVo;
 import com.cza.service.goods.vo.SkuAttrVo;
 import com.cza.service.goods.vo.SkuVo;
 import com.cza.service.order.OrderService;
@@ -166,8 +167,8 @@ public class OrderServiceImpl implements OrderService{
 				if(row==0){//扣减库存失败
 					log.warn("扣减库存失败!");
 					resp.setData(null);
-					resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
-					resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+					resp.setMsg(ShoppingContants.RESP_MSG_ORDER_REDUCE_STOCK_ERRO);
+					resp.setCode(ShoppingContants.RESP_CODE_ORDER_REDUCE_STOCK_ERRO);
 					return resp;
 				}
 				TSku sku=skuMapper.querySku(detailVo.getSid());
@@ -179,7 +180,9 @@ public class OrderServiceImpl implements OrderService{
 					cartMapper.deleteCart(cart);
 				}
 				//销量
-				TGoods goods=goodsMapper.queryGoods(sku.getGid());
+				GoodsVo param=new GoodsVo();
+				param.setGid(sku.getGid());
+				TGoods goods=goodsMapper.queryGoods(param);
 				goods.setSales(goods.getSales()+detailVo.getNumber());
 				goodsMapper.updateGoods(goods);
 			}
@@ -537,6 +540,8 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 					skuVo.setBarcode(sku.getBarcode());
 					skuVo.setSid(sku.getSid());
 					skuVo.setSkuPic(sku.getSkuPic());
+					skuVo.setGid(sku.getGid());
+					skuVo.setGoodsName(sku.getGoodsName());
 					//购买的sku属性
 					TSkuAttr attrParam=new TSkuAttr();
 					attrParam.setSid(sku.getSid());
@@ -570,7 +575,7 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 			resp.setData(null);
 			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
 			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
-			log.error("保存商品异常!",e);
+			log.error("查询订单异常!",e);
 		}
 		return resp;
 	}
@@ -597,6 +602,7 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 				resp.setData(oid);
 				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+				return resp;
 			}
 		}
 		log.warn("订单已被操作，此次操作失败!");

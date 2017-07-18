@@ -111,6 +111,9 @@ public interface ShoppingContants {
 	//商品已经被操作
 	public static final Integer RESP_CODE_GOODS_HAS_OPT=1001;
 	public static final String RESP_MSG_GOODS_HAS_OPT="goods has operate by others!";
+	//商品编码重复
+	public static final Integer RESP_CODE_GOODS_CODE_EXIST=1002;
+	public static final String RESP_MSG_GOODS_CODE_EXIST="goods code exist!";
 	//sku不存在
 	public static final Integer RESP_CODE_SKU_NOT_EXIST=2000;
 	public static final String RESP_MSG_SKU_NOT_EXIST="sku not exist!";
@@ -123,6 +126,10 @@ public interface ShoppingContants {
 	
 	public static final Integer RESP_CODE_ORDER_AMOUNT_ERRO=3002;
 	public static final String RESP_MSG_ORDER_AMOUNT_ERRO="order amount erro!";
+	
+	public static final Integer RESP_CODE_ORDER_REDUCE_STOCK_ERRO=3003;
+	public static final String RESP_MSG_ORDER_REDUCE_STOCK_ERRO="order reduce stock erro!";
+	
 
 	
 	

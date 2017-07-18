@@ -9,13 +9,9 @@
 <script type="text/javascript">
 function checkNumber(obj){
 	var $number=$(obj).parent().find('.optNumber');
-	var reg = /\d+$/;
+	var reg = /^\d+$/;
 	if(!reg.test($number.val()))
 	{
-		$(obj).val(1);
-		return false;
-	}
-	if(parseInt($number.val())<0){
 		$(obj).val(1);
 		return false;
 	}

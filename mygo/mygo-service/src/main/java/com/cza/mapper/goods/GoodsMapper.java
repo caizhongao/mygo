@@ -30,7 +30,7 @@ public interface GoodsMapper {
 	
 	public List<TGoods> listGoods(GoodsVo param);
 	
-	public TGoods queryGoods(Long gid);
+	public TGoods queryGoods(GoodsVo goods);
 	
 	public void saveGoods(TGoods goods);
 	

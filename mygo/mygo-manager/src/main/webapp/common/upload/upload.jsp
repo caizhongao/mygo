@@ -34,7 +34,7 @@
 			wrapId: 'uploader', //必填
 		},
 		//处理客户端新文件上传时，需要调用后台处理的地址, 必填
-		uploadUrl: '${ctx}/manager/goods/uploadPic.do',
+		uploadUrl: '${ctx}/login/goods/uploadPic.do',
 		//处理客户端原有文件更新时的后台处理地址，必填
 		updateUrl: 'fileupdate.php',
 		//当客户端原有文件删除时的后台处理地址，必填

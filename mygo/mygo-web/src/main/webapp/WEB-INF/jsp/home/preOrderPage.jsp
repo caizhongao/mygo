@@ -417,10 +417,14 @@ display:none;
 					<c:forEach items="${order.detailVos}" var="detail" varStatus="status">
 						<tr height="100px">
 							<td align="center" style="border-bottom: 1px dashed #ccc;">
+								<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${detail.gid }" target="_blank">
 								<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc;vertical-align: middle;">
+								</a>
+								<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${detail.gid }" target="_blank">
 								<div style="vertical-align: middle;display: inline-block; width: 150px;text-align: left;margin-left: 10px;">
 									${detail.sku.goodsName}
 								</div>
+								</a>
 		 						<input type="hidden" name="detailVos[${status.index}].sid" value="${detail.sku.sid}">
 								<input type="hidden" name="detailVos[${status.index}].number" value="${detail.number}">
 							</td>
