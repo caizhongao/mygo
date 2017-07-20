@@ -100,6 +100,7 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 					vo.setCname(category.getCname());
 					vo.setStatus(category.getStatus());
 					vo.setPid(category.getPid());
+					vo.setOrderId(category.getOrderId());
 					voList.add(vo);
 				}
 				resp.setData(voList);
@@ -132,6 +133,7 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 			updateParam.setCname(categoryVo.getCname());
 			updateParam.setStatus(categoryVo.getStatus());
 			updateParam.setPid(categoryVo.getPid());
+			updateParam.setOrderId(categoryVo.getOrderId());
 			categoryMapper.updateCategory(updateParam);
 			//更新
 			TCategoryAttr  updateStatusParam=new TCategoryAttr();
@@ -184,6 +186,7 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 			TCategory saveParam=new TCategory();
 			saveParam.setCname(categoryVo.getCname());
 			saveParam.setStatus(categoryVo.getStatus());
+			saveParam.setOrderId(categoryVo.getOrderId());
 			saveParam.setPid(0l);
 			categoryMapper.saveCategory(saveParam);
 			//保存类目属性
@@ -228,7 +231,7 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 				vo.setCname(category.getCname());
 				vo.setPid(category.getPid());
 				vo.setStatus(category.getStatus());
-				
+				vo.setOrderId(category.getOrderId());
 				TCategoryAttr attrParam=new TCategoryAttr();
 				attrParam.setCid(category.getCid());
 				attrParam.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);

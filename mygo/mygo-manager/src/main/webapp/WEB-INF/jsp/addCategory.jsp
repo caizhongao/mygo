@@ -17,14 +17,33 @@
 	function submitForm(){
 		var category=new Object();
 		category.cname=$('#cname').val();
+		if(category.cname==''){
+			alert('类目名称不能为空!');
+			return;
+		}
+		category.orderId=$('#orderId').val();
+		if(category.orderId==''){
+			alert('类目排序不能为空!');
+			return;
+		}
+		if(!isInt(category.orderId)){
+			alert("类目排序必须是整数");
+			return;
+		}
 		category.status=$('#status option:selected').val();
+		if(category.status==''){
+			alert('请选择状态!');
+			return;
+		}
 		var attrs=[];
 		var attrIndex=0;
-		$(".attrTr").each(function(){
-			var attr=new Object();
-			attr.attrName=$(this).find("input[name='attrName']").eq(0).val();
-			attrs[attrIndex]=attr;
-			attrIndex++;
+		$("input[name='attrName']").each(function(){
+			if($(this).val()!=''){
+				var attr=new Object();
+				attr.attrName=$(this).val();
+				attrs[attrIndex]=attr;
+				attrIndex++;
+			}
 		});
 		category.attrList=attrs;
 		var categoryStr=JSON.stringify(category);
@@ -47,14 +66,17 @@
 	
 	function editAttrRow(type,obj){
 		if(type==0){
-			var ahtml='<tr class="attrTr"  height="25px">'+$('.attrTr:last').html()+'</tr>';
-			$('#attrTable').append(ahtml);
-			
-			$('.attrTr :last').find('input[name="attrName"]').val('');
+			var ahtml='<div>'+
+							'<span style="display: inline-block;width: 215px;">'+
+								'<input type="text" class="searchInput" name="attrName" value="">'+
+							'</span>'+
+							'<span style="width: 25px;display: inline-block;vertical-align: middle;cursor: pointer;" onclick="editAttrRow(1,this)" title="删除">'+
+								'<img alt="删除" src="${ctx}/img/delete.png" width="20px">'+
+							'</span>'+
+						'</div>';
+			$('#attrTd').append(ahtml);
 		}else{
-			if($('.attrTr').size()>1){
-				$(obj).parent().parent().remove();
-			}
+			$(obj).parent().remove();
 		}
 		
 	}
@@ -70,55 +92,53 @@
 	table tr{
 		height: 40px;
 	}
-	input,select{
-		width: 175px;
-		border: 1px solid #DFDFDF;
-	}
 </style>
 </head>
 <body>
-	<div style="width: 97%;margin: 0px auto">
+	<div style="margin: 0px auto">
+			<div style="display: inline-block;border-bottom: 1px solid #dcdcdc;width: 100%;padding-bottom: 7px;margin-bottom: 10px">
+		<span style="float: left;margin-left: 5px;">
+			管理中心 - 添加分类
+		</span>
+		</div>
 	<form action="" enctype="multipart/form-data">
 		<table class="categoryTable">
 			<tr>
-				<td colspan="2" style="font-weight:bold">分类信息</td>
+				<td width="60px">名称：</td>
+				<td><input type="text" class="searchInput" name="cname" id="cname"></td>
 			</tr>
 			<tr>
-			
-			<tr>
-			<tr>
-				<td width="90px">分类名称：</td>
-				<td><input type="text" name="cname" id="cname"></td>
+				<td>排序：</td>
+				<td><input type="text" class="searchInput" name="orderId" id="orderId"></td>
 			</tr>
 			<tr>
-				<td width="90px">状态：</td>
+				<td>状态：</td>
 				<td>
-					<select name="status">
-						<option value="0">正常<option>
-						<option value="1">失效<option>
+					<select name="status" id="status" class="searchInput" style="text-align: center;">
+						<option value="">请选择</option>
+						<option value="0">正常</option>
+						<option value="1">失效</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" style="font-weight:bold">分类属性</td>
+				<td valign="top" style="padding-top: 5px;">属性：</td>
+				<td id="attrTd">
+					<div>
+						<span style="display: inline-block;width: 215px;">
+							<input type="text" class="searchInput" name="attrName" value="">
+						</span><span style="width: 25px;display: inline-block;vertical-align: middle;cursor: pointer;" onclick="editAttrRow(0)" title="添加一行">
+							<img alt="添加" src="${ctx}/img/add.png" width="20px">
+						</span>
+					</div>
+				</td>
 			</tr>
-		</table>
-		<input type="button" class="manager_button" onclick="editAttrRow(0)" value=" 添加一行 ">
-		<br>
-		<table id="attrTable" cellpadding="0" cellspacing="0">
-		<tr>
 			<tr>
-				<td width="190px" align="center">属性名称</td>
-				<td  width="80px" align="center" class="optTh">操作</td>
-			</tr>
-			<tr class="attrTr" height="25px">
-				<td align="center"><input type="text" name="attrName" value=""></td>
-				<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrRow(1,this)" value=" 删除 "></td>
-			</tr>
-		</table>
-		<table>
-			<tr>
-				<td><input type="button" class="manager_button" onclick="submitForm()" value=" 提交 "></td>
+				<td colspan="2" align="right"><input type="button" class="manager_button" onclick="submitForm()" value=" 提交 ">
+					<span style="width: 40px;visibility:hidden;" >
+						<img alt="添加" src="${ctx}/img/add.png" width="30px">
+					</span>
+				</td>
 			</tr>
 		</table>
 	</form>

@@ -23,8 +23,27 @@ public class TCategory {
 	private Long cid;
 	private String cname;
 	private Long pid;
+	private Integer orderId;
 	private Integer status;
 	
+	
+	/**
+	* @return orderId
+	*/
+	
+	public Integer getOrderId() {
+		return orderId;
+	}
+
+	
+	/**
+	 * @param orderId the orderId to set
+	 */
+	
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
+	}
+
 	/**
 	* @return cid
 	*/
@@ -89,6 +108,7 @@ public class TCategory {
 		this.status = status;
 	}
 
+
 	
 	    /* (非 Javadoc)
 	    * 
@@ -99,9 +119,11 @@ public class TCategory {
 	    
 	@Override
 	public String toString() {
-		return "TCategory [cid=" + cid + ", cname=" + cname + ", pid=" + pid + ", status=" + status + "]";
+		return "TCategory [cid=" + cid + ", cname=" + cname + ", pid=" + pid + ", orderId=" + orderId + ", status="
+				+ status + "]";
 	}
-	
+	    
+
 	
 	
 }

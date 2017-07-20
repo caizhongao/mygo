@@ -10,62 +10,50 @@
 	
 </script>
 <style type="text/css">
-		.queryParam{
-	width: 80%;height: 30px;
-	margin-top:25px;
-	font-size: 14px;color: #666666;
+	.listTable td{
+		text-align: center;
 	}
-		.mytable td {
-	border-right: 1px solid #daf3ff;
-	border-top: 1px solid #daf3ff;
-	text-align: center;
-	height: 95px;
-	color: #666666;
-	font-size: 13px;
-}
-
-.thtable td {
-	text-align: center;
-	height: 30px;
-	background-color: #f5f5f5;
-	color: #666666;
-	font-size: 13px;
-}
 </style>
 </head>
 <body>
-	<div style="width:95%;margin: 0px auto;">
+	<div style="margin: 0px auto;">
+		<div style="display: inline-block;border-bottom: 1px solid #dcdcdc;width: 100%;padding-bottom: 7px;margin-bottom: 10px">
+			<span style="float: left;margin-left: 5px;">
+				管理中心 - 订单列表
+			</span>
+			<span style="float: right;padding-right: 10px;">
+			</span>
+		</div>
 		<form action="${ctx}/login/order/listPayOrder.do" method="post">
-			<div class="queryParam">
+			<div class="query_div">
 				<span style="display: inline-block;width: 300px">
-					订单号：<input class="query_obj" type="text" name="oid" value="${order.oid}">
+					订单号：<input class="searchInput" type="text" name="oid" value="${order.oid}">
 				</span>
 				
 				<span style="display: inline-block;width: 300px">
-					商品名称：<input class="query_obj" type="text" name="goodsName" value="${order.goodsName}">
+					商品名称：<input class="searchInput" type="text" name="goodsName" value="${order.goodsName}">
 				</span>
 				<span style="display: inline-block;width: 150px;text-align: center">
-					<input type="button" class="manager_button" onclick="$('form').eq(0).submit()" style="width: 100px" value="查询">
+					<input type="button" class="searchBtn" onclick="$('form').eq(0).submit()" style="width: 100px" value="查询">
 				</span>
 			</div>
 		</form>
-		<table style="width: 95%; border: 1px solid #e8e8e8" class="thtable" cellpadding="0" cellspacing="0">
+			<table class="listTable">
 				<tr>
-					<td width="320">商品信息</td>
-					<td width="80">单价</td>
-					<td width="80">数量</td>
-					<td width="100">金额</td>
-					<td width="100">总金额</td>
-					<td>发货地址</td>
+					<th width="320">商品信息</th>
+					<th width="80">单价</th>
+					<th width="80">数量</th>
+					<th width="100">金额</th>
+					<th width="100">总金额</th>
+					<th>发货地址</th>
 					<!-- <td width="140px">操作</td> -->
 				</tr>
 			</table>
 			<br>
 			<c:forEach items="${pager.result}" var="order" varStatus="status">
-				<table style="width: 95%; border: 1px solid #daf3ff;"
-					class="mytable" cellpadding="0" cellspacing="0">
+				<table class="listTable">
 					<tr>
-						<td colspan="7" style="background-color: #eaf8ff; height: 30px; text-align: left;border-top: none;border-right: none;">
+						<th colspan="6" style="text-align: left;">
 							<font style="font-weight: bold; margin-left: 20px;">
 							<jsp:useBean id="dateObject" class="java.util.Date" scope="page"></jsp:useBean>
 							<jsp:setProperty property="time" name="dateObject" value="${order.createTime*1000}"/>
@@ -88,7 +76,7 @@
 									【系统关闭】
 								</c:when>
 							</c:choose>
-						</td>
+						</th>
 					</tr>
 					<tr>
 						<c:forEach items="${order.detailVos}" var="detail" varStatus="detailstatus">

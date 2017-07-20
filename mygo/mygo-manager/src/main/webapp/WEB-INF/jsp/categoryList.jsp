@@ -7,40 +7,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>用户注册</title>
 <script type="text/javascript">
+	function toAddCategory(){
+		location.href="${ctx}/login/category/addCategory.do";
+	}
+	
+	function editCategory(cid){
+		location.href="${ctx}/login/category/editCategory.do?cid="+cid;
+	}
 	
 </script>
 <style type="text/css">
-	#mytable{
-		font-size: 14px;
-	}
 	table td{
-		border-right: 1px solid #daf3ff;
-		border-bottom: 1px solid #daf3ff;
-		text-align: center;
-		height: 100px;
-		color: #666666;
-		font-size: 14px;
+	 text-align: center;
 	}
-	table th{
-		border-right: 1px solid #daf3ff;
-		border-bottom: 1px solid #daf3ff;
-		text-align: center;
-		height: 30px;
-		background-color: #eaf8ff;
-		color: #666666;
-	}
-	
-}
 </style>
 </head>
 <body>
-	<div style="width:95%;margin: 0px auto;">
-	<table style="width: 95%" cellpadding="0" cellspacing="0">
-		<tr>
-			<td colspan="7" style="border-right: none;text-align: right;height: 50px;"> 
-				<a href="${ctx}/login/category/addCategory.do" class="manager_button">添加分类</a>
-			</td>
-		</tr>
+	<div>
+		<div style="display: inline-block;border-bottom: 1px solid #dcdcdc;width: 100%;padding-bottom: 7px;margin-bottom: 10px">
+		<span style="float: left;margin-left: 5px;">
+			管理中心 - 类目列表
+		</span>
+		<span style="float: right;padding-right: 10px;">
+			<input type="button" class="addBtn" onclick="toAddCategory()" style="width: 100px" value="添加分类">
+		</span>
+		</div>
+	<table class="listTable" width="100%">
 		<tr>
 			<th>
 				序号
@@ -80,7 +72,9 @@
 					</c:choose>
 				</td>
 				<td style="width: 180px;">
-					<a href="${ctx}/login/category/editCategory.do?cid=${category.cid}" class="manager_button">编辑</a>
+					<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="editCategory(${category.cid})" title="编辑">
+						<img alt="" width="25px" src="${ctx}/img/edit.png">
+					</span>
 				</td>
 			</tr>
 		</c:forEach>

@@ -324,6 +324,7 @@
 <div  class="page_body">
 	<%@ include file="/common/top.jsp" %>
 	<div class="page_middle" style="margin-top: 30px">
+			<%@ include file="/common/search/search.jsp" %>
 		<%@ include file="/common/category.jsp" %>
 		<div style="width: 80%;margin: 0px auto">
 			<c:forEach items="${goods.skus}" var="sku">
@@ -343,9 +344,9 @@
 			<table width="1100px" cellpadding="0" cellspacing="0"  style="font-size: 14px;color:#74777b;margin-top: 20px;height: 401px;font-family: Arial">
 				<tr>
 					<td rowspan="${fn:length(goods.skus[0].attrs)+5}" width="500px">
-						<div style="width: 400px;border: 1px solid #E8E8E8;">
+						<div style="width: 402px;border: 1px solid #E8E8E8;">
 							<!-- margin-top: 1px;margin-left: 1px;margin-bottom: 1px -->
-							<img src="${goods.goodsPic}" width="400px" id="goodsDetailPic" alt="商品详情图" style="">
+							<img src="${goods.goodsPic}" width="400px" height="400px" id="goodsDetailPic" alt="商品详情图" style="">
 						</div>
 						<ul style="width: 402px;margin-top: 2px;height: 100px">
 							<c:forEach items="${goods.skus}" var="sku">

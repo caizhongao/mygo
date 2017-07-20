@@ -2,7 +2,11 @@
 	width: 100%;
 	margin:0 auto;
 }
-
+body{
+	    background: #ffffff;
+    padding: 10px;
+	
+}
 .page_middle{
 	width:100%;
 }
@@ -29,23 +33,77 @@ a:hover{color:#E06F6F;text-decoration:underline; }
 }
 
 
+.addBtn{
+	padding: 5px 15px 5px;
+    margin: 2px 2px;
+    border: none;
+    background: #fa8a28;
+    color: #FFF;
+    cursor: pointer;
+}
+
+/**收搜区域*/
+.query_div{
+    background: #F7F7F7;
+    border: 1px solid #e5e5e5;
+    padding: 5px;
+    color: #808080;
+    margin: 0 0 10px 0;
+}
+.searchInput{
+	margin: 5px;
+    padding: 0px 4px;
+    height: 28px;
+    line-height: 28px;
+    min-width: 200px;
+    width: auto;
+    border: solid 1px #ddd;
+}
+.searchBtn {
+    padding: 5px 15px 5px;
+    margin: 2px 2px;
+    border: none;
+    background: #24a0d6;
+    color: #FFF;
+    cursor: pointer;
+}
+
+/**数据列表区域*/
+.listTable{
+	width:100%;
+	background-color: #dddddd;
+	color:#192E32;
+	font: 12px "sans-serif", "Arial", "Verdana";
+}
+.listTable th{
+	font-weight:normal;
+	font-size:13px;
+	height:40px;
+	line-height:35px;
+	background-color: #FBFBFB;
+	text-align: center;
+	padding: 10px;
+}
+.listTable td{
+	background-color: #FFF;
+	padding: 10px;
+}
+
 
 .manager_button{
-	padding-left:10px;
-	padding-right:10px;
-	padding-top:4px;
-	padding-bottom:4px;
-	font-size:13px;
+	padding:5 15 5 15;
+	font-size:15px;
 	width: auto;
 	height:auto;
 	border-radius:3px;
-	background-color: #21B1E3;
+	background-color: #24a0d6;
 	color: white;
 	border: 1px solid #21B1E3
 }
 
 .manager_button:HOVER {
-		cursor: pointer;
+	cursor: pointer;
+	background-color: #02AAF1;
 }
 
 

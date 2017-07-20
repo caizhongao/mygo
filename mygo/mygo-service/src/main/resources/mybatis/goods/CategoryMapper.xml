@@ -5,19 +5,20 @@
 		<result property="cname" column="cname"/>
 		<result property="cid" column="cid"/>
 		<result property="pid" column="pid"/>
+		<result property="orderId" column="order_id"/>
 		<result property="status" column="status"/>
 	</resultMap>
 	
 	<sql id="allColumns">
-			cname,pid,cid,status
+			cname,pid,cid,status,order_id
 	</sql>
 	
 	<insert id="saveCategory" parameterType="com.cza.dto.goods.TCategory" useGeneratedKeys="true" keyProperty="cid" >
 			insert into t_category (
-				cname,pid,status
+				cname,pid,status,order_id
 			)
 			values (
-				#{cname}, #{pid},#{status}
+				#{cname}, #{pid},#{status},#{orderId}
 			)
 	</insert>	
 	
@@ -37,6 +38,9 @@
 			</if>
 			<if test="status!=null and status!=''">
 				status = #{status},
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				order_id = #{orderId},
 			</if>
 		</set> 
 		where cid = #{cid} 
@@ -61,6 +65,7 @@
 					and cname=#{cname}
 				</if>
 			</where>
+			order by order_id desc
 	</select>
 		
 </mapper>

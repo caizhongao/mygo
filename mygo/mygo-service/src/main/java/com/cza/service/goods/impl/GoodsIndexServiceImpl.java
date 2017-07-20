@@ -15,9 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequest;
@@ -98,24 +100,23 @@ public class GoodsIndexServiceImpl implements GoodsIndexService {
 			ServiceResponse<Pager<GoodsVo>> resp=new ServiceResponse<>();
 			List<GoodsVo>voList=new ArrayList<>();
 			Client client=ElasticSearchUitl.getClient();
-			Long count= client.prepareCount("mygo")
-					.setTypes("goods")
-			        .setQuery(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("goodsName", searchKey)).should(QueryBuilders.matchQuery("categoryName", searchKey)))
-			        .execute()
-			        .actionGet().getCount();
+			CountRequestBuilder countBuilder=client.prepareCount("mygo").setTypes("goods");
+			if(!"*".equals(searchKey)){
+				countBuilder.setQuery(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("goodsName", searchKey)).should(QueryBuilders.matchQuery("categoryName", searchKey)));
+			}
+			Long count=countBuilder.execute().actionGet().getCount();
 			log.info("elasticsearch searchkey:{},total result:{}",searchKey,count);
-			SearchResponse response = client.prepareSearch("mygo")
-			        .setTypes("goods")
-			        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-			        .setQuery(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("goodsName", searchKey))
-			        								   .should(QueryBuilders.matchQuery("categoryName", searchKey)))
-			        .setFrom((goods.getPageNum()-1)*goods.getPageSize()).setSize(goods.getPageSize())
-			        .setExplain(true)
-			        .addHighlightedField("goodsName")
-			        .setHighlighterPreTags("<font style=\"color:red\">")
-			        .setHighlighterPostTags("</font>")
-			        .execute()
-			        .actionGet();
+			SearchRequestBuilder builder=client.prepareSearch("mygo").setTypes("goods").setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
+			if(!"*".equals(searchKey)){
+				builder.setQuery(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("goodsName", searchKey)).should(QueryBuilders.matchQuery("categoryName", searchKey)));
+			}
+			SearchResponse response = builder.setFrom((goods.getPageNum()-1)*goods.getPageSize()).setSize(goods.getPageSize())
+										     .setExplain(true)
+										     .addHighlightedField("goodsName")
+										     .setHighlighterPreTags("<font style=\"color:red\">")
+										     .setHighlighterPostTags("</font>")
+										     .execute()
+										     .actionGet();
 			for(SearchHit hit:response.getHits().getHits()){
 				Map<String,Object> map=hit.getSource();
 				GoodsVo vo=new GoodsVo();

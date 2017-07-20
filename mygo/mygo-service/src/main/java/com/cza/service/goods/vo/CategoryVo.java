@@ -24,9 +24,28 @@ public class CategoryVo {
 	private Long cid;
 	private String cname;
 	private Long pid;
+	private Integer orderId;
 	private Integer status;
 	private List<CategoryAttrVo> attrList;
 	
+	
+	/**
+	* @return orderId
+	*/
+	
+	public Integer getOrderId() {
+		return orderId;
+	}
+
+	
+	/**
+	 * @param orderId the orderId to set
+	 */
+	
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
+	}
+
 	/**
 	* @return cid
 	*/
@@ -109,6 +128,7 @@ public class CategoryVo {
 		this.attrList = attrList;
 	}
 
+
 	
 	    /* (非 Javadoc)
 	    * 
@@ -119,9 +139,18 @@ public class CategoryVo {
 	    
 	@Override
 	public String toString() {
-		return "CategoryVo [cid=" + cid + ", cname=" + cname + ", pid=" + pid + ", status=" + status + ", attrList="
-				+ attrList + "]";
+		return "CategoryVo [cid=" + cid + ", cname=" + cname + ", pid=" + pid + ", orderId=" + orderId + ", status="
+				+ status + ", attrList=" + attrList + "]";
 	}
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+
 	
 	
 	

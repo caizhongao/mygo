@@ -10,29 +10,9 @@
 	
 </script>
 <style type="text/css">
-	table td{
-		border-right: 1px solid #daf3ff;
-		border-bottom: 1px solid #daf3ff;
-		text-align: center;
-		height: 110px;
-		color: #666666;
-		font-size: 14px;
-	}
-	table th{
-		border-right: 1px solid #daf3ff;
-		border-bottom: 1px solid #daf3ff;
-		text-align: center;
-		height: 30px;
-		background-color: #eaf8ff;
-		color: #666666;
-	}
-	.queryParam{
-	width: 80%;
-	height: 30px;
-	margin-top:25px;
-	font-size: 14px;
-	color: #666666;
-	display: inline-block;
+
+	.listTable tr:HOVER{
+		background-color: ;
 	}
 </style>
 <script type="text/javascript">
@@ -67,35 +47,51 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 		});
 	}
 }
-
+function toAddGoods(){
+	location.href='${ctx}/login/goods/addGoods.do';
+}
+function editGoods(gid){
+	location.href="${ctx}/login/goods/editGoods.do?gid="+gid;
+}
 </script>
 </head>
 <body>
-	<div style="width:95%;margin: 0px auto;">
-		<form action="${ctx}/login/goods/listGoods.do" method="post" style="width: 95%">
-		<div class="queryParam">
-			<span style="display: inline-block;width: 300px">
-				商品名称：<input type="text" class="query_obj" name="goodsName" value="${goods.goodsName}">
+	<div style="margin: 0px auto;width: 100%;">
+		
+		<div style="display: inline-block;border-bottom: 1px solid #dcdcdc;width: 100%;padding-bottom: 7px;margin-bottom: 10px">
+			<span style="float: left;margin-left: 5px;">
+				管理中心 - 商品列表
 			</span>
-			<span style="display: inline-block;width: 300px">
-				商品状态：
-				<select name="status" class="query_obj">
-					<option value="">所有</option>
-					<option value="W" <c:if test='${goods.status=="W"}'>selected="selected"</c:if>>待上架</option>
-					<option value="O" <c:if test='${goods.status=="O"}'>selected="selected"</c:if>>已上架</option>
-					<option value="F" <c:if test='${goods.status=="F"}'>selected="selected"</c:if>>已下架</option>
-				</select>
-			</span>
-			<span style="display: inline-block;width: 150px;text-align: center">
-				<input type="button" class="manager_button" onclick="$('form').eq(0).submit()" style="width: 100px" value="查询">
+			<span style="float: right;padding-right: 10px;">
+				<input type="button" class="addBtn" onclick="toAddGoods()" style="width: 100px" value="添加商品">
 			</span>
 		</div>
-		<div style="display: inline-block;width: 19%;text-align: right">
-			<a href="${ctx}/login/goods/addGoods.do" class="manager_button">添加商品</a>
-		</div>
+		<!-- 搜索区域 -->
+		<form action="${ctx}/login/goods/listGoods.do" method="post">
+			<div class="query_div">
+				<span style="display: inline-block;width: 300px">
+					商品名称：<input type="text" class="searchInput" name="goodsName" value="${goods.goodsName}">
+				</span>
+				<span style="display: inline-block;width: 300px">
+					商品状态：
+					<select name="status" class="searchInput">
+						<option value="">所有</option>
+						<option value="W" <c:if test='${goods.status=="W"}'>selected="selected"</c:if>>待上架</option>
+						<option value="O" <c:if test='${goods.status=="O"}'>selected="selected"</c:if>>已上架</option>
+						<option value="F" <c:if test='${goods.status=="F"}'>selected="selected"</c:if>>已下架</option>
+					</select>
+				</span>
+				<span style="display: inline-block;width: 150px;text-align: center">
+					<input type="button" class="searchBtn" onclick="$('form').eq(0).submit()" style="width: 100px" value="查询">
+				</span>
+			</div>
 		</form>
-	<table style="width: 95%" cellpadding="0" cellspacing="0">
+		<!-- 搜索区域  end-->
+	<table style="width: 100%"  class="listTable">
 		<tr>
+			<th>
+				序号
+			</th>
 			<th>
 				商品图片
 			</th>
@@ -109,7 +105,7 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 				商品分类
 			</th>
 			<th>
-				商品价格
+				价格
 			</th>
 			<th>
 				状态
@@ -118,24 +114,27 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 				操作
 			</th>	
 		</tr>
-		<c:forEach items="${pager.result}" var="goods">
+		<c:forEach items="${pager.result}" var="goods" varStatus="status">
 			<tr>
-				<td>
-					<img src="${goods.goodsPic}" width="100px">
+				<td align="center"  width="100px">
+					${status.index+1+(pager.pageNum-1)*pager.pageSize}
+				</td>
+				<td align="center">
+					<img src="${goods.goodsPic}" height="100px">
 				</td>
 				<td>
 					${goods.goodsCode}
 				</td>
-				<td>
+				<td style="font-weight: bold;">
 					${goods.goodsName }
 				</td>
-				<td>
+				<td align="center">
 					${goods.categoryName }
 				</td>
-				<td>
+				<td align="right"  width="100px">
 					${goods.price}
 				</td>
-				<td>
+				<td align="center">
 					<c:choose>
 						<c:when test='${goods.status=="W"}'>
 							待上架
@@ -148,16 +147,19 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td style="width: 180px;">
-					<a href="${ctx}/login/goods/editGoods.do?gid=${goods.gid}" class="manager_button">编辑</a>
-					<c:if test='${goods.status=="W"}'>
-						<a href="javascript:updateGoodsStatus('on',${goods.gid});" class="manager_button">上架</a>
+				<td align="center" style="width: 180px;">
+					<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="editGoods(${goods.gid})" title="编辑">
+						<img alt="" width="25px" src="${ctx}/img/edit.png">
+					</span>
+					<c:if test='${goods.status=="W"||goods.status=="F"}'>
+						<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="updateGoodsStatus('on',${goods.gid})" title="上架">
+							<img alt="" width="25px" src="${ctx}/img/onshelf.png">
+						</span>
 					</c:if>
 					<c:if test='${goods.status=="O"}'>
-						<a href="javascript:updateGoodsStatus('off',${goods.gid});" class="manager_button">下架</a>
-					</c:if>
-					<c:if test='${goods.status=="F"}'>
-						<a href="javascript:updateGoodsStatus('on',${goods.gid});" class="manager_button">上架</a>
+						<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="updateGoodsStatus('off',${goods.gid})" title="下架">
+							<img alt="" width="25px" src="${ctx}/img/offshelf.png">
+						</span>
 					</c:if>
 				</td>
 			</tr>
