@@ -21,7 +21,7 @@
 		initCategory();
 	});
 	
-	function initCategory(){
+/* 	function initCategory(){
 		var cid='${cid}';
 		$.ajax({
 			url:'${ctx}/unlogin/goods/listCategory.do',
@@ -44,13 +44,65 @@
 				$('#firstTd').after(categoryHtml);
 			}
 		});
+	} */
+	
+	function initCategory(){
+		var cid='${cid}';
+		$.ajax({
+			url:'${ctx}/unlogin/goods/listCategory.do',
+			type:'post',
+			dataType:'json',
+			success:function(categoryList){
+				var categoryHtml='<li class="active grid"><a href="index.html" onclick="toIndex()">首页</a></li>';
+				$.each(categoryList,function(index,category){
+				/* 	var active='';
+					if(cid==category.cid){
+						active='active';
+					} */
+					categoryHtml+='<li class="active grid"><a href="index.html" onclick="gotoPage('+category.cid+')"">'+category.cname+'</a></li>';
+				});
+				$('#category').html(categoryHtml);
+			}
+		});
 	}
 </script>
-<div style="width: 100%;background-color: #02AAF1;">
-	<table width="80%"  cellpadding="0" cellspacing="0" align="center">
-		<tr style="height: 35px;color: white;">
-			<td width="80px" class="category <c:if test="${cid==null}">active</c:if>" onclick="toIndex()"  id="firstTd">首页</td>
-			<td>&nbsp;</td>
-		</tr>		
-	</table>
-</div>
+	<div class="header-bottom">
+	    <div class="wrap">
+			<div class="header-bottom-left">
+				<div class="logo">
+					<a href="index.html"><img src="${ctx}/common/home/images/logo.png" alt=""/></a>
+				</div>
+				<div class="menu">
+	            <ul class="megamenu skyblue" id="category">
+				</ul>
+			</div>
+		</div>
+	   <div class="header-bottom-right">
+         <div class="search">	  
+				<input type="text" name="s" class="textbox" value="Search" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search';}">
+				<input type="submit" value="Subscribe" id="submit" name="submit">
+				<div id="response"> </div>
+		 </div>
+	  <div class="tag-list">
+	    <ul class="icon1 sub-icon1 profile_img">
+			<li><a class="active-icon c1" href="#"> </a>
+				<ul class="sub-icon1 list">
+					<li><h3>sed diam nonummy</h3><a href=""></a></li>
+					<li><p>Lorem ipsum dolor sit amet, consectetuer  <a href="">adipiscing elit, sed diam</a></p></li>
+				</ul>
+			</li>
+		</ul>
+		<ul class="icon1 sub-icon1 profile_img">
+			<li><a class="active-icon c2" href="#"> </a>
+				<ul class="sub-icon1 list">
+					<li><h3>No Products</h3><a href=""></a></li>
+					<li><p>Lorem ipsum dolor sit amet, consectetuer  <a href="">adipiscing elit, sed diam</a></p></li>
+				</ul>
+			</li>
+		</ul>
+	    <ul class="last"><li><a href="#">Cart(0)</a></li></ul>
+	  </div>
+    </div>
+     <div class="clear"></div>
+     </div>
+	</div>
