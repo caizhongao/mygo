@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="${ctx}/common/upload/css/demo.css">
 	<link rel="stylesheet" type="text/css" href="${ctx}/common/upload/webuploader-0.1.5/webuploader.css">
 		<p>sku图片信息</p>
-		<div id="uploader" class="wu-example" style="width: 90%">
+		<div id="uploader" class="wu-example" style="width: 70%">
 			<div class="queueList">
 				<div id="dndArea" class="placeholder">
 					<div id="filePicker"></div>

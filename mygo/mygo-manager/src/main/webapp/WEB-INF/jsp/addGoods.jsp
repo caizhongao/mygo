@@ -40,7 +40,7 @@ $(function(){
 	function editAttrTableCell(obj,caid,attrName){
 		if($(obj).prop('checked')){
 			$('.optTh').before('<td class="'+caid+'" width="210px" align="center">'+attrName+'</td>');
-			$('.optTr').before('<td class="'+caid+' skuAttr"><input type="hidden" name="attrId" value="'+caid+'"><input type="text" class="input_obj" name="attrValue" align="center" value=""></td>');
+			$('.optTr').before('<td class="'+caid+' skuAttr"><input type="hidden" name="attrId" value="'+caid+'"><input type="text" class="searchInput" name="attrValue" align="center" value=""></td>');
 		}else{
 			$('.'+caid).remove();
 		}
@@ -48,7 +48,7 @@ $(function(){
 
 	function editAttrTableRow(type,obj){
 		if(type==0){
-			var ahtml='<tr class="skuTr"  height="25px">'+$('.skuTr:last').html()+'</tr>';
+			var ahtml='<tr class="skuTr" height="25px">'+$('.skuTr:last').html()+'</tr>';
 			$('#skuTable').append(ahtml);
 			$('.skuTr :last').find('input[name="barcode"]').val('');
 			$('.skuTr :last').find('input[name="barcode"]').attr('before','');
@@ -56,7 +56,7 @@ $(function(){
 			$('.skuTr :last').find('input[name="number"]').val('');
 			$('.skuTr :last').find('input[name="stock"]').val('');
 			$('.skuTr :last').find('input[name="attrValue"]').val('');
-			
+			$('.skuTr:last').find('.optTr').html('<img alt="删除" title="删除" style="cursor: pointer;" src="${ctx}/img/delete.png" onclick="editAttrTableRow(1,this)" width="20px">')
 			
 		}else{
 			if($('.skuTr').size()>1){
@@ -72,14 +72,14 @@ $(function(){
 								'<td width="210px" align="center">价格</td>'+
 								'<td width="210px" align="center">库存</td>'+
 								'<td width="210px" align="center">剩余库存</td>'+
-								'<td  width="80px" align="center" class="optTh">操作</td>'+
+								'<td  width="50px" align="center" class="optTh">操作</td>'+
 							'</tr>'+
 							'<tr class="skuTr" height="25px">'+
-								'<td align="center"><input type="text" class="input_obj" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic" value=""></td>'+
-								'<td align="center"><input type="text" class="input_obj" name="price" value=""></td>'+
-								'<td align="center"><input type="text" class="input_obj" name="number" onblur="syncStock(this)" value=""></td>'+
-								'<td align="center"><input type="text" class="input_obj" name="stock" value=""  readonly="readonly" ></td>'+
-								'<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>'+
+								'<td align="center"><input type="text" class="searchInput" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic" value=""></td>'+
+								'<td align="center"><input type="text" class="searchInput" name="price" value=""></td>'+
+								'<td align="center"><input type="text" class="searchInput" name="number" onblur="syncStock(this)" value=""></td>'+
+								'<td align="center"><input type="text" class="searchInput" name="stock" value=""  readonly="readonly" ></td>'+
+								'<td align="center" class="optTr"><img alt="添加一行" title="添加一行" style="cursor: pointer;" src="${ctx}/img/add.png" onclick="editAttrTableRow(0)" width="20px"></td>'+
 							'</tr>'
 							);
 	}
@@ -241,10 +241,6 @@ $(function(){
 	
 </script>
 <style type="text/css">
-	.manager_button1{
-		width: 50px;
-		height: 30px;
-	}
 	table{
 		font-size: 14px;
 		color: #666666;
@@ -252,31 +248,33 @@ $(function(){
 	table tr{
 		height: 40px;
 	}
-	input,select{
-		width: 175px;
-		border: 1px solid #DFDFDF;
-	}
 </style>
 </head>
-<body>
-	<div style="width: 97%;margin: 0px auto">
+<body style="margin: 8px">
+	<div>
+		<div style="display: inline-block;border-bottom: 1px solid #dcdcdc;width: 100%;padding-bottom: 7px;margin-bottom: 10px">
+			<span style="float: left;margin-left: 5px;">
+				管理中心 - 添加商品
+			</span>
+		</div>
 	<form action="" enctype="multipart/form-data">
+
+		<div style="width: 100%;height: 50px;line-height: 50px;font-weight: bold;">
+			【商品信息】
+		</div>
 		<table>
 			<tr>
-				<td colspan="2" style="font-weight:bold">商品基本信息</td>
-			</tr>
-			<tr>
 				<td width="90px">商品编码：</td>
-				<td><input type="text" name="goodsCode" id="goodsCode" class="input_obj"></td>
+				<td><input type="text" name="goodsCode" id="goodsCode" class="searchInput"></td>
 			</tr>
 			<tr>
 				<td>商品名称：</td>
-				<td><input type="goodsName" id="goodsName" class="input_obj"></td>
+				<td><input type="goodsName" id="goodsName" class="searchInput"></td>
 			</tr>
 			<tr>
 				<td>商品分类：</td>
 				<td>
-					<select id="cid" name="cid" onchange="listAttrs()" class="input_obj">
+					<select id="cid" name="cid" onchange="listAttrs()" class="searchInput">
 						<option value="1">食品</option>
 						<option value="2">服装</option>
 						<option value="3">家具</option>
@@ -286,30 +284,27 @@ $(function(){
 			</tr>
 			<tr id="attrs">
 			</tr>
-			<tr style="height: 15px"><td colspan="2"></td></tr>
-			<tr>
-				<td colspan="2" style="font-weight:bold">商品sku信息</td>
-			</tr>
-			<tr style="height:5px">
-				<td colspan="2">&nbsp;</td>
-			</tr>
 		</table>
-		<input type="button" class="manager_button" onclick="editAttrTableRow(0)" value=" 添加一行 ">
-		<br>
+		<div style="width: 100%;height: 30px;line-height: 30px;font-weight: bold;margin-top: 20px;">
+			【sku信息】
+		</div>
+<!-- 		<input type="button" class="manager_button" onclick="editAttrTableRow(0)" value=" 添加一行 ">
+		<input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 ">
+		<br> -->
 		<table id="skuTable" cellpadding="0" cellspacing="0">
 			<tr>
 				<td width="210px" align="center">条码</td>
 				<td width="210px" align="center">价格</td>
 				<td width="210px" align="center">总库存</td>
 				<td width="210px" align="center">剩余库存</td>
-				<td  width="80px" align="center" class="optTh">操作</td>
+				<td  width="50px" align="center" class="optTh">操作</td>
 			</tr>
 			<tr class="skuTr" height="25px">
-				<td align="center"><input type="text"  class="input_obj" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic"></td>
-				<td align="center"><input type="text"  class="input_obj" name="price" value=""></td>
-				<td align="center"><input type="text"  class="input_obj" name="number" onblur="syncStock(this)" value=""></td>
-				<td align="center"><input type="text"  class="input_obj" name="stock" readonly="readonly"></td>
-				<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>
+				<td align="center"><input type="text"  class="searchInput" name="barcode" before="" onblur="updateBarcode(this)" value=""><input type="hidden" name="skuPic"></td>
+				<td align="center"><input type="text"  class="searchInput" name="price" value=""></td>
+				<td align="center"><input type="text"  class="searchInput" name="number" onblur="syncStock(this)" value=""></td>
+				<td align="center"><input type="text"  class="searchInput" name="stock" readonly="readonly"></td>
+				<td align="center" class="optTr"><img alt="添加一行" title="添加一行" style="cursor: pointer;" src="${ctx}/img/add.png" onclick="editAttrTableRow(0)" width="20px"></td>
 			</tr>
 		</table>
 		<br>

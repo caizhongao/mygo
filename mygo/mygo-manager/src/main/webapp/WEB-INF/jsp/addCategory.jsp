@@ -108,7 +108,7 @@
 				<td><input type="text" class="searchInput" name="cname" id="cname"></td>
 			</tr>
 			<tr>
-				<td>排序：</td>
+				<td>权重：</td>
 				<td><input type="text" class="searchInput" name="orderId" id="orderId"></td>
 			</tr>
 			<tr>

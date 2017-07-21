@@ -96,6 +96,7 @@ public class GoodsAction extends CommonAction{
 		try {
 			String goodsJson=request.getParameter("goods");
 			GoodsVo goods = JSON.parseObject(goodsJson, GoodsVo.class);
+			log.info("updateGoods param:{}",goods);
 			//获取sku的最小价格，设置到商品
 			BigDecimal price=goods.getSkus().get(0).getPrice();
 			for(SkuVo sku:goods.getSkus()){

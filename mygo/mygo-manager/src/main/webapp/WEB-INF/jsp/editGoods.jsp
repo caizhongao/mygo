@@ -14,7 +14,7 @@
 	function editAttrTableCell(obj,caid,attrName){
 		if($(obj).prop('checked')){
 			$('.optTh').before('<td class="'+caid+'" width="210px" align="center">'+attrName+'</td>');
-			$('.optTr').before('<td class="'+caid+' skuAttr"><input type="hidden" name="attrId" value="'+caid+'"><input class="input_obj" type="text" name="attrValue" align="center" value=""></td>');
+			$('.optTr').before('<td class="'+caid+' skuAttr"><input type="hidden" name="attrId" value="'+caid+'"><input class="searchInput" type="text" name="attrValue" align="center" value=""></td>');
 		}else{
 			$('.'+caid).remove();
 		}
@@ -22,7 +22,7 @@
 
 	function editAttrTableRow(type,obj){
 		if(type==0){
-			var ahtml='<tr class="skuTr"  height="25px">'+$('.skuTr:last').html()+'</tr>';
+			var ahtml='<tr class="skuTr" height="25px">'+$('.skuTr:last').html()+'</tr>';
 			$('#skuTable').append(ahtml);
 			$('.skuTr :last').find('input[name="barcode"]').val('');
 			$('.skuTr :last').find('input[name="barcode"]').attr('before','');
@@ -33,6 +33,7 @@
 			$('.skuTr :last').find('input[name="sid"]').val('');
 			$('.skuTr :last').find('input[name="price"]').val('');
 			$('.skuTr :last').find('input[name="attrValue"]').val('');
+			$('.skuTr:last').find('.optTr').html('<img alt="删除" title="删除" style="cursor: pointer;" src="${ctx}/img/delete.png" onclick="editAttrTableRow(1,this)" width="20px">')
 		}else{
 			if($('.skuTr').size()>1){
 				$(obj).parent().parent().remove();
@@ -161,6 +162,7 @@
 			url:'${ctx}/login/goods/updateGoods.do',
 			type:'post',
 			data:{'goods':goodsStr},
+			dataType:'json',
 			success:function(data){
 				if(data.message=="success"){
 					alert('保存商品成功');
@@ -214,34 +216,36 @@
 	table tr{
 		height: 40px;
 	}
-	input,select{
-		width: 175px;
-		border: 1px solid #DFDFDF;
-	}
 </style>
 </head>
-<body>
-	<div style="width: 97%;margin: 0px auto">
+<body style="margin: 8px">
+	<div>
+		<div style="display: inline-block;border-bottom: 1px solid #dcdcdc;width: 100%;padding-bottom: 7px;margin-bottom: 10px">
+			<span style="float: left;margin-left: 5px;">
+				管理中心 - 编辑商品
+			</span>
+		</div>
 	<form action="" enctype="multipart/form-data">
+
+		<div style="width: 100%;height: 50px;line-height: 50px;font-weight: bold;">
+			【商品信息】
+		</div>
 		<table>
-			<tr>
-				<td colspan="2" style="font-weight:bold">商品基本信息</td>
-			</tr>
 			<tr>
 				<td width="90px">商品编码：</td>
 				<td>
 					<input type="hidden" name="gid" value="${goods.gid}" id="gid" readonly="readonly">
-					<input class="input_obj" type="text" name="goodsCode" value="${goods.goodsCode}" id="goodsCode" readonly="readonly">
+					<input class="searchInput" type="text" name="goodsCode" value="${goods.goodsCode}" id="goodsCode" readonly="readonly">
 				</td>
 			</tr>
 			<tr>
 				<td>商品名称：</td>
-				<td><input class="input_obj" type="text" id="goodsName" value="${goods.goodsName}"></td>
+				<td><input class="searchInput" type="text" id="goodsName" value="${goods.goodsName}"></td>
 			</tr>
 			<tr>
 				<td>商品分类：</td>
 				<td>
-					<select class="input_obj" id="cid" name="cid" onchange="listAttrs()" disabled="disabled">
+					<select class="searchInput" id="cid" name="cid" onchange="listAttrs()" disabled="disabled">
 						<option value="1" <c:if test="${goods.cid==1 }">selected="selected"</c:if>>食品</option>
 						<option value="2" <c:if test="${goods.cid==2 }">selected="selected"</c:if>>服装</option>
 						<option value="3" <c:if test="${goods.cid==3 }">selected="selected"</c:if>>家具</option>
@@ -265,16 +269,10 @@
 					</td>
 				</c:if>   
 			</tr>
-			<tr style="height: 15px"><td colspan="2"></td></tr>
-			<tr>
-				<td colspan="2" style="font-weight:bold">商品sku信息</td>
-			</tr>
-			<tr style="height:5px">
-				<td colspan="2">&nbsp;</td>
-			</tr>
 		</table>
-		<input type="button" class="manager_button" onclick="editAttrTableRow(0)" value=" 添加一行 ">
-		<br>
+		<div style="width: 100%;height: 30px;line-height: 30px;font-weight: bold;margin-top: 20px;">
+			【sku信息】
+		</div>
 		<table id="skuTable" cellpadding="0" cellspacing="0">
 			<tr>
 				<td width="210px" align="center">条码</td>
@@ -284,25 +282,30 @@
 				<c:forEach items="${goods.skus[0].attrs}" var="attr">
 					<td width="210px" align="center">${attr.attrName}</td>
 				</c:forEach>
-				<td  width="80px" align="center" class="optTh">操作</td>
+				<td  width="50px" align="center" class="optTh">操作</td>
 			</tr>
-			<c:forEach items="${goods.skus}" var="sku">
+			<c:forEach items="${goods.skus}" var="sku" varStatus="status">
 				<tr class="skuTr" height="25px">
 					<td align="center">
 						<input type="hidden" name="sid" value="${sku.sid}">
-						<input class="input_obj" type="text" name="barcode" before="${sku.barcode}" onblur="updateBarcode(this)" value="${sku.barcode}">
+						<input class="searchInput" type="text" name="barcode" before="${sku.barcode}" onblur="updateBarcode(this)" value="${sku.barcode}">
 						<input type="hidden" name="skuPic" value="${sku.skuPic}">
 					</td>
-					<td align="center"><input class="input_obj" type="text" name="price" value="${sku.price}"></td>
-					<td align="center"><input class="input_obj" type="text" name="number" onblur="syncStock(this)"  before="${sku.number}" value="${sku.number}"></td>
-					<td align="center"><input class="input_obj" type="text" name="stock" value="${sku.stock}"  before="${sku.stock}" readonly="readonly"></td>
+					<td align="center"><input class="searchInput" type="text" name="price" value="${sku.price}"></td>
+					<td align="center"><input class="searchInput" type="text" name="number" onblur="syncStock(this)" before="${sku.number}" value="${sku.number}"></td>
+					<td align="center"><input class="searchInput" type="text" name="stock" value="${sku.stock}"  before="${sku.stock}" readonly="readonly"></td>
 					<c:forEach items="${sku.attrs}" var="attr">
 						<td width="190px" align="center" class="${attr.attrId} skuAttr">
 							<input type="hidden" name="attrId" value="${attr.attrId}">
-							<input class="input_obj" type="text" name="attrValue" value="${attr.attrValue}">
+							<input class="searchInput" type="text" name="attrValue" value="${attr.attrValue}">
 						</td>
 					</c:forEach>
-					<td align="center" class="optTr"><input type="button" class="manager_button" onclick="editAttrTableRow(1,this)" value=" 删除 "></td>
+					<c:if test="${status.index==0}">
+						<td align="center" class="optTr"><img alt="添加一行" title="添加" style="cursor: pointer;" src="${ctx}/img/add.png" onclick="editAttrTableRow(0)" width="20px"></td>
+					</c:if>
+					<c:if test="${status.index!=0}">
+						<td align="center" class="optTr"><img alt="添加" title="添加" style="cursor: pointer;" src="${ctx}/img/delete.png" onclick="editAttrTableRow(1,this)" width="20px"></td>
+					</c:if>
 				</tr>
 			</c:forEach>
 		</table>

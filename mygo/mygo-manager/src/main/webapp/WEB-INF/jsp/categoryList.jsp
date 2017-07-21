@@ -43,6 +43,9 @@
 			<th>
 				分类级别
 			</th>
+			<th>	
+				权重
+			</th>
 			<th>
 				状态
 			</th>
@@ -60,6 +63,9 @@
 				</td>
 				<td>
 					一级分类
+				</td>
+				<td>
+					${category.orderId}
 				</td>
 				<td>
 					<c:choose>

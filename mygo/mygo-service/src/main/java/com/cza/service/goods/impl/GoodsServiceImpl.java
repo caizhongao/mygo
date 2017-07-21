@@ -424,6 +424,7 @@ public class GoodsServiceImpl implements GoodsService {
 		param.setGoodsPic(goods.getSkus().get(0).getSkuPic());
 		param.setPrice(goods.getPrice());
 		param.setStatus(ShoppingContants.GOODS_STATUS_WAIT);
+		log.info("updateGoods param:{}",param);
 		goodsMapper.updateGoods(param);
 		//保存sku
 		List<SkuVo>skus=goods.getSkus();

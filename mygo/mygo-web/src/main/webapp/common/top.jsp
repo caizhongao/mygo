@@ -3,14 +3,14 @@
 	.title_a{
 		font-weight: bold;
 		font-size: 13px;
-		color: #6C6C6C;
+		color: white;
 	}
 </style>
-<div style="width:100%;height: 28px;line-height: 27px;background-color: #f5f5f5;border-bottom: 1px solid #eee;color: #6C6C6C">
+<div style="width:100%;height: 28px;line-height: 27px;background-color: #4cb1ca;border-bottom: 1px solid #eee;color: white">
 	<div style="width:80%;margin: 0px auto;">
 		<table style="width: 100%;height: 27px">
 			<tr>
-				<td style="font-size: 12px;color: #777;">
+				<td style="font-size: 12px;color: white;">
 					<c:choose>
 						<c:when test="${sessionScope.user_session==null}">
 							您还没有登录,请&nbsp;<a href="${ctx}/unlogin/user/toLogin.do"  class="title_a">登录</a>

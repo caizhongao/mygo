@@ -16,6 +16,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -42,6 +44,7 @@ import com.cza.web.CommonAction;
 @Scope("prototype")
 @RequestMapping("login/category")
 public class CategoryAction extends CommonAction{
+	private static final Logger log = LoggerFactory.getLogger(CategoryAction.class);
 	@Autowired
 	private CategoryService categoryService;
 	
@@ -82,6 +85,7 @@ public class CategoryAction extends CommonAction{
 	public void updateCategory(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String categoryJson=request.getParameter("category");
 		CategoryVo category = JSON.parseObject(categoryJson, CategoryVo.class);
+		log.info("updateCategory param:{}",category);
 		ServiceResponse<CategoryVo> resp=categoryService.updateCategory(category);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			response.getWriter().print("success");

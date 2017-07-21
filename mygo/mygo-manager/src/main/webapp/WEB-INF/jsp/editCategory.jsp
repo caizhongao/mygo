@@ -96,10 +96,10 @@
 </head>
 <body>
 	<div style="margin: 0px auto">
-			<div style="display: inline-block;border-bottom: 1px solid #dcdcdc;width: 100%;padding-bottom: 7px;margin-bottom: 10px">
-		<span style="float: left;margin-left: 5px;">
-			管理中心 - 添加分类
-		</span>
+		<div style="display: inline-block;border-bottom: 1px solid #dcdcdc;width: 100%;padding-bottom: 7px;margin-bottom: 10px">
+			<span style="float: left;margin-left: 5px;">
+				管理中心 - 编辑分类
+			</span>
 		</div>
 	<form action="" enctype="multipart/form-data">
 		<table class="categoryTable">
@@ -111,7 +111,7 @@
 				<input type="text" class="searchInput" name="cname" value="${category.cname}" id="cname"></td>
 			</tr>
 			<tr>
-				<td>排序：</td>
+				<td>权重：</td>
 				<td><input type="text" class="searchInput" name="orderId" value="${category.orderId}" id="orderId"></td>
 			</tr>
 			<tr>

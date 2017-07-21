@@ -134,6 +134,7 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 			updateParam.setStatus(categoryVo.getStatus());
 			updateParam.setPid(categoryVo.getPid());
 			updateParam.setOrderId(categoryVo.getOrderId());
+			log.info("updateCategory param:{}",updateParam);
 			categoryMapper.updateCategory(updateParam);
 			//更新
 			TCategoryAttr  updateStatusParam=new TCategoryAttr();

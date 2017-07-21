@@ -36,10 +36,10 @@
 			<if test="cname!=null and cname!=''">
 				cname = #{cname},
 			</if>
-			<if test="status!=null and status!=''">
+			<if test="status!=null">
 				status = #{status},
 			</if>
-			<if test="orderId!=null and orderId!=''">
+			<if test="orderId!=null">
 				order_id = #{orderId},
 			</if>
 		</set> 
