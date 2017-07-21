@@ -42,76 +42,40 @@
 </head>
 <body  class="_body">
 <div  class="page_body">
-	<%@ include file="/common/top.jsp" %>
-	<div class="page_middle">
+	<%@ include file="/common/top1.jsp" %>
+	<div class="page_middle" style="border-top: 1px solid #ddd;margin-top: 0px;padding-top: 50px">
 	<form action="${ctx}/unlogin/goods/listCategoryGoods.do">
 		<input type="hidden" name="cid" value="${cid}">
 	</form>
-	<%@ include file="/common/search/search.jsp" %>
-		<%@ include file="/common/category.jsp" %>
-		<table id="newGoods"  width="80%"  cellpadding="0" cellspacing="0" align="center" style="margin-top: 10px">
-			<c:choose>
-				<c:when test="${pager.result==null || empty pager.result}">
-					<tr>
-						<td width="40px;">
-							
-						</td>
-						<td colspan="6" height="30px" style="font-weight: bolder;">
-							<br>
-							暂无商品
-						</td>
-					</tr>
-				</c:when>
-				<c:otherwise>
-					<tr>
-						<td colspan="7" height="30px">
-							<span class="title_flag">NEW</span>&nbsp;&nbsp;
-							<span class="title_words">
-								<c:forEach items="${categoryList}" var="category">
-									<c:if test="${cid==category.cid}">${category.cname}</c:if>
-								</c:forEach>
-							</span>
-						</td>
-					</tr>
-					<c:forEach items="${pager.result}" var="goods" varStatus="status">
-						<c:set var="num" value="${(status.index+1)%4}"></c:set>
-						<c:if test="${status.index%4==0}">
-							<tr>
-						</c:if>
-								<td width="310px">
-									<div class="goods_img_div">
-										<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${goods.gid }" target="_blank"  class="goods_name">
-											<img alt="" src="${goods.goodsPic}" style="width:300px;height:300px;">
-										</a>
-									</div>
-									<div class="goods_name_price">
-										<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${goods.gid}" target="_blank"  class="goods_name">
-											${goods.goodsName}
-										</a>&nbsp;&nbsp;&nbsp;<span class="goods_price"><em>￥</em>${goods.price }</span>
-									</div>
-								</td>
-						<c:if test="${num!=0}">
-							<td>&nbsp</td>
-						</c:if>
-						<c:if test="${num==0 }">
-							</tr>
-						</c:if>
-					</c:forEach>
-					<c:if test="${num!=0}">
-						<c:forEach begin="${num+1 }" var="i" end="4">
-							<td width="310px">&nbsp</td>
-							<c:if test="${i!=4 }">
-								<td>&nbsp</td>
-							</c:if>
-							<c:if test="${i==4 }">
-								</tr>
-							</c:if>
-						</c:forEach>
-					</c:if>
-				</c:otherwise>
-			</c:choose>
-		</table>
-		<br>
+	<c:forEach items="${pager.result}" var="goods" varStatus="status">
+		<c:if test="${status.index%4==0}">
+			<div class="top-box" style="width: 80%;margin: 0px auto">
+		</c:if>
+		<div class="col_1_of_3 span_1_of_3" style="width: 23%">
+		  	 <a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${goods.gid }">
+				 <div class="inner_content clearfix">
+					<div class="product_image">
+						<img src="${goods.goodsPic}" alt="" style="width:300px;height:300px;" />
+					</div>
+	                <div class="price">
+					   <div class="cart-left">
+							<p class="title" style="display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goods.goodsName}</p>
+							<div class="price1">
+							  <span class="actual">￥${goods.price }</span>
+							</div>
+						</div>
+						<div class="cart-right"> </div>
+						<div class="clear"></div>
+					 </div>				
+                  </div>
+               </a>
+		</div>
+		<c:if test="${status.index%4==3}">
+			<div class="clear"></div>
+			</div>	
+		</c:if>
+	</c:forEach>
+				
 		<%@ include file="/common/page.jsp" %>
 	</div>
 	<%@ include file="/common/bottom.jsp" %>
