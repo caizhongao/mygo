@@ -87,7 +87,7 @@ function editGoods(gid){
 			</div>
 		</form>
 		<!-- 搜索区域  end-->
-	<table style="width: 100%"  class="listTable">
+	<table style="width: 100%"  class="listTable" cellspacing="1">
 		<tr>
 			<th>
 				序号

@@ -11,7 +11,6 @@
 package com.cza.web.unlogin;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,10 +30,8 @@ import com.alibaba.fastjson.JSON;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
-import com.cza.service.goods.CategoryService;
 import com.cza.service.goods.GoodsIndexService;
 import com.cza.service.goods.GoodsService;
-import com.cza.service.goods.vo.CategoryVo;
 import com.cza.service.goods.vo.GoodsVo;
 import com.cza.service.goods.vo.SkuAttrVo;
 import com.cza.service.goods.vo.SkuVo;
@@ -54,8 +51,7 @@ import com.cza.web.filter.cache.WrapperResponse;
 public class GoodsAction extends CommonAction{
 	@Autowired
 	private GoodsService goodsService;
-	@Autowired
-	private CategoryService categoryService;
+
 	@Autowired
 	private GoodsIndexService goodsIndexService;
 	private static final Logger log = LoggerFactory.getLogger(UserAction.class);
@@ -114,19 +110,6 @@ public class GoodsAction extends CommonAction{
 		}
 		log.info("GoodsAction.listHotGoods cost time:{}",System.currentTimeMillis()-startTime);
 	}
-	
-	
-	@RequestMapping("listCategory")
-	public void listCategory(HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException, IOException{
-		CategoryVo category=new CategoryVo();
-		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
-		category.setPid(0l);
-		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
-		if(resp.isSuccess()){
-			response.getOutputStream().write(JSON.toJSONString(resp.getData()).getBytes("utf-8"));
-		}
-	}
-	
 	
 	@RequestMapping("listCategoryGoods")
 	public String listCategoryGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{

@@ -25,6 +25,10 @@
 	color: #7db122!important;
 	font-weight: bolder!important;
 	font-size: 16px!important;}
+.cart-item{border-bottom:  1px solid #eeeeee;height: 86px;width: 280px;margin: 0px auto;padding: 5 0 5 0;}
+.cart-img{display:inline-block;vertical-align: middle;width: 85px;}
+.cart-img img{width: 80px;height: 80px}
+
 </style>
 <script>
 	function gotoPage(cid){
@@ -36,37 +40,67 @@
  	
 	$(function(){
 		initCategory();
+		initCartList();
 	});
+
 	
-/* 	function initCategory(){
-		var cid='${cid}';
+	function initCartList(){
 		$.ajax({
-			url:'${ctx}/unlogin/goods/listCategory.do',
+			url:'${ctx}/unlogin/home/listCartAjax.do',
 			type:'post',
 			dataType:'json',
-			success:function(categoryList){
-				var categoryHtml='';
-				$.each(categoryList,function(index,category){
-					var active='';
-					if(cid==category.cid){
-						active='active';
+			success:function(cartList){
+				if(cartList.message=='success'){
+					var categoryHtml='';
+					var total_price=0;
+					if(cartList.data!=null&&cartList.data.length>0){
+						$.each(cartList.data,function(index,cart){
+							var price=cart.sku.price;
+							var number=cart.number;
+							var pic=cart.sku.skuPic;
+							var goodsName=cart.sku.goodsName;
+							
+							categoryHtml+='<li class="cart-item">'+
+				                '<div class="cart-img"> <img src="'+pic+'"> </div>'+
+				                '<div class="cart-title" style="display:inline-block;width: 180px;vertical-align: middle;">'+
+				                    '<div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"  title="'+goodsName+'">'+
+				                       ' <a href="#" style="font-family: inherit;font-weight: bold;color: #666666">'+goodsName+'</a>'+
+				                    '</div>'+
+				                    '<div class="price"> '+
+				                        '<div class="clr-txt" style="color: #7fba00;width:80px;display:inline-block;text-align:right">¥'+returnFloat(price)+'</div>&nbsp;&nbsp;X&nbsp;&nbsp;'+number+
+				                    '</div>'+
+				                '</div>'+
+				            '</li>';
+							total_price+=price*number;
+						});
+						categoryHtml+='<li class="cart-list sub-total" style="border-bottom:  1px solid #eeeeee;height: 30px;width: 280px;margin: 0px auto;padding: 5 0 5 0;line-height: 30px;">'+
+							                '<div class="pull-left" style="float: left;font-weight: bold"> '+
+							                    '<strong>合计</strong>'+
+							                '</div>'+
+							                '<div class="pull-right" style="float: right;"> '+
+							                    '<strong class="clr-txt" style="color: #7fba00">'+returnFloat(total_price)+'</strong>'+
+							                '</div>'+
+							            '</li>';
+						
+					}else{
+						categoryHtml+='<li><h3>没有商品</h3><a href=""></a></li>'+
+						'<li><p>您的购物车是空的,您可以添加商品到购物车</p></li>';
 					}
-					categoryHtml+='<td width="20px">&nbsp;</td>'+
-									'<td width="80px" class="category '+active+'" onclick="gotoPage('+category.cid+')">'+
-									'<i class="ct-icon ct-icon-'+category.cid+'"></i>'+
-									category.cname+
-								   '</td>';
-				});
-				categoryHtml+='<td>&nbsp;</td>';
-				$('#firstTd').after(categoryHtml);
+					$('#cartList').html(categoryHtml);
+				}else{
+					categoryHtml+='<li><h3>没有商品</h3><a href=""></a></li>'+
+					'<li><p>您的购物车是空的,您可以添加商品到购物车</p></li>';
+					$('#cartList').html(categoryHtml);
+				}
 			}
 		});
-	} */
+	}
+	
 	
 	function initCategory(){
 		var cid='${cid}';
 		$.ajax({
-			url:'${ctx}/unlogin/goods/listCategory.do',
+			url:'${ctx}/unlogin/home/listCategory.do',
 			type:'post',
 			dataType:'json',
 			success:function(categoryList){
@@ -146,9 +180,8 @@
 	  <div class="tag-list">
 		<ul class="icon1 sub-icon1 profile_img">
 			<li><a class="active-icon c2" href="#"> </a>
-				<ul class="sub-icon1 list">
-					<li><h3>没有商品</h3><a href=""></a></li>
-					<li><p>您的购物车是空的,您可以添加商品到购物车</p></li>
+				<ul class="sub-icon1 list" id="cartList">
+                    
 				</ul>
 			</li>
 		</ul>

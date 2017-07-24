@@ -43,12 +43,13 @@
 <body  class="_body">
 <div  class="page_body">
 	<%@ include file="/common/top1.jsp" %>
-	<div class="page_middle" style="border-top: 1px solid #ddd;margin-top: 0px;padding-top: 50px">
+	<div class="page_middle">
 	<form action="${ctx}/unlogin/goods/listCategoryGoods.do">
 		<input type="hidden" name="cid" value="${cid}">
 	</form>
 	<c:forEach items="${pager.result}" var="goods" varStatus="status">
-		<c:if test="${status.index%4==0}">
+		<c:set var="num" value="${(status.index+1)%4}"></c:set>
+		<c:if test="${num==1}">
 			<div class="top-box" style="width: 80%;margin: 0px auto">
 		</c:if>
 		<div class="col_1_of_3 span_1_of_3" style="width: 23%">
@@ -70,15 +71,18 @@
                   </div>
                </a>
 		</div>
-		<c:if test="${status.index%4==3}">
+		<c:if test="${num==0}">
 			<div class="clear"></div>
 			</div>	
 		</c:if>
 	</c:forEach>
-				
+	<c:if test="${num!=0}">
+		<div class="clear"></div>
+		</div>
+	</c:if>
 		<%@ include file="/common/page.jsp" %>
 	</div>
-	<%@ include file="/common/bottom.jsp" %>
+	<%@ include file="/common/bottom1.jsp" %>
 </div>
 </body> 
 </html>

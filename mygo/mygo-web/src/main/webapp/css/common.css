@@ -15,8 +15,9 @@
 
 .page_middle{
 	width:100%;
-	margin-top: 50px;
-	padding-bottom:80px
+	padding-bottom:120px;
+	border-top: 1px solid #ddd;
+	padding-top: 50px;
 }
 
 .register_button{
@@ -94,3 +95,24 @@
 a{color: #679AEF;text-decoration: none;} /* 未访问的链接 */
 a:hover{color:#E06F6F;text-decoration:underline; }
 
+
+
+.listTable{
+	width:100%;
+	background-color: #dddddd;
+	color:#192E32;
+	font: 12px "sans-serif", "Arial", "Verdana";
+}
+.listTable th{
+	font-weight:normal;
+	font-size:13px;
+	height:40px;
+	line-height:35px;
+	background-color: #FBFBFB;
+	text-align: center;
+	padding: 10px;
+}
+.listTable td{
+	background-color: #FFF;
+	padding: 10px;
+}

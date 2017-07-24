@@ -57,8 +57,6 @@ import com.cza.web.CommonAction;
 @RequestMapping("/login/order")
 public class OrderAction extends CommonAction{
 	@Autowired
-	private GoodsService goodsService;
-	@Autowired
 	private AddrService addrService;
 	@Autowired
 	private OrderService orderService;
@@ -143,12 +141,14 @@ public class OrderAction extends CommonAction{
 	
 	@RequestMapping("confirmOrder")
 	public String confirmOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
+		UserVo userVo=getUser(request);
 		log.info("OrderAction.saveOrder 请求参数,order:{}",order);
 		//参数校验
 		if(MygoUtil.hasZeroNull(order.getAddrId())){
 			log.info("OrderAction.saveOrder 参数错误,地址为空！");
 			return erroPage( ShoppingContants.RESP_CODE_PARAM_ERRO);
 		}
+		order.setUid(userVo.getUid());;
 		ServiceResponse<OrderVo> resp=orderService.confirmOrder(order);
 		if(resp.isSuccess()){
 			log.info("OrderAction.saveOrder success,orderNo:{}",resp.getData().getOid());
@@ -160,7 +160,6 @@ public class OrderAction extends CommonAction{
 			}else{
 				return orderErro(resp.getCode());
 			}
-			
 		}
 	}
 	

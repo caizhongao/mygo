@@ -98,7 +98,7 @@
 				</span>
 			</div>
 		</form>
-		<table class="listTable">
+		<table class="listTable"  cellspacing="1">
 				<tr>
 					<th width="320">商品信息</th>
 					<th width="80">单价</th>
@@ -111,7 +111,7 @@
 			</table>
 			<br>
 			<c:forEach items="${pager.result}" var="order" varStatus="status">
-				<table  class="listTable">
+				<table  class="listTable" cellspacing="1">
 					<tr>
 						<th colspan="7" style="text-align: left;">
 							<font style="font-weight: bold; margin-left: 20px;">

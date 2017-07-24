@@ -145,7 +145,7 @@ $(function(){
 			</table>
 		</form>
 	</div>
-		<%@ include file="/common/bottom.jsp" %>
+	<%@ include file="/common/bottom.jsp" %>
 </div>
 	
 </body> 

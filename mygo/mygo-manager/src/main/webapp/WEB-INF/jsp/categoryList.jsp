@@ -32,7 +32,7 @@
 			<input type="button" class="addBtn" onclick="toAddCategory()" style="width: 100px" value="添加分类">
 		</span>
 		</div>
-	<table class="listTable" width="100%">
+	<table class="listTable" width="100%" cellspacing="1">
 		<tr>
 			<th>
 				序号

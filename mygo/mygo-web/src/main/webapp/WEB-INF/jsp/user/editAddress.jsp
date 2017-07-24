@@ -7,42 +7,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>我的地址</title>
 <style type="text/css">
-	table{
-		font-size: 14px;
-		color: #666666;
-	} 
-	
-		#mytable{
-		font-size: 14px;
-	}
-	.tableData td{
-		border-right: 1px solid #F2F2F2;
-		border-bottom: 1px solid #DFDFDF;
-		text-align: center;
-		height: 30px;
-		color: #666666;
-		font-size: 14px;
-	}
-	.tableData th{
-		border-right: 1px solid #DFDFDF;
-		border-bottom: 1px solid #DFDFDF;
-		text-align: center;
-		height: 30px;
-		background-color: #EFEEF0;
-		color: #666666;
-	}
-	.editTable tr{
-		height: 40px;
-	}
-	.tableData tr{
-		height: 40px;
-	}
 	input,select{
 		width: 175px;
 		border: 1px solid #DFDFDF;
 	}
 	.selectAddr{
 		width:80px;
+	}
+	.listTable td{
+		text-align: center;
+	}
+	.editTable tr{
+		height: 50px;
+		color: #666666;
+		font-size: 14px;
 	}
 </style>
 <script type="text/javascript">
@@ -122,11 +100,11 @@
 </head>
 <body class="_body">
 <div  class="page_body">
-	<%@ include file="/common/top.jsp" %>
+	<%@ include file="/common/top1.jsp" %>
 	<div class="page_middle">
 		<div style="margin: 0px auto;width: 80%">
 			<form action="${ctx}/login/addr/saveAddr.do" id="addrForm" method="post" enctype="application/x-www-form-urlencoded">
-				<table class="editTable">
+				<table class="editTable" align="center">
 					<tr>
 						<td colspan="2" style="font-weight:bold">编辑地址信息</td>
 					</tr>
@@ -134,42 +112,43 @@
 						<td width="90px">收件人：</td>
 						<td>
 							<input type="hidden" name="uaid" value="${addr.uaid }">
-							<input type="text" name="receiver" value="${addr.receiver }" id="receiver"><font color="red">*</font></td>
+							<input type="text" name="receiver" value="${addr.receiver }" style="height: 30px;width: 240px;" id="receiver"><font color="red">*</font>
+						</td>
 					</tr>
 					<tr>
 						<td>手机：</td>
-						<td><input type="text" name="mobilphone" value="${addr.mobilphone }" id="mobilphone"><font color="red">*</font></td>
+						<td><input type="text" name="mobilphone" value="${addr.mobilphone }" style="height: 30px;width: 240px;" id="mobilphone"><font color="red">*</font></td>
 					</tr>
 					<tr>
 						<td>收件地址：</td>
 						<td>
-							<select id="province" name="provinceId" onchange="listCitys()" class="selectAddr">
+							<select id="province" name="provinceId" onchange="listCitys()" style="height: 30px;width: 77px;" class="selectAddr">
 								<option value="">请选择</option>
 								<c:forEach items="${provinces}" var="province">
-									<option value="${province.aid}" <c:if test="${addr.provinceId==province.aid}">selected="selected"</c:if>>${province.aname}</option>
+									<option value="${province.aid}">${province.aname}</option>
 								</c:forEach>
 							</select>
 							<input type="hidden" name="province">
-							<select id="city" name="cityId" onchange="listAreas()"  class="selectAddr">
+							<select id="city" name="cityId" onchange="listAreas()"  class="selectAddr" style="height: 30px;width: 78px;">
 								<option value="">请选择</option>
 							</select>
 							<input type="hidden" name="city">
-							<select id="area" name="areaId"  class="selectAddr">
+							<select id="area" name="areaId"  class="selectAddr" style="height: 30px;width: 77px;">
 								<option value="">请选择</option>
 							</select>
 							<input type="hidden" name="area"><font color="red">*</font>
 						</td>
 					</tr>
-					<tr>
-						<td valign="top">详细地址：</>
+					<tr style="height: 80px">
+						<td valign="top" style="line-height: 40px;">详细地址：</>
 						<td id="attrs">
-							<textarea rows="4" cols="50" name="addr">${addr.addr}</textarea><font color="red">*</font>
+							<textarea rows="4" cols="50"  name="addr">${addr.addr}</textarea><font color="red">*</font>
 						</td>
 					</tr>
-					<tr>
-						<td>默认地址：</>
+					<tr style="height: 35px;">
+						<td>默认地址：</td>
 						<td id="attrs">
-							<input type="checkbox" name="isDefault" <c:if test="${addr.isDefault==1}">checked="checked"</c:if>   value="1" style="width: 20px;">
+							<input type="checkbox" name="isDefault" value="1" style="width: 20px;">
 						</td>
 					</tr>
 					<tr>
@@ -179,13 +158,11 @@
 					</tr>
 				</table>
 			</form>
-			
-			<table class="tableData" style="width: 95%" cellpadding="0" cellspacing="0">
-				<tr>
-					<td colspan="8" style="border-right: none;text-align: right;height: 50px;"> 
-						<a href="javascript:clearForm()" class="manager_button">新增地址</a>
-					</td>
-				</tr>
+			<div style="width: 95%;height: 40px;">
+				<a href="javascript:clearForm()" class="manager_button" style="float: right">新增地址</a>
+			</div>
+			<div style="clear: left"></div>
+			<table class="listTable" style="width: 95%" cellspacing="1">
 				<tr>
 					<th>
 						收件人
@@ -243,7 +220,10 @@
 							</c:choose>
 						</td>
 						<td style="width: 180px;">
-							<a href="${ctx}/login/addr/editAddr.do?uaid=${addr.uaid}" class="manager_button">编辑</a>
+							<a href="${ctx}/login/addr/editAddr.do?uaid=${addr.uaid}" title="编辑">
+								<img alt="" src="${ctx}/img/edit.png" width="25px">
+								
+							</a>
 							<%-- <c:if test='${addr.isDefault==0}'>
 								<a href="${ctx}/login/addr/setDefault.do?uaid=${addr.uaid}" class="manager_button">设为默认</a>
 							</c:if> --%>
@@ -254,7 +234,7 @@
 			</table>
 		</div>
 	</div>
-	<%@ include file="/common/bottom.jsp" %>
+	<%@ include file="/common/bottom1.jsp" %>
 </div>
 </body> 
 </html>

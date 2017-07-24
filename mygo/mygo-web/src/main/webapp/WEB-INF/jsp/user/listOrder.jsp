@@ -27,14 +27,7 @@
 	color: #666666;
 	font-size: 13px;
 }
-
-.thtable td {
-	text-align: center;
-	height: 30px;
-	background-color: #f5f5f5;
-	color: #666666;
-	font-size: 13px;
-}
+.listTable th{padding: 10 0 10 0}
 </style>
 <script type="text/javascript">
 
@@ -104,7 +97,7 @@ function toRefund(oid){
 </head>
 <body class="_body">
 	<div class="page_body">
-		<%@ include file="/common/top.jsp"%>
+		<%@ include file="/common/top1.jsp"%>
 		<div class="page_middle">
 			<!-- 遮罩层 -->
 			<div id="fullbg"
@@ -151,22 +144,21 @@ function toRefund(oid){
 					</span>
 				</div>
 			</form>
-			<table style="width: 80%; border: 1px solid #e8e8e8" class="thtable"
-				cellpadding="0" cellspacing="0" align="center">
+			<table style="width: 80%;margin: 0px auto;" class="listTable" cellspacing="1">
 				<tr>
-					<td width="320">商品信息</td>
-					<td width="80">单价</td>
-					<td width="80">数量</td>
-					<td width="100">金额</td>
-					<td width="100">总金额</td>
-					<td>发货地址</td>
-					<td width="140px">操作</td>
+					<th width="320">商品信息</th>
+					<th width="80">单价</th>
+					<th width="80">数量</th>
+					<th width="100">金额</th>
+					<th width="100">总金额</th>
+					<th>发货地址</th>
+					<th width="140px">操作</th>
 				</tr>
 			</table>
 			<br>
 			<c:forEach items="${pager.result}" var="order" varStatus="status">
-				<table style="width: 80%; border: 1px solid #daf3ff;"
-					class="mytable" cellpadding="0" cellspacing="0"  align="center">
+				<table style="width: 80%; border: 1px solid #daf3ff;;margin: 0px auto;"
+					class="mytable" cellpadding="0" cellspacing="0">
 					<tr>
 						<td colspan="7" style="background-color: #eaf8ff; height: 30px; text-align: left;border-top: none;border-right: none;">
 							<font style="font-weight: bold; margin-left: 20px;">
@@ -267,7 +259,7 @@ function toRefund(oid){
 			<br>
 			<%@ include file="/common/page.jsp"%>
 		</div>
-		<%@ include file="/common/bottom.jsp"%>
+		<%@ include file="/common/bottom1.jsp"%>
 	</div>
 </body>
 </html>

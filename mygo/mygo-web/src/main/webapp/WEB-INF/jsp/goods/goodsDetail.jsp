@@ -10,14 +10,8 @@
 	
 </script>
 <style type="text/css">
-	#mytable{
-		font-size: 14px;
-	}
-	.title_flag{
-		display:inline-block;height: 20px;width: 40px;background-color: #EE2457;color: white;text-align:center;line-height: 20px;font-weight: bold;font-size: 13px;
-	}
-	.title_words{
-		display:inline-block;height: 20px;width:74px;color: #666666;text-align:center;line-height: 20px;font-weight: bold;font-size: 14px;
+	.goodsDetailTable td{
+		vertical-align: middle!important;
 	}
 	.goods_name{
 		color: #333333;
@@ -322,10 +316,8 @@
 </head>
 <body class="_body">
 <div  class="page_body">
-	<%@ include file="/common/top.jsp" %>
-	<div class="page_middle" style="margin-top: 30px">
-			<%@ include file="/common/search/search.jsp" %>
-		<%@ include file="/common/category.jsp" %>
+	<%@ include file="/common/top1.jsp" %>
+	<div class="page_middle" style="border-top: 1px solid #ddd;margin-top: 0px;padding-top: 50px">
 		<div style="width: 80%;margin: 0px auto">
 			<c:forEach items="${goods.skus}" var="sku">
 				<div class="skuInfo">
@@ -340,11 +332,12 @@
 			<form action="${ctx}/login/order/savePreOrder.do" method="post" id="myform">
 				<input type="hidden" name="detailVos[0].sid" id="form_sku_id" value=""/>
 				<input type="hidden" name="detailVos[0].number" id="form_sku_number" value=""/>
+				<input type="hidden" name="type" id="form_type" value="0"/>
 			</form>
-			<table width="1100px" cellpadding="0" cellspacing="0"  style="font-size: 14px;color:#74777b;margin-top: 20px;height: 401px;font-family: Arial">
+			<table width="1100px" class="goodsDetailTable" cellpadding="0" cellspacing="0"  style="font-size: 14px;color:#74777b;margin-top: 20px;height: 401px;font-family: Arial">
 				<tr>
 					<td rowspan="${fn:length(goods.skus[0].attrs)+5}" width="500px">
-						<div style="width: 402px;border: 1px solid #E8E8E8;">
+						<div style="width: 400px;border: 1px solid #E8E8E8;padding: 1px">
 							<!-- margin-top: 1px;margin-left: 1px;margin-bottom: 1px -->
 							<img src="${goods.goodsPic}" width="400px" height="400px" id="goodsDetailPic" alt="商品详情图" style="">
 						</div>
@@ -418,7 +411,7 @@
 			</div>
 		</div>
 	</div>
-	<%@ include file="/common/bottom.jsp" %>
+	<%@ include file="/common/bottom1.jsp" %>
 </div>
 </body> 
 </html>

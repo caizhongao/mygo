@@ -295,9 +295,9 @@ display:none;
 </head>
 <body class="_body">
 <div  class="page_body">
-	<%@ include file="/common/top.jsp" %>
+	<%@ include file="/common/top1.jsp" %>
 	<div class="page_middle">
-		<div style="margin: 0px auto;width: 80%;">
+		<div style="margin: 0px auto;width: 80%;padding-bottom: 50px;">
 				<!-- 遮罩层 -->
 				<div id="fullbg" style="background-color:gray; left:0; opacity:0.5; position:absolute; top:0; z-index:3; filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity:0.5; "></div> 
 				<div style="display:none;position: absolute;border-radius:5px;width:600px;height: 400px;z-index: 100;background-color: #EFEEF0;left: 25%;top: 100px" id="editAddrInfo">
@@ -447,7 +447,7 @@ display:none;
 			</form>
 		</div>
 	</div>
-	<%@ include file="/common/bottom.jsp" %>
+	<%@ include file="/common/bottom1.jsp" %>
 </div>
 </body> 
 </html>

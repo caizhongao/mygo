@@ -107,11 +107,15 @@ function initGoodsList(){
 	});
 }
 
-
+function toDetail(){
+	$('#tobuybtn').attr('href',$(".changepic").eq($('.nivo-controlNav').find('.active').attr("rel")).attr('link'));
+}
 </script>
 </head>
 <body>
-     <%@ include file="/common/top1.jsp" %>
+<div  class="page_body">
+	<%@ include file="/common/top1.jsp" %>
+	<div class="page_middle" style="padding-top: 0px">
   <!-- start slider -->
     <div id="fwslider">
         <div class="slider_container">
@@ -150,60 +154,67 @@ function initGoodsList(){
         <div class="slideNext"><span></span></div>
     </div>
     <!--/slider -->
-<div class="main">
-	<div class="wrap">
-		<div class="section group">
-		  <div class="cont span_2_of_3">
-		  	<span class="title_flag">NEW</span>
-			<span class="title_words">新品上架</span>
-			<div class="top-box">
-			</div>	
-			<div class="top-box">
-			</div>	
-			<div class="top-box">
+	<div class="main">
+		<div class="wrap">
+			<div class="section group">
+				  <div class="cont span_2_of_3">
+				  	<span class="title_flag">NEW</span>
+					<span class="title_words">新品上架</span>
+					<div class="top-box">
+					</div>	
+					<div class="top-box">
+					</div>	
+					<div class="top-box">
+					</div>
+					<span class="title_flag">HOT</span>
+					<span class="title_words">热销商品</span>
+				  <div class="top-box">
+					</div>
+				  <div class="top-box">
+					</div>
+				  <div class="top-box">
+					</div>	
+					<span class="title_flag">SEND</span>
+					<span class="title_words">向您推荐</span>
+				    <div class="top-box">
+					</div>
+					<div class="top-box">
+					</div>
+					<div class="top-box">
+					</div>		 						 			    
+				  </div>
+				  
+					<div class="rsidebar span_1_of_left">
+					<span class="title_flag">TOP</span>
+					<span class="title_words">今日推荐</span>
+					<br/>
+						<div class="top-border" style="margin-top: 5px"> </div>
+						 <div class="border">
+			             <link href="${ctx}/common/home/css/default.css" rel="stylesheet" type="text/css" media="all" />
+			             <link href="${ctx}/common/home/css/nivo-slider.css" rel="stylesheet" type="text/css" media="all" />
+						  <script src="${ctx}/common/home/js/jquery.nivo.slider.js"></script>
+						    <script type="text/javascript">
+						    $(window).load(function() {
+						        $('#slider').nivoSlider();
+						    });
+						    </script>
+				    <div class="slider-wrapper theme-default">
+				    
+		              <div id="slider" class="nivoSlider">
+		                <img src="${ctx}/common/home/images/t-img1.jpg" class="changepic"  alt="" link="test1" />
+		               	<img src="${ctx}/common/home/images/t-img2.jpg" class="changepic"  alt="" link="test2"/>
+		                <img src="${ctx}/common/home/images/t-img3.jpg"  class="changepic" alt="" link="test3" />
+		              </div>
+		             </div>
+		              <div class="btn"><a href="" id="tobuybtn" target="_blank" onclick="toDetail()">立即去购买</a></div>
+		             </div>
+			    </div>
+			   <div class="clear"></div>
 			</div>
-			<span class="title_flag">NEW</span>
-			<span class="title_words">热销商品</span>
-		  <div class="top-box">
-			</div>
-		  <div class="top-box">
-			</div>
-		  <div class="top-box">
-			</div>	
-			<span class="title_flag">NEW</span>
-			<span class="title_words">向您推荐</span>
-		    <div class="top-box">
-			</div>
-			<div class="top-box">
-			</div>
-			<div class="top-box">
-			</div>		 						 			    
-		  </div>
-			<div class="rsidebar span_1_of_left">
-				<div class="top-border"> </div>
-				 <div class="border">
-	             <link href="${ctx}/common/home/css/default.css" rel="stylesheet" type="text/css" media="all" />
-	             <link href="${ctx}/common/home/css/nivo-slider.css" rel="stylesheet" type="text/css" media="all" />
-				  <script src="${ctx}/common/home/js/jquery.nivo.slider.js"></script>
-				    <script type="text/javascript">
-				    $(window).load(function() {
-				        $('#slider').nivoSlider();
-				    });
-				    </script>
-		    <div class="slider-wrapper theme-default">
-              <div id="slider" class="nivoSlider">
-                <img src="${ctx}/common/home/images/t-img1.jpg"  alt="" />
-               	<img src="${ctx}/common/home/images/t-img2.jpg"  alt="" />
-                <img src="${ctx}/common/home/images/t-img3.jpg"  alt="" />
-              </div>
-             </div>
-              <div class="btn"><a href="single.html">Check it Out</a></div>
-             </div>
-	    </div>
-	   <div class="clear"></div>
-	</div>
+		</div>
 	</div>
 	</div>
 	<%@ include file="/common/bottom1.jsp" %>
+	</div>
 </body>
 </html>
