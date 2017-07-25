@@ -71,11 +71,9 @@ public class HomeAction extends CommonAction{
 		return "/common/orderErro";
 	}
 	
-	
-	
-	
 	@RequestMapping("listCategory")
 	public void listCategory(HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException, IOException{
+		log.info("HomeAction.listCategory request.");
 		CategoryVo category=new CategoryVo();
 		category.setStatus(ShoppingContants.CATEGORY_ATTR_STATUS_NORMAL);
 		category.setPid(0l);
@@ -87,22 +85,24 @@ public class HomeAction extends CommonAction{
 	
 	@RequestMapping("listCartAjax")
 	public void listCartAjax(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		log.info("listCartAjax request.");
 		UserVo user=getUser(request);
 		if(user==null){
+			log.warn("listCartAjax failed,user not login");
 			response.getWriter().println(new RespMsg("fail",null));
 		}else{
 			CartVo listParam=new CartVo();
 			listParam.setUid(user.getUid());
 			ServiceResponse<List<CartVo>>resp=cartService.listCart(listParam);
 			if(resp.isSuccess()){
-				log.info("CartAction.listCart success,cartList:{}",resp.getData());
+				log.info("listCartAjax success,result:{}",resp.getData());
 				response.setCharacterEncoding("utf-8");
 				response.getWriter().println(new RespMsg("success",resp.getData()));
 			}else{
-				response.getWriter().println(new RespMsg("fail",null));
+				log.warn("listCartAjax has erro,respCode:{}",resp.getCode());
+				response.getWriter().println(new RespMsg("fail",resp.getCode()));
 			}
 		}
-		
 	}
 	
 }

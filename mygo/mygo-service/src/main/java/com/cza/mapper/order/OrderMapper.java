@@ -10,6 +10,7 @@
     
 package com.cza.mapper.order;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -77,5 +78,29 @@ public interface OrderMapper {
 				 *@return TOrder
 				 */
 				public int deleteOrder(TOrder param);
+
+				
+				    /**
+				    * @Title: listAvgOrderPrice
+				    * @Description: TODO(这里用一句话描述这个方法的作用)
+				    * @param @param orderVo
+				    * @param @return    参数
+				    * @return BigDecimal    返回类型
+				    * @throws
+				    */
+				    
+				public BigDecimal queryAvgOrderPrice(OrderVo orderVo);
+
+					
+					    /**
+					    * @Title: queryHotCategory
+					    * @Description: TODO(这里用一句话描述这个方法的作用)
+					    * @param @param orderVo
+					    * @param @return    参数
+					    * @return Long    返回类型
+					    * @throws
+					    */
+					    
+					public Long queryHotCategory(OrderVo orderVo);
 	
 }

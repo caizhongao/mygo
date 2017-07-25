@@ -35,6 +35,10 @@ import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.GoodsVo;
 import com.cza.service.goods.vo.SkuAttrVo;
 import com.cza.service.goods.vo.SkuVo;
+import com.cza.service.goods.vo.UserLikeVo;
+import com.cza.service.order.OrderService;
+import com.cza.service.order.vo.OrderVo;
+import com.cza.service.user.vo.UserVo;
 import com.cza.web.CommonAction;
 import com.cza.web.filter.cache.WrapperResponse;
 
@@ -51,10 +55,11 @@ import com.cza.web.filter.cache.WrapperResponse;
 public class GoodsAction extends CommonAction{
 	@Autowired
 	private GoodsService goodsService;
-
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	private GoodsIndexService goodsIndexService;
-	private static final Logger log = LoggerFactory.getLogger(UserAction.class);
+	private static final Logger log = LoggerFactory.getLogger(GoodsAction.class);
 	@RequestMapping("search")
 	public String search(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		log.info("GoodsAction.search param:{}",goods);
@@ -86,15 +91,37 @@ public class GoodsAction extends CommonAction{
 		return webPage("goods/scrollSearchResult");
 	}
 	
-	
 	@RequestMapping("listNewGoods")
 	public void listNewGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,WrapperResponse response) throws IOException{
 		Long startTime=System.currentTimeMillis();
 		goods.setStart(0);
-		goods.setPageSize(16);
+		goods.setPageSize(9);
 		ServiceResponse<List<GoodsVo>> resp=goodsService.listNewGoods(goods);
 		if(resp.isSuccess()){
 			response.getOutputStream().write(JSON.toJSONString(resp.getData()).getBytes("utf-8"));
+		}
+		log.info("GoodsAction.listNewGoods cost time:{}",System.currentTimeMillis()-startTime);
+	}
+	
+	
+	@RequestMapping("listUserLikeGoods")
+	public void listUserLikeGoods(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		UserVo user=getUser(request);
+		UserLikeVo likeVo=null;
+		if(user!=null){
+			OrderVo orderVo=new OrderVo();
+			orderVo.setUid(user.getUid());
+			likeVo=orderService.getUserLike(orderVo);
+		}else{
+			likeVo=new UserLikeVo();
+		}
+		Long startTime=System.currentTimeMillis();
+		likeVo.setStart(0);
+		likeVo.setPageSize(9);
+		ServiceResponse<List<GoodsVo>> resp=goodsService.listUserLikeGoods(likeVo);
+		if(resp.isSuccess()){
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().println(JSON.toJSONString(resp.getData()));
 		}
 		log.info("GoodsAction.listNewGoods cost time:{}",System.currentTimeMillis()-startTime);
 	}
@@ -103,7 +130,7 @@ public class GoodsAction extends CommonAction{
 	public void listHotGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,WrapperResponse response) throws IOException{
 		Long startTime=System.currentTimeMillis();
 		goods.setStart(0);
-		goods.setPageSize(16);
+		goods.setPageSize(9);
 		ServiceResponse<List<GoodsVo>> resp=goodsService.listHotGoods(goods);
 		if(resp.isSuccess()){
 			response.getOutputStream().write(JSON.toJSONString(resp.getData()).getBytes("utf-8"));
@@ -113,6 +140,7 @@ public class GoodsAction extends CommonAction{
 	
 	@RequestMapping("listCategoryGoods")
 	public String listCategoryGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		log.info("listCategoryGoods request params:{}",goods);
 		Long startTime=System.currentTimeMillis();
 		request.setAttribute("cid", goods.getCid());
 		//查询出用户选择的类目下商品
@@ -128,19 +156,19 @@ public class GoodsAction extends CommonAction{
 	}
 	
 	@RequestMapping("goodsDetail")
-	public String goodsDetail(HttpServletRequest request,HttpServletResponse response) throws IOException{
+	public String goodsDetail(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		log.info("goodsDetail request params:{}",goods);
 		Long startTime=System.currentTimeMillis();
-		GoodsVo param=new GoodsVo();
-		param.setGid(Long.valueOf(request.getParameter("gid")));
-		ServiceResponse<GoodsVo> goodsResp=goodsService.queryGoods(param);
-		log.info("GoodsAction.goodsDetail resp:{}, cost time:{}",goodsResp.getData(),System.currentTimeMillis()-startTime);
+		ServiceResponse<GoodsVo> goodsResp=goodsService.queryGoods(goods);
 		if(goodsResp.isSuccess()){
+			log.info("queryGoods success result:{}, cost time:{}",goodsResp.getData(),System.currentTimeMillis()-startTime);
 			GoodsVo goodsVo=goodsResp.getData();
 			request.setAttribute("goods", goodsVo);
 			request.setAttribute("attrs", initAttr(goodsVo));
 			request.setAttribute("cid", goodsVo.getCid());
 			return webPage("goods/goodsDetail");
 		}else{
+			log.info("queryGoods has erro,respCode:{}",goodsResp.getCode());
 			return erroPage(goodsResp.getCode());
 		}
 	}

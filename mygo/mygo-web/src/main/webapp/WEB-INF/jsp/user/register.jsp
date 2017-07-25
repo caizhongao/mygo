@@ -7,6 +7,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>用户注册</title>
 <script type="text/javascript">
+
+	function showInfo(obj){
+		var $info=$(obj).parent().next();
+		$info.attr('class','');
+		$info.html($info.attr('title'));
+	}
+
 	var isExist=false;
 	function submitForm(){
 		if(isExist){
@@ -143,12 +150,17 @@
 				type:'post',
 				url:'${ctx}/unlogin/user/existName.do',
 				data:{'userName':$("input[name='userName']").val()},
+				dataType:'json',
 				success:function(data){
-					if(data==1){
-						showErroInfo($("input[name='userName']"), "登录名已存在!",1)
-						isExist=true;
+					if('success'==data.message){
+						if('exist'==data.data){
+							showErroInfo($("input[name='userName']"), "登录名已存在!",1)
+							isExist=true;
+						}else{
+							isExist=false;
+						}
 					}else{
-						isExist=false;
+						alert(data.data);
 					}
 				}
 			});
@@ -205,21 +217,21 @@
 						<img alt="" src="${ctx}/img/login/login-bj-ad.png">
 					</td>
 					<td width="70px" align="left">登录名:</td>
-					<td style="width:180px"><input name="userName" type="text" value="${user.userName}" onblur="checkExist()"></td>
+					<td style="width:180px"><input name="userName" onkeyup="delspace(this)" type="text" value="${user.userName}" onfocus="showInfo(this)" onblur="checkExist()"></td>
 					<c:if test="${erroList.userName==null}">
-						<td title="登录名由20个以内的英文字符和数字组成">
-							登录名由20个以内的英文字符和数字组成
+						<td title="登录名由6~20个英文字符和数字组成">
+							登录名由6~20个英文字符和数字组成
 						</td>
 					</c:if>
 					<c:if test="${erroList.userName!=null}">
-						<td title="登录名由20个以内的英文字符和数字组成" class="erroClass">
+						<td title="登录名由6~20个英文字符和数字组成" class="erroClass">
 							${erroList.userName}
 						</td>
 					</c:if>
 				</tr>
 				<tr height="50px;" valign="middle">
 					<td>密码:</td>
-					<td><input name="password" type="text" value="${user.password}" onblur="checkPassword()"></td>
+					<td><input name="password" type="text" value="${user.password}" onkeyup="delspace(this)" onfocus="showInfo(this)" onblur="checkPassword()"></td>
 					<c:if test="${erroList.password==null}">
 						<td title="请输入6~20位之间的密码">
 							请输入6~20位之间的密码
@@ -233,7 +245,7 @@
 				</tr>
 				<tr height="50px;" valign="middle">
 					<td width="70px">真实姓名:</td>
-					<td><input name="realName" type="text" value="${user.realName}" onblur="checkRealName()"></td>
+					<td><input name="realName" type="text" value="${user.realName}" onkeyup="delspace(this)" onfocus="showInfo(this)" onblur="checkRealName()"></td>
 					<c:if test="${erroList.realName==null}">
 						<td title="真实姓名由20个以内的字符组成">
 							真实姓名由20个以内的字符组成
@@ -247,7 +259,7 @@
 				</tr>
 				<tr height="50px;" valign="middle">
 					<td>年龄:</td>
-					<td><input name="age" type="text" value="${user.age }" onblur="checkAge()"></td>
+					<td><input name="age" type="text" value="${user.age }" onkeyup="delspace(this)" onfocus="showInfo(this)" onblur="checkAge()"></td>
 					<c:if test="${erroList.age==null}">
 						<td title="请填写0-200之间的年龄">
 							请填写0-200之间的年龄

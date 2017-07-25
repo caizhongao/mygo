@@ -163,6 +163,23 @@
 	</select>
 		
 		
+		<select id="listUserLikeGoods" parameterType="com.cza.service.goods.vo.UserLikeVo"  resultMap="goods">
+		select 
+			<include refid="allColumns"></include>
+		FROM
+		  t_goods 
+		<where>
+		status='O'
+		<if test="category!=null">
+			and cid = #{category} 
+		</if>
+		<if test="lowerLever!=null and topLever !=null">
+			AND price BETWEEN #{lowerLever} AND #{topLever} 
+		</if>
+		</where>
+		LIMIT #{start}, #{pageSize} 
+		</select>
+		
 <!-- 	<select id="batchUpdateGoodsIndex">
 	update t_goods set goods_index=3
 		WHERE gid IN 

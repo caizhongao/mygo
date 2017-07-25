@@ -40,26 +40,32 @@ public class CartAction extends CommonAction{
 	private static final Logger log = LoggerFactory.getLogger(CartAction.class); 
 	@RequestMapping("addCart")
 	public void addCart(@ModelAttribute CartVo cart,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		log.info("addCart request params:{}",cart);
 		response.setCharacterEncoding("utf-8");
 		PrintWriter pw=response.getWriter();
 		UserVo user=getUser(request);
 		cart.setUid(user.getUid());
 		ServiceResponse<CartVo>resp=cartService.addCart(cart);
 		if(resp.isSuccess()){
+			log.info("addCart success!");
 			pw.println(new RespMsg("success", null).toJson());
 		}else{
-			pw.println(new RespMsg("fail", null).toJson());
+			log.warn("addCart has erro,respCode:{}",resp.getCode());
+			pw.println(new RespMsg("fail", resp.getCode()).toJson());
 		}
 	}
 	
 	@RequestMapping("removeCart")
 	public String removeCart(@ModelAttribute CartVo cart,HttpServletRequest request,HttpServletResponse response){
+		log.info("removeCart request params:{}",cart);
 		UserVo user=getUser(request);
 		cart.setUid(user.getUid());
 		ServiceResponse<CartVo>resp=cartService.removeCart(cart);
 		if(resp.isSuccess()){
+			log.info("removeCart success!");
 			return webAction("/login/cart/listCart");
 		}else{
+			log.info("removeCart has erro,respCode:{}",resp.getCode());
 			return erroPage(resp.getCode());
 		}
 	}
@@ -70,10 +76,11 @@ public class CartAction extends CommonAction{
 		listParam.setUid(user.getUid());
 		ServiceResponse<List<CartVo>>resp=cartService.listCart(listParam);
 		if(resp.isSuccess()){
-			log.info("CartAction.listCart success,cartList:{}",resp.getData());
+			log.info("CartAction.listCart success,result:{}",resp.getData());
 			request.setAttribute("cartList", resp.getData());
 			return webPage("/user/listCart");
 		}else{
+			log.info("CartAction.listCart has erro,respCode:{}",resp.getCode());
 			return erroPage(resp.getCode());
 		}
 		

@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
+import com.cza.service.goods.vo.UserLikeVo;
 import com.cza.service.order.vo.OrderVo;
 
 /**
@@ -115,4 +116,16 @@ public interface OrderService {
 						 *@return ServiceResponse<OrderVo>
 						 */
 						public ServiceResponse<String> deleteOrder(String oid);
+
+						
+						    /**
+						     * @param orderVo 
+						    * @Title: getUserLike
+						    * @Description: TODO(这里用一句话描述这个方法的作用)
+						    * @param @return    参数
+						    * @return UserLikeVo    返回类型
+						    * @throws
+						    */
+						    
+						public UserLikeVo getUserLike(OrderVo orderVo);
 }

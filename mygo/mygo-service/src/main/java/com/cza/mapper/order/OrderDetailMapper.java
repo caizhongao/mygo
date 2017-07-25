@@ -35,5 +35,16 @@ public interface OrderDetailMapper {
 	public TOrder queryOrderDetail(Long odid);
 	
 	public void saveOrderDetail(TOrderDetail order);
+
+	
+	    /**
+	    * @Title: deleteOrderDetail
+	    * @Description: TODO(这里用一句话描述这个方法的作用)
+	    * @param @param param    参数
+	    * @return void    返回类型
+	    * @throws
+	    */
+	    
+	public void deleteOrderDetail(TOrder param);
 	
 }

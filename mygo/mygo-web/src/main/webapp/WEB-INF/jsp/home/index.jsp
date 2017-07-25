@@ -5,7 +5,9 @@
 <title>漂亮大气响应式电商网站模板HTML下载</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+<link href="${ctx}/common/home/css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="${ctx}/common/home/css/nivo-slider.css" rel="stylesheet" type="text/css" media="all" />
+<script src="${ctx}/common/home/js/jquery.nivo.slider.js"></script>
 <!--end slider -->
 <style type="text/css">
 	.title_flag{
@@ -105,10 +107,60 @@ function initGoodsList(){
 			});
 		}
 	});
+	
+	
+	
+	$.ajax({
+		url:'${ctx}/unlogin/goods/listUserLikeGoods.do',
+		type:'post',
+		dataType:'json',
+		success:function(goodsList){
+			var goodsHtml='';
+			var trGoodsNum=0;
+			var sliderHtml='';
+			//一列4个商品
+			$.each(goodsList,function(index,goods){
+				if(index<3){
+					sliderHtml+='<img src="'+goods.goodsPic+'" class="changepic"  gid="'+goods.gid+'" />';
+				}
+				if(index+1>9){
+					return false;
+				}
+				trGoodsNum=(index+1)%3;
+				goodsHtml+='<div class="col_1_of_3 span_1_of_3">'+ 
+			   '<a href="${ctx}/unlogin/goods/goodsDetail.do?gid='+goods.gid+'" target="_blank">'+
+				'<div class="inner_content clearfix">'+
+					'<div class="product_image">'+
+						'<img src="'+goods.goodsPic+'" style="width:300px;height:300px;" alt=""/>'+
+					'</div>'+
+                   ' <div class="sale-box"><span class="on_sale title_shop">New</span></div>'+	
+                    '<div class="price">'+
+					   '<div class="cart-left">'+
+							'<p class="title" style="display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="'+goods.goodsName+'">'+goods.goodsName+'</p>'+
+							'<div class="price1">'+
+							  '<span class="actual">￥'+goods.price+'</span>'+
+							'</div>'+
+						'</div>'+
+						'<div class="cart-right"> </div>'+
+						'<div class="clear"></div>'+
+					 '</div>'+				
+                   '</div>'+
+                 '</a>'+
+				'</div>';
+				if(trGoodsNum==0){
+					goodsHtml+='<div class="clear"></div>';
+					$('.top-box').eq((index+1)/3-1+6).append(goodsHtml);
+					goodsHtml='';
+				}
+			});
+			$('#slider').html(sliderHtml);
+			 $('#slider').nivoSlider();
+		}
+	});
 }
 
 function toDetail(){
-	$('#tobuybtn').attr('href',$(".changepic").eq($('.nivo-controlNav').find('.active').attr("rel")).attr('link'));
+	$('#tobuybtn').attr('href','${ctx}/unlogin/goods/goodsDetail.do?gid='+$(".changepic").eq($('.nivo-controlNav').find('.active').attr("rel")).attr('gid'));
 }
 </script>
 </head>
@@ -188,25 +240,13 @@ function toDetail(){
 					<span class="title_flag">TOP</span>
 					<span class="title_words">今日推荐</span>
 					<br/>
-						<div class="top-border" style="margin-top: 5px"> </div>
-						 <div class="border">
-			             <link href="${ctx}/common/home/css/default.css" rel="stylesheet" type="text/css" media="all" />
-			             <link href="${ctx}/common/home/css/nivo-slider.css" rel="stylesheet" type="text/css" media="all" />
-						  <script src="${ctx}/common/home/js/jquery.nivo.slider.js"></script>
-						    <script type="text/javascript">
-						    $(window).load(function() {
-						        $('#slider').nivoSlider();
-						    });
-						    </script>
-				    <div class="slider-wrapper theme-default">
-				    
-		              <div id="slider" class="nivoSlider">
-		                <img src="${ctx}/common/home/images/t-img1.jpg" class="changepic"  alt="" link="test1" />
-		               	<img src="${ctx}/common/home/images/t-img2.jpg" class="changepic"  alt="" link="test2"/>
-		                <img src="${ctx}/common/home/images/t-img3.jpg"  class="changepic" alt="" link="test3" />
-		              </div>
-		             </div>
-		              <div class="btn"><a href="" id="tobuybtn" target="_blank" onclick="toDetail()">立即去购买</a></div>
+					<div class="top-border" style="margin-top: 5px"> </div>
+					<div class="border">
+					    <div class="slider-wrapper theme-default">
+				           <div id="slider" class="nivoSlider">
+				           </div>
+			             </div>
+			             <div class="btn"><a href="" id="tobuybtn" target="_blank" onclick="toDetail()">立即去购买</a></div>
 		             </div>
 			    </div>
 			   <div class="clear"></div>

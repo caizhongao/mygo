@@ -27,6 +27,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cza.common.RespMsg;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.service.user.UserService;
@@ -55,33 +56,46 @@ public class UserAction extends CommonAction{
 		if(erroList.isEmpty()){
 			ServiceResponse<UserVo> resp=userService.saveUser(user);
 			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){//成功，返回到主頁
+				log.info("UserAction.register success!");
 				request.getSession().setAttribute(ShoppingContants.USER_SESSION_KEY, user);
 				return webAction("/unlogin/home/index");
+			}else{
+				log.info("UserAction.register has erro,respCode:{}",resp.getCode());
+				return erroPage(resp.getCode());
 			}
+		}else{
+			log.info("UserAction.register has erro,erroMessage:{}",erroList);
+			//失败，返回到注册页
+			request.setAttribute("erroList", erroList);
+			request.setAttribute("user", user);
+			return webPage("user/register");
 		}
-		//失败，返回到注册页
-		request.setAttribute("erroList", erroList);
-		request.setAttribute("user", user);
-		return webPage("user/register");
 	}
 	
 	@RequestMapping("existName")
 	public void existName(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String userName=request.getParameter("userName");
-		log.info("UserAction.existName 参数:{}",userName);
+		log.info("UserAction.existName param:{}",userName);
 		if(!StringUtils.isEmpty(userName)){
 			UserVo listUserParam=new UserVo();
 			listUserParam.setUserName(userName);
 			ServiceResponse<List<UserVo>> resp=userService.listUser(listUserParam);
 			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 				if(resp.getData()!=null&&resp.getData().size()>0){
-					log.info("UserAction.existName 用户名已经存在");
-					response.getWriter().println("1");
-					return;
+					log.info("UserAction.existName exist,can not use!");
+					response.getWriter().println(new RespMsg("success", "exist"));
+				}else{
+					log.info("UserAction.existName can use!");
+					response.getWriter().println(new RespMsg("success", "not"));
 				}
+			}else{
+				log.info("UserAction.existName has erro,respCode:{}!",resp.getCode());
+				response.getWriter().println(new RespMsg("fail", resp.getCode()));
 			}
+		}else{
+			log.info("UserAction.existName param erro!");
+			response.getWriter().println(new RespMsg("fail","param erro"));
 		}
-		response.getWriter().println("0");
 	}
 	
 
@@ -100,11 +114,12 @@ public class UserAction extends CommonAction{
 				UserVo listUserParam=new UserVo();
 				listUserParam.setUserName(user.getUserName());
 				ServiceResponse<List<UserVo>> resp=userService.listUser(listUserParam);
-				if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+				if(resp.isSuccess()){
 					List<UserVo>voList=resp.getData();
 					if(voList!=null&&voList.size()>0){
 						UserVo queryUser=voList.get(0);
 						if(queryUser.getPassword().equals(user.getPassword())){
+							log.info("login success!");
 							//登录成功
 							if(user.getRememberMe()!=null&&user.getRememberMe()==1){
 								Cookie nameCookie = new Cookie("username",user.getUserName());
@@ -127,11 +142,15 @@ public class UserAction extends CommonAction{
 							}
 							return webAction("/unlogin/home/index");
 						}else{
+							log.info("login password erro!");
 							erroList.put("password","登录密码错误");
 						}
 					}else{
+						log.info("login username erro!");
 						erroList.put("userName","登录名不存在");
 					}
+				}else{
+					return erroPage(resp.getCode());
 				}
 			}
 			//登录失败
@@ -147,6 +166,7 @@ public class UserAction extends CommonAction{
 	
 	@RequestMapping("logout")
 	public String logout(HttpServletRequest request,HttpServletResponse response){
+		log.info("logout!");
 		request.getSession().invalidate();
 		if(request.getHeader("Referer")==null||request.getHeader("Referer").indexOf("/login/")>=0){
 			return webAction("/unlogin/home/index");
@@ -169,6 +189,7 @@ public class UserAction extends CommonAction{
 			}
 		}
 		String referer=request.getParameter("ref");
+		log.info("toLogin ref:{},user cookie{}",referer,userVo);
 		request.setAttribute("user", userVo);
 		request.setAttribute("ref", referer);
 		return webPage("user/login");

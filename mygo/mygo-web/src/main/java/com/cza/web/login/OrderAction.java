@@ -103,14 +103,16 @@ public class OrderAction extends CommonAction{
 	
 	@RequestMapping("preOrderPage")
 	public String preOrderPage(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response){
+		log.info("preOrderPage request params:{}",order);
 		UserVo userVo=getUser(request);
 		ServiceResponse<OrderVo> resp=orderService.queryOrder(order.getOid());
 		if(resp.isSuccess()){
+			log.info("queryOrder success,result:{}",resp.getData());
 			OrderVo orderVo=resp.getData();
 			orderVo.setType(order.getType());
 			request.setAttribute("order",orderVo );
 		}else{
-			log.info("OrderAction.queryOrder faild!");
+			log.info("OrderAction.queryOrder has erro,,respCode:{}",resp.getCode());
 			if(ShoppingContants.RESP_CODE_SYSTEM_ERRO.equals(resp.getCode())){
 				return erroPage(resp.getCode());
 			}else{
@@ -121,10 +123,11 @@ public class OrderAction extends CommonAction{
 		TArea area=new TArea();
 		area.setPaid(0l);
 		ServiceResponse<List<TArea>>areaResp=addrService.listAreas(area);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(areaResp.getCode())){
-			List<TArea> provinces=areaResp.getData();
-			request.setAttribute("provinces", provinces);
+		if(areaResp.isSuccess()){
+			log.info("listAreas success,result:{}",areaResp.getData());
+			request.setAttribute("provinces", areaResp.getData());
 		}else{
+			log.info("listAreas has erro,,respCode:{}",areaResp.getCode());
 			return erroPage( areaResp.getCode());
 		}
 		//获取地址
@@ -132,8 +135,10 @@ public class OrderAction extends CommonAction{
 		addrParam.setUid(userVo.getUid());
 		ServiceResponse<List<TUserAddr>> addrResp=addrService.listAddrs(addrParam);
 		if(addrResp.isSuccess()){
+			log.info("listAddrs success,result:{}",addrResp.getData());
 			request.setAttribute("addrs", addrResp.getData());
 		}else{
+			log.info("listAddrs has erro,,respCode:{}",addrResp.getCode());
 			return erroPage( addrResp.getCode());
 		}
 		return webPage("/home/preOrderPage");
@@ -141,8 +146,8 @@ public class OrderAction extends CommonAction{
 	
 	@RequestMapping("confirmOrder")
 	public String confirmOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
+		log.info("confirmOrder 请求参数,order:{}",order);
 		UserVo userVo=getUser(request);
-		log.info("OrderAction.saveOrder 请求参数,order:{}",order);
 		//参数校验
 		if(MygoUtil.hasZeroNull(order.getAddrId())){
 			log.info("OrderAction.saveOrder 参数错误,地址为空！");
@@ -151,10 +156,10 @@ public class OrderAction extends CommonAction{
 		order.setUid(userVo.getUid());;
 		ServiceResponse<OrderVo> resp=orderService.confirmOrder(order);
 		if(resp.isSuccess()){
-			log.info("OrderAction.saveOrder success,orderNo:{}",resp.getData().getOid());
+			log.info("confirmOrder success!");
 			return webAction("/login/order/toOrderPayPage", new Param("oid",resp.getData().getOid()));
 		}else{
-			log.info("OrderAction.saveOrder faild!");
+			log.info("confirmOrder has erro,,respCode:{}",resp.getCode());
 			if(ShoppingContants.RESP_CODE_SYSTEM_ERRO.equals(resp.getCode())){
 				return erroPage(resp.getCode());
 			}else{
@@ -170,15 +175,17 @@ public class OrderAction extends CommonAction{
 	@RequestMapping("toOrderPayPage")
 	public String toOrderPayPage(HttpServletRequest request,HttpServletResponse response ){
 		String str=request.getParameter("oid");
+		log.info("toOrderPayPage request params:{}",str);
 		if(StringUtils.isEmpty(str)){
 			return erroPage( ShoppingContants.RESP_CODE_PARAM_ERRO);
 		}
 		ServiceResponse<OrderVo> resp=orderService.queryOrder(str);
 		if(resp.isSuccess()){
+			log.info("queryOrder success,result:{}",resp.getData());
 			request.setAttribute("order", resp.getData());
 			return webPage("/home/orderPayPage");
 		}else{
-			log.info("OrderAction.toOrderPayPage faild!");
+			log.warn("queryOrder has erro,,respCode:{}",resp.getCode());
 			return erroPage(resp.getCode());
 		}
 	}
@@ -190,12 +197,14 @@ public class OrderAction extends CommonAction{
 	 */
 	@RequestMapping("toAliPayPage")
 	public String toAliPayPage(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ) throws UnsupportedEncodingException, AlipayApiException{
-		log.info("toAliPayPage param:{}",order);
+		log.info("toAliPayPage request params:{}",order);
 		ServiceResponse<String> resp=AliPayUtils.aliPayPage(order.getOid(),order.getAmount(),order.getOrderName());
 		if(resp.isSuccess()){
+			log.info("aliPayPage success,result:{}",resp.getData());
 			request.setAttribute("result", resp.getData());
 			return webPage("/home/pay");
 		}else{
+			log.warn("aliPayPage has erro,respCode",resp.getCode());
 			return erroPage(resp.getCode());
 		}
 	}
@@ -209,15 +218,21 @@ public class OrderAction extends CommonAction{
 	@RequestMapping("toPayResultPage")
 	@SuppressWarnings("unchecked")
 	public String toPayResultPage(HttpServletRequest request,HttpServletResponse response ) throws UnsupportedEncodingException, AlipayApiException{
-		request.setAttribute("payResult","failed");//设置默认为失败
 		ServiceResponse<Boolean> validateResp=AliPayUtils.validatePayResult(request.getParameterMap());
 		if(validateResp.isSuccess()){//方法执行成工
 			if(validateResp.getData()){//验证成功
+				log.info("validatePayResult success,oid:{},amount:{},payNo:{}",request.getParameter("out_trade_no"),request.getParameter("total_amount"), request.getParameter("trade_no"));
 				request.setAttribute("oid", request.getParameter("out_trade_no"));
 				request.setAttribute("amount", request.getParameter("total_amount"));
 				request.setAttribute("payNo", request.getParameter("trade_no"));
 				request.setAttribute("payResult","success");//设置通知结果为成功
+			}else{
+				log.info("validatePayResult failed!");
+				request.setAttribute("payResult","failed");
 			}
+		}else{
+			log.warn("validatePayResult has erro,respCode",validateResp.getCode());
+			return erroPage(validateResp.getCode());
 		}
 		return webPage("/home/payResult");
 	}
@@ -288,40 +303,51 @@ public class OrderAction extends CommonAction{
 	@RequestMapping("toRefund")
 	public void toRefund(HttpServletRequest request,HttpServletResponse response ) throws IOException{
 		String oid=request.getParameter("oid");
-		log.info("toRefund oid:{}",oid);
+		log.info("toRefund param,oid:{}",oid);
 		if(!StringUtils.isEmpty(oid)){
 			ServiceResponse<OrderVo> resp=orderService.queryOrder(oid);
 			if(resp.isSuccess()){
+				log.info("queryOrder success,result:{}", resp.getData());
 				final OrderVo order=resp.getData();
 				ServiceResponse<Boolean> refundResp=AliPayUtils.refund(order.getOid(), order.getPayNo(), order.getAmount());
 				if(refundResp.isSuccess()){//方法执行成功
 					if(refundResp.getData()){//退款成功
+						log.info("refund success!");
 						OrderVo refundParam=new OrderVo();
 						refundParam.setOid(order.getOid());
 						orderService.orderRefund(refundParam);
 						response.getWriter().println(new RespMsg("success", null).toJson());
 						return;
+					}else{
+						log.info("refund failed");
 					}
+				}else{
+					log.info("refund has erro,respCode:{}", refundResp.getCode());
+					response.getWriter().println(new RespMsg("fail", refundResp.getCode()));
 				}
+			}else{
+				log.info("queryOrder has erro,respCode:{}", resp.getCode());
+				response.getWriter().println(new RespMsg("fail", resp.getCode()));
+				return;
 			}
 		}
-		response.getWriter().println(new RespMsg("fail", null).toJson());
+		
 	}
 	
 	
 	@RequestMapping("listOrder")
 	public String listOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
 		UserVo userVo=getUser(request);
-		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
+		log.info("OrderAction.listPayOrder request params:{}",order);
 		order.setUid(userVo.getUid());
 		request.setAttribute("order", order);
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			log.info("listOrder success,result:{}",resp.getData());
 			request.setAttribute("pager", resp.getData());
-			log.info("OrderAction.listPayOrder success,orders:{}",resp.getData());
 			return webPage("user/listOrder");
 		}else{
-			log.info("OrderAction.listNotPayOrder faild!");
+			log.info("listOrder has erro,,respCode:{}",resp.getCode());
 			return erroPage( resp.getCode());
 		}
 	}
@@ -332,11 +358,11 @@ public class OrderAction extends CommonAction{
 		order.setStatus(ShoppingContants.ORDER_STATUS_USER_DELETE);
 		ServiceResponse<OrderVo> resp=orderService.closeOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			log.info("OrderAction.deleteOrder success,orderNo:{}",order.getOid());
+			log.info("closeOrder success,orderNo:{}",order.getOid());
 			response.getWriter().println(new RespMsg("success", null).toJson());
 		}else{
-			log.info("OrderAction.deleteOrder faild!");
-			response.getWriter().println(new RespMsg("fail", null).toJson());
+			log.info("closeOrder has erro,,respCode:{}",resp.getCode());
+			response.getWriter().println(new RespMsg("fail", resp.getCode()).toJson());
 		}
 	}
 }

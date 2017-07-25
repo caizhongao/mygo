@@ -50,20 +50,18 @@ public class AddrAction extends CommonAction{
 	private AddrService addrService;
 	private static final Logger log = LoggerFactory.getLogger(AddrAction.class); 
 	@RequestMapping("listAreas")
-	public void listAreas(HttpServletRequest request,HttpServletResponse response) throws IOException{
+	public void listAreas(@ModelAttribute TArea area, HttpServletRequest request,HttpServletResponse response) throws IOException{
+		log.info("AddrAction.listAreas request params:{}",area);
 		response.setCharacterEncoding("UTF-8");
-		TArea area=new TArea();
-		area.setPaid(Long.valueOf(request.getParameter("paid")));
-		log.info("AddrAction.listAreas 请求参数,paid:{}",area.getPaid());
 		ServiceResponse<List<TArea>>resp=addrService.listAreas(area);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("AddrAction.listAreas success,result:{}",resp.getData());
 			List<TArea> areas=resp.getData();
 			String result=JSON.toJSONString(areas);
-			log.info("AddrAction.listAreas 响应结果:{}",result);
-			response.getWriter().println(new RespMsg("success", result).toJson());
+			response.getWriter().println(new RespMsg("success", result));
 		}else{
-			log.info("AddrAction.listAreas 查询失败");
-			response.getWriter().println(new RespMsg("fail", null).toJson());
+			log.info("AddrAction.listAreas has erro,respCode:{}",resp.getCode());
+			response.getWriter().println(new RespMsg("fail", resp.getCode()));
 		}
 	}
 	@RequestMapping("editAddr")
@@ -72,13 +70,15 @@ public class AddrAction extends CommonAction{
 		TUserAddr listParam=new TUserAddr();
 		listParam.setUid(userVo.getUid());
 		ServiceResponse<List<TUserAddr>>resp=addrService.listAddrs(listParam);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("listAddr success,result:{}",resp.getData());
 			List<TUserAddr> addrs=resp.getData();
 			request.setAttribute("addrs", addrs);
-			if(addrs!=null){
-				//如果uaid不为空，代表编辑
-				String uaid=request.getParameter("uaid");
-				if(!StringUtils.isEmpty(uaid)){
+			String uaid=request.getParameter("uaid");
+			log.info("editAddr uaid:{}",uaid);
+			//如果uaid不为空，代表编辑
+			if(!StringUtils.isEmpty(uaid)){
+				if(addrs!=null&&addrs.size()>0){
 					for(TUserAddr addr:addrs){
 						if(addr.getUaid().equals(Long.valueOf(uaid))){
 							request.setAttribute("addr", addr);
@@ -87,18 +87,26 @@ public class AddrAction extends CommonAction{
 					}
 				}
 			}
+		}else{
+			log.info("listAddr has erro,respCode:{}",resp.getCode());
+			return erroPage(resp.getCode());
 		}
 		TArea area=new TArea();
 		area.setPaid(0l);
-		ServiceResponse<List<TArea>>resp1=addrService.listAreas(area);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp1.getCode())){
-			List<TArea> provinces=resp1.getData();
+		ServiceResponse<List<TArea>>areaResp=addrService.listAreas(area);
+		if(areaResp.isSuccess()){
+			log.info("AddrAction.listAreas success,result:{}",areaResp.getData());
+			List<TArea> provinces=areaResp.getData();
 			request.setAttribute("provinces", provinces);
+		}else{
+			log.info("listAreas has erro,respCode:{}",areaResp.getCode());
+			return erroPage(areaResp.getCode());
 		}
 		return webPage("/user/editAddress");
 	}
 	@RequestMapping("saveAddr")
 	public String saveAddr(@ModelAttribute TUserAddr addr,HttpServletRequest request,HttpServletResponse response ){
+		log.info("saveAddr request param:{}",addr);
 		UserVo userVo=getUser(request);
 		addr.setUid(userVo.getUid());
 		if(addr.getIsDefault()==null){
@@ -106,8 +114,10 @@ public class AddrAction extends CommonAction{
 		}
 		ServiceResponse<TUserAddr>resp=addrService.saveAddr(addr);
 		if(resp.isSuccess()){
+			log.info("saveAddr success!");
 			return webAction("/login/addr/editAddr");
 		}else{
+			log.warn("saveAddr has erro,respCode:{}",resp.getCode());
 			return erroPage(resp.getCode());
 		}
 	}
@@ -115,6 +125,7 @@ public class AddrAction extends CommonAction{
 	
 	@RequestMapping("saveAddrAjax")
 	public void saveAddrAjax(@ModelAttribute TUserAddr addr,HttpServletRequest request,HttpServletResponse response ) throws IOException{
+		log.info("saveAddrAjax request param:{}",addr);
 		response.setCharacterEncoding("utf-8");
 		UserVo userVo=getUser(request);
 		addr.setUid(userVo.getUid());
@@ -123,25 +134,27 @@ public class AddrAction extends CommonAction{
 		}
 		ServiceResponse<TUserAddr>resp=addrService.saveAddr(addr);
 		if(resp.isSuccess()){
+			log.info("saveAddrAjax success!");
 			response.getWriter().println(new RespMsg("success", resp.getData()).toJson());
 		}else{
+			log.warn("saveAddrAjax has erro,respCode:{}",resp.getCode());
 			response.getWriter().println(new RespMsg("fail", resp.getCode()).toJson());
 		}
 	}
 	
 	@RequestMapping("setDefault")
-	public String setDefault(HttpServletRequest request,HttpServletResponse response){
+	public String setDefault(@ModelAttribute TUserAddr addr,HttpServletRequest request,HttpServletResponse response){
+		log.info("setDefault request param:{}",addr);
 		UserVo userVo=getUser(request);
-		TUserAddr addr=new TUserAddr();
 		addr.setUid(userVo.getUid());
-		addr.setUaid(Long.valueOf(request.getParameter("uaid")));
 		ServiceResponse<TUserAddr>resp=addrService.setDefault(addr);
 		if(resp.isSuccess()){
+			log.info("setDefault success!");
 			return webAction("/login/addr/editAddr");
 		}else{
+			log.warn("setDefault has erro,respCode:{}",resp.getCode());
 			return erroPage(resp.getCode());
 		}
-		
 	}
 		
 	

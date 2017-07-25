@@ -40,6 +40,7 @@ import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.GoodsVo;
 import com.cza.service.goods.vo.SkuAttrVo;
 import com.cza.service.goods.vo.SkuVo;
+import com.cza.service.goods.vo.UserLikeVo;
 
 
 /**
@@ -679,5 +680,44 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsMapper.batchUpdateGoodsIndex(goodsIndexs);
 	}
 	
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @param likeVo
+	    * @return
+	    * @see com.cza.service.goods.GoodsService#listUserLikeGoods(com.cza.service.goods.vo.UserLikeVo)
+	    */
+	    
+	@Override
+	public ServiceResponse<List<GoodsVo>> listUserLikeGoods(UserLikeVo likeVo) {
+		ServiceResponse<List<GoodsVo>> resp=new ServiceResponse<List<GoodsVo>>();
+		List<GoodsVo>voList=null;
+		try {
+			List<TGoods>goodsList=goodsMapper.listUserLikeGoods(likeVo);
+			if(goodsList!=null&&goodsList.size()>0){
+				voList=new ArrayList<GoodsVo>();
+				for(TGoods tgoods:goodsList){
+					GoodsVo vo=new GoodsVo();
+					vo.setCid(tgoods.getCid());
+					vo.setGid(tgoods.getGid());
+					vo.setGoodsCode(tgoods.getGoodsCode());
+					vo.setGoodsName(tgoods.getGoodsName());
+					vo.setGoodsPic(tgoods.getGoodsPic());
+					vo.setPrice(tgoods.getPrice());
+					voList.add(vo);
+				}
+			}
+			resp.setData(voList);
+			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+		} catch (Exception e) {
+			resp.setData(null);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			log.error("查询商品异常!",e);
+		}
+		return resp;
+	}
 
 }

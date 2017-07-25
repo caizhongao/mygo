@@ -18,6 +18,7 @@ import com.cza.common.ServiceResponse;
 import com.cza.dto.goods.TSkuStock;
 import com.cza.service.goods.vo.GoodsVo;
 import com.cza.service.goods.vo.SkuVo;
+import com.cza.service.goods.vo.UserLikeVo;
 
 /**
     * @ClassName: GoodsService
@@ -186,5 +187,19 @@ public interface GoodsService {
 																    
 																ServiceResponse<GoodsVo> updateGoodsOffShelf(
 																		GoodsVo goods);
+
+
+																	
+																	    /**
+																	    * @Title: listUserLikeGoods
+																	    * @Description: TODO(这里用一句话描述这个方法的作用)
+																	    * @param @param likeVo
+																	    * @param @return    参数
+																	    * @return ServiceResponse<List<GoodsVo>>    返回类型
+																	    * @throws
+																	    */
+																	    
+																	ServiceResponse<List<GoodsVo>> listUserLikeGoods(
+																			UserLikeVo likeVo);
 	
 }

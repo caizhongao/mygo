@@ -162,10 +162,23 @@ public class CartVo {
 
 
 
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
 	@Override
 	public String toString() {
-		return "CartVo [sku=" + sku + ", sid=" + sid + ", number=" + number + ", amount=" + amount + ", uid=" + uid + "]";
+		return "CartVo [sid=" + sid + ", gid=" + gid + ", number=" + number + ", uid=" + uid + ", sku=" + sku
+				+ ", amount=" + amount + "]";
 	}
+
+
+
 
 
 

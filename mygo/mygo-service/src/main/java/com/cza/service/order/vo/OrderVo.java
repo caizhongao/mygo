@@ -11,9 +11,11 @@
 package com.cza.service.order.vo;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.cza.dto.order.TOrder;
+import com.cza.dto.order.TOrderDetail;
 
 /**
     * @ClassName: ListOrderVo
@@ -28,6 +30,24 @@ public class OrderVo extends TOrder{
 	 * 
 	 */
 	private static final long serialVersionUID = -5615552396138482416L;
+	
+	private String oid;         
+	private Long uid ;   
+	private String userName;
+	private String province;              
+	private String city   ;              
+	private String area  ;              
+	private String addr  ;     
+	private String receiver;        
+	private String mobilphone;  
+	private BigDecimal amount;
+	private Integer status;
+	private String deleteDesc;
+	private String payNo;
+	private Long createTime;
+	private Long updateTime;
+	private Long orderVersion;
+	
 	private List<OrderDetailVo> detailVos;
 	private String token;
 	private Long addrId;
@@ -178,9 +198,440 @@ public class OrderVo extends TOrder{
 	}
 
 
+	
+	/**
+	* @return oid
+	*/
+	
+	public String getOid() {
+		return oid;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param oid the oid to set
+	 */
+	
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+
+
+
+
+
+	
+	/**
+	* @return uid
+	*/
+	
+	public Long getUid() {
+		return uid;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param uid the uid to set
+	 */
+	
+	public void setUid(Long uid) {
+		this.uid = uid;
+	}
+
+
+
+
+
+	
+	/**
+	* @return userName
+	*/
+	
+	public String getUserName() {
+		return userName;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param userName the userName to set
+	 */
+	
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
+
+
+
+	
+	/**
+	* @return province
+	*/
+	
+	public String getProvince() {
+		return province;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param province the province to set
+	 */
+	
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+
+
+
+
+	
+	/**
+	* @return city
+	*/
+	
+	public String getCity() {
+		return city;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param city the city to set
+	 */
+	
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+
+
+
+
+	
+	/**
+	* @return area
+	*/
+	
+	public String getArea() {
+		return area;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param area the area to set
+	 */
+	
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+
+
+
+
+	
+	/**
+	* @return addr
+	*/
+	
+	public String getAddr() {
+		return addr;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param addr the addr to set
+	 */
+	
+	public void setAddr(String addr) {
+		this.addr = addr;
+	}
+
+
+
+
+
+	
+	/**
+	* @return receiver
+	*/
+	
+	public String getReceiver() {
+		return receiver;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param receiver the receiver to set
+	 */
+	
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
+	}
+
+
+
+
+
+	
+	/**
+	* @return mobilphone
+	*/
+	
+	public String getMobilphone() {
+		return mobilphone;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param mobilphone the mobilphone to set
+	 */
+	
+	public void setMobilphone(String mobilphone) {
+		this.mobilphone = mobilphone;
+	}
+
+
+
+
+
+	
+	/**
+	* @return amount
+	*/
+	
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param amount the amount to set
+	 */
+	
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
+
+
+
+
+	
+	/**
+	* @return status
+	*/
+	
+	public Integer getStatus() {
+		return status;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param status the status to set
+	 */
+	
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+
+
+
+
+	
+	/**
+	* @return deleteDesc
+	*/
+	
+	public String getDeleteDesc() {
+		return deleteDesc;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param deleteDesc the deleteDesc to set
+	 */
+	
+	public void setDeleteDesc(String deleteDesc) {
+		this.deleteDesc = deleteDesc;
+	}
+
+
+
+
+
+	
+	/**
+	* @return payNo
+	*/
+	
+	public String getPayNo() {
+		return payNo;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param payNo the payNo to set
+	 */
+	
+	public void setPayNo(String payNo) {
+		this.payNo = payNo;
+	}
+
+
+
+
+
+	
+	/**
+	* @return createTime
+	*/
+	
+	public Long getCreateTime() {
+		return createTime;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param createTime the createTime to set
+	 */
+	
+	public void setCreateTime(Long createTime) {
+		this.createTime = createTime;
+	}
+
+
+
+
+
+	
+	/**
+	* @return updateTime
+	*/
+	
+	public Long getUpdateTime() {
+		return updateTime;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param updateTime the updateTime to set
+	 */
+	
+	public void setUpdateTime(Long updateTime) {
+		this.updateTime = updateTime;
+	}
+
+
+
+
+
+	
+	/**
+	* @return orderVersion
+	*/
+	
+	public Long getOrderVersion() {
+		return orderVersion;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param orderVersion the orderVersion to set
+	 */
+	
+	public void setOrderVersion(Long orderVersion) {
+		this.orderVersion = orderVersion;
+	}
+
+
+
+
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
 	@Override
 	public String toString() {
-		return "OrderVo [getGoodsName()=" + getGoodsName() + ", getAddrId()=" + getAddrId() + ", getToken()=" + getToken() + ", getDetailVos()=" + getDetailVos() + ", getOrderName()=" + getOrderName() + ", getPageNum()=" + getPageNum() + ", getPageSize()=" + getPageSize() + ", getStart()=" + getStart() + ", getDetails()=" + getDetails() + ", getOid()=" + getOid() + ", getUid()=" + getUid() + ", getUserName()=" + getUserName() + ", getProvince()=" + getProvince() + ", getCity()=" + getCity() + ", getArea()=" + getArea() + ", getAddr()=" + getAddr() + ", getReceiver()="
-				+ getReceiver() + ", getMobilphone()=" + getMobilphone() + ", getAmount()=" + getAmount() + ", getStatus()=" + getStatus() + ", getDeleteDesc()=" + getDeleteDesc() + ", getPayNo()=" + getPayNo() + ", getCreateTime()=" + getCreateTime() + ", getUpdateTime()=" + getUpdateTime() + ", getOrderVersion()=" + getOrderVersion() + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
+		return "OrderVo [oid=" + oid + ", uid=" + uid + ", userName=" + userName + ", province=" + province + ", city="
+				+ city + ", area=" + area + ", addr=" + addr + ", receiver=" + receiver + ", mobilphone=" + mobilphone
+				+ ", amount=" + amount + ", status=" + status + ", deleteDesc=" + deleteDesc + ", payNo=" + payNo
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", orderVersion=" + orderVersion
+				+ ", detailVos=" + detailVos + ", token=" + token + ", addrId=" + addrId + ", type=" + type
+				+ ", goodsName=" + goodsName + ", orderName=" + orderName + ", pageNum=" + pageNum + ", pageSize="
+				+ pageSize + ", start=" + start + "]";
 	}
+
+
 }

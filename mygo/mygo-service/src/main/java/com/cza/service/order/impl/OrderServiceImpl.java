@@ -48,6 +48,7 @@ import com.cza.mapper.user.UserMapper;
 import com.cza.service.goods.vo.GoodsVo;
 import com.cza.service.goods.vo.SkuAttrVo;
 import com.cza.service.goods.vo.SkuVo;
+import com.cza.service.goods.vo.UserLikeVo;
 import com.cza.service.order.OrderService;
 import com.cza.service.order.vo.OrderDetailVo;
 import com.cza.service.order.vo.OrderVo;
@@ -63,6 +64,8 @@ import com.cza.service.order.vo.OrderVo;
 public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private SkuStockMapper stockMapper;
+	@Autowired
+	private OrderDetailMapper orderDetailMapper;
 	@Autowired
 	private OrderMapper orderMapper;
 	@Autowired
@@ -598,6 +601,7 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 			param.setOrderVersion(queryOrder.getOrderVersion());
 			int row=orderMapper.deleteOrder(param);
 			if(row>0){
+				orderDetailMapper.deleteOrderDetail(param);
 				log.info("订单删除成功!");
 				resp.setData(oid);
 				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
@@ -611,6 +615,27 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 		resp.setCode(ShoppingContants.RESP_CODE_ORDER_HAS_OPT);
 		return resp;
 	}
+
+
+
 	
-	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see com.cza.service.order.OrderService#getUserLike()
+	    */
+	    
+	@Override
+	public UserLikeVo getUserLike(OrderVo orderVo) {
+		BigDecimal price=orderMapper.queryAvgOrderPrice(orderVo);
+		Long cid=orderMapper.queryHotCategory(orderVo);
+		UserLikeVo likeVo=new UserLikeVo();
+		likeVo.setCategory(cid);
+		if(price.doubleValue()<100){
+			likeVo.setTopLever(price.add(new BigDecimal(50)));
+			likeVo.setLowerLever(price.divide(new BigDecimal(2)));
+		}
+		return likeVo;
+	}
 }

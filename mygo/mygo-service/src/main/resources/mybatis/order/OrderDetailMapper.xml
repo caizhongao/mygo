@@ -65,6 +65,11 @@
 	</select>
 	
 	
-	
+		<delete id="deleteOrderDetail" parameterType="com.cza.dto.order.TOrder">
+		delete from t_order_detail
+		<where> 
+			oid = #{oid}
+		</where>
+	</delete>
 		
 </mapper>

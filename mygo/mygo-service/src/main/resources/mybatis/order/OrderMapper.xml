@@ -188,4 +188,45 @@
 			limit #{start},#{pageSize}
 	</select>
 		
+		
+		
+		<select id="queryHotCategory"  parameterType="com.cza.service.order.vo.OrderVo" resultType="java.lang.Long">
+			SELECT cid FROM (SELECT 
+			  g.cid AS cid ,COUNT(od.odid) AS num
+			FROM
+			  t_order_detail od,
+			  t_order o ,
+			  t_goods g
+			WHERE od.oid = o.oid 
+			  AND o.uid = #{uid}
+			  AND od.gid=g.gid
+			  GROUP BY g.cid)a
+			  ORDER BY num DESC LIMIT 1;
+		</select>
+			
+		<select id="queryAvgOrderPrice"  parameterType="com.cza.service.order.vo.OrderVo" resultType="java.math.BigDecimal">
+			SELECT 
+			  AVG(od.order_price) 
+			FROM
+			  t_order_detail od,
+			  t_order o 
+			WHERE od.oid = o.oid 
+			  AND o.uid = #{uid} 
+			  AND od.order_price NOT IN 
+			  (SELECT 
+			    MAX(od.order_price) 
+			  FROM
+			    t_order_detail od,
+			    t_order o 
+			  WHERE od.oid = o.oid 
+			    AND o.uid = #{uid}  
+			  UNION
+			  SELECT 
+			    MIN(od.order_price) 
+			  FROM
+			    t_order_detail od,
+			    t_order o 
+			  WHERE od.oid = o.oid 
+			    AND o.uid = #{uid} ) ;
+		</select>
 </mapper>

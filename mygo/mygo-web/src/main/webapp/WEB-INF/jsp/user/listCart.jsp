@@ -74,7 +74,7 @@ function allCheck(){
 			$(this).prop('checked',false);
 		});
 		$('.total_number').html(0);
-		$('.total_amount').html(0.00);
+		$('.total_amount').html("0.00");
 	}
 }
 

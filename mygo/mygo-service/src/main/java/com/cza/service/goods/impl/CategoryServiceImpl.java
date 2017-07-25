@@ -107,6 +107,7 @@ public ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid) {
 			}
 			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+			log.info("listCategory success result:{}",categoryList);
 		} catch (Exception e) {
 			log.error("CategoryServiceImpl listCategory erro:",e);
 			resp.setData(null);

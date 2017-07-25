@@ -17,6 +17,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cza.dto.goods.TGoods;
 import com.cza.service.goods.vo.GoodsVo;
+import com.cza.service.goods.vo.UserLikeVo;
 
 /**
     * @ClassName: UserMapper
@@ -82,4 +83,16 @@ public interface GoodsMapper {
 				    */
 				    
 				public Long countGoods(GoodsVo listParam);
+
+					
+					    /**
+					    * @Title: listUserLikeGoods
+					    * @Description: TODO(这里用一句话描述这个方法的作用)
+					    * @param @param likeVo
+					    * @param @return    参数
+					    * @return List<TGoods>    返回类型
+					    * @throws
+					    */
+					    
+					public List<TGoods> listUserLikeGoods(UserLikeVo likeVo);
 }

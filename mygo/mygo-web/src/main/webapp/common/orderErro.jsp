@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" type="text/css" href="${ctx }/common/404/error_all.css?t=201303212934">
+<link rel="stylesheet" type="text/css" href="${ctx }/common/orderErro/error_all.css?t=201303212934">
 <title>Insert title here</title>
 </head>
 <body class="_body">

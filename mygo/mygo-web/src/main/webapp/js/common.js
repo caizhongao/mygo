@@ -22,7 +22,9 @@ function isFloat(val){
 	return true;
 }
 
-
+function delspace(obj){
+	$(obj).val($(obj).val().replace(/\s/g,''));
+}
 
 function returnFloat(value){
 	 var value=Math.round(parseFloat(value)*100)/100;

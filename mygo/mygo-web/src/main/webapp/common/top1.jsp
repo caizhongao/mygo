@@ -50,8 +50,9 @@
 			type:'post',
 			dataType:'json',
 			success:function(cartList){
+				var categoryHtml='';
 				if(cartList.message=='success'){
-					var categoryHtml='';
+					
 					var total_price=0;
 					if(cartList.data!=null&&cartList.data.length>0){
 						$.each(cartList.data,function(index,cart){
@@ -104,14 +105,22 @@
 			type:'post',
 			dataType:'json',
 			success:function(categoryList){
-				var categoryHtml='<li class="active grid"><a href="javascript:void(0)" onclick="toIndex()">首页</a></li>';
+				var categoryHtml='';
+				var flag=false;
 				$.each(categoryList,function(index,category){
-				 	var active='';
+					var active='';
 					if(cid==category.cid){
 						active='activeC';
+						flag=true;
 					}
 					categoryHtml+='<li class="active grid"><a href="javascript:void(0)" class="'+active+'" onclick="gotoPage('+category.cid+')"">'+category.cname+'</a></li>';
 				});
+				if(!flag){
+					active='activeC';
+				}else{
+					active='';
+				}
+				categoryHtml='<li class="active grid"><a href="javascript:void(0)" class="'+active+'"  onclick="toIndex()">首页</a></li>'+categoryHtml;
 				$('#category').html(categoryHtml);
 			}
 		});
