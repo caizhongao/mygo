@@ -3,37 +3,29 @@
 <link href="${ctx}/common/home/css/form.css" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" href="${ctx}/common/home/css/fwslider.css" media="all">
 <link href="${ctx}/common/home/css/megamenu.css" rel="stylesheet" type="text/css" media="all" />
-<!-- start menu -->
-
-<%-- <script type="text/javascript" src="${ctx}/common/home/js/megamenu.js"></script>
-<script>$(document).ready(function(){$(".megamenu").megamenu();});</script> --%>
-<!--start slider -->
-    
-    <script src="${ctx}/common/home/js/jquery-ui.min.js"></script>
-    <script src="${ctx}/common/home/js/css3-mediaqueries.js"></script>
-    <script src="${ctx}/common/home/js/fwslider.js"></script>
+<script src="${ctx}/common/home/js/jquery-ui.min.js"></script>
+<script src="${ctx}/common/home/js/css3-mediaqueries.js"></script>
+<script src="${ctx}/common/home/js/fwslider.js"></script>
 <style>
-	.category{text-align: center;font-weight: bold;}
-	.category:hover{background-color: #E92250;cursor: pointer;}
-	.active{background-color: #E92250;cursor: pointer;}
-	.ct-icon{display: inline-block; width: 24px; height: 24px;vertical-align: middle;position: relative; top: -2px;background: url(${ctx}/img/bg_icon.png) no-repeat 0 0;}
-	.ct-icon-1{background-position: -216px 0;} /*食品**/
-	.ct-icon-2{background-position: 0 0;} /*服装**/
-	.ct-icon-3{background-position: -144px 0;} /*家具**/
-	.ct-icon-4{background-position: -264px 0;} /*电器**/
-	.activeC{
-	color: #7db122!important;
-	font-weight: bolder!important;
-	font-size: 16px!important;}
+.category{text-align: center;font-weight: bold;}
+.category:hover{background-color: #E92250;cursor: pointer;}
+.active{background-color: #E92250;cursor: pointer;}
+.ct-icon{display: inline-block; width: 24px; height: 24px;vertical-align: middle;position: relative; top: -2px;background: url(${ctx}/img/bg_icon.png) no-repeat 0 0;}
+.ct-icon-1{background-position: -216px 0;} /*食品**/
+.ct-icon-2{background-position: 0 0;} /*服装**/
+.ct-icon-3{background-position: -144px 0;} /*家具**/
+.ct-icon-4{background-position: -264px 0;} /*电器**/
+.activeC{color: #7db122!important;font-weight: bolder!important;font-size: 16px!important;}
 .cart-item{border-bottom:  1px solid #eeeeee;height: 86px;width: 280px;margin: 0px auto;padding: 5 0 5 0;}
 .cart-img{display:inline-block;vertical-align: middle;width: 85px;}
 .cart-img img{width: 80px;height: 80px}
-
+.title_a{font-weight: bold;font-size: 13px;color: white;}
 </style>
 <script>
 	function gotoPage(cid){
 		location.href="${ctx}/unlogin/goods/listCategoryGoods.do?cid="+cid;
 	}
+	
 	function toIndex(){
 		location.href="${ctx}/";
 	}
@@ -42,7 +34,6 @@
 		initCategory();
 		initCartList();
 	});
-
 	
 	function initCartList(){
 		$.ajax({
@@ -52,9 +43,9 @@
 			success:function(cartList){
 				var categoryHtml='';
 				if(cartList.message=='success'){
-					
 					var total_price=0;
 					if(cartList.data!=null&&cartList.data.length>0){
+						//$('#cartNum').html(cartList.data.length);
 						$.each(cartList.data,function(index,cart){
 							var price=cart.sku.price;
 							var number=cart.number;
@@ -82,7 +73,6 @@
 							                    '<strong class="clr-txt" style="color: #7fba00">'+returnFloat(total_price)+'</strong>'+
 							                '</div>'+
 							            '</li>';
-						
 					}else{
 						categoryHtml+='<li><h3>没有商品</h3><a href=""></a></li>'+
 						'<li><p>您的购物车是空的,您可以添加商品到购物车</p></li>';
@@ -115,7 +105,8 @@
 					}
 					categoryHtml+='<li class="active grid"><a href="javascript:void(0)" class="'+active+'" onclick="gotoPage('+category.cid+')"">'+category.cname+'</a></li>';
 				});
-				if(!flag){
+				
+				if(cid==-1){
 					active='activeC';
 				}else{
 					active='';
@@ -125,15 +116,13 @@
 			}
 		});
 	}
-</script>
-	
-<style>
-	.title_a{
-		font-weight: bold;
-		font-size: 13px;
-		color: white;
+	function checkSearch(){
+		if($('input[name="searchKey"]').val()==''){
+			return false;
+		}
+		return true;
 	}
-</style>
+</script>
 <div style="width:100%;height: 35px;line-height: 35px;background-color: #4cb1ca;border-bottom: 1px solid #eee;color: white">
 	<div style="width:80%;margin: 0px auto;">
 		<table style="width: 100%;height: 27px">
@@ -166,12 +155,11 @@
 	
 </div>
 
-
 <div class="header-bottom">
 	    <div class="wrap">
 			<div class="header-bottom-left">
 				<div class="logo">
-					<a href="index.html"><img src="${ctx}/common/home/images/logo.png" alt=""/></a>
+					<a href="${ctx}/" style="text-decoration: none;"><h1 style="color: #7DB122">MYGO SHOP</h1></a>
 				</div>
 				<div class="menu">
 	            <ul class="megamenu skyblue" id="category">
@@ -181,8 +169,8 @@
 	   <div class="header-bottom-right">
          <div class="search">	  
 	         <form action="${ctx}/unlogin/goods/search.do" method="get">
-					<input  type="text" name="searchKey" value="${goods.searchKey}" placeholder="搜索" class="textbox" >
-					<input type="submit" value="Subscribe" id="submit" name="submit">
+				<input  type="text" name="searchKey" value="${goods.searchKey}" placeholder="搜索" class="textbox" >
+				<input type="submit" onclick="return checkSearch()" value="Subscribe" id="submit" name="submit">
 			</form>
 			<div id="response"> </div>
 		 </div>
@@ -190,11 +178,10 @@
 		<ul class="icon1 sub-icon1 profile_img">
 			<li><a class="active-icon c2" href="#"> </a>
 				<ul class="sub-icon1 list" id="cartList">
-                    
 				</ul>
 			</li>
 		</ul>
-	    <ul class="last"><li><a href="${ctx}/login/cart/listCart.do">购物车(0)</a></li></ul>
+	    <ul class="last"><li><a href="${ctx}/login/cart/listCart.do">购物车(<font id="cartNum">0</font>)</a></li></ul>
 	  </div>
     </div>
      <div class="clear"></div>

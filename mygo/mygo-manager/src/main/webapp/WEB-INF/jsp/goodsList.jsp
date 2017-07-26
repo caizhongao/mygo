@@ -69,10 +69,10 @@ function editGoods(gid){
 		<!-- 搜索区域 -->
 		<form action="${ctx}/login/goods/listGoods.do" method="post">
 			<div class="query_div">
-				<span style="display: inline-block;width: 300px">
+				<span class="query_span">
 					商品名称：<input type="text" class="searchInput" name="goodsName" value="${goods.goodsName}">
 				</span>
-				<span style="display: inline-block;width: 300px">
+				<span class="query_span">
 					商品状态：
 					<select name="status" class="searchInput">
 						<option value="">所有</option>
@@ -87,85 +87,84 @@ function editGoods(gid){
 			</div>
 		</form>
 		<!-- 搜索区域  end-->
-	<table style="width: 100%"  class="listTable" cellspacing="1">
-		<tr>
-			<th>
-				序号
-			</th>
-			<th>
-				商品图片
-			</th>
-			<th>
-				商品编码
-			</th>
-			<th>
-				商品名称
-			</th>
-			<th>
-				商品分类
-			</th>
-			<th>
-				价格
-			</th>
-			<th>
-				状态
-			</th>
-			<th>
-				操作
-			</th>	
-		</tr>
-		<c:forEach items="${pager.result}" var="goods" varStatus="status">
+		<table style="width: 100%"  class="listTable" cellspacing="1">
 			<tr>
-				<td align="center"  width="100px">
-					${status.index+1+(pager.pageNum-1)*pager.pageSize}
-				</td>
-				<td align="center">
-					<img src="${goods.goodsPic}" height="100px">
-				</td>
-				<td>
-					${goods.goodsCode}
-				</td>
-				<td style="font-weight: bold;">
-					${goods.goodsName }
-				</td>
-				<td align="center">
-					${goods.categoryName }
-				</td>
-				<td align="right"  width="100px">
-					${goods.price}
-				</td>
-				<td align="center">
-					<c:choose>
-						<c:when test='${goods.status=="W"}'>
-							待上架
-						</c:when>
-						<c:when test='${goods.status=="O"}'>
-							已上架
-						</c:when>
-						<c:otherwise>
-							已下架
-						</c:otherwise>
-					</c:choose>
-				</td>
-				<td align="center" style="width: 180px;">
-					<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="editGoods(${goods.gid})" title="编辑">
-						<img alt="" width="25px" src="${ctx}/img/edit.png">
-					</span>
-					<c:if test='${goods.status=="W"||goods.status=="F"}'>
-						<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="updateGoodsStatus('on',${goods.gid})" title="上架">
-							<img alt="" width="25px" src="${ctx}/img/onshelf.png">
-						</span>
-					</c:if>
-					<c:if test='${goods.status=="O"}'>
-						<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="updateGoodsStatus('off',${goods.gid})" title="下架">
-							<img alt="" width="25px" src="${ctx}/img/offshelf.png">
-						</span>
-					</c:if>
-				</td>
+				<th>
+					序号
+				</th>
+				<th>
+					商品图片
+				</th>
+				<th>
+					商品编码
+				</th>
+				<th>
+					商品名称
+				</th>
+				<th>
+					商品分类
+				</th>
+				<th>
+					价格
+				</th>
+				<th>
+					状态
+				</th>
+				<th>
+					操作
+				</th>	
 			</tr>
-		</c:forEach>
-		
-	</table>
+			<c:forEach items="${pager.result}" var="goods" varStatus="status">
+				<tr>
+					<td width="100px">
+						${status.index+1+(pager.pageNum-1)*pager.pageSize}
+					</td>
+					<td width="200px">
+						<img src="${goods.goodsPic}" height="100px">
+					</td>
+					<td width="150px">
+						${goods.goodsCode}
+					</td>
+					<td style="font-weight: bold;">
+						${goods.goodsName }
+					</td>
+					<td width="100px">
+						${goods.categoryName }
+					</td>
+					<td class="money">
+						${goods.price}
+					</td>
+					<td  width="100px">
+						<c:choose>
+							<c:when test='${goods.status=="W"}'>
+								待上架
+							</c:when>
+							<c:when test='${goods.status=="O"}'>
+								已上架
+							</c:when>
+							<c:otherwise>
+								已下架
+							</c:otherwise>
+						</c:choose>
+					</td>
+					<td width="180px">
+						<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="editGoods(${goods.gid})" title="编辑">
+							<img alt="" width="25px" src="${ctx}/img/edit.png">
+						</span>
+						<c:if test='${goods.status=="W"||goods.status=="F"}'>
+							<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="updateGoodsStatus('on',${goods.gid})" title="上架">
+								<img alt="" width="25px" src="${ctx}/img/onshelf.png">
+							</span>
+						</c:if>
+						<c:if test='${goods.status=="O"}'>
+							<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="updateGoodsStatus('off',${goods.gid})" title="下架">
+								<img alt="" width="25px" src="${ctx}/img/offshelf.png">
+							</span>
+						</c:if>
+					</td>
+				</tr>
+			</c:forEach>
+		</table>
 		<br>
 		<%@ include file="/common/page.jsp" %>
 	</div>

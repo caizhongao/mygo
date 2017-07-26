@@ -50,6 +50,9 @@ a:hover{color:#E06F6F;text-decoration:underline; }
     color: #808080;
     margin: 0 0 10px 0;
 }
+.query_span{
+	display: inline-block;width: 300px;
+}
 .searchInput{
 	margin: 5px;
     padding: 0px 4px;
@@ -66,6 +69,7 @@ a:hover{color:#E06F6F;text-decoration:underline; }
     background: #24a0d6;
     color: #FFF;
     cursor: pointer;
+    width: 100px;
 }
 
 /**数据列表区域*/
@@ -87,8 +91,13 @@ a:hover{color:#E06F6F;text-decoration:underline; }
 .listTable td{
 	background-color: #FFF;
 	padding: 10px;
+	text-align: center;
 }
-
+.listTable .money{
+	 padding-right: 40px;
+	 text-align: right;
+	 width: 60px;
+}
 
 .manager_button{
 	padding:5 15 5 15;

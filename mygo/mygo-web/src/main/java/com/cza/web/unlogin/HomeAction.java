@@ -56,6 +56,7 @@ public class HomeAction extends CommonAction{
 	private static final Logger log = LoggerFactory.getLogger(CartAction.class); 
 	@RequestMapping("index")
 	public String index(HttpServletRequest request,HttpServletResponse response){
+		request.setAttribute("cid", -1);
 		return webPage("home/index");
 	}
 	

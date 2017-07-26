@@ -115,6 +115,7 @@ public class GoodsAction extends CommonAction{
 		}else{
 			likeVo=new UserLikeVo();
 		}
+		log.info("listUserLikeGoods likeVo:{}",likeVo);
 		Long startTime=System.currentTimeMillis();
 		likeVo.setStart(0);
 		likeVo.setPageSize(9);

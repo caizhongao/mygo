@@ -38,10 +38,6 @@
 		height: 40px;
 	}
 
-	.selectAddr{
-		width:80px;
-	}
-
 .icons {
     background: url(${ctx}/img/icons-total.gif) no-repeat;
     display: block;
@@ -96,6 +92,7 @@
     color: #333;
 }
 .addressList{
+	width:100%;
 	color: #666666;
 	font-size: 14px;
 }
@@ -105,7 +102,7 @@
 .address{
 	min-height: 30px;
 	line-height: 30px;
-	width: 1000px;
+	width: 100%;
 	border:1px solid white;
 	margin-top: 15px;
 }
@@ -217,7 +214,7 @@ display:none;
 		}
 	}
 	
-	function listAreas(){
+	function listCountys(){
 		$('#area').html('<option value="">请选择</option>')
 		var aid=$('#city option:selected').val();
 		if(aid!=''){
@@ -300,60 +297,61 @@ display:none;
 		<div style="margin: 0px auto;width: 80%;padding-bottom: 50px;">
 				<!-- 遮罩层 -->
 				<div id="fullbg" style="background-color:gray; left:0; opacity:0.5; position:absolute; top:0; z-index:3; filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity:0.5; "></div> 
-				<div style="display:none;position: absolute;border-radius:5px;width:600px;height: 400px;z-index: 100;background-color: #EFEEF0;left: 25%;top: 100px" id="editAddrInfo">
+				<div style="display:none;position: absolute;border-radius:5px;width:600px;height: 420px;z-index: 100;background-color: #EFEEF0;left: 25%;top: 100px" id="editAddrInfo">
 				<div onclick="closeBg()" style="width: 580px;height: 20px;margin: 0px auto;line-height: 25px;color: #666666;font-size: 20px;font-weight: bold;text-align: right;cursor: pointer;">
-					×
+					<a style="text-decoration: none;">×</a>
 				</div>
 				<form action="${ctx}/login/addr/saveAddr.do" id="addrForm" method="post" enctype="application/x-www-form-urlencoded">
-				<table class="editTable" align="center">
+				<table class="editTable" style="width: 520px;margin: 0px auto">
 					<tr>
-						<td colspan="2" style="font-weight:bold">编辑地址信息</td>
+						<td colspan="2" style="font-weight:bold"><img src="${ctx}/img/edit.png" style="width: 20px;height: 20px;vertical-align: middle;">编辑地址信息</td>
 					</tr>
 					<tr>
-						<td width="90px">收件人：</td>
+						<td width="90px" align="right">收件人：</td>
 						<td>
 							<input type="hidden" name="uaid" value="${addr.uaid }">
-							<input type="text" name="receiver" value="${addr.receiver }" style="height: 30px;width: 240px;" id="receiver"><font color="red">*</font></td>
+							<input type="text" name="receiver" value="${addr.receiver }" class="searchInput" style="height: 30px;width: 240px;" id="receiver"><font color="red">*</font>
+						</td>
 					</tr>
 					<tr>
-						<td>手机：</td>
-						<td><input type="text" name="mobilphone" value="${addr.mobilphone }" style="height: 30px;width: 240px;" id="mobilphone"><font color="red">*</font></td>
+						<td align="right">手机：</td>
+						<td><input type="text" name="mobilphone" value="${addr.mobilphone }" class="searchInput" style="height: 30px;width: 240px;" id="mobilphone"><font color="red">*</font></td>
 					</tr>
 					<tr>
-						<td>收件地址：</td>
+						<td align="right">收件地址：</td>
 						<td>
-							<select id="province" name="provinceId" onchange="listCitys()" style="height: 30px;width: 77px;" class="selectAddr">
+							<select id="province" name="provinceId" onchange="listCitys()" class="searchInput" style="height: 30px;width: 77px;">
 								<option value="">请选择</option>
 								<c:forEach items="${provinces}" var="province">
 									<option value="${province.aid}">${province.aname}</option>
 								</c:forEach>
 							</select>
 							<input type="hidden" name="province">
-							<select id="city" name="cityId" onchange="listAreas()"  class="selectAddr" style="height: 30px;width: 78px;">
+							<select id="city" name="cityId" onchange="listCountys()" class="searchInput" style="height: 30px;width: 77px;">
 								<option value="">请选择</option>
 							</select>
 							<input type="hidden" name="city">
-							<select id="area" name="areaId"  class="selectAddr" style="height: 30px;width: 77px;">
+							<select id="area" name="areaId" class="searchInput" style="height: 30px;width: 77px;">
 								<option value="">请选择</option>
 							</select>
 							<input type="hidden" name="area"><font color="red">*</font>
 						</td>
 					</tr>
 					<tr style="height: 80px">
-						<td valign="top" style="line-height: 40px;">详细地址：</>
+						<td valign="top" align="right" style="line-height: 40px;">详细地址：</>
 						<td id="attrs">
-							<textarea rows="4" cols="50"  name="addr">${addr.addr}</textarea><font color="red">*</font>
+							<textarea rows="4" cols="50"  name="addr" style="border: solid 1px #ddd;">${addr.addr}</textarea><font color="red">*</font>
 						</td>
 					</tr>
 					<tr style="height: 35px;">
-						<td>默认地址：</td>
-						<td id="attrs">
-							<input type="checkbox" name="isDefault" value="1" style="width: 20px;">
+						<td align="right">默认地址：</td>
+						<td id="attrs" align="left">
+							 <input type="checkbox" name="isDefault" value="1" style="width: 15px;height: 15px;">
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
-							<a href="javascript:submitAddr()"  class="manager_button">提交</a>
+						<td colspan="2" style="padding-left: 20px">
+							<input type="button" value="提交" class="searchBtn" onclick="submitAddr()"></td>
 						</td>
 					</tr>
 				</table>
@@ -364,9 +362,9 @@ display:none;
 			<form action="${ctx}/login/order/confirmOrder.do" id="orderForm" method="post" enctype="application/x-www-form-urlencoded">
 				<input type="hidden" name="oid" value="${order.oid}">
 				<input type="hidden" name="type" value="${order.type}">
-				<div style="width: 1000px;border-bottom: 2px solid #F1F1F1">
-					<div style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px;width: 300px;float: left">选择收货地址</div>
-					<div style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px;width: 700px;text-align: right;float: left "><a href="${ctx}/login/addr/editAddr.do" target="_blank" style="font-size: 13px">管理收货地址</a>&nbsp;</div>
+				<div style="width: 100%;border-bottom: 2px solid #F1F1F1">
+					<div style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px;width: 30%;float: left">选择收货地址</div>
+					<div style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px;width: 70%;text-align: right;float: left "><a href="${ctx}/login/addr/editAddr.do" target="_blank" style="font-size: 13px">管理收货地址</a>&nbsp;</div>
 					<div style="clear: left;"></div>
 				</div>
 				<div class="addressList">
@@ -377,7 +375,7 @@ display:none;
 						<c:otherwise>
 							<c:forEach items="${addrs}" var="addr">
 								<div class="address <c:if test="${addr.isDefault==1}">addr_select</c:if>">
-									<div style="width: 900px;" class="addressInfo">
+									<div style="width: 90%;" class="addressInfo">
 										<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">
 											<input type="radio" name="addrId" value="${addr.uaid}" onclick="selectAddr(this)" <c:if test="${addr.isDefault==1}">checked="checked"</c:if>>
 										</div>
@@ -405,8 +403,8 @@ display:none;
                      </span>
                      <span class="pay-tips">推荐</span>
 				</div>
-				<span style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px">确认订单信息</span>
-				<table style="width: 1000px;margin-top: 20px" cellpadding="0" cellspacing="0">
+				<div style="font-weight: bold;font-size: 14px;color: #333;line-height: 20px;width: 100%;">确认订单信息</div>
+				<table style="width: 100%;margin-top: 20px" cellpadding="0" cellspacing="0">
 					<tr height="50px">
 						<td width="300px" align="center" style="border-bottom: 1px dashed #ccc;">商品</td>
 						<td width="200px" align="center" style="border-bottom: 1px dashed #ccc;">属性</td>
@@ -441,7 +439,7 @@ display:none;
 					<tr>
 						<td colspan="4">&nbsp;</td>
 						<td align="center">
-						<br><input type="button" value="确认订单" class="manager_button" onclick="makeOrder()"></td>
+						<br><input type="button" value="确认订单" class="searchBtn" onclick="makeOrder()"></td>
 					</tr>
 				</table>
 			</form>

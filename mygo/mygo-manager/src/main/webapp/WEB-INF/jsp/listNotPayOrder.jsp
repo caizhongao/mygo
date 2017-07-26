@@ -53,11 +53,6 @@
 	
 	
 </script>
-<style type="text/css">
-	.listTable td{
-		text-align: center;
-	}
-</style>
 </head>
 <body>
 	<div>
@@ -101,7 +96,7 @@
 		<table class="listTable"  cellspacing="1">
 				<tr>
 					<th width="320">商品信息</th>
-					<th width="80">单价</th>
+					<th width="100">单价</th>
 					<th width="80">数量</th>
 					<th width="100">金额</th>
 					<th width="100">总金额</th>
@@ -141,7 +136,7 @@
 					<tr>
 						<c:forEach items="${order.detailVos}" var="detail" varStatus="detailstatus">
 							<c:if test="${detailstatus.index==0}">
-								<td width="320px" align="center">
+								<td width="320px">
 									<a href="${goodsDetail}?gid=${detail.gid }" target="_blank">
 										<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc; vertical-align: middle;">
 									</a>
@@ -158,12 +153,12 @@
 										</div>
 									</div>
 								</td>
-								<td width="80px">${detail.orderPrice}</td>
-								<td width="80px">${detail.number}</td>
+								<td width="100px">${detail.orderPrice}</td>
+								<td width="100px">${detail.number}</td>
 								<td width="100px">${detail.amount}</td>
 							</c:if>
 						</c:forEach>
-						<td rowspan="${fn:length(order.detailVos)}" width="100px">
+						<td rowspan="${fn:length(order.detailVos)}"   width="100px">
 							${order.amount}
 						</td>
 						<td style="padding-left: 10px; padding-right: 10px" rowspan="${fn:length(order.detailVos)}">
@@ -181,7 +176,7 @@
 					<c:forEach items="${order.detailVos}" var="detail" varStatus="detailstatus">
 						<c:if test="${detailstatus.index!=0}">
 							<tr>
-								<td width="320px" align="center">&nbsp;
+								<td width="320px">&nbsp;
 									<a href="${goodsDetail}?gid=${detail.gid }" target="_blank">
 										<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc; vertical-align: middle;">
 									</a>
@@ -198,7 +193,7 @@
 										</div>
 									</div>
 								</td>
-								<td width="80px">${detail.orderPrice}</td>
+								<td width="100px">${detail.orderPrice}</td>
 								<td width="80px">${detail.number}</td>
 								<td width="100px">${detail.amount}</td>
 							</tr>

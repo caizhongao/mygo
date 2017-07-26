@@ -33,7 +33,7 @@ public interface CategoryService {
 	ServiceResponse<CategoryVo> saveCategory(CategoryVo category);
 	
     
-	ServiceResponse<List<TCategoryAttr>> listAttrs(Long valueOf);
+	ServiceResponse<List<TCategoryAttr>> listAttrs(Long cid);
 	
 	ServiceResponse<CategoryVo> queryCategory(Long cid);
 }

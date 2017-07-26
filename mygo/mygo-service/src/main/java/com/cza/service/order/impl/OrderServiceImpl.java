@@ -628,9 +628,12 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 	    
 	@Override
 	public UserLikeVo getUserLike(OrderVo orderVo) {
+		UserLikeVo likeVo=new UserLikeVo();
 		BigDecimal price=orderMapper.queryAvgOrderPrice(orderVo);
 		Long cid=orderMapper.queryHotCategory(orderVo);
-		UserLikeVo likeVo=new UserLikeVo();
+		if(price==null||cid==null){
+			return likeVo;
+		}
 		likeVo.setCategory(cid);
 		if(price.doubleValue()<100){
 			likeVo.setTopLever(price.add(new BigDecimal(50)));

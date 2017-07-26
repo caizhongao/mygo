@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.cza.common.RespMsg;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.goods.TCategoryAttr;
@@ -49,15 +50,21 @@ public class CategoryAction extends CommonAction{
 	private CategoryService categoryService;
 	
 	@RequestMapping("listAttrs")
-	public @ResponseBody List<TCategoryAttr> listAttrs(HttpServletRequest request,HttpServletResponse response){
+	public void listAttrs(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String cid=request.getParameter("cid");
+		log.info("listAttrs request param:{}",cid);
+		response.setCharacterEncoding("utf-8");
 		List<TCategoryAttr>attrs=null;
 		ServiceResponse<List<TCategoryAttr>> resp=categoryService.listAttrs(Long.valueOf(cid));
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			attrs=resp.getData();
+			log.info("listAttrs success,result:{}",resp.getData());
+			response.getWriter().println(new RespMsg("success", resp.getData()));
+		}else{
+			log.info("listAttrs has erro,respCode:{}",resp.getCode());
+			response.getWriter().println(new RespMsg("fail", resp.getCode()));
 		}
-		return attrs;
 	}
+	
 	@RequestMapping("listCategory")
 	public String listCategory(@ModelAttribute CategoryVo category,HttpServletRequest request,HttpServletResponse response){
 		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);

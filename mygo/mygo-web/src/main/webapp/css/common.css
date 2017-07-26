@@ -44,10 +44,7 @@
 }
 
 .manager_button{
-	padding-left:10px;
-	padding-right:10px;
-	padding-top:4px;
-	padding-bottom:4px;
+	padding:4 10 4 10;
 	font-size:13px;
 	width: auto;
 	height:auto;
@@ -86,16 +83,13 @@
 	background-color: #F92250;
 }
 
-.register_button:HOVER,.login_button:HOVER,.manager_button:HOVER {
+.register_button:HOVER,.login_button:HOVER,.manager_button:HOVER,.searchBtn:HOVER {
 	cursor: pointer;
 	background-color: #02AAF1;
 }
 
-
 a{color: #679AEF;text-decoration: none;} /* 未访问的链接 */
 a:hover{color:#E06F6F;text-decoration:underline; }
-
-
 
 .listTable{
 	width:100%;
@@ -115,4 +109,33 @@ a:hover{color:#E06F6F;text-decoration:underline; }
 .listTable td{
 	background-color: #FFF;
 	padding: 10px;
+}
+
+/**收搜区域*/
+.query_div{
+	width: 80%;
+	height: 40px;
+	margin: 0px auto;
+	font-size: 14px;
+	color: #666666;
+}
+
+.searchInput{
+    padding: 0px 4px;
+    height: 28px;
+    line-height: 28px;
+    width: 200px;
+    border: solid 1px #ddd;
+}
+.searchBtn {
+    padding: 5px 15px 5px 15px;
+    margin: 2px 2px;
+    border: 1px solid #21B1E3;
+    background: #24a0d6;
+    color: #FFF;
+    cursor: pointer;
+    width: 100px;
+}
+.query_span{
+	display: inline-block;width: 300px;
 }

@@ -16,11 +16,6 @@
 	}
 	
 </script>
-<style type="text/css">
-	table td{
-	 text-align: center;
-	}
-</style>
 </head>
 <body>
 	<div>
@@ -77,7 +72,7 @@
 						</c:when>
 					</c:choose>
 				</td>
-				<td style="width: 180px;">
+				<td width="180px">
 					<span style="width: 30px;padding: 5px;cursor: pointer;" onclick="editCategory(${category.cid})" title="编辑">
 						<img alt="" width="25px" src="${ctx}/img/edit.png">
 					</span>

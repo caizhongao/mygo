@@ -86,6 +86,7 @@ function butNow(){
 		alert("请选择需要结算的商品!");
 		return;
 	}
+	var flag=true;
 	$('.check_goods:checked').each(function(){
 		var selectSku=$(this).parent().parent().parent().find('.optNumber');
 		var skuId=selectSku.attr('skuId');
@@ -93,16 +94,21 @@ function butNow(){
 		var skuStock=selectSku.attr('skuStock');
 		if(parseInt(number)<=0){
 			alert("购买数量必须大于0！");
+			flag=false;
 			return false;
 		}
 		if(parseInt(number)>parseInt(skuStock)){
 			alert("库存不足！");
+			flag=false;
 			return false;
 		} 
 		html+='<input type="hidden" name="detailVos['+index+'].sid" id="form_sku_id" value="'+skuId+'"/>'+
 			'<input type="hidden" name="detailVos['+index+'].number" id="form_sku_number" value="'+number+'"/>';
 		index++;
 	});
+	if(!flag){
+		return ;
+	}
 	$('#myform').html(html);
 	//return false;
 	$('#myform').submit(); 
@@ -173,10 +179,8 @@ background-color:#FBFBFB;font-size: 13px;font-weight: normal;
 	<%@ include file="/common/top1.jsp" %>
 	<div class="page_middle" style="border-top: 1px solid #ddd;margin-top: 0px;padding-top: 30px">
 	<div style="width: 80%;margin: 0px auto">
-			<form action="${ctx}/login/order/savePreOrder.do" method="post" id="myform">
-				
-			</form>
-		<div style="width: 100%;font-size: 30px;font-weight: bold;color: #f40;padding-left: 20px;border-bottom: 2px solid #e6e6e6;">购物车</div>
+		<form action="${ctx}/login/order/savePreOrder.do" method="post" id="myform"></form>
+	<!--<div style="width: 100%;font-size: 30px;font-weight: bold;color: #f40;padding-left: 20px;border-bottom: 2px solid #e6e6e6;">购物车</div> -->
 		<c:choose>
 		<c:when test="${cartList==null || empty cartList}">
 		<div id="empty">
@@ -202,7 +206,7 @@ background-color:#FBFBFB;font-size: 13px;font-weight: normal;
 			<th>
 				数量(件)
 			</th>
-			<th  style="width: 100px;text-align: right;padding: 0 10 0 10">
+			<th  style="width: 150px;text-align: right;padding: 0 10 0 10">
 				金额(元)
 			</th>
 			<th style="padding-right: 20px;text-align: right;width:200px">
@@ -243,7 +247,7 @@ background-color:#FBFBFB;font-size: 13px;font-weight: normal;
 						<div onclick="opNumber('add',this);" title="加1" class="optNumber_add">+</div>
 				    </div>
 				</td>
-				<td align="center" class="amount" style="width: 100px;text-align: right;padding: 0 10 0 10">
+				<td class="amount" style="width: 150px;text-align: right;padding: 0 10 0 10">
 					${cart.amount}
 				</td>
 				<td align="right" style="padding-right: 20px;width:200px">
@@ -254,19 +258,20 @@ background-color:#FBFBFB;font-size: 13px;font-weight: normal;
 			</tr>
 		</c:forEach>
 		<tr height="20px">
-		<td colspan="6" style="border-top: 1px dashed #e6e6e6;"></td>
+			<td colspan="6" style="border-top: 1px dashed #e6e6e6;"></td>
 		</tr>
 		<tr height="50px;">
 			<td colspan="3" style="background-color: #e5e5e5">
 				&nbsp;
 			</td>
-			<td style="background-color: #e5e5e5" align="center">
+			<td style="background-color: #e5e5e5;" align="center">
 				已选商品&nbsp;<font style="color: red;font-weight: bold;font-size: 16px" class="total_number">0</font>&nbsp;件
 			</td>
-			<td style="background-color: #e5e5e5" align="center">
+			<!-- #e5e5e5 -->
+			<td style="width: 150px; text-align: right;padding: 0 10 0 10;background-color:#e5e5e5;">
 				合计：&nbsp;<font style="color: red;font-weight: bold;font-size: 16px" class="total_amount">0.00</font>
 			</td>
-			<td style="background-color: #e5e5e5" align="right">	
+			<td style="background-color: #e5e5e5;" align="right">	
 				<input type="button" class="manager_button" value="结算" onclick="butNow()" style="height: 50px;width: 110px;border-radius:0px;">
 			</td>
 		</tr>

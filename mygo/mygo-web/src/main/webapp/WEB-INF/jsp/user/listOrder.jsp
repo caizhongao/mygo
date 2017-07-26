@@ -7,18 +7,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>我的订单</title>
 <style type="text/css">
-.queryParam {
-	width: 80%;
-	height: 40px;
-	margin: 0px auto;
-	font-size: 14px;
-	color: #666666;
+.cartTable th{
+	background-color:#FBFBFB;font-size: 13px;font-weight: normal;
 }
-
-.queryParam input, select {
-	width: 150px;
-}
-
 .mytable td {
 	border-right: 1px solid #daf3ff;
 	border-top: 1px solid #daf3ff;
@@ -27,7 +18,6 @@
 	color: #666666;
 	font-size: 13px;
 }
-.listTable th{padding: 10 0 10 0}
 </style>
 <script type="text/javascript">
 
@@ -122,34 +112,33 @@ function toRefund(oid){
 					<a href="javascript:deleteOrder()" class="manager_button">提交</a>
 				</div>
 			</div>
-
 			<form action="${ctx}/login/order/listOrder.do" method="post">
-				<div class="queryParam">
-					<span style="display: inline-block; width: 250px"> 
-						订单号：<input type="text" name="oid" value="${order.oid}">
+				<div class="query_div">
+					<span class="query_span"> 
+						订单号：<input type="text" name="oid" class="searchInput" value="${order.oid}">
 					</span> 
-					<span style="display: inline-block; width: 250px"> 
-						商品名称：<input type="text" name="goodsName" value="${order.goodsName}">
+					<span class="query_span"> 
+						商品名称：<input type="text" name="goodsName" class="searchInput" value="${order.goodsName}">
 					</span> 
-					<span style="display: inline-block; width: 250px"> 
-						订单状态：<select name="status">
+					<span class="query_span"> 
+						订单状态：<select name="status" class="searchInput">
 									<option value="">所有</option>
-									<option value="0" <c:if test="${order.status==1}">selected="selected"</c:if>>未支付</option>
-									<option value="1" <c:if test="${order.status==2}">selected="selected"</c:if>>已支付</option>
-									<option value="2" <c:if test="${order.status==3}">selected="selected"</c:if>>已退款</option>
-								</select>
+									<option value="1" <c:if test="${order.status==1}">selected="selected"</c:if>>未支付</option>
+									<option value="2" <c:if test="${order.status==2}">selected="selected"</c:if>>已支付</option>
+									<option value="3" <c:if test="${order.status==3}">selected="selected"</c:if>>已退款</option>
+							   </select> 
 					</span> 
-					<span style="display: inline-block; width: 150px; text-align: center">
-						<input type="button" class="manager_button" onclick="$('.page_middle form').eq(0).submit()" style="width: 100px" value="查询">
+					<span style="display: inline-block; width: 150px;">
+						<input type="button" class="searchBtn" onclick="$('.page_middle form').eq(0).submit()" value="查询">
 					</span>
 				</div>
 			</form>
-			<table style="width: 80%;margin: 0px auto;" class="listTable" cellspacing="1">
-				<tr>
+			<table class="cartTable" cellspacing="0" cellpadding="0" style="border: 1px solid #dddddd;width: 80%;margin: 0px auto;margin-top: 10px">
+				<tr height="50px"  >
 					<th width="320">商品信息</th>
 					<th width="80">单价</th>
-					<th width="80">数量</th>
-					<th width="100">金额</th>
+					<th width="80">数量(件)</th>
+					<th width="100">金额(元)</th>
 					<th width="100">总金额</th>
 					<th>发货地址</th>
 					<th width="140px">操作</th>

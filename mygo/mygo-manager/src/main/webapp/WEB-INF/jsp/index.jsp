@@ -25,7 +25,7 @@
 <body>
 	<div class="layout-admin">
 		<header class="layout-header">
-			<span class="header-logo">mygo管理后台</span> 
+			<span class="header-logo">MYGO管理后台</span> 
 			<a class="header-menu-btn" href="javascript:;"><i class="icon-font">&#xe600;</i></a>
 			<ul class="header-bar">
 				<li class="header-bar-role"><a href="javascript:;">管理员</a></li>
@@ -66,7 +66,7 @@
                 <button class="tab-btn btn-right"><i class="icon-font">&#xe60f;</i></button>
 			</div>
 			<div class="layout-main-body">
-				<iframe class="body-iframe" name="iframe0" width="100%" height="99%" src="${ctx}/manager/page/home.html" frameborder="0" data-id="${ctx}/manager/page/home.html" seamless></iframe>
+				<iframe class="body-iframe" name="iframe0" width="100%" height="99%" src="${ctx}/login/home/home.do" frameborder="0" data-id="${ctx}/login/home/home.do" seamless></iframe>
 			</div>
 		</section>
 		<div class="layout-footer">@2016 0.1 www.mycodes.net</div>

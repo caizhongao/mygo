@@ -56,9 +56,7 @@ public class AddrAction extends CommonAction{
 		ServiceResponse<List<TArea>>resp=addrService.listAreas(area);
 		if(resp.isSuccess()){
 			log.info("AddrAction.listAreas success,result:{}",resp.getData());
-			List<TArea> areas=resp.getData();
-			String result=JSON.toJSONString(areas);
-			response.getWriter().println(new RespMsg("success", result));
+			response.getWriter().println(new RespMsg("success", resp.getData()));
 		}else{
 			log.info("AddrAction.listAreas has erro,respCode:{}",resp.getCode());
 			response.getWriter().println(new RespMsg("fail", resp.getCode()));

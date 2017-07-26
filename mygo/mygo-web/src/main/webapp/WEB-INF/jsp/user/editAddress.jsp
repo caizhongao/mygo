@@ -45,7 +45,7 @@
 		}
 	}
 	
-	function listAreas(){
+	function listCountys(){
 		$('#area').html('<option value="">请选择</option>')
 		var aid=$('#city option:selected').val();
 		if(aid!=''){
@@ -129,7 +129,7 @@
 								</c:forEach>
 							</select>
 							<input type="hidden" name="province">
-							<select id="city" name="cityId" onchange="listAreas()"  class="selectAddr" style="height: 30px;width: 78px;">
+							<select id="city" name="cityId" onchange="listCountys()"  class="selectAddr" style="height: 30px;width: 78px;">
 								<option value="">请选择</option>
 							</select>
 							<input type="hidden" name="city">
@@ -153,13 +153,13 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<a href="javascript:submitAddr()"  class="manager_button">提交</a>
+							<input type="button" onclick="submitAddr()" class="searchBtn" value="提交">
 						</td>
 					</tr>
 				</table>
 			</form>
 			<div style="width: 95%;height: 40px;">
-				<a href="javascript:clearForm()" class="manager_button" style="float: right">新增地址</a>
+				<input type="button" onclick="clearForm()" class="searchBtn" style="float: right" value="新增地址">
 			</div>
 			<div style="clear: left"></div>
 			<table class="listTable" style="width: 95%" cellspacing="1">

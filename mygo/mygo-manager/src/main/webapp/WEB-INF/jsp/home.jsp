@@ -15,7 +15,9 @@
     
   </head>
   
-  <body>
-	首页
+  <body style="margin: 0">
+	<div style="width: 80%;height: 50%;margin-top: 20px;margin-left: 20px;">
+		<h1 style="color: #7DB122">MYGO MANAGER</h1>
+	</div>
   </body>
 </html>
