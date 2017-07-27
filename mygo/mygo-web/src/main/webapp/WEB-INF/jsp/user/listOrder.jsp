@@ -73,6 +73,7 @@ function toRefund(oid){
 		url:'${ctx}/login/order/toRefund.do',
 		data:{'oid':oid},
 		type:'post',
+		dataType:'json',
 		success:function(data){
 			if('success'==data.message){
 				alert('退款成功!');

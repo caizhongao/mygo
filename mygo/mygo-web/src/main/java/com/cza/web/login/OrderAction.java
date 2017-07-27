@@ -316,7 +316,7 @@ public class OrderAction extends CommonAction{
 						OrderVo refundParam=new OrderVo();
 						refundParam.setOid(order.getOid());
 						orderService.orderRefund(refundParam);
-						response.getWriter().println(new RespMsg("success", null).toJson());
+						response.getWriter().println(new RespMsg("success", null));
 						return;
 					}else{
 						log.info("refund failed");
