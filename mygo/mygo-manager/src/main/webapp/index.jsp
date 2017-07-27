@@ -8,7 +8,7 @@
 </head>
 <body>
 <% 
-	response.sendRedirect(req.getContextPath()+"/login/home/index.do");
+	response.sendRedirect(request.getContextPath()+"/login/home/index.do");
 %>
 </body>
 </html>

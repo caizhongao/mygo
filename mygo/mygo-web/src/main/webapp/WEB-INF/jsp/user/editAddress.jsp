@@ -73,6 +73,10 @@
 		}else{
 			$('input[name="area"]').val($('#area option:selected').html());
 		}
+		if($('textarea[name="addr"]').val()==''){
+			alert("请填写详细地址!");
+			return;
+		}
 		$('#addrForm').submit();
 	}
 	$(function(){
@@ -142,7 +146,7 @@
 					<tr style="height: 80px">
 						<td valign="top" style="line-height: 40px;">详细地址：</>
 						<td id="attrs">
-							<textarea rows="4" cols="50"  name="addr">${addr.addr}</textarea><font color="red">*</font>
+							<textarea rows="4" cols="50" name="addr">${addr.addr}</textarea><font color="red">*</font>
 						</td>
 					</tr>
 					<tr style="height: 35px;">

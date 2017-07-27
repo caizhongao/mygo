@@ -4,10 +4,12 @@
 <html>
 <head>
     <title>首页</title>
-	<script type="text/javascript">
-		$(function(){
-			top.location.href="/mygo-manager/unlogin/user/toLogin.do";
-		});
-	</script>
+
   </head>
+  
+  <body>
+<% 
+	response.sendRedirect(request.getContextPath()+"/unlogin/user/toLogin.do");
+%>
+</body>
 </html>

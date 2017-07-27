@@ -45,7 +45,7 @@
 				if(cartList.message=='success'){
 					var total_price=0;
 					if(cartList.data!=null&&cartList.data.length>0){
-						//$('#cartNum').html(cartList.data.length);
+						$('#cartNum').html(cartList.data.length);
 						$.each(cartList.data,function(index,cart){
 							var price=cart.sku.price;
 							var number=cart.number;

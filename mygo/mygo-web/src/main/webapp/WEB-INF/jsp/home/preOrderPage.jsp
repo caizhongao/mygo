@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>生成订单</title>
+<title>确认订单</title>
 <style type="text/css">
 	table{
 		font-size: 14px;
@@ -141,9 +141,9 @@ display:none;
 		$('#orderForm').submit();
 	}
 	
-	function selectAddr(obj){
+	function selectAddr(){
 		$('.address').removeClass('addr_select');
-		$(obj).parent().parent().parent().addClass('addr_select');
+		$('input[name="addrId"]:checked').eq(0).parent().parent().parent().addClass('addr_select');
 		$('.address').find('.editThisAddr').css('display','none');
 		$('.addr_select').find('.editThisAddr').css('display','inline-block');
 	}
@@ -243,6 +243,10 @@ display:none;
 		}else{
 			$('input[name="area"]').val($('#area option:selected').html());
 		}
+		if($('textarea[name="addr"]').val()==''){
+			alert("请填写详细地址!");
+			return;
+		}
 		$.ajax({
 			url:'${ctx}/login/addr/saveAddrAjax.do?'+$('#addrForm').serialize(),
 			type:'get',
@@ -253,11 +257,13 @@ display:none;
 					alert("地址保存成功!");
 					var result=data.data;
 					var uaid=$('input[name="uaid"]').val();
-					if(uaid==''){
+					if(uaid==''){//新增
+						$('.noAddress').remove();
 						$('.address').removeClass('addr_select');
 						$('#addAddrBtn').before('<div class="address addr_select">'+
+								'<div style="width: 90%;" class="addressInfo">'+
 								'<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">'+
-								'<input type="radio" name="addrId" checked="checked" value="'+result.uaid+'" onclick="selectAddr(this)">'+
+								'<input type="radio" name="addrId" checked="checked" value="'+result.uaid+'" onclick="selectAddr()">'+
 								'</div>'+
 								'<div class="areaIds" style="max-width: 550px" pid="'+result.pid+'" aid="'+result.aid+'" cid="'+result.cid+'" addr="'+result.addr+'"'+
 								'receiver="'+result.receiver+'" mobilphone="'+result.mobilphone+'" isDefault="'+result.isDefault+'" uaid="'+result.uaid+'">'+
@@ -265,10 +271,15 @@ display:none;
 								'</div>'+
 								'<div style="vertical-align: top;"><em class="icons icons-user fl"></em>'+result.receiver+'&nbsp;收&nbsp;&nbsp;</div>'+
 								'<div style="vertical-align: top;"><em class="icons icons-phone  fl"></em>'+result.mobilphone+'&nbsp;</div>'+
+								'</div>'+
+								'<div style="text-align: right;vertical-align: top;width: 80px;<c:if test="${addr.isDefault==0}">display: none;</c:if>" class="editThisAddr">'+
+									'<a href="javascript:editThisAddr(1)"  style="font-size: 13px">修改本地址</a>'+
+								'</div>'+
 								'</div>');
+						selectAddr();
 					}else{
 						$('.addr_select').find(".addressInfo").html('<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">'+
-								'<input type="radio" name="addrId" checked="checked" value="'+result.uaid+'" onclick="selectAddr(this)">'+
+								'<input type="radio" name="addrId" checked="checked" value="'+result.uaid+'" onclick="selectAddr()">'+
 								'</div>'+
 								'<div class="areaIds" style="max-width: 550px" pid="'+result.pid+'" aid="'+result.aid+'" cid="'+result.cid+'" addr="'+result.addr+'"'+
 								'receiver="'+result.receiver+'" mobilphone="'+result.mobilphone+'" isDefault="'+result.isDefault+'" uaid="'+result.uaid+'">'+
@@ -370,21 +381,21 @@ display:none;
 				<div class="addressList">
 					<c:choose>
 						<c:when test="${addrs==null || empty addrs}">
-							<div class="address" style="margin-left: 20px">无收获地址!</div>
+							<div class="address noAddress" style="margin-left: 20px">无收获地址!</div>
 						</c:when>
 						<c:otherwise>
 							<c:forEach items="${addrs}" var="addr">
-								<div class="address <c:if test="${addr.isDefault==1}">addr_select</c:if>">
+								<div class="address <c:if test="${addr.isDefault==1}">addr_select</c:if>" >
 									<div style="width: 90%;" class="addressInfo">
 										<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">
-											<input type="radio" name="addrId" value="${addr.uaid}" onclick="selectAddr(this)" <c:if test="${addr.isDefault==1}">checked="checked"</c:if>>
+											<input type="radio" name="addrId" value="${addr.uaid}" onclick="selectAddr()" <c:if test="${addr.isDefault==1}">checked="checked"</c:if>>
 										</div>
 										<div class="areaIds" pid="${addr.provinceId}" style="max-width: 550px" aid="${addr.areaId}" cid="${addr.cityId}" addr="${addr.addr}" receiver="${addr.receiver}" mobilphone="${addr.mobilphone}" isDefault="${addr.isDefault}" uaid="${addr.uaid}"><em class="icons icons-address fl"></em>${addr.province}&nbsp;${addr.city}&nbsp;${addr.area}&nbsp;${addr.addr}&nbsp;&nbsp;</div>
 										<div style="vertical-align: top;"><em class="icons icons-user fl"></em>${addr.receiver}&nbsp;收&nbsp;&nbsp;</div>
 										<div style="vertical-align: top;"><em class="icons icons-phone  fl"></em>${addr.mobilphone}&nbsp;</div>
 									</div>
 									<div style="text-align: right;vertical-align: top;width: 80px;<c:if test="${addr.isDefault==0}">display: none;</c:if>" class="editThisAddr">
-											<a href="javascript:editThisAddr(1)"  style="font-size: 13px">修改本地址</a>
+										<a href="javascript:editThisAddr(1)"  style="font-size: 13px">修改本地址</a>
 									</div>
 								</div>
 							</c:forEach>

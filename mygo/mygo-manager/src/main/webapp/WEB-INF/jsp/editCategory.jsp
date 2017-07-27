@@ -47,7 +47,6 @@
 		});
 		category.attrList=attrs;
 		var categoryStr=JSON.stringify(category);
-		alert(categoryStr);
 		$.ajax({
 			url:'${ctx}/login/category/updateCategory.do',
 			type:'post',

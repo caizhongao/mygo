@@ -172,9 +172,9 @@
 				result[result.length]=tmpObj;
 				if(getSku(result)==""){
 					$(this).addClass("attrObj_disable");
-				}else{
+				}/* else{
 					$(this).removeClass("attrObj_disable");
-				}
+				} */
 			}
 			
 		});
@@ -183,7 +183,7 @@
 	//递归全排列算法，index代表从第几个元素开始全排列，attrtmps代表index之前已经排列好的组合
 	function Combination(index,attrtmps){
 		for(;index<attrs.length;index++){
-			var result=attrtmps.slice(0);
+			var result=attrtmps.slice(attrtmps.length);
 			result[result.length]=attrs[index];
 			updateAttrObj(result);
 			Combination(index+1, result);

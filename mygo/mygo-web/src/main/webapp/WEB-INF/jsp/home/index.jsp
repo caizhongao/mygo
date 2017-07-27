@@ -2,7 +2,7 @@
 <%@ include file="/common/common.jsp" %>
 <html>
 <head>
-<title>漂亮大气响应式电商网站模板HTML下载</title>
+<title>MYGO首页</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="${ctx}/common/home/css/default.css" rel="stylesheet" type="text/css" media="all" />
