@@ -16,9 +16,9 @@
 .ct-icon-3{background-position: -144px 0;} /*家具**/
 .ct-icon-4{background-position: -264px 0;} /*电器**/
 .activeC{color: #7db122!important;font-weight: bolder!important;font-size: 16px!important;}
-.cart-item{border-bottom:  1px solid #eeeeee;height: 86px;width: 280px;margin: 0px auto;padding: 5 0 5 0;}
-.cart-img{display:inline-block;vertical-align: middle;width: 85px;}
-.cart-img img{width: 80px;height: 80px}
+.cart-item{border-bottom:  1px solid #eeeeee;height: 80px;width: 260px;margin: 0px auto;padding: 5 0 5 0;}
+.cart-img{display:inline-block;vertical-align: middle;width: 70px;height: 70px;border: 1px solid #E8E8E8;}
+.cart-img img{width: 70px;height: 70px}
 .title_a{font-weight: bold;font-size: 13px;color: white;}
 </style>
 <script>
@@ -55,17 +55,17 @@
 							categoryHtml+='<li class="cart-item">'+
 				                '<div class="cart-img"> <img src="'+pic+'"> </div>'+
 				                '<div class="cart-title" style="display:inline-block;width: 180px;vertical-align: middle;">'+
-				                    '<div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"  title="'+goodsName+'">'+
-				                       ' <a href="#" style="font-family: inherit;font-weight: bold;color: #666666">'+goodsName+'</a>'+
+				                    '<div style="white-space: nowrap;overflow: hidden;width:170px;margin-left:10px;text-overflow: ellipsis;"  title="'+goodsName+'">'+
+				                       ' <a href="#" style="font-family: inherit;font-weight: bold;color: #666666;font-size:15px;">'+goodsName+'</a>'+
 				                    '</div>'+
-				                    '<div class="price"> '+
-				                        '<div class="clr-txt" style="color: #7fba00;width:80px;display:inline-block;text-align:right">¥'+returnFloat(price)+'</div>&nbsp;&nbsp;X&nbsp;&nbsp;'+number+
+				                    '<div class="price" style="width:170px;margin-left:10px;color:#ccc;"> '+
+				                        '<div class="clr-txt" style="color: #7fba00;width:80px;display:inline-block;">¥'+returnFloat(price)+'</div>X<div style="display:inline-block;width:40px;text-align:center;">'+number+'</div>'+
 				                    '</div>'+
 				                '</div>'+
 				            '</li>';
 							total_price+=price*number;
 						});
-						categoryHtml+='<li class="cart-list sub-total" style="border-bottom:  1px solid #eeeeee;height: 30px;width: 280px;margin: 0px auto;padding: 5 0 5 0;line-height: 30px;">'+
+						categoryHtml+='<li class="cart-list sub-total" style="border-bottom:  1px solid #eeeeee;height: 30px;width: 260px;margin: 0px auto;padding: 5 0 5 0;line-height: 30px;">'+
 							                '<div class="pull-left" style="float: left;font-weight: bold"> '+
 							                    '<strong>合计</strong>'+
 							                '</div>'+

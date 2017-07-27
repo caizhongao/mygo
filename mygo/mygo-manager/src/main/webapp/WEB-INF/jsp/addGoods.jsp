@@ -15,7 +15,7 @@ $(function(){
 	function listAttrs(){
 		var cid=$('#cid option:selected').val();
 		$.ajax({
-			url:'/mygo-manager/login/category/listAttrs.do',
+			url:'${ctx}/login/category/listAttrs.do',
 			type:'post',
 			dataType:'json',
 			data:{'cid':cid},
