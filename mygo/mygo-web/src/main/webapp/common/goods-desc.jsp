@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-	<link type="text/css" rel="stylesheet" href="${ctx}/common/desc/saved_resource">
-    <link type="text/css" rel="stylesheet" href="${ctx}/common/desc/saved_resource(2)">
+    <link type="text/css" rel="stylesheet" href="${ctx}/common/desc/goods-desc.css">
 	<div class="content clear">
 	<div class="title-nav">
         <div class="slide-box" style="overflow: visible">

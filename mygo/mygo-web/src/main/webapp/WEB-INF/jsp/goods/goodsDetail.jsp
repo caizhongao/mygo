@@ -334,7 +334,7 @@
 				<input type="hidden" name="detailVos[0].number" id="form_sku_number" value=""/>
 				<input type="hidden" name="type" id="form_type" value="0"/>
 			</form>
-			<table width="1100px" class="goodsDetailTable" cellpadding="0" cellspacing="0"  style="font-size: 14px;color:#74777b;margin-top: 20px;height: 401px;font-family: Arial">
+			<table width="1100px" class="goodsDetailTable" cellpadding="0" cellspacing="0"  style="font-size: 14px;color:#74777b;height: 401px;font-family: Arial">
 				<tr>
 					<td rowspan="${fn:length(goods.skus[0].attrs)+5}" width="500px">
 						<div style="width: 400px;border: 1px solid #E8E8E8;padding: 1px">

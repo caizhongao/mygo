@@ -28,15 +28,16 @@
 		$('input[name="uaid"]').val('');
 		$('input[name="receiver"]').val('');
 		$('input[name="mobilphone"]').val('');
-		$('#city').val('');
-		$('#area').val('');
+		$('#province').val('');
+		$('#city').html('<option value="">请选择</option>');
+		$('#area').html('<option value="">请选择</option>');
 		$('textarea[name="addr"]').val('');
 		$('input[name="isDefault"]').prop('checked',false);
 	}
 
 	function listCitys(){
-		$('#city').html('<option value="">请选择</option>')
-		$('#area').html('<option value="">请选择</option>')
+		$('#city').html('<option value="">请选择</option>');
+		$('#area').html('<option value="">请选择</option>');
 		var aid=$('#province option:selected').val();
 		if(aid!=''){
 			$.each(listAreas(aid),function(index,city){
@@ -110,49 +111,49 @@
 			<form action="${ctx}/login/addr/saveAddr.do" id="addrForm" method="post" enctype="application/x-www-form-urlencoded">
 				<table class="editTable" align="center">
 					<tr>
-						<td colspan="2" style="font-weight:bold">编辑地址信息</td>
+						<td colspan="2" style="font-weight:bold;"><img src="${ctx}/img/edit.png" style="width: 20px;height: 20px;vertical-align: middle;">编辑地址信息</td>
 					</tr>
 					<tr>
-						<td width="90px">收件人：</td>
+						<td width="90px" align="right">收件人：</td>
 						<td>
 							<input type="hidden" name="uaid" value="${addr.uaid }">
-							<input type="text" name="receiver" value="${addr.receiver }" style="height: 30px;width: 240px;" id="receiver"><font color="red">*</font>
+							<input type="text" name="receiver" value="${addr.receiver }" class="searchInput" style="height: 30px;width: 240px;" id="receiver"><font color="red">*</font>
 						</td>
 					</tr>
 					<tr>
-						<td>手机：</td>
-						<td><input type="text" name="mobilphone" value="${addr.mobilphone }" style="height: 30px;width: 240px;" id="mobilphone"><font color="red">*</font></td>
+						<td align="right">手机：</td>
+						<td><input type="text" name="mobilphone" value="${addr.mobilphone }" class="searchInput" style="height: 30px;width: 240px;" id="mobilphone"><font color="red">*</font></td>
 					</tr>
 					<tr>
-						<td>收件地址：</td>
+						<td align="right">收件地址：</td>
 						<td>
-							<select id="province" name="provinceId" onchange="listCitys()" style="height: 30px;width: 77px;" class="selectAddr">
+							<select id="province" name="provinceId" onchange="listCitys()" class="searchInput" style="height: 30px;width: 77px;">
 								<option value="">请选择</option>
 								<c:forEach items="${provinces}" var="province">
-									<option value="${province.aid}">${province.aname}</option>
+									<option value="${province.aid}" <c:if test="${addr.provinceId==province.aid}">selected="selected"</c:if>>${province.aname}</option>
 								</c:forEach>
 							</select>
 							<input type="hidden" name="province">
-							<select id="city" name="cityId" onchange="listCountys()"  class="selectAddr" style="height: 30px;width: 78px;">
+							<select id="city" name="cityId" onchange="listCountys()"  class="searchInput" style="height: 30px;width: 77px;">
 								<option value="">请选择</option>
 							</select>
 							<input type="hidden" name="city">
-							<select id="area" name="areaId"  class="selectAddr" style="height: 30px;width: 77px;">
+							<select id="area" name="areaId"  class="searchInput" style="height: 30px;width: 77px;">
 								<option value="">请选择</option>
 							</select>
 							<input type="hidden" name="area"><font color="red">*</font>
 						</td>
 					</tr>
 					<tr style="height: 80px">
-						<td valign="top" style="line-height: 40px;">详细地址：</>
+						<td valign="top" style="line-height: 40px;" align="right">详细地址：</>
 						<td id="attrs">
-							<textarea rows="4" cols="50" name="addr">${addr.addr}</textarea><font color="red">*</font>
+							<textarea rows="4" cols="50" name="addr" style="border: solid 1px #ddd;">${addr.addr}</textarea><font color="red">*</font>
 						</td>
 					</tr>
 					<tr style="height: 35px;">
 						<td>默认地址：</td>
 						<td id="attrs">
-							<input type="checkbox" name="isDefault" value="1" style="width: 20px;">
+							<input type="checkbox" name="isDefault" value="1" style="width: 15px;height: 15px;" <c:if test="${addr.isDefault==1}">checked="checked"</c:if>>
 						</td>
 					</tr>
 					<tr>

@@ -133,6 +133,10 @@ display:none;
 </style>
 <script type="text/javascript">
 	function makeOrder(){
+		if($('input[name="addrId"]:checked').length<=0){
+			alert('请选择收获地址！');
+			return;
+		}
 		var addrId=$('input[name="addrId"]:checked').val();
 		if(addrId==''){
 			alert('请选择收获地址！');
@@ -177,6 +181,7 @@ display:none;
 			}
 			if(pid!=''){
 				$('#province').val(pid);
+				$('#city').html('<option value="">请选择</option>');
 				$.each(listAreas(pid),function(index,city){
 					if((city.aid+'')==cid){
 						$('#city').append('<option selected="selected" value="'+city.aid+'">'+city.aname+'</option>');
@@ -184,7 +189,8 @@ display:none;
 						$('#city').append('<option value="'+city.aid+'">'+city.aname+'</option>');
 					}
 				});
-				$.each(listAreas(pid),function(index,area){
+				$('#area').html('<option value="">请选择</option>');
+				$.each(listAreas(cid),function(index,area){
 					if((area.aid+'')==aid){
 						$('#area').append('<option selected="selected" value="'+area.aid+'">'+area.aname+'</option>');
 					}else{
@@ -204,8 +210,8 @@ display:none;
 	}
 	
 	function listCitys(){
-		$('#city').html('<option value="">请选择</option>')
-		$('#area').html('<option value="">请选择</option>')
+		$('#city').html('<option value="">请选择</option>');
+		$('#area').html('<option value="">请选择</option>');
 		var aid=$('#province option:selected').val();
 		if(aid!=''){
 			$.each(listAreas(aid),function(index,city){
@@ -215,7 +221,7 @@ display:none;
 	}
 	
 	function listCountys(){
-		$('#area').html('<option value="">请选择</option>')
+		$('#area').html('<option value="">请选择</option>');
 		var aid=$('#city option:selected').val();
 		if(aid!=''){
 			$.each(listAreas(aid),function(index,area){
@@ -265,7 +271,7 @@ display:none;
 								'<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">'+
 								'<input type="radio" name="addrId" checked="checked" value="'+result.uaid+'" onclick="selectAddr()">'+
 								'</div>'+
-								'<div class="areaIds" style="max-width: 550px" pid="'+result.pid+'" aid="'+result.aid+'" cid="'+result.cid+'" addr="'+result.addr+'"'+
+								'<div class="areaIds" style="max-width: 550px" pid="'+result.provinceId+'" aid="'+result.areaId+'" cid="'+result.cityId+'" addr="'+result.addr+'"'+
 								'receiver="'+result.receiver+'" mobilphone="'+result.mobilphone+'" isDefault="'+result.isDefault+'" uaid="'+result.uaid+'">'+
 									'<em class="icons icons-address fl"></em>'+result.province+'&nbsp;'+result.city+'&nbsp;'+result.area+'&nbsp;'+result.addr+'&nbsp;&nbsp;'+
 								'</div>'+
@@ -281,7 +287,7 @@ display:none;
 						$('.addr_select').find(".addressInfo").html('<div style="width: 30px;margin-left: 10px;vertical-align: top;margin-top: 3px;">'+
 								'<input type="radio" name="addrId" checked="checked" value="'+result.uaid+'" onclick="selectAddr()">'+
 								'</div>'+
-								'<div class="areaIds" style="max-width: 550px" pid="'+result.pid+'" aid="'+result.aid+'" cid="'+result.cid+'" addr="'+result.addr+'"'+
+								'<div class="areaIds" style="max-width: 550px" pid="'+result.provinceId+'" aid="'+result.areaId+'" cid="'+result.cityId+'" addr="'+result.addr+'"'+
 								'receiver="'+result.receiver+'" mobilphone="'+result.mobilphone+'" isDefault="'+result.isDefault+'" uaid="'+result.uaid+'">'+
 									'<em class="icons icons-address fl"></em>'+result.province+'&nbsp;'+result.city+'&nbsp;'+result.area+'&nbsp;'+result.addr+'&nbsp;&nbsp;'+
 								'</div>'+
