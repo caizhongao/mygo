@@ -21,9 +21,9 @@ $(function(){
 			data:{'cid':cid},
 			success:function(data){
 				var attrHtml="";
-				if(data!=null&&data.length>0){
+				if(data.data!=null&&data.data.length>0){
 					attrHtml+="<td>商品规格：</><td>";
-					$.each(data,function(index,content){
+					$.each(data.data,function(index,content){
 						if(index!=0&&index%3==0){
 							attrHtml+="<br/>";
 						}

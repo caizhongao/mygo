@@ -106,8 +106,8 @@
 </head>
 <body class="_body">
 <div  class="page_body">
-	<%@ include file="/common/top.jsp" %>
-	<div class="page_middle" style="margin-top: 50px;">
+	<%@ include file="/common/top1.jsp" %>
+	<div class="page_middle" >
 		<div style="width: 400px;margin-left:20%;height: 40px;">
 			<c:if test="${payResult=='success'}">
 			<div id="body1" class="show" name="divcontent">
@@ -150,7 +150,7 @@
 			</c:if>
 		</div>
 	</div>
-	<%@ include file="/common/bottom.jsp" %>
+	<%@ include file="/common/bottom1.jsp" %>
 </div>
 </body> 
 </html>
