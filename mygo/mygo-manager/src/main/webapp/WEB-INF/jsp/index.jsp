@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>后台管理</title>
+<title>mygo后台管理</title>
 <link rel="stylesheet" href="${ctx}/css/sccl.css"> 
 <link rel="stylesheet" type="text/css" href="${ctx}/css/skin/qingxin/skin.css" id="layout-skin"/>
     <style type="text/css">

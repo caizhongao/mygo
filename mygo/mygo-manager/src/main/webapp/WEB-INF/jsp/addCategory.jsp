@@ -8,7 +8,7 @@
 
 <link rel="stylesheet" type="text/css" href="${ctx}/js/uploadify/uploadify.css">
 <script type="text/javascript" src="${ctx}/js/uploadify/jquery.uploadify.min.js"></script>
-<title>用户注册</title>
+<title>添加类目</title>
 <script type="text/javascript">
 
 	
