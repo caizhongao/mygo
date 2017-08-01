@@ -4,12 +4,12 @@
 <html>
 <head>
     <title>首页</title>
-
-  </head>
-  
-  <body>
-<% 
-	response.sendRedirect(request.getContextPath()+"/unlogin/user/toLogin.do");
-%>
+	<script type="text/javascript">
+		$(function(){
+			top.location.href="${ctx}/unlogin/user/toLogin.do";
+		});
+	</script>
+</head>
+<body>
 </body>
 </html>
