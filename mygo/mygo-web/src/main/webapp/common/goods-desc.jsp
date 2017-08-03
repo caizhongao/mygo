@@ -63,7 +63,6 @@
                     <div class="goods_desc">
                     	<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/2/1/59159e4da43d1f338b3bdf72_750x545.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e4da43d1f338b3bdf72_750x545.jpg" style="display: block;">
                     	<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/6/3/59159e4ea43d1f36210d8d26_750x794.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e4ea43d1f36210d8d26_750x794.jpg" style="display: block;">
-                    	<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/e/9/59159e59a43d1f344445f996_750x808.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e59a43d1f344445f996_750x808.jpg" style="display: block;">
                     </div>
                </div>
                <div class="info-title" id="xijie" _tagname="细节做工"><span class="single-style">细节做工</span></div>
@@ -71,23 +70,14 @@
                    <div class="goods_desc">
                    		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/0/3/59159e79a43d1f1e903e04a0_750x450.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e79a43d1f1e903e04a0_750x450.jpg" style="display: block;">
                    		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/b/4/59159e7aa43d1f3487530fde_750x367.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e7aa43d1f3487530fde_750x367.jpg" style="display: block;">
-                   		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/5/4/59159e7ba43d1f345a72877a_750x350.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e7ba43d1f345a72877a_750x350.jpg" style="display: block;">
                    	</div>
                </div>
                <div class="info-title" id="moteshipai" _tagname="模特实拍"><span class="single-style">模特实拍</span></div>
                <div class="details-info">
                    <div class="goods_desc">
                    		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/e/4/59159e88a43d1f366239edfb_750x813.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e88a43d1f366239edfb_750x813.jpg" style="display: block;">
-                   		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/9/9/59159e89a43d1f348d2e02f0_750x683.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e89a43d1f348d2e02f0_750x683.jpg" style="display: block;">
-                   		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/0/7/59159e8ba43d1f348c04ffb2_750x648.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e8ba43d1f348c04ffb2_750x648.jpg" style="display: block;">
-                   		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/7/2/59159e8dad0a49e24b8b45c5_750x763.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e8dad0a49e24b8b45c5_750x763.jpg" style="display: block;">
                    		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/9/5/59159e8fad0a49f2678b459d_750x816.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e8fad0a49f2678b459d_750x816.jpg" style="display: block;">
-                   		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/3/2/59159e9ca43d1f34a7488ea8_750x632.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e9ca43d1f34a7488ea8_750x632.jpg" style="display: block;">
-                   		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/c/a/59159e9da43d1f34a1459f10_750x754.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e9da43d1f34a1459f10_750x754.jpg" style="display: block;">
                    		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/2/5/59159e9fad0a49cb558b45bd_750x800.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159e9fad0a49cb558b45bd_750x800.jpg" style="display: block;">
-                   		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/6/4/59159ea1a43d1f34b0393ec0_750x648.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159ea1a43d1f34b0393ec0_750x648.jpg" style="display: block;">
-                   		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/3/e/59159ea2a43d1f34bb7124e2_750x749.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159ea2a43d1f34bb7124e2_750x749.jpg" style="display: block;">
-                   		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/5/f/59159ea4a43d1f34bc3d0654_750x813.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159ea4a43d1f34bc3d0654_750x813.jpg" style="display: block;">
                    		<img class="goods_desc_img lazy" d-src="//s2.juancdn.com/bao/170512/2/9/59159ea6a43d1f34ac2d8527_750x729.jpg?iopcmd=convert&amp;Q=88&amp;dst=jpg" src="${ctx}/common/desc/59159ea6a43d1f34ac2d8527_750x729.jpg" style="display: block;">
                    	</div>
                </div>
