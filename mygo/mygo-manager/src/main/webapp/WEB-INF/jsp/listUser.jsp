@@ -81,7 +81,7 @@
 				<td>
 					${user.age}
 				</td>
-				<td>
+				<td>${user.createTime}${user.updateTime}
 					<jsp:useBean id="dateObject" class="java.util.Date" scope="page"></jsp:useBean>
 					<jsp:setProperty property="time" name="dateObject" value="${user.createTime*1000}"/>
 					<fmt:formatDate value="${dateObject}" pattern="yyyy-MM-dd"/></font>

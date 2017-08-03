@@ -13,7 +13,7 @@
 		<result property="type" column="type"/>
 	</resultMap>
 	
-	<sql id="allUserColumns">
+	<sql id="allColumns">
 		user_name, password, sex, real_name, age, create_time,update_time,uid,type
 	</sql>
 	
@@ -29,7 +29,7 @@
 	
 	<select id="queryUser" parameterType="com.cza.dto.user.TUser" resultMap="user">
 		select 
-			<include refid="allUserColumns"></include>
+			<include refid="allColumns"></include>
 		from t_user 
 			<where>
 				<if test="uid!=null">
@@ -74,7 +74,7 @@
 	
 	<select id="listUser" parameterType="com.cza.service.user.vo.UserVo" resultMap="user">
 		select 
-			<include refid="allUserColumns"></include>
+			<include refid="allColumns"></include>
 		from t_user 
 			<where>
 				<if test="uid!=null">

@@ -48,11 +48,7 @@ public class UserServiceImpl implements UserService {
 		ServiceResponse<UserVo> resp=new ServiceResponse<UserVo>();
 		try {
 			TUser user=new TUser();
-			user.setAge(param.getAge());
-			user.setPassword(param.getPassword());
-			user.setRealName(param.getRealName());
-			user.setSex(param.getSex());
-			user.setUserName(param.getUserName());
+			BeanUtils.copyProperties(param, user);
 			user.setCreateTime(System.currentTimeMillis()/1000);
 			user.setUpdateTime(System.currentTimeMillis()/1000);
 			userMapper.saveUser(user);
@@ -90,13 +86,7 @@ public class UserServiceImpl implements UserService {
 			if(users!=null&&users.size()>0){
 				for(TUser user:users){
 					UserVo vo=new UserVo();
-					vo.setAge(user.getAge());
-					vo.setPassword(user.getPassword());
-					vo.setRealName(user.getRealName());
-					vo.setSex(user.getSex());
-					vo.setUid(user.getUid());
-					vo.setUserName(user.getUserName());
-					vo.setType(user.getType());
+					BeanUtils.copyProperties(user, vo);
 					voList.add(vo);
 				}
 			}
