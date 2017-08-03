@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>后台管理</title>
+<title>mygo后台管理</title>
 <link rel="stylesheet" href="${ctx}/css/sccl.css"> 
 <link rel="stylesheet" type="text/css" href="${ctx}/css/skin/qingxin/skin.css" id="layout-skin"/>
     <style type="text/css">
@@ -14,6 +14,9 @@
     	}
     	#goback{
     		font-weight: normal;
+    	}
+    	.tab-nav-content a{
+    		text-decoration: none;
     	}
     </style>
     <script type="text/javascript">
@@ -27,19 +30,23 @@
      	$(function(){
      		/*获取皮肤*/
      		//getSkinByCookie();
-     		var ctx="${ctx}";
      		/*菜单json*/
      		var menu = [{"id":"1","name":"主菜单","parentId":"0","url":"","icon":"","order":"1","isHeader":"1","childMenus":[
-     						{"id":"3","name":"商品管理","parentId":"1","url":"","icon":"&#xe604;","order":"1","isHeader":"0","childMenus":[
-     							{"id":"4","name":"商品管理","parentId":"3","url":ctx+"/login/goods/listGoods.do","icon":"","order":"1","isHeader":"0","childMenus":""},
-     							{"id":"5","name":"分类管理","parentId":"3","url":ctx+"/login/category/listCategory.do","icon":"","order":"1","isHeader":"0","childMenus":""}
+							{"id":"11","name":"用户管理","parentId":"1","url":"","icon":"&#xe604;","order":"1","isHeader":"0","childMenus":[
+       							{"id":"4","name":"用户管理","parentId":"11","url":"${ctx}/login/userManager/listUser.do","icon":"","order":"1","isHeader":"0","childMenus":""}
+       						]},
+     						{"id":"3","name":"商品管理","parentId":"1","url":"","icon":"&#xe604;","order":"2","isHeader":"0","childMenus":[
+     							{"id":"4","name":"商品管理","parentId":"3","url":"${ctx}/login/goods/listGoods.do","icon":"","order":"1","isHeader":"0","childMenus":""},
+     							{"id":"5","name":"分类管理","parentId":"3","url":"${ctx}/login/category/listCategory.do","icon":"","order":"1","isHeader":"0","childMenus":""}
      						]},
-     						{"id":"6","name":"订单管理","parentId":"1","url":"","icon":"&#xe602;","order":"1","isHeader":"0","childMenus":[
-     							{"id":"7","name":"已付款","parentId":"6","url":ctx+"/login/order/listPayOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""},
-     							{"id":"8","name":"未付款","parentId":"6","url":ctx+"/login/order/listNotPayOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""}
+     						{"id":"6","name":"订单管理","parentId":"1","url":"","icon":"&#xe602;","order":"3","isHeader":"0","childMenus":[
+								{"id":"7","name":"未付款","parentId":"6","url":"${ctx}/login/order/listNotPayOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""},
+     							{"id":"8","name":"已付款","parentId":"6","url":"${ctx}/login/order/listPayOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""},
+     							{"id":"9","name":"已退款","parentId":"6","url":"${ctx}/login/order/listRefundOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""},
+     							{"id":"10","name":"已关闭","parentId":"6","url":"${ctx}/login/order/listCloseOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""}
      						]}
-     					]}
-     					];
+     					 ]}
+     				    ];
      		initMenu(menu,$(".side-menu"));
      		$(".side-menu > li").addClass("menu-item");
      		

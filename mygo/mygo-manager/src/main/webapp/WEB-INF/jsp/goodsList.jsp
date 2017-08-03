@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>用户注册</title>
+<title>商品列表</title>
 <script type="text/javascript">
 	
 </script>

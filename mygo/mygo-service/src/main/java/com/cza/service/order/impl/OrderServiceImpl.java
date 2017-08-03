@@ -282,15 +282,11 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 		try {
 			Long count=orderMapper.countOrder(listParam);
 			listParam.setStart((listParam.getPageNum()-1)*listParam.getPageSize());
-			List<TOrder> orderList=orderMapper.listOrder(listParam);
-			List<OrderVo>voList=new ArrayList<>();
+			List<OrderVo> orderList=orderMapper.listOrderVo(listParam);
 			if(orderList!=null&&orderList.size()>0){
-				for(TOrder order:orderList){
-					OrderVo vo=new OrderVo();
-					BeanUtils.copyProperties(order, vo);
-					List<OrderDetailVo> detailVoList=new ArrayList<OrderDetailVo>();
-					for(TOrderDetail detail:order.getDetails()){
-						TSku sku=skuMapper.querySku(detail.getSid());
+				for(OrderVo vo:orderList){
+					for(OrderDetailVo detailVo:vo.getDetailVos()){
+						TSku sku=skuMapper.querySku(detailVo.getSid());
 						SkuVo skuVo=new SkuVo();
 						skuVo.setPrice(sku.getPrice());
 						skuVo.setBarcode(sku.getBarcode());
@@ -312,17 +308,11 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 							}
 						}
 						skuVo.setAttrs(attrVoList);
-						OrderDetailVo detailVo=new OrderDetailVo();
-						BeanUtils.copyProperties(detail, detailVo);
 						detailVo.setSku(skuVo);
-						detailVoList.add(detailVo);
-						
 					}
-					vo.setDetailVos(detailVoList);
-					voList.add(vo);
 				}
 			}
-			resp.setData(new Pager<OrderVo>(listParam.getPageSize(),listParam.getPageNum(),count,voList));
+			resp.setData(new Pager<OrderVo>(listParam.getPageSize(),listParam.getPageNum(),count,orderList));
 			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 		} catch (Exception e) {
@@ -373,7 +363,7 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 	@Transactional(rollbackFor=Exception.class)
 	public ServiceResponse<OrderVo> closeOrder(OrderVo orderVo) {
 		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
-			TOrder queryOrder=orderMapper.queryOrder(orderVo.getOid());
+			OrderVo queryOrder=orderMapper.queryOrderVo(orderVo.getOid());
 			if(ShoppingContants.ORDER_STATUS_WAIT_PAY.equals(queryOrder.getStatus())){
 				TOrder updateParam=new TOrder();
 				updateParam.setOrderVersion(queryOrder.getOrderVersion());
@@ -389,7 +379,7 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 					return resp;
 				}
 				//订单关闭完后，归还库存
-				for(TOrderDetail detail:queryOrder.getDetails()){
+				for(OrderDetailVo detail:queryOrder.getDetailVos()){
 					TSkuStock skuStock=new TSkuStock();
 					skuStock.setSid(detail.getSid());
 					skuStock.setStock(-detail.getNumber());
@@ -483,7 +473,7 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 	@Transactional(rollbackFor=Exception.class)
 	public ServiceResponse<OrderVo> orderRefund(OrderVo orderVo) {
 		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
-		TOrder queryOrder=orderMapper.queryOrder(orderVo.getOid());
+		OrderVo queryOrder=orderMapper.queryOrderVo(orderVo.getOid());
 		if(ShoppingContants.ORDER_STATUS_REFUND.equals(queryOrder.getStatus())){
 			log.warn("订单已被操作，此次操作失败!");
 			resp.setData(null);
@@ -504,7 +494,7 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 				return resp;
 			}
 			//订单关闭完后，归还库存
-			for(TOrderDetail detail:queryOrder.getDetails()){
+			for(TOrderDetail detail:queryOrder.getDetailVos()){
 				TSkuStock skuStock=new TSkuStock();
 				skuStock.setSid(detail.getSid());
 				skuStock.setStock(-detail.getNumber());
@@ -531,12 +521,9 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 	public ServiceResponse<OrderVo> queryOrder(String oid) {
 		ServiceResponse<OrderVo> resp=new ServiceResponse<OrderVo>();
 		try {
-			TOrder order=orderMapper.queryOrder(oid);
+			OrderVo order=orderMapper.queryOrderVo(oid);
 			if(order!=null){
-				OrderVo vo=new OrderVo();
-				BeanUtils.copyProperties(order, vo);
-				List<OrderDetailVo> detailVoList=new ArrayList<OrderDetailVo>();
-				for(TOrderDetail detail:order.getDetails()){
+				for(OrderDetailVo detail:order.getDetailVos()){
 					TSku sku=skuMapper.querySku(detail.getSid());
 					SkuVo skuVo=new SkuVo();
 					skuVo.setPrice(sku.getPrice());
@@ -561,13 +548,9 @@ public ServiceResponse<List<String>> listOrderIds(OrderVo listParam) {
 						}
 					}
 					skuVo.setAttrs(attrVoList);
-					OrderDetailVo detailVo=new OrderDetailVo();
-					BeanUtils.copyProperties(detail, detailVo);
-					detailVo.setSku(skuVo);
-					detailVoList.add(detailVo);
+					detail.setSku(skuVo);
 				}
-				vo.setDetailVos(detailVoList);
-				resp.setData(vo);
+				resp.setData(order);
 				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 			}else{

@@ -30,7 +30,9 @@ import com.cza.service.order.vo.OrderVo;
 
 public interface OrderMapper {
 	
-	public List<TOrder> listOrder(OrderVo listParam);
+	public List<OrderVo> listOrderVo(OrderVo listParam);
+	
+	public OrderVo queryOrderVo(String oid);
 	
 	public TOrder queryOrder(String oid);
 	

@@ -31,7 +31,7 @@ jQuery(function(){
     var origin;
     var is_moveing = false;
     var $wrap = $('#' + window.webuploader.config.wrapId);
-    var $queue = $('<ul class="filelist" style="height:310px"></ul>').appendTo( $wrap.find('.queueList'));
+    var $queue = $('<ul class="filelist"></ul>').appendTo( $wrap.find('.queueList'));
     var $statusBar = $wrap.find('.statusBar');
     var $info = $statusBar.find('.info');
     var $upload = $wrap.find('.uploadBtn');
@@ -169,21 +169,23 @@ jQuery(function(){
     	
     	
     }
-
+    var hangWidth=0;
     //添加附件到webuploader中
     function addFile( file ){
         var index = $queue.find('li').length;
         var imgLeft = index * (thumbnailWidth+10);
         var imgTop = 0;
-        var wrapHeight = thumbnailHeight+20;
+        var wrapHeight = thumbnailHeight+100;
         var wrapWidth = $queue.width() + 20 + 10;
-        if( imgLeft >= wrapWidth){
-            imgTop = parseInt(imgLeft/wrapWidth) * (thumbnailHeight+10);
+        if( (imgLeft+thumbnailWidth) >= wrapWidth){
+        	if(hangWidth==0){
+        		hangWidth=imgLeft;
+        	}
+            imgTop = parseInt(imgLeft/hangWidth) * (thumbnailHeight+100);
             wrapHeight = imgTop + wrapHeight;
             imgLeft = (index % (parseInt(wrapWidth/(thumbnailWidth+10)) ) ) * (thumbnailWidth+10);
         }
-        //wrapHeight
-        $queue.height("325");
+        $queue.height(wrapHeight);
         
         var selectHtml='<select name="skuCode" style="width:110px;height:26px;text-align: center;" class="skuCode"><option value="">--请选择--</option>';
         $('input[name="barcode"]').each(function(){
@@ -309,6 +311,13 @@ jQuery(function(){
                         updateTotalProgress();
                         $li.off().find('.file-panel').off().end().remove();
                         /*$('#'+$(this).attr('fid')).remove();*/
+                    }
+                    var index = $queue.find('li').length;
+                    var imgLeft = index * (thumbnailWidth+10);
+                    var wrapHeight = thumbnailHeight+20+110;
+                    if(hangWidth!=0){
+                    	wrapHeight = parseInt(imgLeft/(hangWidth+1)+1) * (thumbnailHeight+10+110);
+                    	$queue.height(wrapHeight);
                     }
                     return;
                 case 1:

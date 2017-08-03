@@ -66,11 +66,10 @@ public class UserAction extends CommonAction{
 		if(erroList.isEmpty()){
 			UserVo listUserParam=new UserVo();
 			listUserParam.setUserName(user.getUserName());
-			ServiceResponse<List<UserVo>> resp=userService.listUser(listUserParam);
+			ServiceResponse<UserVo> resp=userService.queryUser(listUserParam);
 			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-				List<UserVo>voList=resp.getData();
-				if(voList!=null&&voList.size()>0){
-					UserVo queryUser=voList.get(0);
+				if(resp.getData()!=null){
+					UserVo queryUser=resp.getData();
 					if(queryUser.getPassword().equals(user.getPassword())&&ShoppingContants.USER_TYPE_ADMIN.equals(queryUser.getType())){
 						log.warn("login success!");
 						request.getSession().setAttribute(ShoppingContants.ADMIN_SESSION_KEY, queryUser);

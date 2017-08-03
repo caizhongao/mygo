@@ -46,16 +46,6 @@ public class TOrder implements Serializable{
 	private Long updateTime;
 	private Long orderVersion;
 	
-	private List<TOrderDetail> details;
-	
-	
-	
-	public List<TOrderDetail> getDetails() {
-		return details;
-	}
-	public void setDetails(List<TOrderDetail> details) {
-		this.details = details;
-	}
 	public String getOid() {
 		return oid;
 	}
@@ -152,10 +142,22 @@ public class TOrder implements Serializable{
 	public void setOrderVersion(Long orderVersion) {
 		this.orderVersion = orderVersion;
 	}
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
 	@Override
 	public String toString() {
-		return "TOrder [oid=" + oid + ", uid=" + uid + ", userName=" + userName + ", province=" + province + ", city=" + city + ", area=" + area + ", addr=" + addr + ", receiver=" + receiver + ", mobilphone=" + mobilphone + ", amount=" + amount + ", status=" + status + ", deleteDesc=" + deleteDesc + ", payNo=" + payNo + ", createTime=" + createTime + ", updateTime=" + updateTime + ", orderVersion=" + orderVersion + ", details=" + details + "]";
+		return "TOrder [oid=" + oid + ", uid=" + uid + ", userName=" + userName + ", province=" + province + ", city="
+				+ city + ", area=" + area + ", addr=" + addr + ", receiver=" + receiver + ", mobilphone=" + mobilphone
+				+ ", amount=" + amount + ", status=" + status + ", deleteDesc=" + deleteDesc + ", payNo=" + payNo
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", orderVersion=" + orderVersion + "]";
 	}
-
+	
+	
 	
 }

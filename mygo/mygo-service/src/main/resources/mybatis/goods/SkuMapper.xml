@@ -81,6 +81,9 @@
 				<if test="price!=null">
 					and price=#{price}
 				</if>
+				<if test="status!=null">
+					and status=#{status}
+				</if>
 			</where>
 	</select>
 		

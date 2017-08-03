@@ -114,22 +114,22 @@
 				<dl class="content">
 					<dt>订单　号：</dt>
 					<dd>
-						<input id="WIDout_trade_no" name="oid" value="${order.oid}" />
+						<input id="WIDout_trade_no" name="oid" readonly="readonly" value="${order.oid}" />
 					</dd>
 					<hr class="one_line">
 					<dt>订单名称：</dt>
 					<dd>
-						<input id="WIDsubject" name="orderName" value="mygo_test"/>
+						<input id="WIDsubject" name="orderName" readonly="readonly" value="mygo_test"/>
 					</dd>
 					<hr class="one_line">
 					<dt>订单金额：</dt>
 					<dd>
-						<input id="WIDtotal_amount" name="amount" value="${order.amount}"/>
+						<input id="WIDtotal_amount" name="amount" readonly="readonly" value="${order.amount}"/>
 					</dd>
 					<hr class="one_line">
 					<dt>订单描述：</dt>
 					<dd>
-						<input id="WIDbody" name="orderDesc" value="测试订单" />
+						<input id="WIDbody" name="orderDesc" readonly="readonly" value="测试订单" />
 					</dd>
 					<hr class="one_line">
 					<dt></dt>

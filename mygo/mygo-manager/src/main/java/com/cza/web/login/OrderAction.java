@@ -54,10 +54,10 @@ public class OrderAction extends CommonAction{
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			request.setAttribute("pager", resp.getData());
-			log.info("OrderAction.listNotPayOrder success,orderNo:{}",order.getOid());
+			log.info("OrderAction.listOrder success,orderNo:{}",order.getOid());
 			return webPage("listNotPayOrder");
 		}else{
-			log.info("OrderAction.listNotPayOrder faild!");
+			log.info("OrderAction.listOrder faild!");
 			return erro(request, resp);
 		}
 	}
@@ -70,14 +70,46 @@ public class OrderAction extends CommonAction{
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
 			request.setAttribute("pager", resp.getData());
-			log.info("OrderAction.listPayOrder success,orders:{}",resp.getData());
+			log.info("OrderAction.listOrder success,orders:{}",resp.getData());
 			return webPage("listPayOrder");
 		}else{
-			log.info("OrderAction.listNotPayOrder faild!");
+			log.info("OrderAction.listOrder faild!");
 			return erro(request, resp);
 		}
 	}
 
+	@RequestMapping("listCloseOrder")
+	public String listCloseOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
+		request.setAttribute("order", order);
+		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
+		order.setStatus(ShoppingContants.ORDER_STATUS_DELETE);
+		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			request.setAttribute("pager", resp.getData());
+			log.info("OrderAction.listOrder success,orders:{}",resp.getData());
+			return webPage("listCloseOrder");
+		}else{
+			log.info("OrderAction.listOrder faild!");
+			return erro(request, resp);
+		}
+	}
+	@RequestMapping("listRefundOrder")
+	public String listRefundOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
+		request.setAttribute("order", order);
+		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
+		order.setStatus(ShoppingContants.ORDER_STATUS_REFUND);
+		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
+		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			request.setAttribute("pager", resp.getData());
+			log.info("OrderAction.listOrder success,orders:{}",resp.getData());
+			return webPage("listRefundOrder");
+		}else{
+			log.info("OrderAction.listOrder faild!");
+			return erro(request, resp);
+		}
+	}
+	
+	
 	@RequestMapping("deleteOrder")
 	public void deleteOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ) throws IOException{
 		log.info("OrderAction.deleteOrder 请求参数,order:{}",order);

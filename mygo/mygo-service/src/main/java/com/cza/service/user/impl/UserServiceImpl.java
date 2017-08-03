@@ -15,13 +15,17 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.dto.user.TUser;
 import com.cza.mapper.user.UserMapper;
+import com.cza.service.order.vo.OrderVo;
 import com.cza.service.user.UserService;
 import com.cza.service.user.vo.UserVo;
 
@@ -44,11 +48,7 @@ public class UserServiceImpl implements UserService {
 		ServiceResponse<UserVo> resp=new ServiceResponse<UserVo>();
 		try {
 			TUser user=new TUser();
-			user.setAge(param.getAge());
-			user.setPassword(param.getPassword());
-			user.setRealName(param.getRealName());
-			user.setSex(param.getSex());
-			user.setUserName(param.getUserName());
+			BeanUtils.copyProperties(param, user);
 			user.setCreateTime(System.currentTimeMillis()/1000);
 			user.setUpdateTime(System.currentTimeMillis()/1000);
 			userMapper.saveUser(user);
@@ -76,31 +76,21 @@ public class UserServiceImpl implements UserService {
 	    */
 	    
 	@Override
-	public ServiceResponse<List<UserVo>> listUser(UserVo param) {
-		ServiceResponse<List<UserVo>> resp=new ServiceResponse<List<UserVo>>();
+	public ServiceResponse<Pager<UserVo>> listUser(UserVo param) {
+		ServiceResponse<Pager<UserVo>> resp=new ServiceResponse<Pager<UserVo>>();
 		List<UserVo> voList=new ArrayList<UserVo>();
 		try {
-			TUser user0=new TUser();
-			user0.setAge(param.getAge());
-			user0.setPassword(param.getPassword());
-			user0.setRealName(param.getRealName());
-			user0.setSex(param.getSex());
-			user0.setUserName(param.getUserName());
-			List<TUser>users=userMapper.listUser(user0);
+			Long count=userMapper.countUser(param);
+			param.setStart((param.getPageNum()-1)*param.getPageSize());
+			List<TUser>users=userMapper.listUser(param);
 			if(users!=null&&users.size()>0){
 				for(TUser user:users){
 					UserVo vo=new UserVo();
-					vo.setAge(user.getAge());
-					vo.setPassword(user.getPassword());
-					vo.setRealName(user.getRealName());
-					vo.setSex(user.getSex());
-					vo.setUid(user.getUid());
-					vo.setUserName(user.getUserName());
-					vo.setType(user.getType());
+					BeanUtils.copyProperties(user, vo);
 					voList.add(vo);
 				}
 			}
-			resp.setData(voList);
+			resp.setData(new Pager<UserVo>(param.getPageSize(),param.getPageNum(),count,voList));
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			log.info("listUser success,param:{},result:{}",param,voList);
@@ -113,5 +103,42 @@ public class UserServiceImpl implements UserService {
 		return resp;
 	}
 	
+	
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @param listUserParam
+	    * @return
+	    * @see com.cza.service.user.UserService#queryUser(com.cza.service.user.vo.UserVo)
+	    */
+	    
+	@Override
+	public ServiceResponse<UserVo> queryUser(UserVo listUserParam) {
+		ServiceResponse<UserVo> resp=new ServiceResponse<UserVo>();
+		try{
+			if(StringUtils.isEmpty(listUserParam.getUserName())&&listUserParam.getUid()==null){
+				resp.setData(null);
+				resp.setCode(ShoppingContants.RESP_CODE_PARAM_ERRO);
+				resp.setMsg(ShoppingContants.RESP_MSG_PARAM_ERRO);
+			}else{
+				TUser queryParam=new TUser();
+				queryParam.setUserName(listUserParam.getUserName());
+				queryParam.setUid(listUserParam.getUid());
+				TUser user=userMapper.queryUser(queryParam);
+				UserVo vo=new UserVo();
+				BeanUtils.copyProperties(user, vo);
+				resp.setData(vo);
+				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
+				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
+			}
+		} catch (Exception e) {
+			log.error("查询user失敗",e);
+			resp.setData(null);
+			resp.setCode(ShoppingContants.RESP_CODE_SYSTEM_ERRO);
+			resp.setMsg(ShoppingContants.RESP_MSG_SYSTEM_ERRO);
+		}
+		return resp;
+	}
 	
 }

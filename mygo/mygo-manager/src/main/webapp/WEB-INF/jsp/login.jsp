@@ -6,14 +6,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>首页</title>
+    <title>管理员登录</title>
 	<link rel="stylesheet" href="${ctx}/css/layui/css/layui.css">
 	<link rel="stylesheet" href="${ctx}/css/sccl.css">
   </head>
   <body class="login-bg">
     <div class="login-box">
         <header>
-            <h1>框架后台管理系统</h1>
+            <h1>MYGO后台管理系统</h1>
         </header>
         <div class="login-main">
 			<form action="${ctx}/unlogin/user/login.do" class="layui-form" method="post">
@@ -45,10 +45,10 @@
 			</form>        
 		</div>
         <footer>
-            <p>xuan © www.mycodes.net</p>
+            <p>Copyright © mygo-manager</p>
         </footer>
     </div>
-    <script src="${ctx}//css/layui/layui.js"></script>
+    <script src="${ctx}/css/layui/layui.js"></script>
     <script>
         layui.use(['layer', 'form'], function () {
             var layer = layui.layer,

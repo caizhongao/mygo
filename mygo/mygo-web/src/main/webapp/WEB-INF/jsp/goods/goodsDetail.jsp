@@ -341,7 +341,7 @@
 							<!-- margin-top: 1px;margin-left: 1px;margin-bottom: 1px -->
 							<img src="${goods.goodsPic}" width="400px" height="400px" id="goodsDetailPic" alt="商品详情图" style="">
 						</div>
-						<ul style="width: 402px;margin-top: 2px;height: 100px">
+						<ul style="width: 402px;margin-top: 2px;min-height: 100px">
 							<c:forEach items="${goods.skus}" var="sku">
 								<li style="display: inline-block;">
 									<img src="${sku.skuPic}" width="70px" id="skuPic${sku.sid}" alt="商品详情图" onmouseover="showSkuPic(${sku.sid})"  class="skuPic">

@@ -13,7 +13,7 @@
 	<table width="100%"  cellpadding="0" cellspacing="0" align="center"  style="height: 40px;color: #c6c6c6;">
 		<tr>
 			<td  style="border-left: 1px solid white;font-size: 14px" align="center" >
-				Copyright © 2016 -2017 mygo.com All Rights Reserved
+				<p>Copyright &copy; 2016 -2017 mygo-web All Rights Reserved.</p>
 			</td>
 		</tr>		
 	</table>

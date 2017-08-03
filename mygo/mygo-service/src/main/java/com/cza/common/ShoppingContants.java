@@ -81,6 +81,9 @@ public interface ShoppingContants {
 	public static final Integer ORDER_STATUS_USER_DELETE=4;
 	//系统关闭
 	public static final Integer ORDER_STATUS_SYS_DELETE=5;
+	//关闭(仅用于查询)
+	public static final Integer ORDER_STATUS_DELETE=10;
+	
 
 	
 	//类目常量
