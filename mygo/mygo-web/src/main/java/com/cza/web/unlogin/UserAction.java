@@ -79,9 +79,9 @@ public class UserAction extends CommonAction{
 		if(!StringUtils.isEmpty(userName)){
 			UserVo listUserParam=new UserVo();
 			listUserParam.setUserName(userName);
-			ServiceResponse<List<UserVo>> resp=userService.listUser(listUserParam);
+			ServiceResponse<UserVo> resp=userService.queryUser(listUserParam);
 			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-				if(resp.getData()!=null&&resp.getData().size()>0){
+				if(resp.getData()!=null){
 					log.info("UserAction.existName exist,can not use!");
 					response.getWriter().println(new RespMsg("success", "exist"));
 				}else{
@@ -113,11 +113,10 @@ public class UserAction extends CommonAction{
 			if(erroList.isEmpty()){
 				UserVo listUserParam=new UserVo();
 				listUserParam.setUserName(user.getUserName());
-				ServiceResponse<List<UserVo>> resp=userService.listUser(listUserParam);
+				ServiceResponse<UserVo> resp=userService.queryUser(listUserParam);
 				if(resp.isSuccess()){
-					List<UserVo>voList=resp.getData();
-					if(voList!=null&&voList.size()>0){
-						UserVo queryUser=voList.get(0);
+					if(resp.getData()!=null){
+						UserVo queryUser=resp.getData();
 						if(queryUser.getPassword().equals(user.getPassword())){
 							log.info("login success!");
 							//登录成功

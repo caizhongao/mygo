@@ -48,7 +48,7 @@
             <p>Copyright © mygo-manager</p>
         </footer>
     </div>
-    <script src="${ctx}//css/layui/layui.js"></script>
+    <script src="${ctx}/css/layui/layui.js"></script>
     <script>
         layui.use(['layer', 'form'], function () {
             var layer = layui.layer,

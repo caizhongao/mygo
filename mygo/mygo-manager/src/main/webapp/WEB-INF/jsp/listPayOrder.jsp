@@ -6,14 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>已支付订单列表</title>
-<script type="text/javascript">
-	
-</script>
-<style type="text/css">
-	.listTable td{
-		text-align: center;
-	}
-</style>
 </head>
 <body>
 	<div style="margin: 0px auto;">
@@ -29,7 +21,6 @@
 				<span style="display: inline-block;width: 300px">
 					订单号：<input class="searchInput" type="text" name="oid" value="${order.oid}">
 				</span>
-				
 				<span style="display: inline-block;width: 300px">
 					商品名称：<input class="searchInput" type="text" name="goodsName" value="${order.goodsName}">
 				</span>
@@ -57,25 +48,8 @@
 							<font style="font-weight: bold; margin-left: 20px;">
 							<jsp:useBean id="dateObject" class="java.util.Date" scope="page"></jsp:useBean>
 							<jsp:setProperty property="time" name="dateObject" value="${order.createTime*1000}"/>
-							<fmt:formatDate value="${dateObject}" pattern="yyyy-MM-dd"/></font>&nbsp;
-							订单号: ${order.oid}&nbsp; 
-							<c:choose>
-								<c:when test="${order.status==1}">
-									【待付款】
-								</c:when>
-								<c:when test="${order.status==2}">
-									【已付款】&nbsp;流水号: ${order.payNo }
-								</c:when>
-								<c:when test="${order.status==3}">
-									【已退款】
-								</c:when>
-								<c:when test="${order.status==4}">
-									【用户关闭】
-								</c:when>
-								<c:when test="${order.status==5}">
-									【系统关闭】
-								</c:when>
-							</c:choose>
+							<fmt:formatDate value="${dateObject}" pattern="yyyy-MM-dd"/></font>&nbsp; &nbsp;
+							订单号: ${order.oid}&nbsp; &nbsp;支付流水: ${order.payNo }
 						</th>
 					</tr>
 					<tr>
@@ -103,7 +77,7 @@
 								<td width="100px">${detail.amount}</td>
 							</c:if>
 						</c:forEach>
-						<td rowspan="${fn:length(order.detailVos)}"  class="money"> ${order.amount}</td>
+						<td rowspan="${fn:length(order.detailVos)}" width="100px"> ${order.amount}</td>
 						<td style="padding-left: 10px; padding-right: 10px" rowspan="${fn:length(order.detailVos)}">${order.province}
 							${order.city} ${order.area}<br> ${order.addr}
 						</td>

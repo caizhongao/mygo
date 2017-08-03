@@ -6,6 +6,7 @@
 	<script src="${ctx}/common/page/jquery.min.js.download"></script>
 	<script src="${ctx}/common/page/zxf_page.js.download" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
+
 		var total=${pager.count};
 		var pageSize=${pager.pageSize};
 		var pageNumber=${pager.pageNum};

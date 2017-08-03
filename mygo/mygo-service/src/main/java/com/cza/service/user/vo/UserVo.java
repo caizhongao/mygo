@@ -12,6 +12,8 @@ package com.cza.service.user.vo;
 
 import java.io.Serializable;
 
+import com.cza.dto.user.TUser;
+
 /**
     * @ClassName: UserVo
     * @Description: TODO(这里用一句话描述这个类的作用)
@@ -20,54 +22,73 @@ import java.io.Serializable;
     *
     */
 
-public class UserVo implements Serializable{
+public class UserVo extends TUser implements Serializable{
 	 
 	    /**
 	    * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
 	    */
 	    
 	private static final long serialVersionUID = -408038276779482497L;
-	private String  userName;
-	 private String  password;
-	 private String  sex;
-	 private String   realName;
-	 private Integer  age;
-	 private Long  uid;
+	 
 	 private String picCode;
 	 private String ref;
-	 private String type;
-	 
 	 private Integer rememberMe;
-	 
-	 
-	
-	
-	
-	
+	 private Integer pageNum=1;
+	 private Integer pageSize=15;
+	 private Integer start=0;
 	
 	/**
-	* @return type
+	* @return picCode
 	*/
 	
-	public String getType() {
-		return type;
+	public String getPicCode() {
+		return picCode;
 	}
+
 
 
 
 
 	
 	/**
-	 * @param type the type to set
+	 * @param picCode the picCode to set
 	 */
 	
-	public void setType(String type) {
-		this.type = type;
+	public void setPicCode(String picCode) {
+		this.picCode = picCode;
 	}
 
 
 
 
+
+	
+	/**
+	* @return ref
+	*/
+	
+	public String getRef() {
+		return ref;
+	}
+
+
+
+
+
+	
+	/**
+	 * @param ref the ref to set
+	 */
+	
+	public void setRef(String ref) {
+		this.ref = ref;
+	}
+
+
+
+
+
+	
 	/**
 	* @return rememberMe
 	*/
@@ -75,6 +96,8 @@ public class UserVo implements Serializable{
 	public Integer getRememberMe() {
 		return rememberMe;
 	}
+
+
 
 
 
@@ -89,137 +112,82 @@ public class UserVo implements Serializable{
 
 
 
-	/**
-	* @return ref
-	*/
-	
-	public String getRef() {
-		return ref;
-	}
 
 
 	
 	/**
-	 * @param ref the ref to set
-	 */
+	* @return pageNum
+	*/
 	
-	public void setRef(String ref) {
-		this.ref = ref;
+	public Integer getPageNum() {
+		return pageNum;
 	}
 
 
-	/**
-	* @return picCode
-	*/
-	
-	public String getPicCode() {
-		return picCode;
-	}
+
+
 
 	
 	/**
-	 * @param picCode the picCode to set
+	 * @param pageNum the pageNum to set
 	 */
 	
-	public void setPicCode(String picCode) {
-		this.picCode = picCode;
+	public void setPageNum(Integer pageNum) {
+		this.pageNum = pageNum;
 	}
 
+
+
+
+
+	
 	/**
-	* @return userName
+	* @return pageSize
 	*/
 	
-	public String getUserName() {
-		return userName;
+	public Integer getPageSize() {
+		return pageSize;
 	}
+
+
+
+
+
 	
 	/**
-	 * @param userName the userName to set
+	 * @param pageSize the pageSize to set
 	 */
 	
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
 	}
+
+
+
+
+
 	
 	/**
-	* @return password
+	* @return start
 	*/
 	
-	public String getPassword() {
-		return password;
+	public Integer getStart() {
+		return start;
 	}
+
+
+
+
+
 	
 	/**
-	 * @param password the password to set
+	 * @param start the start to set
 	 */
 	
-	public void setPassword(String password) {
-		this.password = password;
+	public void setStart(Integer start) {
+		this.start = start;
 	}
-	
-	/**
-	* @return sex
-	*/
-	
-	public String getSex() {
-		return sex;
-	}
-	
-	/**
-	 * @param sex the sex to set
-	 */
-	
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
-	
-	/**
-	* @return realName
-	*/
-	
-	public String getRealName() {
-		return realName;
-	}
-	
-	/**
-	 * @param realName the realName to set
-	 */
-	
-	public void setRealName(String realName) {
-		this.realName = realName;
-	}
-	
-	/**
-	* @return age
-	*/
-	
-	public Integer getAge() {
-		return age;
-	}
-	
-	/**
-	 * @param age the age to set
-	 */
-	
-	public void setAge(Integer age) {
-		this.age = age;
-	}
-	
-	/**
-	* @return uid
-	*/
-	
-	public Long getUid() {
-		return uid;
-	}
-	
-	/**
-	 * @param uid the uid to set
-	 */
-	
-	public void setUid(Long uid) {
-		this.uid = uid;
-	}
+
 
 
 
@@ -235,20 +203,14 @@ public class UserVo implements Serializable{
 	    
 	@Override
 	public String toString() {
-		return "UserVo [userName=" + userName + ", password=" + password + ", sex=" + sex + ", realName=" + realName
-				+ ", age=" + age + ", uid=" + uid + ", picCode=" + picCode + ", ref=" + ref + ", type=" + type
-				+ ", rememberMe=" + rememberMe + "]";
+		return super.toString()+"UserVo [picCode=" + picCode + ", ref=" + ref + ", rememberMe=" + rememberMe + ", pageNum=" + pageNum
+				+ ", pageSize=" + pageSize + ", start=" + start + "]";
 	}
-	
-	
-	/* (非 Javadoc)
-	* 
-	* 
-	* @return
-	* @see java.lang.Object#toString()
-	*/
-	
-	
+
+
+
+
+
 	
 	 
 }

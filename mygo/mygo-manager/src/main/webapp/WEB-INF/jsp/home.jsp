@@ -16,8 +16,8 @@
   </head>
   
   <body style="margin: 0">
-	<div style="width: 80%;height: 50%;margin-top: 20px;margin-left: 20px;">
-		<h1 style="color: #7DB122">MYGO MANAGER</h1>
+	<div style="margin-left:20%;margin-top: 8%">
+		<h1 style="color: #7DB122;font-size: 80;">MYGO管理后台</h1>
 	</div>
   </body>
 </html>

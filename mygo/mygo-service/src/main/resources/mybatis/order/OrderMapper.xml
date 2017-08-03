@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cza.mapper.order.OrderMapper">
-	<resultMap id="order" type="com.cza.dto.order.TOrder">
+		<resultMap id="order" type="com.cza.dto.order.TOrder">
 		<id property="oid" column="oid"/>
 		<result property="uid" column="uid"/>
 		<result property="userName" column="user_name"/>
@@ -18,7 +18,26 @@
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
 		<result property="orderVersion" column="order_version"/>
-		<collection property="details" ofType="com.cza.dto.order.TOrderDetail" column="oid">
+	</resultMap>
+
+	<resultMap id="orderVo" type="com.cza.service.order.vo.OrderVo">
+		<id property="oid" column="oid"/>
+		<result property="uid" column="uid"/>
+		<result property="userName" column="user_name"/>
+		<result property="province" column="province"/>
+		<result property="area" column="area"/>
+		<result property="city" column="city"/>
+		<result property="addr" column="addr"/>
+		<result property="receiver" column="receiver"/>
+		<result property="mobilphone" column="mobilphone"/>
+		<result property="amount" column="amount"/>
+		<result property="status" column="status"/>
+		<result property="deleteDesc" column="delete_desc"/>
+		<result property="payNo" column="pay_no"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="orderVersion" column="order_version"/>
+		<collection property="detailVos" ofType="com.cza.service.order.vo.OrderDetailVo" column="oid">
 			<id property="odid" column="odid"/>
 			<result property="oid" column="b_oid"/>
 			<result property="sid" column="sid"/>
@@ -29,7 +48,12 @@
 			<result property="gid" column="gid"/>
 		</collection>
 	</resultMap>
-		<select id="listOrder" parameterType="com.cza.dto.order.TOrder" resultMap="order">
+	
+	<sql id="allColumns">
+			oid,uid,province,area,city,addr,receiver,mobilphone,amount,
+			status,delete_desc,pay_no,create_time,update_time,order_version,user_name
+	</sql>
+	<select id="listOrderVo" parameterType="com.cza.dto.order.TOrder" resultMap="orderVo">
 		select 
 			a.oid as oid,uid,province,area,city,addr,receiver,mobilphone,a.amount as amount,
 			status,delete_desc,pay_no,create_time,update_time,order_version,user_name,
@@ -51,8 +75,11 @@
 					<if test="goodsName!=null and goodsName!=''">
 						and b.goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
 					</if>
-					<if test="status!=null">
+					<if test="status!=null and status!=10">
 						and a.status=#{status}
+					</if>
+					<if test="status!=null and status==10">
+						and a.status in(5,4)
 					</if>
 					<if test="createTime!=null">
 						and a.create_time &lt; #{createTime}
@@ -66,12 +93,19 @@
 	
 		
 	
-	<select id="queryOrder" parameterType="java.lang.String" resultMap="order">
+	<select id="queryOrderVo" parameterType="java.lang.String" resultMap="orderVo">
 		select 
 			a.oid as oid,uid,province,area,city,addr,receiver,mobilphone,a.amount as amount,
 			status,delete_desc,pay_no,create_time,update_time,order_version,user_name,
 			odid,b.oid as b_oid,sid,goods_name,order_price,b.amount as b_amount,number,gid
 		from t_order a,t_order_detail b where a.oid=b.oid and a.oid= #{oid} 
+	</select>
+	
+	<select id="queryOrder" parameterType="java.lang.String" resultMap="order">
+		select 
+			<include refid="allColumns"></include>
+		from t_order 
+		where oid= #{oid} 
 	</select>
 	
 	<select id="countOrder" parameterType="com.cza.dto.order.TOrder" resultType="java.lang.Long">
@@ -89,8 +123,11 @@
 					<if test="goodsName!=null and goodsName!=''">
 						and b.goods_name like CONCAT(CONCAT('%',#{goodsName}),'%')
 					</if>
-					<if test="status!=null">
+					<if test="status!=null and status!=10">
 						and a.status=#{status}
+					</if>
+					<if test="status!=null and status==10">
+						and a.status in(5,4)
 					</if>
 					<if test="createTime!=null">
 						and a.create_time &lt; #{createTime}
@@ -99,10 +136,7 @@
 				group by a.oid)a
 	</select>
 	
-	<sql id="allColumns">
-			oid,uid,province,area,city,addr,receiver,mobilphone,amount,
-			status,delete_desc,pay_no,create_time,update_time,order_version,gid,user_name
-	</sql>
+	
 	
 	
 	<insert id="saveOrder" parameterType="com.cza.dto.order.TOrder">

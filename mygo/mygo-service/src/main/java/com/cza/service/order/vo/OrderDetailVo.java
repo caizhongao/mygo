@@ -29,10 +29,20 @@ public class OrderDetailVo extends TOrderDetail{
 		this.sku = sku;
 	}
 
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
 	@Override
 	public String toString() {
-		return "OrderDetailVo [getSku()=" + getSku() + ", getOdid()=" + getOdid() + ", getOid()=" + getOid() + ", getSid()=" + getSid() + ", getOrderPrice()=" + getOrderPrice() + ", getAmount()=" + getAmount() + ", getNumber()=" + getNumber() + ", getGoodsName()=" + getGoodsName() + ", getGid()=" + getGid() + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
+		return super.toString()+"OrderDetailVo [sku=" + sku + "]";
 	}
+
+	
 	
 	
 }

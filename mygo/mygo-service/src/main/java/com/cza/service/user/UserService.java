@@ -12,6 +12,7 @@ package com.cza.service.user;
 
 import java.util.List;
 
+import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.service.user.vo.UserVo;
 
@@ -43,7 +44,20 @@ public interface UserService {
 		    * @throws
 		    */
 		    
-	ServiceResponse<List<UserVo>> listUser(UserVo user);
+	ServiceResponse<Pager<UserVo>> listUser(UserVo user);
+
+
+			
+			    /**
+			    * @Title: queryUser
+			    * @Description: TODO(这里用一句话描述这个方法的作用)
+			    * @param @param listUserParam
+			    * @param @return    参数
+			    * @return ServiceResponse<List<UserVo>>    返回类型
+			    * @throws
+			    */
+			    
+			ServiceResponse<UserVo> queryUser(UserVo listUserParam);
 	
 	
 }

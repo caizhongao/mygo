@@ -27,11 +27,18 @@
 	</insert>	
 	
 	
-	<select id="queryUser" parameterType="java.lang.Long" resultMap="user">
+	<select id="queryUser" parameterType="com.cza.dto.user.TUser" resultMap="user">
 		select 
 			<include refid="allUserColumns"></include>
 		from t_user 
-			where uid = #{uid} 
+			<where>
+				<if test="uid!=null">
+					and uid = #{uid} 
+				</if>
+				<if test="userName!=null and userName!=''">
+					and	user_name = #{userName}
+				</if>
+			</where>
 	</select>
 	
 	<select id="updateUser" parameterType="com.cza.dto.user.TUser">
@@ -45,24 +52,49 @@
 		where uid = #{uid} 
 	</select>
 	
-	<select id="listUser" parameterType="com.cza.dto.user.TUser" resultMap="user">
+	<select id="countUser" parameterType="com.cza.service.user.vo.UserVo" resultType="java.lang.Long">
+		select 
+			count(1)
+		from t_user 
+			<where>
+				<if test="uid!=null">
+					and uid = #{uid}
+				</if>
+				<if test="userName!=null and userName!=''">
+					and user_name = #{userName}
+				</if>
+				<if test="age!=null">
+					and age=#{age}
+				</if>
+				<if test="sex!=null and sex!=''">
+					and sex=#{sex}
+				</if>
+			</where>
+	</select>
+	
+	<select id="listUser" parameterType="com.cza.service.user.vo.UserVo" resultMap="user">
 		select 
 			<include refid="allUserColumns"></include>
 		from t_user 
 			<where>
 				<if test="uid!=null">
-					uid = #{uid}
+					and uid = #{uid}
 				</if>
 				<if test="userName!=null and userName!=''">
-					user_name = #{userName}
+					and user_name like  like CONCAT(CONCAT('%',#{userName}),'%')
+				</if>
+				<if test="realName!=null and realName!=''">
+					and real_name like  like CONCAT(CONCAT('%',#{realName}),'%')
 				</if>
 				<if test="age!=null">
-					age=#{age}
+					and age=#{age}
 				</if>
 				<if test="sex!=null and sex!=''">
-					sex=#{sex}
+					and sex=#{sex}
 				</if>
 			</where>
+			order by create_time desc
+			limit #{start},#{pageSize}
 	</select>
 		
 </mapper>

@@ -45,14 +45,12 @@ function addIframe(cur){
 	if (h == "" || $.trim(h).length == 0) {
 		return false;
 	}
-	
 	var fullWidth = $(window).width();
 	if(fullWidth >= 750){
 		$(".layout-side").show();
 	}else{
 		$(".layout-side").hide();
 	}
-	
 	$(".content-tab").each(function() {
 		if ($(this).data("id") == h) {
 			if (!$(this).hasClass("active")) {
@@ -62,7 +60,6 @@ function addIframe(cur){
 			isHas = true;
 		}
 	});
-	//alert(isHas);
 	if(isHas){
 		$(".body-iframe").each(function() {
 			if ($(this).data("id") == h) {
@@ -272,6 +269,7 @@ function closePage() {
 
 
 /*循环菜单*/
+var indexGlobel=0;
 function initMenu(menu,parent){
 	for(var i=0; i<menu.length; i++){   
 		var item = menu[i];
@@ -284,12 +282,13 @@ function initMenu(menu,parent){
 					initMenu(item.childMenus,parent);
 				}
 			}else{
+				indexGlobel++;
 				item.icon == "" ? item.icon = "&#xe610" : item.icon = item.icon;
 				if(item.childMenus == ""){
-					str = "<li><a href='"+item.url+"' index='"+(i+1)+"'><i class='icon-font'>"+item.icon+"</i><span>"+item.name+"</span></a></li>";
+					str = "<li><a href='"+item.url+"' index='"+(indexGlobel)+"'><i class='icon-font'>"+item.icon+"</i><span>"+item.name+"</span></a></li>";
 					$(parent).append(str);
 				}else{
-					str = "<li><a href='"+item.url+"' index="+(i+1)+"'><i class='icon-font '>"+item.icon+"</i><span>"+item.name+"</span><i class='icon-font icon-right'>&#xe60b;</i></a>";
+					str = "<li><a href='"+item.url+"' index="+(indexGlobel)+"'><i class='icon-font '>"+item.icon+"</i><span>"+item.name+"</span><i class='icon-font icon-right'>&#xe60b;</i></a>";
 					str +="<ul class='menu-item-child' id='menu-child-"+item.id+"'></ul></li>";
 					$(parent).append(str);
 					var childParent = $("#menu-child-"+item.id);
