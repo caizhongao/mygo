@@ -5,9 +5,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-<link rel="stylesheet" type="text/css" href="${ctx}/js/uploadify/uploadify.css">
-<script type="text/javascript" src="${ctx}/js/uploadify/jquery.uploadify.min.js"></script>
 <title>编译类目</title>
 <script type="text/javascript">
 	function submitForm(){
