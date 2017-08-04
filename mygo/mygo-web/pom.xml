@@ -8,13 +8,6 @@
   <artifactId>mygo-web</artifactId>
   <packaging>war</packaging>
   <dependencies>
-  
-  <!-- https://mvnrepository.com/artifact/net.sinofool/alipay-java-sdk -->
-<!--    <dependency>
-	  <groupId>com.mygo</groupId>
-	  <artifactId>mygo-service</artifactId>
-	  <version>0.0.1-SNAPSHOT</version>
-	</dependency> -->
 	<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>servlet-api</artifactId>
