@@ -10,7 +10,10 @@
     
 package com.cza.web.task;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +64,7 @@ public class CreateGoodsIndex {
 					for(GoodsVo vo:voList){
 						GoodsIndexVo index=new GoodsIndexVo();
 						BeanUtils.copyProperties(vo, index);
+						index.setSyncTime(System.currentTimeMillis());
 						indexList.add(index);
 						gids.put(index.getGid(),ShoppingContants.GOODS_INDEX_COMPLETE);
 					}

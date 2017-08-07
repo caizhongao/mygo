@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cza.common.MygoUtil;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
@@ -363,13 +364,10 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 	
 	private boolean hasIndex(Integer index){
-		if(ShoppingContants.GOODS_INDEX_WAIT_DELETE.equals(index)||
-				ShoppingContants.GOODS_INDEX_COMPLETE.equals(index)||
-				ShoppingContants.GOODS_INDEX_WAIT_UPDATE.equals(index)){
+		if(MygoUtil.batchEquals(index, ShoppingContants.GOODS_INDEX_WAIT_DELETE,ShoppingContants.GOODS_INDEX_COMPLETE,ShoppingContants.GOODS_INDEX_WAIT_UPDATE)){
 			return true;
 		}
-		if(ShoppingContants.GOODS_INDEX_WAIT_CREATE.equals(index)||
-				ShoppingContants.GOODS_INDEX_HAS_DELETE.equals(index)){
+		if(MygoUtil.batchEquals(index, ShoppingContants.GOODS_INDEX_WAIT_CREATE,ShoppingContants.GOODS_INDEX_HAS_DELETE)){
 			return false;
 		}
 		return false;

@@ -42,7 +42,7 @@
 	<!-- ======================== 调度触发器 ======================== -->  
 	<bean id="UpdateIndexTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
 	    <property name="jobDetail" ref="UpdateIndexMethod"></property>  
-	    <property name="cronExpression" value="0 0/5 * * * ?"></property>  
+	    <property name="cronExpression" value="0 0/1 * * * ?"></property>  
 	</bean>  
 	
 	

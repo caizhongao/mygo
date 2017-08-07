@@ -92,7 +92,7 @@ public class GoodsAction extends CommonAction{
 	}
 	
 	@RequestMapping("listNewGoods")
-	public void listNewGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,WrapperResponse response) throws IOException{
+	public void listNewGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		Long startTime=System.currentTimeMillis();
 		goods.setStart(0);
 		goods.setPageSize(9);
@@ -128,7 +128,7 @@ public class GoodsAction extends CommonAction{
 	}
 	
 	@RequestMapping("listHotGoods")
-	public void listHotGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,WrapperResponse response) throws IOException{
+	public void listHotGoods(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		Long startTime=System.currentTimeMillis();
 		goods.setStart(0);
 		goods.setPageSize(9);

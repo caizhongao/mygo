@@ -27,6 +27,8 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.highlight.HighlightField;
@@ -68,8 +70,22 @@ public class GoodsIndexServiceImpl implements GoodsIndexService {
 		Client client=ElasticSearchUitl.getClient();
 		for (GoodsIndexVo index:goodsList) {
 			try {
-				String jsonObj=JSONObject.toJSONString(index);
-			    IndexResponse response = client.prepareIndex("mygo", "goods",index.getGid().toString()).setSource(jsonObj).get();
+				XContentBuilder builder =XContentFactory.jsonBuilder()
+					    .startObject()
+				        .field("categoryName", index.getCategoryName())
+				        .field("cid", index.getCid())
+				        .field("createTime", index.getCreateTime())
+				        .field("gid", index.getGid())
+				        .field("goodsCode", index.getGoodsCode())
+				        .field("goodsName", index.getGoodsName())
+				        .field("goodsPic", index.getGoodsPic())
+				        .field("price", index.getPrice())
+				        .field("sales", index.getSales())
+				        .field("status", index.getStatus())
+				        .field("stock", index.getStock())
+				        .field("syncTime", index.getSyncTime())
+				    .endObject();
+			    IndexResponse response = client.prepareIndex("mygo", "goods",index.getGid().toString()).setSource(builder).get();
 			    if (response.isCreated()) {
 			    	log.info("createIndex success,goodsId:{}",index.getGid());
 			    }else{
@@ -234,9 +250,23 @@ public class GoodsIndexServiceImpl implements GoodsIndexService {
 			Client client=ElasticSearchUitl.getClient();
 			for (GoodsIndexVo index:indexList) {
 				try {
-					String jsonObj=JSONObject.toJSONString(index);
+						XContentBuilder builder =XContentFactory.jsonBuilder()
+												    .startObject()
+											        .field("categoryName", index.getCategoryName())
+											        .field("cid", index.getCid())
+											        .field("createTime", index.getCreateTime())
+											        .field("gid", index.getGid())
+											        .field("goodsCode", index.getGoodsCode())
+											        .field("goodsName", index.getGoodsName())
+											        .field("goodsPic", index.getGoodsPic())
+											        .field("price", index.getPrice())
+											        .field("sales", index.getSales())
+											        .field("status", index.getStatus())
+											        .field("stock", index.getStock())
+											        .field("syncTime", index.getSyncTime())
+											    .endObject();
 					UpdateRequest updateRequest = new UpdateRequest();
-					updateRequest.index("mygo").type("goods").id(index.getGid().toString()).doc(jsonObj);
+					updateRequest.index("mygo").type("goods").id(index.getGid().toString()).doc(builder);
 					client.update(updateRequest).get();
 					log.info("updateIndex gid:{}",index.getGid().toString());
 				} catch (Exception e) {

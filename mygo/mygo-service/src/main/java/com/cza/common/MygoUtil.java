@@ -20,9 +20,11 @@ package com.cza.common;
     */
 
 public class MygoUtil {
+	
 	public static String makeToken(Long uid){
 		return uid+"_"+System.currentTimeMillis();
 	}
+
 	
 	/**
 	 * 作用：判断Long数组中，是否存在空或者0

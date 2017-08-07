@@ -20,8 +20,7 @@
 <script type="text/javascript">
 $(function(){
 	initGoodsList();
-	initCategory();
-})
+});
 function initGoodsList(){
 	var windex=0;
 	//推荐商品

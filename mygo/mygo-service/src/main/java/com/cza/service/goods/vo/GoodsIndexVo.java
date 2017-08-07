@@ -11,6 +11,7 @@
 package com.cza.service.goods.vo;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
     * @ClassName: GoodsIndexVo
@@ -33,7 +34,30 @@ public class GoodsIndexVo {
 	private Long sales;
 	private Long stock;
 	private String status;//上下架状态
+	private Long syncTime;
 	
+	
+	
+	
+
+	
+	/**
+	* @return syncTime
+	*/
+	
+	public Long getSyncTime() {
+		return syncTime;
+	}
+
+	
+	/**
+	 * @param syncTime the syncTime to set
+	 */
+	
+	public void setSyncTime(Long syncTime) {
+		this.syncTime = syncTime;
+	}
+
 	/**
 	* @return gid
 	*/

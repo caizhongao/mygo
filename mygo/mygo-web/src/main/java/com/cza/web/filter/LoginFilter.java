@@ -27,6 +27,7 @@ import org.springframework.util.StringUtils;
 import com.cza.common.MygoUtil;
 import com.cza.common.RespMsg;
 import com.cza.common.ShoppingContants;
+import com.cza.common.traceLog.TraceIdUtil;
 import com.cza.service.user.vo.UserVo;
 
 
@@ -73,6 +74,7 @@ public class LoginFilter implements  Filter{
 		if(!StringUtils.isEmpty(req.getQueryString())){
 			url.append("?").append(req.getQueryString());
 		}
+		TraceIdUtil.makeTraceId();
 		log.info("LoginFilter request url:{}",url);
 		if(uri.indexOf("/login/")>=0&&uri.indexOf("/notifyPayResult.do")<=0){//需要登录，但除开支付宝异步通知
 			//支付宝异步通知，不需要登录
