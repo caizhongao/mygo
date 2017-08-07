@@ -30,9 +30,9 @@ import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.service.user.UserService;
 import com.cza.service.user.vo.UserVo;
+import com.cza.task.CreateGoodsIndex;
 import com.cza.web.CommonAction;
 import com.cza.web.UserInfoValidate;
-import com.cza.web.task.CreateGoodsIndex;
 
 /**
     * @ClassName: IndexAction

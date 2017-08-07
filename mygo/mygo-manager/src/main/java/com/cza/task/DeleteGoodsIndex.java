@@ -8,12 +8,9 @@
     * @version V1.0  
     */
     
-package com.cza.web.task;
+package com.cza.task;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +24,7 @@ import org.springframework.stereotype.Component;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
+import com.cza.common.traceLog.TraceIdUtil;
 import com.cza.service.goods.GoodsIndexService;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.GoodsIndexVo;
@@ -40,20 +38,20 @@ import com.cza.service.goods.vo.GoodsVo;
     *
     */
 @Component
-public class UpdateGoodsIndex {
-	private static final Logger log = LoggerFactory.getLogger(UpdateGoodsIndex.class); 
+public class DeleteGoodsIndex {
+	private static final Logger log = LoggerFactory.getLogger(DeleteGoodsIndex.class); 
 	@Autowired
 	private GoodsService goodsService;
-	
 	@Autowired
 	private GoodsIndexService goodsIndexService;
+	
 	public void execute(){
-		log.info("UpdateGoodsIndex.execute start!");
+		TraceIdUtil.makeTraceId();
+		log.info("DeleteGoodsIndex.execute start!");
 		long startTime=System.currentTimeMillis();
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
-		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_UPDATE);
-		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
+		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_DELETE);
 		while(true){
 			ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
 			if(resp.isSuccess()){
@@ -64,20 +62,19 @@ public class UpdateGoodsIndex {
 					for(GoodsVo vo:voList){
 						GoodsIndexVo index=new GoodsIndexVo();
 						BeanUtils.copyProperties(vo, index);
-						index.setSyncTime(System.currentTimeMillis());
 						indexList.add(index);
-						gids.put(index.getGid(),ShoppingContants.GOODS_INDEX_COMPLETE);
+						gids.put(index.getGid(),ShoppingContants.GOODS_INDEX_HAS_DELETE);
 					}
 				}else{
 					break;
 				}
-				goodsIndexService.updateIndex(indexList);
+				goodsIndexService.deleteIndex(indexList);
 				goodsService.batchUpdateGoodsIndex(gids);
 			}else{
-				log.info("UpdateGoodsIndex.execute query goods param:{},erro:{}",goods,resp.getCode());
+				log.info("DeleteGoodsIndex.execute query goods param:{},erro:{}",goods,resp.getCode());
 				break;
 			}
 		}
-		log.info("UpdateGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);
+		log.info("DeleteGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);
 	}
 }

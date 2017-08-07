@@ -8,7 +8,7 @@
     * @version V1.0  
     */
     
-package com.cza.web.task;
+package com.cza.task;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
+import com.cza.common.traceLog.TraceIdUtil;
 import com.cza.service.goods.GoodsIndexService;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.GoodsIndexVo;
@@ -40,19 +41,20 @@ import com.cza.service.goods.vo.GoodsVo;
     *
     */
 @Component
-public class CreateGoodsIndex {
-	private static final Logger log = LoggerFactory.getLogger(CreateGoodsIndex.class); 
+public class UpdateGoodsIndex {
+	private static final Logger log = LoggerFactory.getLogger(UpdateGoodsIndex.class); 
 	@Autowired
 	private GoodsService goodsService;
 	
 	@Autowired
 	private GoodsIndexService goodsIndexService;
 	public void execute(){
-		log.info("CreateGoodsIndex.execute start!");
+		TraceIdUtil.makeTraceId();
+		log.info("UpdateGoodsIndex.execute start!");
 		long startTime=System.currentTimeMillis();
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
-		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
+		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_UPDATE);
 		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
 		while(true){
 			ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
@@ -71,13 +73,13 @@ public class CreateGoodsIndex {
 				}else{
 					break;
 				}
-				goodsIndexService.createIndex(indexList);
+				goodsIndexService.updateIndex(indexList);
 				goodsService.batchUpdateGoodsIndex(gids);
 			}else{
-				log.info("CreateGoodsIndex.execute query goods param:{},erro:{}",goods,resp.getCode());
+				log.info("UpdateGoodsIndex.execute query goods param:{},erro:{}",goods,resp.getCode());
 				break;
 			}
 		}
-		log.info("CreateGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);
+		log.info("UpdateGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);
 	}
 }

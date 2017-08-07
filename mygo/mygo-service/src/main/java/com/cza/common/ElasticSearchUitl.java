@@ -41,7 +41,9 @@ public class ElasticSearchUitl {
 					Long startTime=System.currentTimeMillis();
 					Settings settings = Settings.settingsBuilder().put("cluster.name", "escluster").build();
 					try {
-						client = TransportClient.builder().settings(settings).build().addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("120.26.165.53"), 9300));
+						client = TransportClient.builder().settings(settings).build()
+								.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("120.26.165.53"), 9300))
+								.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("120.26.165.53"), 9301));
 					} catch (UnknownHostException e) {
 						log.error("ElasticSearchUitl.getClient erro:",e);
 					}

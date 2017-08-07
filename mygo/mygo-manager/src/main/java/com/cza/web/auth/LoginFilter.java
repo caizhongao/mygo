@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.cza.common.ShoppingContants;
+import com.cza.common.traceLog.TraceIdUtil;
 import com.cza.service.user.vo.UserVo;
 
 
@@ -66,6 +67,7 @@ public class LoginFilter implements  Filter{
 	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)throws IOException, ServletException {
 		HttpServletRequest req=(HttpServletRequest) arg0;
 		HttpServletResponse resp=(HttpServletResponse) arg1;
+		TraceIdUtil.makeTraceId();
 		String uri=req.getRequestURI();
 		if(uri.indexOf("/login/")>=0){
 			log.info("请求uri:{},需要登录权限！",uri);

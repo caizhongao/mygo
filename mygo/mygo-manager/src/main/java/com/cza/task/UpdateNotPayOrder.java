@@ -8,7 +8,7 @@
     * @version V1.0  
     */
     
-package com.cza.web.task;
+package com.cza.task;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
+import com.cza.common.traceLog.TraceIdUtil;
 import com.cza.service.order.OrderService;
 import com.cza.service.order.vo.OrderVo;
 
@@ -37,6 +38,7 @@ public class UpdateNotPayOrder {
 	@Autowired
 	private OrderService orderService;
 	public void execute(){
+		TraceIdUtil.makeTraceId();
 		log.info("UpdateNotPayOrder.execute start!");
 		long startTime=System.currentTimeMillis();
 		OrderVo listOrderVo=new OrderVo();

@@ -11,7 +11,7 @@
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
                  
     <!-- 定义要执行的作业 -->       
-	<bean id="CreateIndexJob" class="com.cza.web.task.CreateGoodsIndex"/>  
+	<bean id="CreateIndexJob" class="com.cza.task.CreateGoodsIndex"/>  
 	<!-- 指定方法 -->
 	<bean id="CreateIndexMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
 	    <property name="targetObject">  
@@ -24,12 +24,12 @@
 	<!-- ======================== 调度触发器 ======================== -->  
 	<bean id="CreateIndexTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
 	    <property name="jobDetail" ref="CreateIndexMethod"></property>  
-	    <property name="cronExpression" value="0 0/5 * * * ?"></property>  
+	    <property name="cronExpression" value="0 0/1 * * * ?"></property>  
 	</bean>  
 	
 	
 	<!-- 定义要执行的作业 -->       
-	<bean id="UpdateIndexJob" class="com.cza.web.task.UpdateGoodsIndex"/>  
+	<bean id="UpdateIndexJob" class="com.cza.task.UpdateGoodsIndex"/>  
 	<!-- 指定方法 -->
 	<bean id="UpdateIndexMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
 	    <property name="targetObject">  
@@ -47,7 +47,7 @@
 	
 	
 	<!-- 定义要执行的作业 -->       
-	<bean id="DeleteIndexJob" class="com.cza.web.task.DeleteGoodsIndex"/>  
+	<bean id="DeleteIndexJob" class="com.cza.task.DeleteGoodsIndex"/>  
 	<!-- 指定方法 -->
 	<bean id="DeleteIndexMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
 	    <property name="targetObject">  
@@ -60,13 +60,13 @@
 	<!-- ======================== 调度触发器 ======================== -->  
 	<bean id="DeleteIndexTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
 	    <property name="jobDetail" ref="DeleteIndexMethod"></property>  
-	    <property name="cronExpression" value="0 0/5 * * * ?"></property>  
+	    <property name="cronExpression" value="0 0/1 * * * ?"></property>  
 	</bean>  
 	
 	
 		
 	<!-- 定义要执行的作业 -->       
-	<bean id="UpdateNotPayOrderJob" class="com.cza.web.task.UpdateNotPayOrder"/>  
+	<bean id="UpdateNotPayOrderJob" class="com.cza.task.UpdateNotPayOrder"/>  
 	<!-- 指定方法 -->
 	<bean id="UpdateNotPayOrderMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
 	    <property name="targetObject">  
@@ -83,7 +83,7 @@
 	</bean>  
 	
 		<!-- 定义要执行的作业 -->       
-	<bean id="DeletePreOrderJob" class="com.cza.web.task.DeletePreOrder"/>  
+	<bean id="DeletePreOrderJob" class="com.cza.task.DeletePreOrder"/>  
 	<!-- 指定方法 -->
 	<bean id="DeletePreOrderMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
 	    <property name="targetObject">  
