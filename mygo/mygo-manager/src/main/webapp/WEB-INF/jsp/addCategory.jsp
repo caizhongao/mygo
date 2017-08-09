@@ -48,6 +48,7 @@
 			url:'${ctx}/login/category/saveCategory.do',
 			type:'post',
 			data:{'category':categoryStr},
+			dataType:"json",
 			success:function(data){
 				if('success'==data.message){
 					alert('保存类目成功');

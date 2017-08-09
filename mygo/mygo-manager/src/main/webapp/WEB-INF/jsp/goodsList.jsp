@@ -22,12 +22,13 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 			url:'${ctx}/login/goods/onShelf.do',
 			data:{'gid':gid},
 			type:'post',
+			dataType:"json",
 			success:function(data){
-				if(data=="success"){
+				if(data.message=="success"){
 					alert('上架成功!');
 					location.reload();
 				}else{
-					alert('上架失败!');
+					alert('上架失败,'+message.data);
 				}
 			}
 		});
@@ -36,6 +37,7 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 			url:'${ctx}/login/goods/offShelf.do',
 			data:{'gid':gid},
 			type:'post',
+			dataType:"json",
 			success:function(data){
 				if(data.message=="success"){
 					alert('下架成功!');

@@ -69,7 +69,7 @@ public class CategoryAction extends CommonAction{
 		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
 		if(resp.isSuccess()){
 			log.info("listCategory success,result:{}", resp.getData());
-			request.setAttribute("listCategory", resp.getData());
+			request.setAttribute("categoryList", resp.getData());
 			return webPage("categoryList");
 		}else{
 			log.info("listCategory has erro,respCode:{}",resp.getCode());

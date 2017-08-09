@@ -202,6 +202,25 @@ public class Pager<T> {
 	public void setResult(List<T> result) {
 		this.result = result;
 	}
+
+
+
+
+
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
+	@Override
+	public String toString() {
+		return "Pager [pageSize=" + pageSize + ", pageNum=" + pageNum + ", count=" + count + ", result=" + result
+				+ ", scrollPage=" + scrollPage + ", scrollId=" + scrollId + "]";
+	}
 	
 
 	

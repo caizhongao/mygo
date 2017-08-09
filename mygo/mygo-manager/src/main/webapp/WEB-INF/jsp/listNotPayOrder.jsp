@@ -41,6 +41,7 @@
 			url:"${ctx}/login/order/deleteOrder.do",
 			type:'post',
 			data:{"oid":$('#oid').val(),"deleteDesc":$('#deleteDesc').val()},
+			dataType:"json",
 			success:function(data){
 				if(data.message=='success'){
 					location.reload();
