@@ -292,9 +292,9 @@ public class GoodsServiceImpl implements GoodsService {
 				updateParam.setGid(goods.getGid());
 				updateParam.setUpdateTime(System.currentTimeMillis()/1000);
 				if(hasIndex(queryGoods.getGoodsIndex())){
-					updateParam.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_UPDATE);
+					updateParam.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_DELETE);
 				}else{
-					updateParam.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
+					updateParam.setGoodsIndex(ShoppingContants.GOODS_INDEX_HAS_DELETE);
 				}
 				updateParam.setStatus(goods.getStatus());
 				goodsMapper.updateGoods(updateParam);	

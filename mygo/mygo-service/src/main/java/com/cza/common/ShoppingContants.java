@@ -44,9 +44,9 @@ public interface ShoppingContants {
 	
 	
 	//定时任务常量
-	public static final String TASK_STATUS_ON="0";
+	public static final Integer TASK_STATUS_ON=0;
 	
-	public static final String TASK_STATUS_OFF="1";
+	public static final Integer TASK_STATUS_OFF=1;
 	
 	//0：待创建，1：待修改，2：待删除，3：已完成 4:已删除
 	public static final Integer GOODS_INDEX_WAIT_CREATE=0;

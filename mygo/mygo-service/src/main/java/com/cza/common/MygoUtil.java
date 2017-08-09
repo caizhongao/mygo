@@ -67,11 +67,11 @@ public class MygoUtil {
 	public static <T> boolean batchEquals(T target,T ... status) {
 		// TODO Auto-generated method stub
 		for(T statu:status){
-			if(!statu.equals(target)){
-				return false;
+			if(statu.equals(target)){
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	
