@@ -38,17 +38,14 @@ import com.cza.service.goods.vo.GoodsVo;
     *
     */
 @Component
-public class CreateGoodsIndex {
-	private static final Logger log = LoggerFactory.getLogger(CreateGoodsIndex.class); 
+public class CreateGoodsIndex  extends BaseTask{
 	@Autowired
 	private GoodsService goodsService;
-	
 	@Autowired
 	private GoodsIndexService goodsIndexService;
-	public void execute(){
-		LogUtil.makeLogHeader("system");
-		log.info("task start!");
-		long startTime=System.currentTimeMillis();
+	
+	public Long invoke(){
+		Long number=0l;
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
 		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
@@ -72,12 +69,13 @@ public class CreateGoodsIndex {
 				}else{
 					break;
 				}
+				number+=indexList.size();
 				goodsIndexService.createIndex(indexList);
 				goodsService.batchUpdateGoodsIndex(gids);
 			}else{
 				log.info("listGoods has erro,respCode:{}",resp.getCode());
 			}
 		}
-		log.info("task execute cost time:{}",System.currentTimeMillis()-startTime);
+		return number;
 	}
 }

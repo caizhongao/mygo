@@ -51,7 +51,7 @@ public class UserManagerAction extends CommonAction {
 	
 	@RequestMapping("listUser")
 	public String listUser(@ModelAttribute UserVo user,HttpServletRequest request,HttpServletResponse response ){
-		log.info("UserAction.listUser 请求参数,user:{}",user);
+		log.info("listUser 请求参数,user:{}",user);
 		request.setAttribute("user", user);
 		user.setType(ShoppingContants.USER_TYPE_CONSUMER);
 		ServiceResponse<Pager<UserVo>> resp=userService.listUser(user);

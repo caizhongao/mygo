@@ -10,15 +10,14 @@
     
 package com.cza.task;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.druid.pool.vendor.SybaseExceptionSorter;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.common.log.LogUtil;
@@ -33,18 +32,18 @@ import com.cza.service.order.vo.OrderVo;
     *
     */
 @Component
-public class UpdateNotPayOrder {
-	private static final Logger log = LoggerFactory.getLogger(UpdateNotPayOrder.class); 
+public class CloseNotPayOrder extends BaseTask{
+
 	@Autowired
 	private OrderService orderService;
-	public void execute(){
-		LogUtil.makeLogHeader("system");
-		log.info("task start!");
-		long startTime=System.currentTimeMillis();
+	
+	
+	public Long invoke(){
+		Long number=0l;
 		OrderVo listOrderVo=new OrderVo();
 		listOrderVo.setStatus(ShoppingContants.ORDER_STATUS_WAIT_PAY);
 		listOrderVo.setPageSize(100);
-		listOrderVo.setCreateTime(startTime/1000 -5*60);
+		listOrderVo.setCreateTime(System.currentTimeMillis()/1000 -5*60);
 		while(true){
 			log.info("listOrderIds param:{}",listOrderVo);
 			ServiceResponse<List<String>> resp=orderService.listOrderIds(listOrderVo);
@@ -65,13 +64,15 @@ public class UpdateNotPayOrder {
 							log.info("closeOrder has erro,respCode:{}",closeResp.getCode());
 						}
 					}
+					
 				}else{
 					break;
 				}
+				number+=oidList.size();
 			}else{
 				log.info("listOrderIds has erro,respCode:{}",resp.getCode());
 			}
 		}
-		log.info("task execute cost time:{}",System.currentTimeMillis()-startTime);
+		return number;
 	}
 }

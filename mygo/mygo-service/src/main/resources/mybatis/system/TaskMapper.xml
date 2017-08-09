@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cza.mapper.system.TaskMapper">
+	<resultMap id="task" type="com.cza.dto.system.TTask">
+		<result property="taskName" column="task_name"/>
+		<result property="times" column="times"/>
+		<result property="lastExecuteTime" column="last_execute_time"/>
+		<result property="lastCostTime" column="last_cost_time"/>
+		<result property="status" column="status"/>
+		<result property="desc" column="task_desc"/>
+		<result property="number" column="number"/>
+	</resultMap>
+	
+	<sql id="allColumns">
+		task_name, times, last_execute_time,last_cost_time, status, task_desc,number
+	</sql>
+	
+	<select id="queryTask" parameterType="com.cza.dto.system.TTask" resultMap="task">
+		select 
+			<include refid="allColumns"></include>
+		from t_task 
+			where task_name = #{taskName} 
+	</select>
+	
+	<select id="updateTask" parameterType="com.cza.dto.system.TTask">
+		update t_task
+		<set>
+			<if test="times!=null">
+				times = #{times},
+			</if>
+			<if test="lastExecuteTime!=null">
+				last_execute_time= #{lastExecuteTime},
+			</if>
+			<if test="lastCostTime!=null">
+				last_cost_time = #{lastCostTime},
+			</if>
+			<if test="status!=null">
+				status = #{status},
+			</if>
+			<if test="number!=null">
+				number = #{number},
+			</if>
+		</set>
+		where task_name = #{taskName} 
+	</select>
+	
+	
+	<select id="listTask" parameterType="com.cza.dto.system.TTask" resultMap="task">
+		select 
+			<include refid="allColumns"></include>
+		from t_task where 1=1
+			order by task_name desc
+	</select>
+		
+</mapper>

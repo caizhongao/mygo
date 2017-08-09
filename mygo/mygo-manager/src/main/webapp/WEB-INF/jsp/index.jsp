@@ -33,7 +33,7 @@
      		/*菜单json*/
      		var menu = [{"id":"1","name":"主菜单","parentId":"0","url":"","icon":"","order":"1","isHeader":"1","childMenus":[
 							{"id":"11","name":"用户管理","parentId":"1","url":"","icon":"&#xe604;","order":"1","isHeader":"0","childMenus":[
-       							{"id":"4","name":"用户管理","parentId":"11","url":"${ctx}/login/userManager/listUser.do","icon":"","order":"1","isHeader":"0","childMenus":""}
+       							{"id":"12","name":"用户管理","parentId":"11","url":"${ctx}/login/userManager/listUser.do","icon":"","order":"1","isHeader":"0","childMenus":""}
        						]},
      						{"id":"3","name":"商品管理","parentId":"1","url":"","icon":"&#xe604;","order":"2","isHeader":"0","childMenus":[
      							{"id":"4","name":"商品管理","parentId":"3","url":"${ctx}/login/goods/listGoods.do","icon":"","order":"1","isHeader":"0","childMenus":""},
@@ -44,7 +44,10 @@
      							{"id":"8","name":"已付款","parentId":"6","url":"${ctx}/login/order/listPayOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""},
      							{"id":"9","name":"已退款","parentId":"6","url":"${ctx}/login/order/listRefundOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""},
      							{"id":"10","name":"已关闭","parentId":"6","url":"${ctx}/login/order/listCloseOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""}
-     						]}
+     						]},
+     						{"id":"13","name":"系统管理","parentId":"1","url":"","icon":"&#xe604;","order":"1","isHeader":"0","childMenus":[
+								{"id":"14","name":"定时任务管理","parentId":"13","url":"${ctx}/login/task/listTask.do","icon":"","order":"1","isHeader":"0","childMenus":""}
+							]}
      					 ]}
      				    ];
      		initMenu(menu,$(".side-menu"));

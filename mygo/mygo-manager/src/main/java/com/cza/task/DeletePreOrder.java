@@ -31,18 +31,15 @@ import com.cza.service.order.vo.OrderVo;
     *
     */
 @Component
-public class DeletePreOrder {
-	private static final Logger log = LoggerFactory.getLogger(DeletePreOrder.class); 
+public class DeletePreOrder extends BaseTask {
 	@Autowired
 	private OrderService orderService;
-	public void execute(){
-		LogUtil.makeLogHeader("system");
-		log.info("task start!");
-		long startTime=System.currentTimeMillis();
+	public Long invoke(){
+		Long number=0l;
 		OrderVo listOrderVo=new OrderVo();
 		listOrderVo.setStatus(ShoppingContants.ORDER_STATUS_PRE);
 		listOrderVo.setPageSize(100);
-		listOrderVo.setCreateTime(startTime/1000 -5*60);
+		listOrderVo.setCreateTime(System.currentTimeMillis()/1000 -5*60);
 		while(true){
 			log.info("listOrderIds param:{}",listOrderVo);
 			ServiceResponse<List<String>> resp=orderService.listOrderIds(listOrderVo);
@@ -64,10 +61,11 @@ public class DeletePreOrder {
 				}else{
 					break;
 				}
+				number+=oidList.size();
 			}else{
 				log.info("listOrderIds has erro,respCode:{}",resp.getCode());
 			}
 		}
-		log.info("task execute cost time:{}",System.currentTimeMillis()-startTime);
+		return number;
 	}
 }

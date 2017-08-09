@@ -38,17 +38,14 @@ import com.cza.service.goods.vo.GoodsVo;
     *
     */
 @Component
-public class DeleteGoodsIndex {
-	private static final Logger log = LoggerFactory.getLogger(DeleteGoodsIndex.class); 
+public class DeleteGoodsIndex extends BaseTask {
 	@Autowired
 	private GoodsService goodsService;
 	@Autowired
 	private GoodsIndexService goodsIndexService;
 	
-	public void execute(){
-		LogUtil.makeLogHeader("system");
-		log.info("task start!");
-		long startTime=System.currentTimeMillis();
+	public Long invoke(){
+		Long number=0l;
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
 		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_DELETE);
@@ -70,12 +67,13 @@ public class DeleteGoodsIndex {
 				}else{
 					break;
 				}
+				number+=indexList.size();
 				goodsIndexService.deleteIndex(indexList);
 				goodsService.batchUpdateGoodsIndex(gids);
 			}else{
 				log.info("listGoods has erro,respCode:{}",resp.getCode());
 			}
 		}
-		log.info("task execute cost time:{}",System.currentTimeMillis()-startTime);
+		return number;
 	}
 }
