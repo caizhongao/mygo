@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
-import com.cza.common.traceLog.TraceIdUtil;
+import com.cza.common.log.LogUtil;
 import com.cza.service.order.OrderService;
 import com.cza.service.order.vo.OrderVo;
 
@@ -36,16 +36,18 @@ public class DeletePreOrder {
 	@Autowired
 	private OrderService orderService;
 	public void execute(){
-		TraceIdUtil.makeTraceId();
-		log.info("DeletePreOrder.execute start!");
+		LogUtil.makeLogHeader("system");
+		log.info("task start!");
 		long startTime=System.currentTimeMillis();
 		OrderVo listOrderVo=new OrderVo();
 		listOrderVo.setStatus(ShoppingContants.ORDER_STATUS_PRE);
 		listOrderVo.setPageSize(100);
 		listOrderVo.setCreateTime(startTime/1000 -5*60);
 		while(true){
+			log.info("listOrderIds param:{}",listOrderVo);
 			ServiceResponse<List<String>> resp=orderService.listOrderIds(listOrderVo);
 			if(resp.isSuccess()){
+				log.info("listOrderIds success,result:{}",resp.getData());
 				List<String> oidList=resp.getData();
 				if(oidList!=null&&oidList.size()>0){
 					for(String oid:oidList){
@@ -53,20 +55,19 @@ public class DeletePreOrder {
 						OrderVo order=new OrderVo();
 						order.setOid(oid);
 						ServiceResponse<String> closeResp=	orderService.deleteOrder(oid);
-						if(!closeResp.isSuccess()){
-							log.warn("DeletePreOrder.execute erro code:{},msg:{}",closeResp.getCode(),closeResp.getMsg());
+						if(closeResp.isSuccess()){
+							log.info("deleteOrder success,result:{}",closeResp.getData());
 						}else{
-							log.warn("DeletePreOrder.execute delete oid:{}",oid);
+							log.info("deleteOrder has erro,respCode:{}",closeResp.getCode());
 						}
 					}
 				}else{
 					break;
 				}
 			}else{
-				log.info("DeletePreOrder.execute query orderID param:{}, erro:{}",listOrderVo,resp.getCode());
-				break;
+				log.info("listOrderIds has erro,respCode:{}",resp.getCode());
 			}
 		}
-		log.info("DeletePreOrder.execute cost time:{}",System.currentTimeMillis()-startTime);
+		log.info("task execute cost time:{}",System.currentTimeMillis()-startTime);
 	}
 }

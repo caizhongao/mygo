@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.cza.common.ShoppingContants;
-import com.cza.common.traceLog.TraceIdUtil;
+import com.cza.common.log.LogUtil;
 import com.cza.service.user.vo.UserVo;
 
 
@@ -65,21 +65,22 @@ public class LoginFilter implements  Filter{
 	    
 	@Override
 	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)throws IOException, ServletException {
+		Long startTime=System.currentTimeMillis();
 		HttpServletRequest req=(HttpServletRequest) arg0;
 		HttpServletResponse resp=(HttpServletResponse) arg1;
-		TraceIdUtil.makeTraceId();
+		UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.ADMIN_SESSION_KEY);
+		LogUtil.makeLogHeader(user==null?"unlogin":user.getUid().toString());
 		String uri=req.getRequestURI();
+		log.info("LoginFilter request uri:{}",uri);
 		if(uri.indexOf("/login/")>=0){
-			log.info("请求uri:{},需要登录权限！",uri);
-			UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.ADMIN_SESSION_KEY);
 			if(user==null||!ShoppingContants.USER_TYPE_ADMIN.equals(user.getType())){
 				resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLoginRedirect.do");
+				log.info("LoginFilter need admin auth,please login");
 				return;
 			}
-		}else{
-			log.info("请求uri:{},无需登录权限！",uri);
 		}
 		arg2.doFilter(arg0, arg1);
+		log.info("LoginFilter request uri:{},cost time:{}",uri,System.currentTimeMillis()-startTime);
 	}
 
 	

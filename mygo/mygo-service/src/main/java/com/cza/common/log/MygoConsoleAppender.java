@@ -8,7 +8,7 @@
     * @version V1.0  
     */
     
-package com.cza.common.traceLog;
+package com.cza.common.log;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -58,7 +58,7 @@ public class MygoConsoleAppender extends WriterAppender {
   }
   protected
   void subAppend(LoggingEvent event) {
-	LoggingEvent consoleEvent=new LoggingEvent(event.getFQNOfLoggerClass(), event.getLogger(), event.getLevel()," ["+TraceIdUtil.getTraceId()+"] "+event.getMessage(), event.getThrowableInformation()!=null?event.getThrowableInformation().getThrowable():null);
+	LoggingEvent consoleEvent=new LoggingEvent(event.getFQNOfLoggerClass(), event.getLogger(), event.getLevel(),LogUtil.getLogHeader()+event.getMessage(), event.getThrowableInformation()!=null?event.getThrowableInformation().getThrowable():null);
     super.subAppend(consoleEvent);
    }
     /**

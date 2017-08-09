@@ -55,12 +55,12 @@ public class UserManagerAction extends CommonAction {
 		request.setAttribute("user", user);
 		user.setType(ShoppingContants.USER_TYPE_CONSUMER);
 		ServiceResponse<Pager<UserVo>> resp=userService.listUser(user);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("listUser success,result:{}",resp.getData());
 			request.setAttribute("pager", resp.getData());
-			log.info("OrderAction.listOrder success,result:{}",resp.getData());
 			return webPage("listUser");
 		}else{
-			log.info("OrderAction.listOrder faild!");
+			log.info("closeOrder has erro,respCode:{}",resp.getCode());
 			return erro(request, resp);
 		}
 	}

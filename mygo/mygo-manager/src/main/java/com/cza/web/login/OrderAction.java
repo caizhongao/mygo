@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cza.common.Pager;
+import com.cza.common.RespMsg;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.service.order.OrderService;
@@ -52,12 +53,12 @@ public class OrderAction extends CommonAction{
 		request.setAttribute("order", order);
 		order.setStatus(ShoppingContants.ORDER_STATUS_WAIT_PAY);
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("listOrder success,result:{}",resp.getData());
 			request.setAttribute("pager", resp.getData());
-			log.info("OrderAction.listOrder success,orderNo:{}",order.getOid());
 			return webPage("listNotPayOrder");
 		}else{
-			log.info("OrderAction.listOrder faild!");
+			log.info("listOrder has erro,respCode:{}",resp.getCode());
 			return erro(request, resp);
 		}
 	}
@@ -68,12 +69,12 @@ public class OrderAction extends CommonAction{
 		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
 		order.setStatus(ShoppingContants.ORDER_STATUS_HAS_PAY);
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("listOrder success,result:{}",resp.getData());
 			request.setAttribute("pager", resp.getData());
-			log.info("OrderAction.listOrder success,orders:{}",resp.getData());
 			return webPage("listPayOrder");
 		}else{
-			log.info("OrderAction.listOrder faild!");
+			log.info("listOrder has erro,respCode:{}",resp.getCode());
 			return erro(request, resp);
 		}
 	}
@@ -84,12 +85,12 @@ public class OrderAction extends CommonAction{
 		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
 		order.setStatus(ShoppingContants.ORDER_STATUS_DELETE);
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("listOrder success,result:{}",resp.getData());
 			request.setAttribute("pager", resp.getData());
-			log.info("OrderAction.listOrder success,orders:{}",resp.getData());
 			return webPage("listCloseOrder");
 		}else{
-			log.info("OrderAction.listOrder faild!");
+			log.info("listOrder has erro,respCode:{}",resp.getCode());
 			return erro(request, resp);
 		}
 	}
@@ -99,12 +100,12 @@ public class OrderAction extends CommonAction{
 		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
 		order.setStatus(ShoppingContants.ORDER_STATUS_REFUND);
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("listOrder success,result:{}",resp.getData());
 			request.setAttribute("pager", resp.getData());
-			log.info("OrderAction.listOrder success,orders:{}",resp.getData());
 			return webPage("listRefundOrder");
 		}else{
-			log.info("OrderAction.listOrder faild!");
+			log.info("listOrder has erro,respCode:{}",resp.getCode());
 			return erro(request, resp);
 		}
 	}
@@ -116,11 +117,11 @@ public class OrderAction extends CommonAction{
 		order.setStatus(ShoppingContants.ORDER_STATUS_SYS_DELETE);
 		ServiceResponse<OrderVo> resp=orderService.closeOrder(order);
 		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			log.info("OrderAction.deleteOrder success,orderNo:{}",order.getOid());
-			response.getWriter().print("success");
+			log.info("closeOrder success,result:{}",resp.getData());
+			response.getWriter().print(new RespMsg("success",null));
 		}else{
-			log.info("OrderAction.deleteOrder faild!");
-			response.getWriter().print("faild");
+			log.info("closeOrder has erro,respCode:{}",resp.getCode());
+			response.getWriter().print(new RespMsg("fail",resp.getCode()));
 		}
 	}
 	

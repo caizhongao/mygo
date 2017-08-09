@@ -10,10 +10,7 @@
     
 package com.cza.task;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +24,7 @@ import org.springframework.stereotype.Component;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
-import com.cza.common.traceLog.TraceIdUtil;
+import com.cza.common.log.LogUtil;
 import com.cza.service.goods.GoodsIndexService;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.GoodsIndexVo;
@@ -49,16 +46,18 @@ public class CreateGoodsIndex {
 	@Autowired
 	private GoodsIndexService goodsIndexService;
 	public void execute(){
-		TraceIdUtil.makeTraceId();
-		log.info("CreateGoodsIndex.execute start!");
+		LogUtil.makeLogHeader("system");
+		log.info("task start!");
 		long startTime=System.currentTimeMillis();
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
 		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_CREATE);
 		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
 		while(true){
+			log.info("listGoods param:{}",goods);
 			ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
 			if(resp.isSuccess()){
+				log.info("listGoods success,result:{}",resp.getData());
 				List<GoodsVo> voList=resp.getData().getResult();
 				List<GoodsIndexVo> indexList=new ArrayList<>();
 				Map<Long,Integer> gids=new HashMap<>();
@@ -76,10 +75,9 @@ public class CreateGoodsIndex {
 				goodsIndexService.createIndex(indexList);
 				goodsService.batchUpdateGoodsIndex(gids);
 			}else{
-				log.info("CreateGoodsIndex.execute query goods param:{},erro:{}",goods,resp.getCode());
-				break;
+				log.info("listGoods has erro,respCode:{}",resp.getCode());
 			}
 		}
-		log.info("CreateGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);
+		log.info("task execute cost time:{}",System.currentTimeMillis()-startTime);
 	}
 }

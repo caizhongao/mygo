@@ -82,7 +82,7 @@ public class PageCacheFilter implements  Filter{
 				chain.doFilter(request, wrapperResponse);
 				content=wrapperResponse.getContent();
 				PageCache.putContent(uri, content);
-				log.info("init pagecache content,uri:{},content:{}",uri,content);
+				log.info("init pagecache content,uri:{},content.length:{}",uri,content.length);
 			}
 			ServletOutputStream out = response.getOutputStream();
 	        out.write(content);

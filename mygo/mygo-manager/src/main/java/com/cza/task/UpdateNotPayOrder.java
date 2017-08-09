@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
-import com.cza.common.traceLog.TraceIdUtil;
+import com.cza.common.log.LogUtil;
 import com.cza.service.order.OrderService;
 import com.cza.service.order.vo.OrderVo;
 
@@ -38,16 +38,18 @@ public class UpdateNotPayOrder {
 	@Autowired
 	private OrderService orderService;
 	public void execute(){
-		TraceIdUtil.makeTraceId();
-		log.info("UpdateNotPayOrder.execute start!");
+		LogUtil.makeLogHeader("system");
+		log.info("task start!");
 		long startTime=System.currentTimeMillis();
 		OrderVo listOrderVo=new OrderVo();
 		listOrderVo.setStatus(ShoppingContants.ORDER_STATUS_WAIT_PAY);
 		listOrderVo.setPageSize(100);
 		listOrderVo.setCreateTime(startTime/1000 -5*60);
 		while(true){
+			log.info("listOrderIds param:{}",listOrderVo);
 			ServiceResponse<List<String>> resp=orderService.listOrderIds(listOrderVo);
 			if(resp.isSuccess()){
+				log.info("listOrderIds success,result:{}",resp.getData());
 				List<String> oidList=resp.getData();
 				if(oidList!=null&&oidList.size()>0){
 					for(String oid:oidList){
@@ -58,19 +60,18 @@ public class UpdateNotPayOrder {
 						order.setDeleteDesc("超时未付款关闭订单");
 						ServiceResponse<OrderVo> closeResp=	orderService.closeOrder(order);
 						if(!closeResp.isSuccess()){
-							log.warn("UpdateNotPayOrder.execute erro:{}",closeResp.getCode());
+							log.info("closeOrder success,result:{}",closeResp.getData());
 						}else{
-							log.warn("UpdateNotPayOrder.execute close oid:{}",oid);
+							log.info("closeOrder has erro,respCode:{}",closeResp.getCode());
 						}
 					}
 				}else{
 					break;
 				}
 			}else{
-				log.info("UpdateNotPayOrder.execute query orderID param:{}, erro:{}",listOrderVo,resp.getCode());
-				break;
+				log.info("listOrderIds has erro,respCode:{}",resp.getCode());
 			}
 		}
-		log.info("UpdateNotPayOrder.execute cost time:{}",System.currentTimeMillis()-startTime);
+		log.info("task execute cost time:{}",System.currentTimeMillis()-startTime);
 	}
 }

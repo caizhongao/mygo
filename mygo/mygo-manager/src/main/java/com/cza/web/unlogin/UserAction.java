@@ -67,11 +67,12 @@ public class UserAction extends CommonAction{
 			UserVo listUserParam=new UserVo();
 			listUserParam.setUserName(user.getUserName());
 			ServiceResponse<UserVo> resp=userService.queryUser(listUserParam);
-			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			if(resp.isSuccess()){
+				log.info("listUser success,result:{}",resp.getData());
 				if(resp.getData()!=null){
 					UserVo queryUser=resp.getData();
 					if(queryUser.getPassword().equals(user.getPassword())&&ShoppingContants.USER_TYPE_ADMIN.equals(queryUser.getType())){
-						log.warn("login success!");
+						log.warn("login valide success!");
 						request.getSession().setAttribute(ShoppingContants.ADMIN_SESSION_KEY, queryUser);
 						return webAction("/login/home/index");
 					}else{
@@ -82,6 +83,9 @@ public class UserAction extends CommonAction{
 					log.warn("login username erro!");
 					erroList.add("登录名不存在");
 				}
+			}else{
+				log.info("listUser has erro,respCode:{}",resp.getCode());
+				return erro(request, resp);
 			}
 		}
 		log.warn("login erro,message:{}",erroList);

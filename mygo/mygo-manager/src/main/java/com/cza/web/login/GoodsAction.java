@@ -67,12 +67,15 @@ public class GoodsAction extends CommonAction{
 		log.info("GoodsAction.listGoods 请求参数,goods:{}",goods);
 		request.setAttribute("goods", goods);
 		ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("listGoods success,result:{}",resp.getData());
 			request.setAttribute("pager", resp.getData());
+			return webPage("goodsList");
 		}else{
-			request.setAttribute("status", "service errro!");
+			log.info("listGoods has erro,respCode:{}",resp.getCode());
+			return erro(request, resp);
 		}
-		return webPage("goodsList");
+		
 	}
 
 	@RequestMapping("editGoods")
@@ -80,14 +83,20 @@ public class GoodsAction extends CommonAction{
 		GoodsVo param=new GoodsVo();
 		param.setGid(goods.getGid());
 		ServiceResponse<GoodsVo> resp=goodsService.queryGoods(param);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			ServiceResponse<List<TCategoryAttr>> resp2=categoryService.listAttrs(resp.getData().getCid());
-			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp2.getCode())){
-				request.setAttribute("attrs", resp2.getData());
-			}
+		if(resp.isSuccess()){
+			log.info("queryGoods success,result:{}",resp.getData());
 			request.setAttribute("goods", resp.getData());
-			return webPage("editGoods");
+			ServiceResponse<List<TCategoryAttr>> attrResp=categoryService.listAttrs(resp.getData().getCid());
+			if(attrResp.isSuccess()){
+				log.info("listAttrs success,result:{}",attrResp.getData());
+				request.setAttribute("attrs", attrResp.getData());
+				return webPage("editGoods");
+			}else{
+				log.info("listAttrs has erro,respCode:{}",attrResp.getCode());
+				return erro(request, attrResp);
+			}
 		}else{
+			log.info("queryGoods has erro,respCode:{}",resp.getCode());
 			return erro(request, resp);
 		}
 	}
@@ -106,10 +115,12 @@ public class GoodsAction extends CommonAction{
 			}
 			goods.setPrice(price);
 			ServiceResponse<GoodsVo> resp=goodsService.updateGoodsPageInfo(goods);
-			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			if(resp.isSuccess()){
+				log.info("updateGoodsPageInfo success,result:{}",resp.getData());
 				response.getWriter().println(new RespMsg("success", null));
 			}else{
-				response.getWriter().println(new RespMsg("fail", ShoppingContants.RESP_MSG_SYSTEM_ERRO));
+				log.info("updateGoodsPageInfo has erro,respCode:{}",resp.getCode());
+				response.getWriter().println(new RespMsg("fail", resp.getCode()));
 			}
 		} catch (Exception e) {
 			log.error("updateGoods exception:",e);
@@ -121,10 +132,12 @@ public class GoodsAction extends CommonAction{
 	public void onShelf(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		goods.setStatus(ShoppingContants.GOODS_STATUS_ON);
 		ServiceResponse<GoodsVo> resp=goodsService.updateGoodsOnShelf(goods);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			response.getWriter().print("success");
+		if(resp.isSuccess()){
+			log.info("updateGoodsOnShelf success,result:{}",resp.getData());
+			response.getWriter().print(new RespMsg("success", null));
 		}else{
-			response.getWriter().print("failed");
+			log.info("updateGoodsOnShelf has erro,respCode:{}",resp.getCode());
+			response.getWriter().print(new RespMsg("fail", resp.getCode()));
 		}
 	}
 	
@@ -132,10 +145,12 @@ public class GoodsAction extends CommonAction{
 	public void offShelf(@ModelAttribute GoodsVo goods,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		goods.setStatus(ShoppingContants.GOODS_STATUS_OFF);
 		ServiceResponse<GoodsVo> resp=goodsService.updateGoodsOffShelf(goods);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			response.getWriter().print("success");
+		if(resp.isSuccess()){
+			log.info("updateGoodsOffShelf success,result:{}",resp.getData());
+			response.getWriter().print(new RespMsg("success", null));
 		}else{
-			response.getWriter().print("failed");
+			log.info("updateGoodsOffShelf has erro,respCode:{}",resp.getCode());
+			response.getWriter().print(new RespMsg("fail", resp.getCode()));
 		}
 	}
 	
@@ -185,12 +200,12 @@ public class GoodsAction extends CommonAction{
 			}
 			goods.setPrice(price);
 			ServiceResponse<GoodsVo> resp=goodsService.saveGoods(goods);
-			if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+			if(resp.isSuccess()){
+				log.info("updateGoodsOffShelf success,result:{}",resp.getData());
 				response.getWriter().println(new RespMsg("success", null));
 			}else if(ShoppingContants.RESP_CODE_GOODS_CODE_EXIST.equals(resp.getCode())){
-				response.getWriter().println(new RespMsg("fail", ShoppingContants.RESP_MSG_GOODS_CODE_EXIST));
-			}else{
-				response.getWriter().println(new RespMsg("fail", ShoppingContants.RESP_MSG_SYSTEM_ERRO));
+				log.info("updateGoodsOffShelf has erro,respCode:{}",resp.getCode());
+				response.getWriter().println(new RespMsg("fail", resp.getCode()));
 			}
 		} catch (Exception e) {
 			log.info("saveGoods exception:",e);

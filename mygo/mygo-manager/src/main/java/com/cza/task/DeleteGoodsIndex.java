@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
-import com.cza.common.traceLog.TraceIdUtil;
+import com.cza.common.log.LogUtil;
 import com.cza.service.goods.GoodsIndexService;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.GoodsIndexVo;
@@ -46,15 +46,17 @@ public class DeleteGoodsIndex {
 	private GoodsIndexService goodsIndexService;
 	
 	public void execute(){
-		TraceIdUtil.makeTraceId();
-		log.info("DeleteGoodsIndex.execute start!");
+		LogUtil.makeLogHeader("system");
+		log.info("task start!");
 		long startTime=System.currentTimeMillis();
 		GoodsVo goods=new GoodsVo();
 		goods.setPageSize(100);
 		goods.setGoodsIndex(ShoppingContants.GOODS_INDEX_WAIT_DELETE);
 		while(true){
+			log.info("listGoods param:{}",goods);
 			ServiceResponse<Pager<GoodsVo>> resp=goodsService.listGoods(goods);
 			if(resp.isSuccess()){
+				log.info("listGoods success,result:{}",resp.getData());
 				List<GoodsVo> voList=resp.getData().getResult();
 				List<GoodsIndexVo> indexList=new ArrayList<>();
 				Map<Long,Integer> gids=new HashMap<>();
@@ -71,10 +73,9 @@ public class DeleteGoodsIndex {
 				goodsIndexService.deleteIndex(indexList);
 				goodsService.batchUpdateGoodsIndex(gids);
 			}else{
-				log.info("DeleteGoodsIndex.execute query goods param:{},erro:{}",goods,resp.getCode());
-				break;
+				log.info("listGoods has erro,respCode:{}",resp.getCode());
 			}
 		}
-		log.info("DeleteGoodsIndex.execute cost time:{}",System.currentTimeMillis()-startTime);
+		log.info("task execute cost time:{}",System.currentTimeMillis()-startTime);
 	}
 }

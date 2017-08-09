@@ -54,9 +54,8 @@ public class CategoryAction extends CommonAction{
 		String cid=request.getParameter("cid");
 		log.info("listAttrs request param:{}",cid);
 		response.setCharacterEncoding("utf-8");
-		List<TCategoryAttr>attrs=null;
 		ServiceResponse<List<TCategoryAttr>> resp=categoryService.listAttrs(Long.valueOf(cid));
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
 			log.info("listAttrs success,result:{}",resp.getData());
 			response.getWriter().println(new RespMsg("success", resp.getData()));
 		}else{
@@ -68,12 +67,15 @@ public class CategoryAction extends CommonAction{
 	@RequestMapping("listCategory")
 	public String listCategory(@ModelAttribute CategoryVo category,HttpServletRequest request,HttpServletResponse response){
 		ServiceResponse<List<CategoryVo>> resp=categoryService.listCategory(category);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
-			request.setAttribute("categoryList", resp.getData());
+		if(resp.isSuccess()){
+			log.info("listCategory success,result:{}", resp.getData());
+			request.setAttribute("listCategory", resp.getData());
+			return webPage("categoryList");
 		}else{
-			request.setAttribute("status", "service errro!");
+			log.info("listCategory has erro,respCode:{}",resp.getCode());
+			return erro(request, resp);
 		}
-		return webPage("categoryList");
+		
 	}
 	
 	@RequestMapping("saveCategory")
@@ -81,9 +83,11 @@ public class CategoryAction extends CommonAction{
 		String categoryJson=request.getParameter("category");
 		CategoryVo category = JSON.parseObject(categoryJson, CategoryVo.class);
 		ServiceResponse<CategoryVo> resp=categoryService.saveCategory(category);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("saveCategory success,result:{}", resp.getData());
 			response.getWriter().print("success");
 		}else{
+			log.info("saveCategory has erro,respCode:{}",resp.getCode());
 			response.getWriter().print("failed");
 		}
 	}
@@ -94,9 +98,11 @@ public class CategoryAction extends CommonAction{
 		CategoryVo category = JSON.parseObject(categoryJson, CategoryVo.class);
 		log.info("updateCategory param:{}",category);
 		ServiceResponse<CategoryVo> resp=categoryService.updateCategory(category);
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("updateCategory success,result:{}", resp.getData());
 			response.getWriter().print("success");
 		}else{
+			log.info("updateCategory has erro,respCode:{}",resp.getCode());
 			response.getWriter().print("failed");
 		}
 	}
@@ -104,10 +110,12 @@ public class CategoryAction extends CommonAction{
 	@RequestMapping("editCategory")
 	public String editCategory(@ModelAttribute CategoryVo category,HttpServletRequest request,HttpServletResponse response){
 		ServiceResponse<CategoryVo> resp=categoryService.queryCategory(category.getCid());
-		if(ShoppingContants.RESP_CODE_SUCESS.equals(resp.getCode())){
+		if(resp.isSuccess()){
+			log.info("queryCategory success,result:{}", resp.getData());
 			request.setAttribute("category", resp.getData());
 			return webPage("editCategory");
 		}else{
+			log.info("queryCategory has erro,respCode:{}",resp.getCode());
 			return erro(request, resp);
 		}
 	}

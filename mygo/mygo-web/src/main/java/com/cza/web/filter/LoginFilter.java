@@ -27,7 +27,7 @@ import org.springframework.util.StringUtils;
 import com.cza.common.MygoUtil;
 import com.cza.common.RespMsg;
 import com.cza.common.ShoppingContants;
-import com.cza.common.traceLog.TraceIdUtil;
+import com.cza.common.log.LogUtil;
 import com.cza.service.user.vo.UserVo;
 
 
@@ -67,18 +67,19 @@ public class LoginFilter implements  Filter{
 	    
 	@Override
 	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)throws IOException, ServletException {
+		Long startTime=System.currentTimeMillis();
 		HttpServletRequest req=(HttpServletRequest) arg0;
 		HttpServletResponse resp=(HttpServletResponse) arg1;
 		String uri=req.getRequestURI();
-		StringBuffer url=req.getRequestURL();
+		StringBuffer url=new StringBuffer(uri);
 		if(!StringUtils.isEmpty(req.getQueryString())){
 			url.append("?").append(req.getQueryString());
 		}
-		TraceIdUtil.makeTraceId();
-		log.info("LoginFilter request url:{}",url);
+		UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.USER_SESSION_KEY);
+		LogUtil.makeLogHeader(user==null?"unlogin":user.getUid().toString());
+		log.info("LoginFilter request uri:{}",url);
 		if(uri.indexOf("/login/")>=0&&uri.indexOf("/notifyPayResult.do")<=0){//需要登录，但除开支付宝异步通知
 			//支付宝异步通知，不需要登录
-			UserVo user=(UserVo) req.getSession().getAttribute(ShoppingContants.USER_SESSION_KEY);
 			if(user==null){
 				String type = req.getHeader("X-Requested-With");
 				String referer=req.getHeader("Referer");
@@ -100,11 +101,12 @@ public class LoginFilter implements  Filter{
 						resp.sendRedirect(req.getContextPath()+"/unlogin/user/toLogin.do?ref="+url);
 					}
 				}
-				log.info("LoginFilter request url:{} need auth,please login",url);
+				log.info("LoginFilter need auth,please login");
 				return;
 			}
 		}
 		arg2.doFilter(arg0, arg1);
+		log.info("LoginFilter request url:{},cost time:{}",url,System.currentTimeMillis()-startTime);
 	}
 	    
 	@Override
