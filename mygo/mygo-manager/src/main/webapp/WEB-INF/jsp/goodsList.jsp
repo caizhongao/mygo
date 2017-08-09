@@ -37,11 +37,11 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 			data:{'gid':gid},
 			type:'post',
 			success:function(data){
-				if(data=="success"){
+				if(data.message=="success"){
 					alert('下架成功!');
 					location.reload();
 				}else{
-					alert('下架失败!');
+					alert('下架失败,'+message.data);
 				}
 			}
 		});

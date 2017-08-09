@@ -49,7 +49,7 @@
 			type:'post',
 			data:{'category':categoryStr},
 			success:function(data){
-				if('success'==data){
+				if('success'==data.message){
 					alert('保存类目成功');
 				}else{
 					alert('保存类目失败');

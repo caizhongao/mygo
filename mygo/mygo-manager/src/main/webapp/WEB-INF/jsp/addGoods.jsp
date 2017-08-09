@@ -18,15 +18,19 @@ $(function(){
 			data:{'cid':cid},
 			success:function(data){
 				var attrHtml="";
-				if(data.data!=null&&data.data.length>0){
-					attrHtml+="<td>商品规格：</><td>";
-					$.each(data.data,function(index,content){
-						if(index!=0&&index%3==0){
-							attrHtml+="<br/>";
-						}
-						attrHtml+=content.attrName+'<input type="checkbox" style="width:20px;" name="attr" onchange="editAttrTableCell(this,'+content.caid+',\''+content.attrName+'\')" value="'+content.caid+'">';
-					});
-					attrHtml+="</td>";
+				if("success"==data.message){
+					if(data.data!=null&&data.data.length>0){
+						attrHtml+="<td>商品规格：</><td>";
+						$.each(data.data,function(index,content){
+							if(index!=0&&index%3==0){
+								attrHtml+="<br/>";
+							}
+							attrHtml+=content.attrName+'<input type="checkbox" style="width:20px;" name="attr" onchange="editAttrTableCell(this,'+content.caid+',\''+content.attrName+'\')" value="'+content.caid+'">';
+						});
+						attrHtml+="</td>";
+					}
+				}else{
+					alert("发生错误,"+data.data);
 				}
 				$('#attrs').html(attrHtml);
 				initAttrTable();

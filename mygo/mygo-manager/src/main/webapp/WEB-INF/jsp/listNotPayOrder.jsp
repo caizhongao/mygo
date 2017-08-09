@@ -42,10 +42,10 @@
 			type:'post',
 			data:{"oid":$('#oid').val(),"deleteDesc":$('#deleteDesc').val()},
 			success:function(data){
-				if(data=='success'){
+				if(data.message=='success'){
 					location.reload();
 				}else{
-					alert("关闭订单失败，请联系管理员!");
+					alert("关闭订单失败，"+data.data);
 				}
 			}
 		});
