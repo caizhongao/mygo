@@ -114,6 +114,12 @@ function butNow(){
 	$('#myform').submit(); 
 }
 
+function deleteCart(sid){
+	if(confirm("确定从购物车中删除该商品?")){
+		location.href="${ctx}/login/cart/removeCart.do?sid="+sid;
+	}
+}
+
 </script>
 <style type="text/css">
 	 .optNumber_div{
@@ -251,7 +257,7 @@ background-color:#FBFBFB;font-size: 13px;font-weight: normal;
 					${cart.amount}
 				</td>
 				<td align="right" style="padding-right: 20px;width:200px">
-					<a href="${ctx}/login/cart/removeCart.do?sid=${cart.sid}" style="color: #666">
+					<a href="javascript:deleteCart(${cart.sid})" style="color: #666">
 						<img src="${ctx}/img/closeOrder.png" width="28px" style="vertical-align: middle;" title="删除"></img>
 					</a>
 				</td>

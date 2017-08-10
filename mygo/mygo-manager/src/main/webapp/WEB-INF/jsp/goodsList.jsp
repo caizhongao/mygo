@@ -18,6 +18,7 @@
 <script type="text/javascript">
 function updateGoodsStatus(obj,gid,goodsIndex){
 	if(obj=="on"){
+		if(confirm("确定上架该商品?")){
 		$.ajax({
 			url:'${ctx}/login/goods/onShelf.do',
 			data:{'gid':gid},
@@ -32,7 +33,9 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 				}
 			}
 		});
+		}
 	}else{
+		if(confirm("确定下架该商品?")){
 		$.ajax({
 			url:'${ctx}/login/goods/offShelf.do',
 			data:{'gid':gid},
@@ -47,6 +50,7 @@ function updateGoodsStatus(obj,gid,goodsIndex){
 				}
 			}
 		});
+		}
 	}
 }
 function toAddGoods(){

@@ -69,6 +69,7 @@ function deleteOrder(){
 	});
 }
 function toRefund(oid){
+	if(confirm("确定退款订单["+oid+"]?")){
 	$.ajax({
 		url:'${ctx}/login/order/toRefund.do',
 		data:{'oid':oid},
@@ -82,7 +83,8 @@ function toRefund(oid){
 				alert("退款失败!");
 			}
 		}
-	})
+	});
+	}
 }
 </script>
 </head>

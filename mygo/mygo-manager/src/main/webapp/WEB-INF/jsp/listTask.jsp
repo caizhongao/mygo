@@ -19,36 +19,43 @@
 </style>
 <script type="text/javascript">
 	function closeTask(taskName){
-		$.ajax({
-			url:"${ctx}/login/task/updateTaskStatus.do",
-			type:'post',
-			data:{"taskName":taskName,"status":"1"},
-			dataType:"json",
-			success:function(data){
-				if(data.message=='success'){
-					location.reload();
-				}else{
-					alert("关闭定时任务失败,"+data.data);
+		if(confirm("确定关闭定时任务["+taskName+"] ?")){
+			$.ajax({
+				url:"${ctx}/login/task/updateTaskStatus.do",
+				type:'post',
+				data:{"taskName":taskName,"status":"1"},
+				dataType:"json",
+				success:function(data){
+					if(data.message=='success'){
+						alert("关闭成功!");
+						location.reload();
+					}else{
+						alert("关闭定时任务失败,"+data.data);
+					}
 				}
-			}
-		});
+			});
+		}
+		
 	}
 	
 	
 	function openTask(taskName){
-		$.ajax({
-			url:"${ctx}/login/task/updateTaskStatus.do",
-			type:'post',
-			data:{"taskName":taskName,"status":"0"},
-			dataType:"json",
-			success:function(data){
-				if(data.message=='success'){
-					location.reload();
-				}else{
-					alert("关闭定时任务失败,"+data.data);
+		if(confirm("确定开启定时任务["+taskName+"] ?")){
+			$.ajax({
+				url:"${ctx}/login/task/updateTaskStatus.do",
+				type:'post',
+				data:{"taskName":taskName,"status":"0"},
+				dataType:"json",
+				success:function(data){
+					if(data.message=='success'){
+						alert("开启成功");
+						location.reload();
+					}else{
+						alert("关闭定时任务失败,"+data.data);
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 </script>
 </head>
