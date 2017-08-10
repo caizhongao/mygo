@@ -16,7 +16,7 @@ import org.apache.log4j.helpers.CountingQuietWriter;
 import org.apache.log4j.spi.LoggingEvent;
 
 public class MygoFileAppender extends FileAppender {
-  protected long maxFileSize =1024*1024;
+  protected long maxFileSize =10*1024*1024;
   private SimpleDateFormat dateFmt= new SimpleDateFormat("yyyy-MM-dd");
   private long nextRollover = 0;
 
