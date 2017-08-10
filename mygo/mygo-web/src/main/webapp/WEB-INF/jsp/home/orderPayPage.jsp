@@ -132,6 +132,11 @@
 						<input id="WIDbody" name="orderDesc" readonly="readonly" value="测试订单" />
 					</dd>
 					<hr class="one_line">
+					<dt>支付账号：</dt>
+					<dd>
+						<input id="WIDbody" name="orderDesc" readonly="readonly" value="yklkpb9030@sandbox.com" />
+					</dd>
+					<hr class="one_line">
 					<dt></dt>
 					<dd id="btn-dd" style="margin-left: 80px;">
 						<span class="new-btn-login-sp">
