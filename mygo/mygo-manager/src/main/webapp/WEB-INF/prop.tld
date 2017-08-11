@@ -9,8 +9,8 @@ version="2.0">
     <uri>http://www.mygo.cn/prop</uri><!-- 这个地址是随便取得。到时候jsp页面引入这个地址 -->  
     <function><!-- 定义函数 -->  
         <name>get</name><!-- 自定义函数名称(随意) -->  
-        <function-class>com.cza.common.PropertyUtil</function-class><!-- 定义函数的类全名称 -->  
-        <function-signature>java.lang.Object getProperty( java.lang.String )</function-signature>  
+        <function-class>com.cza.common.ParamUtil</function-class><!-- 定义函数的类全名称 -->  
+        <function-signature>java.lang.Object getParam( java.lang.String )</function-signature>  
         <!--java.lang.String：返回值类型  toUpperCase：类定义的函数名(函数类型) -->  
     </function>
 </taglib>

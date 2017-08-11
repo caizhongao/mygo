@@ -31,7 +31,7 @@ public class PropertyUtil {
 	private static Properties properties;
 	private static Object lock=new Object();
 	private static final Logger log = LoggerFactory.getLogger(PropertyUtil.class); 
-	public static Object getProperty(String key){
+	private static Object getProperty(String key){
 		if(properties==null){
 			initProperties();
 		}

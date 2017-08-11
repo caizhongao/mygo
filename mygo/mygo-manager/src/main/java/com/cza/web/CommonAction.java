@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cza.common.Param;
+import com.cza.common.ParamUtil;
 import com.cza.common.PropertyUtil;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
@@ -36,12 +37,12 @@ public class CommonAction {
 	
 	
 	public String getGoodsUploadPath(String fileName){
-		String basePath=(String) PropertyUtil.getProperty(ShoppingContants.FILE_UPLOAD_PREFIX);
+		String basePath=(String)ParamUtil.getParam(ShoppingContants.FILE_UPLOAD_PREFIX);
 		return basePath+File.separator+"goods"+File.separator+fileName;
 	}
 	
 	public String getGoodsRequestPath(String fileName){
-		String basePath=(String) PropertyUtil.getProperty(ShoppingContants.FILE_REQUEST_PREFIX);
+		String basePath=(String) ParamUtil.getParam(ShoppingContants.FILE_REQUEST_PREFIX);
 		return basePath+"goods"+"/"+fileName;
 	}
 	

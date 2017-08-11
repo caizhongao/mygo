@@ -63,12 +63,6 @@ public interface ShoppingContants {
 	public static final String CART_SESSION_KEY="cart_session";
 	
 	
-	
-	
-	public static final String FILE_UPLOAD_PREFIX="upload.file.path.prefix";
-	
-	public static final String FILE_REQUEST_PREFIX="request.file.path.prefix";
-	
 	//地址常量
 	public static final Integer ADDR_IS_DEFAULT=1;
 	public static final Integer ADDR_NOT_DEFAULT=0;
@@ -142,7 +136,7 @@ public interface ShoppingContants {
 
 	
 	
-	
+	/*******系统配置KEY常量定义*******/
 	
 	//alipay 常量
 	// 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
@@ -170,4 +164,11 @@ public interface ShoppingContants {
 	public static String ALIPAY_GATEWAY_URL = "alipay.gateway.url";
 	
 	
+	public static Long NOT_PAY_EXPIRE_TIME = 30*60*1000l;
+	
+	public static String GOODS_DETAIL_PATH="goodsdetail.path";
+	
+	public static final String FILE_UPLOAD_PREFIX="upload.file.path.prefix";
+	
+	public static final String FILE_REQUEST_PREFIX="request.file.path.prefix";
 }

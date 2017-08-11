@@ -46,7 +46,8 @@
      							{"id":"10","name":"已关闭","parentId":"6","url":"${ctx}/login/order/listCloseOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""}
      						]},
      						{"id":"13","name":"系统管理","parentId":"1","url":"","icon":"&#xe604;","order":"1","isHeader":"0","childMenus":[
-								{"id":"14","name":"定时任务管理","parentId":"13","url":"${ctx}/login/task/listTask.do","icon":"","order":"1","isHeader":"0","childMenus":""}
+								{"id":"14","name":"定时任务管理","parentId":"13","url":"${ctx}/login/task/listTask.do","icon":"","order":"1","isHeader":"0","childMenus":""},
+								{"id":"15","name":"系统配置管理","parentId":"13","url":"${ctx}/login/param/listParam.do","icon":"","order":"1","isHeader":"0","childMenus":""}
 							]}
      					 ]}
      				    ];

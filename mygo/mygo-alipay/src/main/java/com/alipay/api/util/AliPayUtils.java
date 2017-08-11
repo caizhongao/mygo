@@ -29,6 +29,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.cza.common.ElasticSearchUitl;
+import com.cza.common.ParamUtil;
 import com.cza.common.PropertyUtil;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
@@ -48,7 +49,7 @@ public class AliPayUtils {
 		ServiceResponse<Boolean> resp=new ServiceResponse<>();
 		boolean result=false;
 		//获得初始化的AlipayClient
-		AlipayClient alipayClient = new DefaultAlipayClient((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_GATEWAY_URL), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_APP_ID), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PRIVATE_KEY), "json",(String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE));
+		AlipayClient alipayClient = new DefaultAlipayClient((String)ParamUtil.getParam(ShoppingContants.ALIPAY_GATEWAY_URL), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_APP_ID), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_PRIVATE_KEY), "json",(String)ParamUtil.getParam(ShoppingContants.ALIPAY_CHARSET), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_SIGN_TYPE));
 		
 		//设置请求参数
 		AlipayTradeRefundRequest alipayRequest = new AlipayTradeRefundRequest();
@@ -93,11 +94,11 @@ public class AliPayUtils {
 		try {
 			
 			//获得初始化的AlipayClient
-			AlipayClient alipayClient = new DefaultAlipayClient((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_GATEWAY_URL), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_APP_ID), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PRIVATE_KEY), "json",(String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE));
+			AlipayClient alipayClient = new DefaultAlipayClient((String)ParamUtil.getParam(ShoppingContants.ALIPAY_GATEWAY_URL), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_APP_ID), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_PRIVATE_KEY), "json",(String)ParamUtil.getParam(ShoppingContants.ALIPAY_CHARSET), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_SIGN_TYPE));
 			//设置请求参数
 			AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
-			alipayRequest.setReturnUrl((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_RETURN_URL));
-			alipayRequest.setNotifyUrl((String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_NOTIFY_URL));
+			alipayRequest.setReturnUrl((String)ParamUtil.getParam(ShoppingContants.ALIPAY_RETURN_URL));
+			alipayRequest.setNotifyUrl((String)ParamUtil.getParam(ShoppingContants.ALIPAY_NOTIFY_URL));
 			//商户订单号，商户网站订单系统中唯一订单号，必填
 			String out_trade_no = oid;
 			//付款金额，必填
@@ -150,11 +151,11 @@ public class AliPayUtils {
 				params.put(name, valueStr);
 			}
 			log.info("OrderAction.updatePayStatus params:{}",params);
-			result = AlipaySignature.rsaCheckV1(params, (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), (String)PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE)); //调用SDK验证签名
+			result = AlipaySignature.rsaCheckV1(params, (String)ParamUtil.getParam(ShoppingContants.ALIPAY_PUBLIC_KEY), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_CHARSET), (String)ParamUtil.getParam(ShoppingContants.ALIPAY_SIGN_TYPE)); //调用SDK验证签名
 			resp.setData(result);
 			resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
-			log.info("OrderAction.updatePayStatus public_key:{},charset:{},sign_type:{},signVerified:{}",PropertyUtil.getProperty(ShoppingContants.ALIPAY_PUBLIC_KEY),PropertyUtil.getProperty(ShoppingContants.ALIPAY_CHARSET), PropertyUtil.getProperty(ShoppingContants.ALIPAY_SIGN_TYPE),result);
+			log.info("OrderAction.updatePayStatus public_key:{},charset:{},sign_type:{},signVerified:{}",ParamUtil.getParam(ShoppingContants.ALIPAY_PUBLIC_KEY),ParamUtil.getParam(ShoppingContants.ALIPAY_CHARSET), ParamUtil.getParam(ShoppingContants.ALIPAY_SIGN_TYPE),result);
 		} catch (Exception e) {
 			log.info("OrderAction.toPay erro",e);
 			resp.setData(result);

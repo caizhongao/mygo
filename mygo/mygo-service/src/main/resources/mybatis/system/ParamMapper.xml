@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cza.mapper.system.ParamMapper">
+	<resultMap id="param" type="com.cza.dto.system.TParam">
+		<result property="cfKey" column="cf_key"/>
+		<result property="cfValue" column="cf_value"/>
+		<result property="cfDesc" column="cf_desc"/>
+		<result property="cfType" column="cf_type"/>
+	</resultMap>
+	
+	<sql id="allColumns">
+		cf_key, cf_value, cf_desc,cf_type
+	</sql>
+	
+	<insert id="saveParam" parameterType="com.cza.dto.system.TParam">
+		insert into t_param(cf_key, cf_value, cf_desc,cf_type)values(#{cfKey},#{cfValue},#{cfDesc},#{cfType})
+	</insert>
+	
+	<delete id="deleteParam" parameterType="com.cza.dto.system.TParam" >
+		delete from t_param 
+			where cf_key = #{cfKey} and cf_type=#{cfType}
+	</delete>
+	
+	<select id="queryParam" parameterType="com.cza.dto.system.TParam" resultMap="param">
+		select 
+			<include refid="allColumns"></include>
+		from t_param 
+			where cf_key = #{cfKey} and cf_type=#{cfType}
+	</select>
+	
+	<select id="updateParam" parameterType="com.cza.dto.system.TParam">
+		update t_param
+		<set>
+			<if test="cfValue!=null and cfValue!=''">
+				and cf_value = #{cfValue}
+			</if>
+			<if test="cfDesc!=null and cfDesc!=''">
+				and cf_desc= #{cfDesc}
+			</if>
+		</set>
+		where cf_key = #{cfKey} and cf_type=#{cfType}
+	</select>
+	
+	
+	<select id="listParam" parameterType="com.cza.dto.system.TParam" resultMap="param">
+		select 
+			<include refid="allColumns"></include>
+		from t_param
+		<where>
+			<if test="cfType!=null and cfType!=''">
+				and cf_type = #{cfType}
+			</if>
+			<if test="cfKey!=null and cfKey!=''">
+				and cf_key= #{cfKey}
+			</if>
+		</where>
+			order by cf_type,cf_key desc
+	</select>
+		
+</mapper>

@@ -21,6 +21,7 @@ import org.springframework.scheduling.quartz.CronTriggerBean;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.cza.common.ParamUtil;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.common.SpringContextUtil;
@@ -49,6 +50,7 @@ public class InitTaskExpression extends ContextLoaderListener{
 			try {
 				super.contextInitialized(event);
 				log.info("spring start");
+				//初始化调度任务
 				Scheduler scheduler=SpringContextUtil.getBean(Scheduler.class);
 				TaskService taskService=SpringContextUtil.getBean("taskService");
 				TTask param=new TTask();
@@ -67,7 +69,9 @@ public class InitTaskExpression extends ContextLoaderListener{
 						}
 					}
 				}
-				
+				//初始化常量缓存
+				log.info("init param start!");
+				ParamUtil.init("mygo-manager");
 			} catch (Exception e) {
 				log.error("spring start erro",e);
 			}
