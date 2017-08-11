@@ -14,7 +14,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import com.cza.common.ParamUtil;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
 import com.cza.service.order.OrderService;
@@ -30,6 +32,7 @@ import com.cza.task.base.BaseTask;
     */
 @Component("DeletePreOrderJob")
 public class DeletePreOrderJob extends BaseTask {
+	private Long defaultExpireTime=5*60*1000l;
 	@Autowired
 	private OrderService orderService;
 	public Long invoke(){
@@ -37,7 +40,12 @@ public class DeletePreOrderJob extends BaseTask {
 		OrderVo listOrderVo=new OrderVo();
 		listOrderVo.setStatus(ShoppingContants.ORDER_STATUS_PRE);
 		listOrderVo.setPageSize(100);
-		listOrderVo.setCreateTime(System.currentTimeMillis()/1000 -5*60);
+		String expireTime=ParamUtil.getParam(ShoppingContants.ORDER_NOT_CONFIRM_EXPIRE_TIME);
+		if(!StringUtils.isEmpty(expireTime)){
+			listOrderVo.setCreateTime((System.currentTimeMillis() -Long.parseLong(expireTime))/1000);
+		}else{
+			listOrderVo.setCreateTime((System.currentTimeMillis() -defaultExpireTime)/1000);
+		}
 		while(true){
 			log.info("listOrderIds param:{}",listOrderVo);
 			ServiceResponse<List<String>> resp=orderService.listOrderIds(listOrderVo);
