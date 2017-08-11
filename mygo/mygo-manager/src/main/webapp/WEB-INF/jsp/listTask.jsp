@@ -9,53 +9,49 @@
 
 <style type="text/css">
 	.edit_class{
-		width: 60px;
-		height: 25px;
-		font-size: 14px;
-		line-height: 24px;
+		width: 50px;
+		height: 23px;
+		font-size: 12px;
+		line-height: 23px;
 	    padding:0;
 	    border-radius: 2px;
 	}
 </style>
 <script type="text/javascript">
-	function closeTask(taskName){
-		if(confirm("确定关闭定时任务["+taskName+"] ?")){
+
+	function updateTask(taskName,index){
+		var expression=$('input[name="expression"]').eq(index).val();
+		var status=$('input[name="status"]').eq(index).val();
+		if(confirm("确定更新定时任务["+taskName+"]?")){
 			$.ajax({
-				url:"${ctx}/login/task/updateTaskStatus.do",
+				url:"${ctx}/login/task/updateTask.do",
 				type:'post',
-				data:{"taskName":taskName,"status":"1"},
+				data:{"taskName":taskName,"expression":expression,"status":status},
 				dataType:"json",
 				success:function(data){
 					if(data.message=='success'){
-						alert("关闭成功!");
+						alert("更新成功!");
 						location.reload();
 					}else{
-						alert("关闭定时任务失败,"+data.data);
+						alert("更新定时任务失败,"+data.data);
 					}
 				}
 			});
 		}
 		
 	}
+
+	function closeTask(index){
+		$('.crollImg').eq(index).parent().html(
+				'<img src="${ctx}/img/off.png" class="crollImg" width="64px" title="关" onclick="openTask('+index+')" style="cursor: pointer;">'+
+				'<input type="hidden"  name="status" value="1">');
+	}
 	
 	
-	function openTask(taskName){
-		if(confirm("确定开启定时任务["+taskName+"] ?")){
-			$.ajax({
-				url:"${ctx}/login/task/updateTaskStatus.do",
-				type:'post',
-				data:{"taskName":taskName,"status":"0"},
-				dataType:"json",
-				success:function(data){
-					if(data.message=='success'){
-						alert("开启成功");
-						location.reload();
-					}else{
-						alert("关闭定时任务失败,"+data.data);
-					}
-				}
-			});
-		}
+	function openTask(index){
+		$('.crollImg').eq(index).parent().html(
+				'<img src="${ctx}/img/on.png" class="crollImg" width="64px" title="开" onclick="closeTask('+index+')" style="cursor: pointer;">'+
+				'<input type="hidden"  name="status" value="0">');
 	}
 </script>
 </head>
@@ -75,6 +71,9 @@
 				任务名称
 			</th>
 			<th>
+				描述
+			</th>
+			<th>
 				已执行次数
 			</th>
 			<th>	
@@ -86,11 +85,12 @@
 			<th>
 				上次更新数目
 			</th>
+			
 			<th>
-				状态
+				周期(分钟/次)
 			</th>
 			<th>
-				描述
+				状态
 			</th>
 			<th>
 				操作
@@ -103,6 +103,9 @@
 				</td>
 				<td>
 					${task.taskName}
+				</td>
+				<td>
+					${task.desc}
 				</td>
 				<td>
 					${task.times}
@@ -118,24 +121,23 @@
 				<td>
 					${task.number}
 				</td>
+				
 				<td>
-					<c:if test="${task.status==0}">
-						正常
-					</c:if>
-					<c:if test="${task.status==1}">
-						关闭
-					</c:if>
-				</td>
-				<td>
-					${task.desc}
+					<input type="text" class="searchInput" name="expression" value="${task.expression}" style="text-align: center;border: none;border-bottom: 1px solid #ddd;min-width: 120px;width:120px">
 				</td>
 				<td>
 					<c:if test="${task.status==0}">
-						<input type="button" class="manager_button edit_class" onclick="closeTask('${task.taskName}')"  value="关闭 ">
+						<img src="${ctx}/img/on.png"  class="crollImg" width="64px" title="开" onclick="closeTask(${status.index})" style="cursor: pointer;">
 					</c:if>
 					<c:if test="${task.status==1}">
-						<input type="button" class="manager_button edit_class" onclick="openTask('${task.taskName}')"  value="开启">
+						<img src="${ctx}/img/off.png" class="crollImg" width="64px" title="关" onclick="openTask(${status.index})" style="cursor: pointer;">
 					</c:if>
+					<input type="hidden"  name="status" value="${task.status}">
+				</td>
+				
+				
+				<td>
+					<input type="button" class="manager_button edit_class" onclick="updateTask('${task.taskName}',${status.index})"  value="提交">
 				</td>
 			</tr>
 		</c:forEach>

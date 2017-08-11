@@ -68,6 +68,9 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<bean class="com.cza.common.SpringContextUtil" />
+	
 <import resource="spring-quartz.xml"></import>
 
 </beans>

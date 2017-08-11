@@ -29,6 +29,7 @@ import com.cza.service.goods.GoodsIndexService;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.GoodsIndexVo;
 import com.cza.service.goods.vo.GoodsVo;
+import com.cza.task.base.BaseTask;
 
 /**
     * @ClassName: GoodsAddIndex
@@ -37,8 +38,8 @@ import com.cza.service.goods.vo.GoodsVo;
     * @date 2017年6月27日下午4:03:24
     *
     */
-@Component
-public class CreateGoodsIndex  extends BaseTask{
+@Component("CreateGoodsIndexJob")
+public class CreateGoodsIndexJob  extends BaseTask{
 	@Autowired
 	private GoodsService goodsService;
 	@Autowired

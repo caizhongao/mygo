@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,11 +22,11 @@ import org.springframework.stereotype.Component;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
-import com.cza.common.log.LogUtil;
 import com.cza.service.goods.GoodsIndexService;
 import com.cza.service.goods.GoodsService;
 import com.cza.service.goods.vo.GoodsIndexVo;
 import com.cza.service.goods.vo.GoodsVo;
+import com.cza.task.base.BaseTask;
 
 /**
     * @ClassName: GoodsAddIndex
@@ -37,8 +35,8 @@ import com.cza.service.goods.vo.GoodsVo;
     * @date 2017年6月27日下午4:03:24
     *
     */
-@Component
-public class DeleteGoodsIndex extends BaseTask {
+@Component("DeleteGoodsIndexJob")
+public class DeleteGoodsIndexJob extends BaseTask {
 	@Autowired
 	private GoodsService goodsService;
 	@Autowired

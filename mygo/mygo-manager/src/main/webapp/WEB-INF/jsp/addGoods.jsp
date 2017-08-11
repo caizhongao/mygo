@@ -198,6 +198,7 @@ $(function(){
 			success:function(data){
 				if('success'==data.message){
 					alert('保存商品成功');
+					location.href="${ctx}/login/goods/listGoods.do";
 				}else{
 					alert(data.data);
 				}

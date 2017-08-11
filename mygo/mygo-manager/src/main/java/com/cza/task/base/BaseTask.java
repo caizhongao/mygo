@@ -8,7 +8,7 @@
     * @version V1.0  
     */
     
-package com.cza.task;
+package com.cza.task.base;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public abstract class BaseTask {
 		long startTime=System.currentTimeMillis();
 		log.info("task start!");
 		TTask queryParam=new TTask();
-		queryParam.setTaskName(getClass().getSimpleName()+"Task");
+		queryParam.setTaskName(getClass().getSimpleName());
 		log.info("queryTask param:{}",queryParam);
 		ServiceResponse<TTask> resp=taskService.queryTask(queryParam);
 		if(resp.isSuccess()){

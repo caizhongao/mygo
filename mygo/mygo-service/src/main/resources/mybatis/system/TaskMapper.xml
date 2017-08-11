@@ -9,10 +9,11 @@
 		<result property="status" column="status"/>
 		<result property="desc" column="task_desc"/>
 		<result property="number" column="number"/>
+		<result property="expression" column="expression"/>
 	</resultMap>
 	
 	<sql id="allColumns">
-		task_name, times, last_execute_time,last_cost_time, status, task_desc,number
+		task_name, times, last_execute_time,last_cost_time, status, task_desc,number,expression
 	</sql>
 	
 	<select id="queryTask" parameterType="com.cza.dto.system.TTask" resultMap="task">
@@ -39,6 +40,9 @@
 			</if>
 			<if test="number!=null">
 				number = #{number},
+			</if>
+			<if test="expression!=null">
+				expression = #{expression},
 			</if>
 		</set>
 		where task_name = #{taskName} 

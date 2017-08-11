@@ -11,15 +11,20 @@
 package com.cza.web.login;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.quartz.CronTriggerBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +33,7 @@ import com.cza.common.Pager;
 import com.cza.common.RespMsg;
 import com.cza.common.ServiceResponse;
 import com.cza.common.ShoppingContants;
+import com.cza.common.SpringContextUtil;
 import com.cza.dto.system.TTask;
 import com.cza.service.system.TaskService;
 import com.cza.service.user.vo.UserVo;
@@ -56,6 +62,13 @@ public class TaskAction extends CommonAction{
 		ServiceResponse<List<TTask>> resp=taskService.listTask(task);
 		if(resp.isSuccess()){
 			log.info("listTask success,result:{}",resp.getData());
+			for(TTask result:resp.getData()){
+				try {
+					result.setExpression(result.getExpression().split(" ")[1].split("/")[1]);
+				} catch (Exception e) {
+					log.error("format Expression erro:",e);
+				}
+			}
 			request.setAttribute("taskList", resp.getData());
 			return webPage("listTask");
 		}else{
@@ -64,18 +77,31 @@ public class TaskAction extends CommonAction{
 		}
 	}
 	
-	@RequestMapping("updateTaskStatus")
-	public void updateTaskStatus(@ModelAttribute TTask task,HttpServletRequest request,HttpServletResponse response ) throws IOException{
-		log.info("listTask 请求参数,task:{}",task);
-		response.setCharacterEncoding("utf-8");
-		ServiceResponse<TTask> resp=taskService.updateTask(task);
-		if(resp.isSuccess()){
-			log.info("updateTask success,result:{}",resp.getData());
-			response.getWriter().println(new RespMsg("success", null));
-		}else{
-			log.info("updateTask has erro,respCode:{}",resp.getCode());
-			response.getWriter().println(new RespMsg("success", resp.getCode()));
-		}
+	@RequestMapping("updateTask")
+	public void updateTask(@ModelAttribute TTask task,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		try {
+			log.info("listTask 请求参数,task:{}",task);
+			response.setCharacterEncoding("utf-8");
+			task.setExpression("0 0/"+task.getExpression()+" * * * ?");
+			ServiceResponse<TTask> resp=taskService.updateTask(task);
+			if(resp.isSuccess()){
+				log.info("updateTask success,result:{}",resp.getData());
+				Scheduler scheduler=SpringContextUtil.getBean(Scheduler.class);
+				log.info("init task:{},Expression:{}",task.getTaskName(),task.getExpression());
+				String triggerName=task.getTaskName().substring(0, task.getTaskName().length()-3)+"Trigger";
+				log.info("triggerName is:{}",triggerName);
+				CronTriggerBean trigger  =(CronTriggerBean) scheduler.getTrigger(triggerName, Scheduler.DEFAULT_GROUP);
+				trigger.setCronExpression(task.getExpression());
+				scheduler.rescheduleJob(triggerName, Scheduler.DEFAULT_GROUP, trigger);
+				response.getWriter().println(new RespMsg("success", null));
+			}else{
+				log.info("updateTask has erro,respCode:{}",resp.getCode());
+				response.getWriter().println(new RespMsg("fail", resp.getCode()));
+			}
+		} catch (Exception e) {
+			log.info("system erro:",e);
+			response.getWriter().println(new RespMsg("success", ShoppingContants.RESP_CODE_SYSTEM_ERRO));
+		} 
 	}
 	
 }

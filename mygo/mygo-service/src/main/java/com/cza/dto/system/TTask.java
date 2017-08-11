@@ -27,9 +27,31 @@ public class TTask {
 	private Integer status;
 	private String desc;
 	private Long number;
+	private String expression;
 	
 	
 	
+	
+	
+	/**
+	* @return expression
+	*/
+	
+	public String getExpression() {
+		return expression;
+	}
+
+
+	
+	/**
+	 * @param expression the expression to set
+	 */
+	
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+
+
 	/**
 	* @return number
 	*/
@@ -144,6 +166,7 @@ public class TTask {
 	}
 
 
+
 	
 	    /* (非 Javadoc)
 	    * 
@@ -156,8 +179,19 @@ public class TTask {
 	public String toString() {
 		return "TTask [taskName=" + taskName + ", times=" + times + ", lastExecuteTime=" + lastExecuteTime
 				+ ", lastCostTime=" + lastCostTime + ", status=" + status + ", desc=" + desc + ", number=" + number
-				+ "]";
+				+ ", expression=" + expression + "]";
 	}
+
+
+	
+	    /* (非 Javadoc)
+	    * 
+	    * 
+	    * @return
+	    * @see java.lang.Object#toString()
+	    */
+	    
+	
 
 	
 	
