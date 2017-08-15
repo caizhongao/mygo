@@ -164,7 +164,11 @@ public interface ShoppingContants {
 	public static String ALIPAY_GATEWAY_URL = "alipay.gateway.url";
 	
 	
-	public static Long NOT_PAY_EXPIRE_TIME = 30*60*1000l;
+	public static String CACHE_EXPIRE_TIME="cache_expire_time";
+	
+	public static String ORDER_NOT_PAY_EXPIRE_TIME = "order_not_pay_expire_time";
+	
+	public static String ORDER_NOT_CONFIRM_EXPIRE_TIME="order_not_confirm_expire_time";
 	
 	public static String GOODS_DETAIL_PATH="goodsdetail.path";
 	

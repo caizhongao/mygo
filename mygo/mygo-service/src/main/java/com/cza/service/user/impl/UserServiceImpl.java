@@ -126,9 +126,13 @@ public class UserServiceImpl implements UserService {
 				queryParam.setUserName(listUserParam.getUserName());
 				queryParam.setUid(listUserParam.getUid());
 				TUser user=userMapper.queryUser(queryParam);
-				UserVo vo=new UserVo();
-				BeanUtils.copyProperties(user, vo);
-				resp.setData(vo);
+				if(user!=null){
+					UserVo vo=new UserVo();
+					BeanUtils.copyProperties(user, vo);
+					resp.setData(vo);
+				}else{
+					resp.setData(null);
+				}
 				resp.setCode(ShoppingContants.RESP_CODE_SUCESS);
 				resp.setMsg(ShoppingContants.RESP_MSG_SUCESS);
 			}
