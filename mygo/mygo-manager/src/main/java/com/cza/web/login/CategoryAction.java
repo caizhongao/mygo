@@ -85,10 +85,10 @@ public class CategoryAction extends CommonAction{
 		ServiceResponse<CategoryVo> resp=categoryService.saveCategory(category);
 		if(resp.isSuccess()){
 			log.info("saveCategory success,result:{}", resp.getData());
-			response.getWriter().print("success");
+			response.getWriter().println(new RespMsg("success", null));
 		}else{
 			log.info("saveCategory has erro,respCode:{}",resp.getCode());
-			response.getWriter().print("failed");
+			response.getWriter().println(new RespMsg("fail",resp.getCode()));
 		}
 	}
 	
@@ -100,10 +100,10 @@ public class CategoryAction extends CommonAction{
 		ServiceResponse<CategoryVo> resp=categoryService.updateCategory(category);
 		if(resp.isSuccess()){
 			log.info("updateCategory success,result:{}", resp.getData());
-			response.getWriter().print("success");
+			response.getWriter().println(new RespMsg("success", null));
 		}else{
 			log.info("updateCategory has erro,respCode:{}",resp.getCode());
-			response.getWriter().print("failed");
+			response.getWriter().println(new RespMsg("fail",resp.getCode()));
 		}
 	}
 	

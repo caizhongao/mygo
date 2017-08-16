@@ -144,6 +144,7 @@ function toRefund(oid){
 					<th width="100">金额(元)</th>
 					<th width="100">总金额</th>
 					<th>发货地址</th>
+					<th width="100">订单状态</th>
 					<th width="140px">操作</th>
 				</tr>
 			</table>
@@ -152,98 +153,76 @@ function toRefund(oid){
 				<table style="width: 80%; border: 1px solid #daf3ff;;margin: 0px auto;"
 					class="mytable" cellpadding="0" cellspacing="0">
 					<tr>
-						<td colspan="7" style="background-color: #eaf8ff; height: 30px; text-align: left;border-top: none;border-right: none;">
+						<td colspan="8" style="background-color: #eaf8ff; height: 30px; text-align: left;border-top: none;border-right: none;">
 							<font style="font-weight: bold; margin-left: 20px;">
 							<jsp:useBean id="dateObject" class="java.util.Date" scope="page"></jsp:useBean>
 							<jsp:setProperty property="time" name="dateObject" value="${order.createTime*1000}"/>
 							<fmt:formatDate value="${dateObject}" pattern="yyyy-MM-dd"/></font>&nbsp;
 							订单号: ${order.oid}&nbsp; 
-							<c:choose>
-								<c:when test="${order.status==1}">
-									【待付款】
-								</c:when>
-								<c:when test="${order.status==2}">
-									【已付款:${order.payNo }】
-								</c:when>
-								<c:when test="${order.status==3}">
-									【已退款】
-								</c:when>
-								<c:when test="${order.status==4}">
-									【用户关闭】
-								</c:when>
-								<c:when test="${order.status==5}">
-									【系统关闭】
-								</c:when>
-							</c:choose>
-						</td>
-					</tr>
-					<tr>
-						<c:forEach items="${order.detailVos}" var="detail" varStatus="detailstatus">
-							<c:if test="${detailstatus.index==0}">
-								<td width="320px" align="center">&nbsp;
-									<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${detail.gid }" target="_blank">
-										<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc; vertical-align: middle;">
-									</a>
-									<div style="width: 200px; vertical-align: middle; display: inline-block; text-align: left;">
-										<div style="width: 190px; margin-left: 5px;">
-											<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${detail.gid }" target="_blank">
-												${detail.goodsName}
-											</a>
-										</div>
-										<div style="color: #9e9e9e; font-size: 12px; width: 190px; margin-left: 5px; margin-top: 10px;">
-											<c:forEach items="${detail.sku.attrs }" var="attr">
-												${attr.attrName}：${attr.attrValue}&nbsp;
-											</c:forEach>
-										</div>
-									</div>
-								</td>
-								<td width="80px">${detail.orderPrice}</td>
-								<td width="80px">${detail.number}</td>
-								<td width="100px">${detail.amount}</td>
-							</c:if>
-						</c:forEach>
-						<td rowspan="${fn:length(order.detailVos)}" width="100px">
-							${order.amount}</td>
-						<td style="padding-left: 10px; padding-right: 10px"
-							rowspan="${fn:length(order.detailVos)}">${order.province}
-							${order.city} ${order.area}<br> ${order.addr}
-						</td>
-						<td width="140px" rowspan="${fn:length(order.detailVos)}" style="border-right: none;">
-							<c:if test="${order.status==1}">
-								<a href="${ctx}/login/order/toOrderPayPage.do?oid=${order.oid}" class="manager_button" target="_blank">付款</a>
-								<a href="javascript:void(0)" onclick="showDesc('${order.oid}')" class="manager_button" target="_blank">关闭</a>
-							</c:if> 
 							<c:if test="${order.status==2}">
-								<a href="javascript:toRefund('${order.oid}')" class="manager_button">退款</a>
-								<a class="manager_button" style="visibility: hidden">&nbsp;</a>
+								支付流水: ${order.payNo }
 							</c:if>
 						</td>
 					</tr>
 					<c:forEach items="${order.detailVos}" var="detail" varStatus="detailstatus">
-						<c:if test="${detailstatus.index!=0}">
-							<tr>
-								<td width="320px" align="center">&nbsp;
+					<tr>
+						<td width="320px" align="center">&nbsp;
+							<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${detail.gid }" target="_blank">
+								<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc; vertical-align: middle;">
+							</a>
+							<div style="width: 200px; vertical-align: middle; display: inline-block; text-align: left;">
+								<div style="width: 190px; margin-left: 5px;">
 									<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${detail.gid }" target="_blank">
-										<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc; vertical-align: middle;">
+										${detail.goodsName}
 									</a>
-									<div style="width: 200px; vertical-align: middle; display: inline-block; text-align: left;">
-										<div style="width: 190px; margin-left: 5px;">
-											<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${detail.gid }" target="_blank">
-												${detail.goodsName}
-											</a>
-										</div>
-										<div style="color: #9e9e9e; font-size: 12px; width: 190px; margin-left: 5px; margin-top: 10px;">
-											<c:forEach items="${detail.sku.attrs }" var="attr">
-												${attr.attrName}：${attr.attrValue}&nbsp;
-											</c:forEach>
-										</div>
-									</div>
-								</td>
-								<td width="80px">${detail.orderPrice}</td>
-								<td width="80px">${detail.number}</td>
-								<td width="100px">${detail.amount}</td>
-							</tr>
+								</div>
+								<div style="color: #9e9e9e; font-size: 12px; width: 190px; margin-left: 5px; margin-top: 10px;">
+									<c:forEach items="${detail.sku.attrs }" var="attr">
+										${attr.attrName}：${attr.attrValue}&nbsp;
+									</c:forEach>
+								</div>
+							</div>
+						</td>
+						<td width="80px">${detail.orderPrice}</td>
+						<td width="80px">${detail.number}</td>
+						<td width="100px">${detail.amount}</td>
+						<c:if test="${detailstatus.index==0}">
+							<td rowspan="${fn:length(order.detailVos)}" width="100px">
+								${order.amount}</td>
+							<td style="padding-left: 10px; padding-right: 10px" rowspan="${fn:length(order.detailVos)}">${order.province}
+								${order.city} ${order.area}<br> ${order.addr}
+							</td>
+							<td width="100px" rowspan="${fn:length(order.detailVos)}">
+								<c:choose>
+									<c:when test="${order.status==1}">
+										待付款
+									</c:when>
+									<c:when test="${order.status==2}">
+										已付款
+									</c:when>
+									<c:when test="${order.status==3}">
+										已退款
+									</c:when>
+									<c:when test="${order.status==4}">
+										<p title="${order.deleteDesc }">已关闭</p>
+									</c:when>
+									<c:when test="${order.status==5}">
+										<p title="${order.deleteDesc }">已关闭</p>
+									</c:when>
+								</c:choose>
+							</td>
+							<td width="140px" rowspan="${fn:length(order.detailVos)}" style="border-right: none;">
+								<c:if test="${order.status==1}">
+									<a href="${ctx}/login/order/toOrderPayPage.do?oid=${order.oid}" class="manager_button" target="_blank">付款</a>
+									<a href="javascript:void(0)" onclick="showDesc('${order.oid}')" class="manager_button" target="_blank">关闭</a>
+								</c:if> 
+								<c:if test="${order.status==2}">
+									<a href="javascript:toRefund('${order.oid}')" class="manager_button">退款</a>
+									<a class="manager_button" style="visibility: hidden">&nbsp;</a>
+								</c:if>
+							</td>
 						</c:if>
+					</tr>
 					</c:forEach>
 				</table>
 				<br>

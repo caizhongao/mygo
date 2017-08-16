@@ -47,68 +47,21 @@ public class OrderAction extends CommonAction{
 	private static final Logger log = LoggerFactory.getLogger(OrderAction.class); 
 	
 	
-	@RequestMapping("listNotPayOrder")
-	public String listNotPayOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
+	@RequestMapping("listOrder")
+	public String listOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
 		log.info("OrderAction.listNotPayOrder 请求参数,order:{}",order);
 		request.setAttribute("order", order);
-		order.setStatus(ShoppingContants.ORDER_STATUS_WAIT_PAY);
 		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
 		if(resp.isSuccess()){
 			log.info("listOrder success,result:{}",resp.getData());
 			request.setAttribute("pager", resp.getData());
-			return webPage("listNotPayOrder");
+			return webPage("listOrder");
 		}else{
 			log.info("listOrder has erro,respCode:{}",resp.getCode());
 			return erro(request, resp);
 		}
 	}
 	
-	@RequestMapping("listPayOrder")
-	public String listPayOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
-		request.setAttribute("order", order);
-		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
-		order.setStatus(ShoppingContants.ORDER_STATUS_HAS_PAY);
-		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
-		if(resp.isSuccess()){
-			log.info("listOrder success,result:{}",resp.getData());
-			request.setAttribute("pager", resp.getData());
-			return webPage("listPayOrder");
-		}else{
-			log.info("listOrder has erro,respCode:{}",resp.getCode());
-			return erro(request, resp);
-		}
-	}
-
-	@RequestMapping("listCloseOrder")
-	public String listCloseOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
-		request.setAttribute("order", order);
-		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
-		order.setStatus(ShoppingContants.ORDER_STATUS_DELETE);
-		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
-		if(resp.isSuccess()){
-			log.info("listOrder success,result:{}",resp.getData());
-			request.setAttribute("pager", resp.getData());
-			return webPage("listCloseOrder");
-		}else{
-			log.info("listOrder has erro,respCode:{}",resp.getCode());
-			return erro(request, resp);
-		}
-	}
-	@RequestMapping("listRefundOrder")
-	public String listRefundOrder(@ModelAttribute OrderVo order,HttpServletRequest request,HttpServletResponse response ){
-		request.setAttribute("order", order);
-		log.info("OrderAction.listPayOrder 请求参数,order:{}",order);
-		order.setStatus(ShoppingContants.ORDER_STATUS_REFUND);
-		ServiceResponse<Pager<OrderVo>> resp=orderService.listOrder(order);
-		if(resp.isSuccess()){
-			log.info("listOrder success,result:{}",resp.getData());
-			request.setAttribute("pager", resp.getData());
-			return webPage("listRefundOrder");
-		}else{
-			log.info("listOrder has erro,respCode:{}",resp.getCode());
-			return erro(request, resp);
-		}
-	}
 	
 	
 	@RequestMapping("deleteOrder")

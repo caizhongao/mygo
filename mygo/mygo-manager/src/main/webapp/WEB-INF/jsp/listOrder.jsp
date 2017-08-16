@@ -80,7 +80,7 @@
 			<a href="javascript:deleteOrder()" class="manager_button">提交</a>
 		</div>
 	</div>
-		<form action="${ctx}/login/order/listNotPayOrder.do" method="post">
+		<form action="${ctx}/login/order/listOrder.do" method="post">
 			<div class="query_div">
 				<span style="display: inline-block;width: 300px">
 					订单号：<input class="searchInput" type="text" name="oid" value="${order.oid}">
@@ -89,6 +89,14 @@
 				<span style="display: inline-block;width: 300px">
 					商品名称：<input class="searchInput" type="text" name="goodsName" value="${order.goodsName}">
 				</span>
+				<span class="query_span"> 
+					订单状态：<select name="status" class="searchInput">
+								<option value="">所有</option>
+								<option value="1" <c:if test="${order.status==1}">selected="selected"</c:if>>未支付</option>
+								<option value="2" <c:if test="${order.status==2}">selected="selected"</c:if>>已支付</option>
+								<option value="3" <c:if test="${order.status==3}">selected="selected"</c:if>>已退款</option>
+						   </select> 
+					</span> 
 				<span style="display: inline-block;width: 150px;text-align: center">
 					<input type="button" class="searchBtn" onclick="$('form').eq(0).submit()" style="width: 100px" value="查询">
 				</span>
@@ -102,6 +110,7 @@
 					<th width="100">金额</th>
 					<th width="100">总金额</th>
 					<th>发货地址</th>
+					<th width="100">订单状态</th>
 					<th width="140px">操作</th>
 				</tr>
 			</table>
@@ -109,79 +118,76 @@
 			<c:forEach items="${pager.result}" var="order" varStatus="status">
 				<table  class="listTable" cellspacing="1">
 					<tr>
-						<th colspan="7" style="text-align: left;">
+						<th colspan="8" style="text-align: left;">
 							<font style="font-weight: bold; margin-left: 20px;">
 							<jsp:useBean id="dateObject" class="java.util.Date" scope="page"></jsp:useBean>
 							<jsp:setProperty property="time" name="dateObject" value="${order.createTime*1000}"/>
 							<fmt:formatDate value="${dateObject}" pattern="yyyy-MM-dd"/></font>&nbsp; &nbsp;
 							订单号: ${order.oid}&nbsp; 
+							<c:if test="${order.status==2}">
+								支付流水: ${order.payNo }
+							</c:if>
 						</th>
 					</tr>
-					<tr>
-						<c:forEach items="${order.detailVos}" var="detail" varStatus="detailstatus">
-							<c:if test="${detailstatus.index==0}">
-								<td width="320px">
-									<a href="${goodsDetail}?gid=${detail.gid }" target="_blank">
-										<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc; vertical-align: middle;">
-									</a>
-									<div style="width: 200px; vertical-align: middle; display: inline-block; text-align: left;">
-										<div style="width: 190px; margin-left: 5px;">
-											<a href="${goodsDetail}?gid=${detail.gid }" target="_blank">
-												${detail.goodsName}
-											</a>
-										</div>
-										<div style="color: #9e9e9e; font-size: 12px; width: 190px; margin-left: 5px; margin-top: 10px;">
-											<c:forEach items="${detail.sku.attrs }" var="attr">
-												${attr.attrName}：${attr.attrValue}&nbsp;
-											</c:forEach>
-										</div>
-									</div>
-								</td>
-								<td width="100px">${detail.orderPrice}</td>
-								<td width="100px">${detail.number}</td>
-								<td width="100px">${detail.amount}</td>
-							</c:if>
-						</c:forEach>
-						<td rowspan="${fn:length(order.detailVos)}"   width="100px">
-							${order.amount}
-						</td>
-						<td style="padding-left: 10px; padding-right: 10px" rowspan="${fn:length(order.detailVos)}">
-							${order.province} ${order.city} ${order.area}
-							<br>${order.addr}
-						</td>
-						<td width="140px" rowspan="${fn:length(order.detailVos)}">
-							<c:if test="${order.status==1}">
-								<span style="width: 35px;padding: 5px;cursor: pointer;"  onclick="showDesc('${order.oid}')" title="关闭订单">
-									<img alt="" width="30px" src="${ctx}/img/closeOrder.png">
-								</span>
-							</c:if> 
-						</td>
-					</tr>
 					<c:forEach items="${order.detailVos}" var="detail" varStatus="detailstatus">
-						<c:if test="${detailstatus.index!=0}">
-							<tr>
-								<td width="320px">&nbsp;
-									<a href="${goodsDetail}?gid=${detail.gid }" target="_blank">
-										<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc; vertical-align: middle;">
+					<tr>
+						<td width="320px" align="center">&nbsp;
+							<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${detail.gid }" target="_blank">
+								<img src="${detail.sku.skuPic}" width="80px" style="border: 1px solid #ccc; vertical-align: middle;">
+							</a>
+							<div style="width: 200px; vertical-align: middle; display: inline-block; text-align: left;">
+								<div style="width: 190px; margin-left: 5px;">
+									<a href="${ctx}/unlogin/goods/goodsDetail.do?gid=${detail.gid }" target="_blank">
+										${detail.goodsName}
 									</a>
-									<div style="width: 200px; vertical-align: middle; display: inline-block; text-align: left;">
-										<div style="width: 190px; margin-left: 5px;">
-											<a href="${goodsDetail}?gid=${detail.gid }" target="_blank">
-												${detail.goodsName}
-											</a>
-										</div>
-										<div style="color: #9e9e9e; font-size: 12px; width: 190px; margin-left: 5px; margin-top: 10px;">
-											<c:forEach items="${detail.sku.attrs }" var="attr">
-												${attr.attrName}：${attr.attrValue}&nbsp;
-											</c:forEach>
-										</div>
-									</div>
-								</td>
-								<td width="100px">${detail.orderPrice}</td>
-								<td width="80px">${detail.number}</td>
-								<td width="100px">${detail.amount}</td>
-							</tr>
+								</div>
+								<div style="color: #9e9e9e; font-size: 12px; width: 190px; margin-left: 5px; margin-top: 10px;">
+									<c:forEach items="${detail.sku.attrs }" var="attr">
+										${attr.attrName}：${attr.attrValue}&nbsp;
+									</c:forEach>
+								</div>
+							</div>
+						</td>
+						<td width="100px">${detail.orderPrice}</td>
+						<td width="80px">${detail.number}</td>
+						<td width="100px">${detail.amount}</td>
+						<c:if test="${detailstatus.index==0}">
+							<td rowspan="${fn:length(order.detailVos)}" width="100px">
+								${order.amount}</td>
+							<td style="padding-left: 10px; padding-right: 10px" rowspan="${fn:length(order.detailVos)}">${order.province}
+								${order.city} ${order.area}<br> ${order.addr}
+							</td>
+							<td width="100px" rowspan="${fn:length(order.detailVos)}">
+								<c:choose>
+									<c:when test="${order.status==1}">
+										待付款
+									</c:when>
+									<c:when test="${order.status==2}">
+										已付款
+									</c:when>
+									<c:when test="${order.status==3}">
+										已退款
+									</c:when>
+									<c:when test="${order.status==4}">
+										<p title="${order.deleteDesc }">已关闭</p>
+									</c:when>
+									<c:when test="${order.status==5}">
+										<p title="${order.deleteDesc }">已关闭</p>
+									</c:when>
+								</c:choose>
+							</td>
+							<td width="140px" rowspan="${fn:length(order.detailVos)}" style="border-right: none;">
+								<c:if test="${order.status==1}">
+									<a href="${ctx}/login/order/toOrderPayPage.do?oid=${order.oid}" class="manager_button" target="_blank">付款</a>
+									<a href="javascript:void(0)" onclick="showDesc('${order.oid}')" class="manager_button" target="_blank">关闭</a>
+								</c:if> 
+								<%-- <c:if test="${order.status==2}">
+									<a href="javascript:toRefund('${order.oid}')" class="manager_button">退款</a>
+									<a class="manager_button" style="visibility: hidden">&nbsp;</a>
+								</c:if> --%>
+							</td>
 						</c:if>
+					</tr>
 					</c:forEach>
 				</table>
 				<br>

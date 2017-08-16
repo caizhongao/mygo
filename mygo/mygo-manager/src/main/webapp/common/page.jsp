@@ -20,7 +20,7 @@
 				activepaf: "",//下一页选中样式
 				backfun: function(e) {
 					$('form').eq(0).append('<input type="hidden" name="pageNum" value="'+e.current+'">');
-				$('form').eq(0).submit();
+					$('form').eq(0).submit();
 				}
 			});
 		}

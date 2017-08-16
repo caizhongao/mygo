@@ -40,10 +40,7 @@
      							{"id":"5","name":"分类管理","parentId":"3","url":"${ctx}/login/category/listCategory.do","icon":"","order":"1","isHeader":"0","childMenus":""}
      						]},
      						{"id":"6","name":"订单管理","parentId":"1","url":"","icon":"&#xe602;","order":"3","isHeader":"0","childMenus":[
-								{"id":"7","name":"未付款","parentId":"6","url":"${ctx}/login/order/listNotPayOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""},
-     							{"id":"8","name":"已付款","parentId":"6","url":"${ctx}/login/order/listPayOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""},
-     							{"id":"9","name":"已退款","parentId":"6","url":"${ctx}/login/order/listRefundOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""},
-     							{"id":"10","name":"已关闭","parentId":"6","url":"${ctx}/login/order/listCloseOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""}
+								{"id":"7","name":"订单管理","parentId":"6","url":"${ctx}/login/order/listOrder.do","icon":"","order":"1","isHeader":"0","childMenus":""}
      						]},
      						{"id":"13","name":"系统管理","parentId":"1","url":"","icon":"&#xe604;","order":"1","isHeader":"0","childMenus":[
 								{"id":"14","name":"定时任务管理","parentId":"13","url":"${ctx}/login/task/listTask.do","icon":"","order":"1","isHeader":"0","childMenus":""},
