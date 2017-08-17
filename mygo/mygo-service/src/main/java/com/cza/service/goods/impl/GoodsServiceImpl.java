@@ -30,7 +30,6 @@ import com.cza.dto.goods.TGoods;
 import com.cza.dto.goods.TSku;
 import com.cza.dto.goods.TSkuAttr;
 import com.cza.dto.goods.TSkuStock;
-import com.cza.dto.order.TOrder;
 import com.cza.mapper.goods.CategoryAttrMapper;
 import com.cza.mapper.goods.CategoryMapper;
 import com.cza.mapper.goods.GoodsMapper;
