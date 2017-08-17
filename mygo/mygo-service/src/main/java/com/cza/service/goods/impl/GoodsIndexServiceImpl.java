@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -34,7 +35,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.cza.common.ElasticSearchUitl;
 import com.cza.common.Pager;
 import com.cza.common.ServiceResponse;
@@ -50,6 +50,7 @@ import com.cza.service.goods.vo.GoodsVo;
     * @date 2017年6月27日下午4:25:26
     *
     */
+@SuppressWarnings("deprecation")
 @Service("goodsIndexService")
 public class GoodsIndexServiceImpl implements GoodsIndexService {
 	private static final Logger log = LoggerFactory.getLogger(GoodsIndexServiceImpl.class); 
